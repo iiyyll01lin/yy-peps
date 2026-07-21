@@ -17,8 +17,14 @@ import zipfile
 
 RAW = os.path.join(os.path.dirname(__file__), "raw")
 
-KODAK_BASE = "https://r0k.us/graphics/kodak"
-KODAK_IMAGES = [f"kodim{i:02d}.png" for i in range(1, 25)]  # 24 images
+# r0k.us (the canonical Kodak host) blocks direct PNG hotlinks, so we pull the
+# 24 images from a GitHub mirror. Files are named 01.png..24.png there; we save
+# them locally as kodim01.png..kodim24.png (the name the rest of the repo uses).
+KODAK_MIRROR = (
+    "https://raw.githubusercontent.com/MohamedBakrAli/"
+    "Kodak-Lossless-True-Color-Image-Suite/master/PhotoCD_PCD0992"
+)
+KODAK_IMAGES = [(f"{i:02d}.png", f"kodim{i:02d}.png") for i in range(1, 25)]
 
 # AmbientCG download pattern (CC0). 2K PNG bundles.
 AMBIENTCG_TMPL = "https://ambientcg.com/get?file={name}_2K-PNG.zip"
@@ -38,8 +44,8 @@ def _get(url: str, dst: str) -> None:
 def fetch_kodak() -> None:
     print("Kodak Lossless True Color Suite (24 images)")
     d = os.path.join(RAW, "kodak")
-    for name in KODAK_IMAGES:
-        _get(f"{KODAK_BASE}/{name}", os.path.join(d, name))
+    for remote_name, local_name in KODAK_IMAGES:
+        _get(f"{KODAK_MIRROR}/{remote_name}", os.path.join(d, local_name))
 
 
 def fetch_ambientcg(names) -> None:
