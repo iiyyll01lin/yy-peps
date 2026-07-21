@@ -1,18 +1,49 @@
-"""Multi-resolution and hash grid encoders (for the SDF table, W09).
-
-繁體中文:多解析度與 hash grid 編碼器,供 SDF 章節(W09)重現論文表格。
-- MultiResGridEncoder:多個不同解析度的 dense grid,latent 串接(Instant-NGP 風格,
-  但用 dense 而非 hash,教學上更好理解)。
-- HashGridEncoder:多解析度 + 空間雜湊表(記憶體省,對應論文 hash-grid 列)。
-兩者介面與 GridEncoder 相同(coords (N,dim) in [0,1] -> (N, feature_dim*levels)),
-因此可直接放進 PEPS wrapper 當共享 encoder。
-"""
+"""Dense and hashed multi-grid encoders used by the paper baselines."""
 
 from __future__ import annotations
+
+from collections.abc import Sequence
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+
+
+def _resolve_resolutions(
+    base_resolution: int,
+    n_levels: int,
+    per_level_scale: float,
+    resolutions,
+) -> tuple[int, ...]:
+    if resolutions is None:
+        if isinstance(n_levels, bool) or not isinstance(n_levels, int):
+            raise TypeError("n_levels must be an integer")
+        if n_levels < 1:
+            raise ValueError("n_levels must be positive")
+        values = tuple(
+            max(2, int(round(base_resolution * (per_level_scale**level))))
+            for level in range(n_levels)
+        )
+    else:
+        if not isinstance(resolutions, Sequence):
+            raise TypeError("resolutions must be a sequence")
+        values = tuple(resolutions)
+        if not values:
+            raise ValueError("resolutions cannot be empty")
+    if any(isinstance(value, bool) or not isinstance(value, int) for value in values):
+        raise TypeError("resolution entries must be integers")
+    if any(value < 2 for value in values):
+        raise ValueError("resolution entries must be at least 2")
+    return values
+
+
+def _validate_coords(coords: torch.Tensor, dim: int) -> None:
+    if coords.ndim != 2 or coords.shape[1] != dim:
+        raise ValueError(
+            f"coords must have shape (N, {dim}), got {tuple(coords.shape)}"
+        )
+    if not coords.is_floating_point():
+        raise TypeError("coords must be a floating-point tensor")
 
 
 class MultiResGridEncoder(nn.Module):
@@ -27,22 +58,35 @@ class MultiResGridEncoder(nn.Module):
     Output dim = ``feature_dim * n_levels``.
     """
 
-    def __init__(self, dim: int, base_resolution: int = 16, n_levels: int = 4,
-                 per_level_scale: float = 2.0, feature_dim: int = 2,
-                 init_std: float = 1e-2) -> None:
+    def __init__(
+        self,
+        dim: int,
+        base_resolution: int = 16,
+        n_levels: int = 4,
+        per_level_scale: float = 2.0,
+        feature_dim: int = 2,
+        init_std: float = 1e-2,
+        *,
+        resolutions=None,
+    ) -> None:
         super().__init__()
         if dim not in (2, 3):
             raise ValueError("dim must be 2 or 3")
+        if isinstance(feature_dim, bool) or not isinstance(feature_dim, int):
+            raise TypeError("feature_dim must be an integer")
+        if feature_dim < 1:
+            raise ValueError("feature_dim must be positive")
         self.dim = dim
-        self.n_levels = n_levels
+        resolved = _resolve_resolutions(
+            base_resolution, n_levels, per_level_scale, resolutions
+        )
+        self.n_levels = len(resolved)
         self.per_level_feature = feature_dim
-        self.feature_dim = feature_dim * n_levels
+        self.feature_dim = feature_dim * self.n_levels
 
         grids = nn.ParameterList()
-        self.resolutions = []
-        for lvl in range(n_levels):
-            res = max(2, int(round(base_resolution * (per_level_scale ** lvl))))
-            self.resolutions.append(res)
+        self.resolutions = resolved
+        for res in self.resolutions:
             shape = (1, feature_dim) + (res,) * dim
             grids.append(nn.Parameter(torch.randn(*shape) * init_std))
         self.grids = grids
@@ -59,10 +103,23 @@ class MultiResGridEncoder(nn.Module):
         return out.view(self.per_level_feature, n).t()
 
     def forward(self, coords: torch.Tensor) -> torch.Tensor:
+        _validate_coords(coords, self.dim)
         n = coords.shape[0]
         g = coords * 2.0 - 1.0
         feats = [self._sample(grid, g, n) for grid in self.grids]
         return torch.cat(feats, dim=1).contiguous()
+
+    def sample_channels(self, coords: torch.Tensor, channel_indices) -> torch.Tensor:
+        indices = torch.as_tensor(
+            channel_indices, device=coords.device, dtype=torch.long
+        )
+        if indices.ndim != 1:
+            raise ValueError("channel_indices must be one-dimensional")
+        if indices.numel() == 0:
+            return coords.new_empty((coords.shape[0], 0))
+        if (indices < 0).any() or (indices >= self.feature_dim).any():
+            raise IndexError("channel index is out of range")
+        return self(coords).index_select(1, indices)
 
     @property
     def num_params(self) -> int:
@@ -73,68 +130,125 @@ _PRIMES = (1, 2654435761, 805459861)
 
 
 class HashGridEncoder(nn.Module):
-    """Multi-resolution hash grid (Instant-NGP style) for 2D/3D.
+    """Single- or multi-resolution hash grid.
 
-    Each level hashes integer vertex coordinates into a fixed-size table, then
-    (bi/tri)linearly interpolates the 2^dim corner entries. Memory is bounded by
-    ``2**log2_hashmap_size`` per level regardless of resolution.
+    Each level allocates ``min(resolution**dim, 2**log2_hashmap_size)`` entries.
+    This detail is required for the paper's ``[16, 32, 64, 128]`` multi-hash
+    baseline: its first two levels remain collision-free while only the larger
+    levels are capped, yielding the reported roughly 590k encoder parameters.
     """
 
-    def __init__(self, dim: int, n_levels: int = 8, feature_dim: int = 2,
-                 base_resolution: int = 16, per_level_scale: float = 1.5,
-                 log2_hashmap_size: int = 19, init_std: float = 1e-4) -> None:
+    def __init__(
+        self,
+        dim: int,
+        n_levels: int = 8,
+        feature_dim: int = 2,
+        base_resolution: int = 16,
+        per_level_scale: float = 1.5,
+        log2_hashmap_size: int = 19,
+        init_std: float = 1e-4,
+        *,
+        resolutions=None,
+    ) -> None:
         super().__init__()
         if dim not in (2, 3):
             raise ValueError("dim must be 2 or 3")
+        if isinstance(feature_dim, bool) or not isinstance(feature_dim, int):
+            raise TypeError("feature_dim must be an integer")
+        if feature_dim < 1:
+            raise ValueError("feature_dim must be positive")
+        if (
+            isinstance(log2_hashmap_size, bool)
+            or not isinstance(log2_hashmap_size, int)
+        ):
+            raise TypeError("log2_hashmap_size must be an integer")
+        if log2_hashmap_size < 1:
+            raise ValueError("log2_hashmap_size must be positive")
         self.dim = dim
-        self.n_levels = n_levels
-        self.per_level_feature = feature_dim
-        self.feature_dim = feature_dim * n_levels
-        self.table_size = 2 ** log2_hashmap_size
-
-        self.resolutions = [
-            max(2, int(round(base_resolution * (per_level_scale ** l))))
-            for l in range(n_levels)
-        ]
-        self.tables = nn.Parameter(
-            torch.randn(n_levels, self.table_size, feature_dim) * init_std
+        self.resolutions = _resolve_resolutions(
+            base_resolution, n_levels, per_level_scale, resolutions
         )
-        # corner offsets: (2^dim, dim)
+        self.n_levels = len(self.resolutions)
+        self.per_level_feature = feature_dim
+        self.feature_dim = feature_dim * self.n_levels
+        self.max_table_size = 2**log2_hashmap_size
+        self.table_sizes = tuple(
+            min(resolution**dim, self.max_table_size)
+            for resolution in self.resolutions
+        )
+        self.tables = nn.ParameterList(
+            [
+                nn.Parameter(torch.randn(size, feature_dim) * init_std)
+                for size in self.table_sizes
+            ]
+        )
         offs = torch.tensor(
-            [[(i >> d) & 1 for d in range(dim)] for i in range(2 ** dim)],
+            [[(index >> axis) & 1 for axis in range(dim)] for index in range(2**dim)],
             dtype=torch.long,
         )
         self.register_buffer("corner_offsets", offs, persistent=False)
 
-    def _hash(self, ipos: torch.Tensor, level: int) -> torch.Tensor:
-        # ipos: (N, dim) long -> (N,) index into table
-        h = torch.zeros(ipos.shape[0], dtype=torch.long, device=ipos.device)
+    def _dense_index(self, positions: torch.Tensor, resolution: int) -> torch.Tensor:
+        index = positions[:, 0]
+        stride = resolution
+        for axis in range(1, self.dim):
+            index = index + positions[:, axis] * stride
+            stride *= resolution
+        return index
+
+    def _hash(self, positions: torch.Tensor, table_size: int) -> torch.Tensor:
+        h = torch.zeros(
+            positions.shape[0], dtype=torch.long, device=positions.device
+        )
         for d in range(self.dim):
-            h = h ^ (ipos[:, d] * _PRIMES[d])
-        return h % self.table_size
+            h = h ^ (positions[:, d] * _PRIMES[d])
+        return torch.remainder(h, table_size)
 
     def forward(self, coords: torch.Tensor) -> torch.Tensor:
+        _validate_coords(coords, self.dim)
         n = coords.shape[0]
         out = []
         for lvl in range(self.n_levels):
             res = self.resolutions[lvl]
-            p = coords * (res - 1)             # (N, dim) in [0, res-1]
+            table_size = self.table_sizes[lvl]
+            p = coords * (res - 1)
             p0 = torch.floor(p).long()
             frac = p - p0.float()
-            acc = torch.zeros(n, self.per_level_feature, device=coords.device)
+            maximum = torch.full(
+                (self.dim,), res - 1, device=coords.device, dtype=torch.long
+            )
+            acc = coords.new_zeros((n, self.per_level_feature))
             for c in range(self.corner_offsets.shape[0]):
                 off = self.corner_offsets[c]
-                ipos = p0 + off
-                idx = self._hash(ipos, lvl)
-                feat = self.tables[lvl][idx]  # (N, feature_dim)
-                # trilinear/bilinear weight for this corner
-                w = torch.ones(n, device=coords.device)
+                positions = p0 + off
+                positions = torch.minimum(
+                    torch.maximum(positions, torch.zeros_like(positions)),
+                    maximum,
+                )
+                if table_size == res**self.dim:
+                    idx = self._dense_index(positions, res)
+                else:
+                    idx = self._hash(positions, table_size)
+                feat = self.tables[lvl][idx]
+                w = coords.new_ones(n)
                 for d in range(self.dim):
                     w = w * (frac[:, d] if off[d] == 1 else (1 - frac[:, d]))
                 acc = acc + feat * w.unsqueeze(1)
             out.append(acc)
         return torch.cat(out, dim=1).contiguous()
 
+    def sample_channels(self, coords: torch.Tensor, channel_indices) -> torch.Tensor:
+        indices = torch.as_tensor(
+            channel_indices, device=coords.device, dtype=torch.long
+        )
+        if indices.ndim != 1:
+            raise ValueError("channel_indices must be one-dimensional")
+        if indices.numel() == 0:
+            return coords.new_empty((coords.shape[0], 0))
+        if (indices < 0).any() or (indices >= self.feature_dim).any():
+            raise IndexError("channel index is out of range")
+        return self(coords).index_select(1, indices)
+
     @property
     def num_params(self) -> int:
-        return self.tables.numel()
+        return sum(table.numel() for table in self.tables)

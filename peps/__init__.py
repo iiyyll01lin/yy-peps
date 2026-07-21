@@ -9,6 +9,14 @@ from .projector import Projector
 from .aggregate import ConcatAggregator, PinkAggregator, BrownianAggregator, make_aggregator
 from .wrapper import PEPS
 from .encoders.grid import GridEncoder
+from .encoders.lpe import LocalPositionalEncoding
+from .encoders.multires import HashGridEncoder, MultiResGridEncoder
+from .encoders.ntc import (
+    FourNeighborGridEncoder,
+    NTCNEncoder,
+    NTCPEPSEncoder,
+    TiledTriangularEncoding,
+)
 from .encoders.positional import AbsolutePositionalEncoding, IdentityEncoder
 from .models.mlp import MLP
 
@@ -20,6 +28,13 @@ __all__ = [
     "make_aggregator",
     "PEPS",
     "GridEncoder",
+    "LocalPositionalEncoding",
+    "MultiResGridEncoder",
+    "HashGridEncoder",
+    "FourNeighborGridEncoder",
+    "TiledTriangularEncoding",
+    "NTCNEncoder",
+    "NTCPEPSEncoder",
     "AbsolutePositionalEncoding",
     "IdentityEncoder",
     "MLP",

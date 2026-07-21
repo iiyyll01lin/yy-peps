@@ -1,34 +1,301 @@
-"""Model builders for neural texture compression.
-
-繁體中文:材質壓縮的模型工廠。
-- build_ntc_baseline:NTC 風格基線 = 單一 grid encoder + MLP,輸出 9 通道。
-- build_grid_peps_texture:Grid-PEPS / NTC_PEPS,同一共享 grid 在 Lissajous 點取樣。
-兩者輸出皆為 9 通道 bundle,方便逐通道與逐材質對照(Table 2)。
-"""
+"""Model builders for paper neural texture compression methods."""
 
 from __future__ import annotations
 
 import torch.nn as nn
 
-from peps import Projector, GridEncoder, MLP, PEPS, make_aggregator
+from peps import (
+    GridEncoder,
+    LocalPositionalEncoding,
+    MLP,
+    NTCNEncoder,
+    NTCPEPSEncoder,
+    PEPS,
+    Projector,
+    make_aggregator,
+)
 
 OUT_CHANNELS = 9
 
 
-def build_ntc_baseline(resolution: int = 256, feature_dim: int = 8,
-                       hidden_dim: int = 64, num_layers: int = 3):
+def _count(model: nn.Module) -> int:
+    return sum(parameter.numel() for parameter in model.parameters())
+
+
+def _resolve_out_dim(
+    out_dim: int | None,
+    num_textures: int | None,
+) -> int:
+    derived = None if num_textures is None else 3 * num_textures
+    if out_dim is not None and derived is not None and out_dim != derived:
+        raise ValueError("out_dim must equal 3 * num_textures")
+    value = out_dim if out_dim is not None else derived
+    if value is None:
+        value = OUT_CHANNELS
+    if isinstance(value, bool) or not isinstance(value, int):
+        raise TypeError("output dimension must be an integer")
+    if value < 1:
+        raise ValueError("output dimension must be positive")
+    return value
+
+
+def _peps_model(
+    encoder: nn.Module,
+    *,
+    num_frequencies: int,
+    aggregator: str,
+    out_dim: int,
+    hidden_dim: int,
+    num_layers: int,
+    activation: str,
+    output_activation,
+) -> nn.Module:
+    projector = Projector(num_frequencies)
+    frequency_allocated = aggregator.lower() in {"pink", "brownian"}
+    aggregate_kwargs = (
+        {
+            "num_frequencies": projector.num_frequencies,
+            "include_input": projector.include_input,
+            "frequency_scales": projector.frequency_scales,
+        }
+        if frequency_allocated
+        else {}
+    )
+    aggregate = make_aggregator(
+        aggregator,
+        projector.num_points,
+        encoder.feature_dim,
+        **aggregate_kwargs,
+    )
+    decoder = MLP(
+        aggregate.out_dim,
+        out_dim,
+        hidden_dim,
+        num_layers,
+        activation=activation,
+        output_activation=output_activation,
+    )
+    return PEPS(
+        projector,
+        encoder,
+        aggregate,
+        decoder,
+        selective_sampling=frequency_allocated,
+    )
+
+
+def build_ntc_baseline(
+    resolution: int = 256,
+    feature_dim: int = 8,
+    hidden_dim: int = 64,
+    num_layers: int = 3,
+    out_dim: int | None = None,
+    num_textures: int | None = None,
+    activation: str = "relu",
+    output_activation=None,
+):
+    """Legacy single-grid teaching baseline (not the paper's NTC_N)."""
+
+    out_dim = _resolve_out_dim(out_dim, num_textures)
     enc = GridEncoder(dim=2, resolution=resolution, feature_dim=feature_dim)
-    mlp = MLP(feature_dim, OUT_CHANNELS, hidden_dim, num_layers)
+    mlp = MLP(
+        feature_dim,
+        out_dim,
+        hidden_dim,
+        num_layers,
+        activation=activation,
+        output_activation=output_activation,
+    )
     model = nn.Sequential(enc, mlp)
-    return model, sum(p.numel() for p in model.parameters())
+    return model, _count(model)
 
 
-def build_grid_peps_texture(resolution: int = 256, feature_dim: int = 8,
-                            num_frequencies: int = 6, aggregator: str = "concat",
-                            hidden_dim: int = 64, num_layers: int = 3):
-    proj = Projector(num_frequencies)
+def build_grid_peps_texture(
+    resolution: int = 256,
+    feature_dim: int = 8,
+    num_frequencies: int = 6,
+    aggregator: str = "concat",
+    hidden_dim: int = 64,
+    num_layers: int = 3,
+    out_dim: int | None = None,
+    num_textures: int | None = None,
+    activation: str = "relu",
+    output_activation=None,
+):
+    out_dim = _resolve_out_dim(out_dim, num_textures)
     enc = GridEncoder(dim=2, resolution=resolution, feature_dim=feature_dim)
-    agg = make_aggregator(aggregator, proj.num_points, feature_dim)
-    mlp = MLP(agg.out_dim, OUT_CHANNELS, hidden_dim, num_layers)
-    model = PEPS(proj, enc, agg, mlp)
-    return model, sum(p.numel() for p in model.parameters())
+    model = _peps_model(
+        enc,
+        num_frequencies=num_frequencies,
+        aggregator=aggregator,
+        out_dim=out_dim,
+        hidden_dim=hidden_dim,
+        num_layers=num_layers,
+        activation=activation,
+        output_activation=output_activation,
+    )
+    return model, _count(model)
+
+
+def build_lpe_texture(
+    resolution: int = 1024,
+    num_frequencies: int = 4,
+    hidden_dim: int = 64,
+    num_layers: int = 3,
+    out_dim: int | None = None,
+    num_textures: int | None = None,
+    activation: str = "gelu",
+    output_activation=None,
+):
+    out_dim = _resolve_out_dim(out_dim, num_textures)
+    encoder = LocalPositionalEncoding(
+        dim=2,
+        resolution=resolution,
+        num_frequencies=num_frequencies,
+    )
+    decoder = MLP(
+        encoder.feature_dim,
+        out_dim,
+        hidden_dim,
+        num_layers,
+        activation=activation,
+        output_activation=output_activation,
+    )
+    model = nn.Sequential(encoder, decoder)
+    return model, _count(model)
+
+
+def build_ntc_n(
+    signal_resolution=4096,
+    g0_resolution=1024,
+    g0_feature_dim: int = 12,
+    g1_resolution=512,
+    g1_feature_dim: int = 20,
+    hidden_dim: int = 64,
+    num_layers: int = 3,
+    out_dim: int | None = None,
+    num_textures: int | None = None,
+    activation: str = "gelu",
+    output_activation=None,
+):
+    """Paper NTC_N: G0 corner concat + G1 bilinear + tiled PE."""
+
+    out_dim = _resolve_out_dim(out_dim, num_textures)
+    encoder = NTCNEncoder(
+        signal_resolution,
+        g0_resolution=g0_resolution,
+        g0_feature_dim=g0_feature_dim,
+        g1_resolution=g1_resolution,
+        g1_feature_dim=g1_feature_dim,
+    )
+    decoder = MLP(
+        encoder.feature_dim,
+        out_dim,
+        hidden_dim,
+        num_layers,
+        activation=activation,
+        output_activation=output_activation,
+    )
+    model = nn.Sequential(encoder, decoder)
+    return model, _count(model)
+
+
+def build_ntc_peps_texture(
+    signal_resolution=4096,
+    g0_resolution=1024,
+    g0_feature_dim: int = 12,
+    g1_resolution=512,
+    g1_feature_dim: int = 20,
+    num_frequencies: int = 4,
+    aggregator: str = "concat",
+    hidden_dim: int = 64,
+    num_layers: int = 3,
+    out_dim: int | None = None,
+    num_textures: int | None = None,
+    activation: str = "gelu",
+    output_activation=None,
+):
+    out_dim = _resolve_out_dim(out_dim, num_textures)
+    encoder = NTCPEPSEncoder(
+        signal_resolution,
+        g0_resolution=g0_resolution,
+        g0_feature_dim=g0_feature_dim,
+        g1_resolution=g1_resolution,
+        g1_feature_dim=g1_feature_dim,
+        num_frequencies=num_frequencies,
+        aggregator=aggregator,
+    )
+    decoder = MLP(
+        encoder.feature_dim,
+        out_dim,
+        hidden_dim,
+        num_layers,
+        activation=activation,
+        output_activation=output_activation,
+    )
+    model = nn.Sequential(encoder, decoder)
+    return model, _count(model)
+
+
+def build_paper_texture(
+    method: str,
+    *,
+    out_dim: int | None = None,
+    num_textures: int | None = None,
+    **overrides,
+):
+    """Build a Table 2 method from the paper's 4K configuration."""
+
+    common = {
+        "hidden_dim": 64,
+        "num_layers": 3,
+        "out_dim": out_dim,
+        "num_textures": num_textures,
+        "activation": "gelu",
+        "output_activation": None,
+    }
+    name = method.lower().replace("-", "_")
+    if name == "lpe":
+        kwargs = {**common, "resolution": 1024, "num_frequencies": 4}
+        kwargs.update(overrides)
+        return build_lpe_texture(**kwargs)
+    if name == "ntc_n":
+        kwargs = dict(common)
+        kwargs.update(overrides)
+        return build_ntc_n(**kwargs)
+    if name == "bi_grid":
+        kwargs = {**common, "resolution": 1024, "feature_dim": 17}
+        kwargs.update(overrides)
+        return build_ntc_baseline(**kwargs)
+    if name in {
+        "grid_peps4f",
+        "grid_pinkpeps4f",
+        "grid_peps4f_25",
+        "grid_pinkpeps4f_25",
+    }:
+        kwargs = {
+            **common,
+            "resolution": 1024,
+            "feature_dim": 13 if name.endswith("_25") else 17,
+            "num_frequencies": 4,
+            "aggregator": "pink" if "pink" in name else "concat",
+        }
+        kwargs.update(overrides)
+        return build_grid_peps_texture(**kwargs)
+    if name in {
+        "ntc_peps",
+        "ntc_pinkpeps",
+        "ntc_peps_25",
+        "ntc_pinkpeps_25",
+    }:
+        reduced = name.endswith("_25")
+        kwargs = {
+            **common,
+            "g0_feature_dim": 9 if reduced else 12,
+            "g1_feature_dim": 15 if reduced else 20,
+            "num_frequencies": 4,
+            "aggregator": "pink" if "pink" in name else "concat",
+        }
+        kwargs.update(overrides)
+        return build_ntc_peps_texture(**kwargs)
+    raise ValueError(f"unknown paper texture method: {method!r}")

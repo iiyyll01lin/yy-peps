@@ -1,0 +1,100 @@
+schema_version = 1
+name = "texture-table2-full"
+paper = "PEPS Extended arXiv:2604.24167v1"
+task = "texture"
+profile = "full"
+dataset = "paper-textures-18-4k"
+canonical = true
+seeds = [0]
+
+[training]
+task = "texture"
+loss = "l1"
+epochs = 3000
+batches_per_epoch = 40
+batch_size = 60000
+model_lr = 0.001
+encoder_lr = 0.1
+cosine = true
+log_every = 200
+checkpoint_every = 1000
+
+[runner]
+metrics = ["psnr", "ssim"]
+render_chunk = 262144
+output_dir = "results/paper"
+world_size = 4
+
+[[methods]]
+name = "LPE"
+factory = "apps.texture.build:build_paper_texture"
+kwargs = { method = "lpe" }
+expected_encoder_params = 16777216
+
+[[methods]]
+name = "NTC_N"
+factory = "apps.texture.build:build_paper_texture"
+kwargs = { method = "ntc_n" }
+expected_encoder_params = 17825792
+
+[[methods]]
+name = "BI-Grid"
+factory = "apps.texture.build:build_paper_texture"
+kwargs = { method = "bi_grid" }
+expected_encoder_params = 17825792
+
+[[methods]]
+name = "Grid-PEPS4F"
+factory = "apps.texture.build:build_paper_texture"
+kwargs = { method = "grid_peps4f" }
+expected_encoder_params = 17825792
+
+[[methods]]
+name = "Grid-PinkPEPS4F"
+factory = "apps.texture.build:build_paper_texture"
+kwargs = { method = "grid_pinkpeps4f" }
+expected_encoder_params = 17825792
+
+[[methods]]
+name = "NTC_PEPS"
+factory = "apps.texture.build:build_paper_texture"
+kwargs = { method = "ntc_peps" }
+expected_encoder_params = 17825792
+
+[[methods]]
+name = "NTC_PinkPEPS"
+factory = "apps.texture.build:build_paper_texture"
+kwargs = { method = "ntc_pinkpeps" }
+expected_encoder_params = 17825792
+
+[[methods]]
+name = "Grid-PEPS4F-25"
+factory = "apps.texture.build:build_paper_texture"
+kwargs = { method = "grid_peps4f_25" }
+expected_encoder_params = 13631488
+
+[[methods]]
+name = "Grid-PinkPEPS4F-25"
+factory = "apps.texture.build:build_paper_texture"
+kwargs = { method = "grid_pinkpeps4f_25" }
+expected_encoder_params = 13631488
+
+[[methods]]
+name = "NTC_PEPS-25"
+factory = "apps.texture.build:build_paper_texture"
+kwargs = { method = "ntc_peps_25" }
+expected_encoder_params = 13369344
+
+[[methods]]
+name = "NTC_PinkPEPS-25"
+factory = "apps.texture.build:build_paper_texture"
+kwargs = { method = "ntc_pinkpeps_25" }
+expected_encoder_params = 13369344
+
+[[methods]]
+name = "Grid-PinkPEPS3F"
+factory = "apps.texture.build:build_paper_texture"
+kwargs = { method = "grid_pinkpeps4f", num_frequencies = 3 }
+seeds = [0, 1, 2]
+role = "ablation"
+expected_encoder_params = 17825792

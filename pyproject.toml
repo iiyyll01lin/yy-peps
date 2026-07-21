@@ -8,9 +8,36 @@ version = "0.1.0"
 description = "Faithful reimplementation of AMD PEPS (Positional Encoding Projected Sampling) + course materials"
 requires-python = ">=3.10"
 readme = "README.md"
+dependencies = [
+    "torch",
+    "numpy",
+    "Pillow",
+]
+
+[project.optional-dependencies]
+paper = [
+    "torchmetrics",
+    "lpips",
+    "flip-evaluator",
+]
+test = [
+    "pytest",
+]
+
+[project.scripts]
+peps-experiment = "experiments.run:main"
 
 [tool.setuptools]
-packages = ["peps", "peps.encoders", "peps.models", "peps.quant"]
+packages = [
+    "peps",
+    "peps.encoders",
+    "peps.models",
+    "peps.quant",
+    "experiments",
+    "apps.image",
+    "apps.texture",
+    "apps.sdf",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

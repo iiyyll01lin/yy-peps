@@ -1,0 +1,43 @@
+schema_version = 1
+name = "image-paper-smoke"
+paper = "PEPS Extended arXiv:2604.24167v1"
+task = "image"
+profile = "smoke"
+dataset = "synthetic-image-tensor"
+canonical = false
+seeds = [0]
+
+[training]
+task = "image"
+loss = "l1"
+steps = 2
+batch_size = 32
+model_lr = 0.01
+encoder_lr = 0.01
+cosine = false
+log_every = 1
+checkpoint_every = 1
+
+[runner]
+metrics = ["psnr", "lsd", "lpsd"]
+render_chunk = 1024
+output_dir = "results/paper-smoke"
+world_size = 1
+
+[[methods]]
+name = "Grid-smoke"
+factory = "apps.image.build:build_paper_image"
+kwargs = { method = "grid", resolution = [8, 8], feature_dim = 2, hidden_dim = 8, num_layers = 2 }
+expected_encoder_params = 128
+
+[[methods]]
+name = "G-PEPS-smoke"
+factory = "apps.image.build:build_paper_image"
+kwargs = { method = "g_peps", resolution = [8, 8], feature_dim = 2, num_frequencies = 2, hidden_dim = 8, num_layers = 2 }
+expected_encoder_params = 128
+
+[[methods]]
+name = "LPE-smoke"
+factory = "apps.image.build:build_paper_image"
+kwargs = { method = "lpe", resolution = [8, 8], num_frequencies = 2, hidden_dim = 8, num_layers = 2 }
+expected_encoder_params = 512

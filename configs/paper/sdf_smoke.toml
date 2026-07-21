@@ -1,0 +1,57 @@
+schema_version = 1
+name = "sdf-paper-smoke"
+paper = "PEPS Extended arXiv:2604.24167v1"
+task = "sdf"
+profile = "smoke"
+dataset = "synthetic-sdf-tensor"
+canonical = false
+seeds = [0]
+
+[training]
+task = "sdf"
+loss = "mape"
+epochs = 1
+batches_per_epoch = 2
+batch_size = 32
+model_lr = 0.001
+encoder_lr = 0.001
+cosine = false
+log_every = 1
+checkpoint_every = 1
+mape_epsilon = 1e-4
+
+[runner]
+metrics = ["iou"]
+render_chunk = 1024
+output_dir = "results/paper-smoke"
+world_size = 1
+
+[[methods]]
+name = "Grid-smoke"
+factory = "apps.sdf.build:build_paper_sdf"
+kwargs = { method = "grid", resolution = 4, feature_dim = 2, hidden_dim = 8, num_layers = 2 }
+expected_encoder_params = 128
+
+[[methods]]
+name = "Grid-PEPS-smoke"
+factory = "apps.sdf.build:build_paper_sdf"
+kwargs = { method = "grid_peps", resolution = 4, feature_dim = 2, num_frequencies = 2, hidden_dim = 8, num_layers = 2 }
+expected_encoder_params = 128
+
+[[methods]]
+name = "Hash-smoke"
+factory = "apps.sdf.build:build_paper_sdf"
+kwargs = { method = "hash", resolutions = [4], n_levels = 1, feature_dim = 2, log2_hashmap_size = 4, hidden_dim = 8, num_layers = 2 }
+expected_encoder_params = 32
+
+[[methods]]
+name = "M-Grid-smoke"
+factory = "apps.sdf.build:build_paper_sdf"
+kwargs = { method = "m_grid", resolutions = [2, 4], feature_dim = 2, hidden_dim = 8, num_layers = 2 }
+expected_encoder_params = 144
+
+[[methods]]
+name = "LPE-smoke"
+factory = "apps.sdf.build:build_paper_sdf"
+kwargs = { method = "lpe", resolution = 4, num_frequencies = 2, hidden_dim = 8, num_layers = 2 }
+expected_encoder_params = 768

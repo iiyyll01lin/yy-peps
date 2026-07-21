@@ -1,0 +1,44 @@
+schema_version = 1
+name = "texture-paper-smoke"
+paper = "PEPS Extended arXiv:2604.24167v1"
+task = "texture"
+profile = "smoke"
+dataset = "synthetic-texture-tensor"
+canonical = false
+seeds = [0]
+
+[training]
+task = "texture"
+loss = "l1"
+epochs = 1
+batches_per_epoch = 2
+batch_size = 32
+model_lr = 0.001
+encoder_lr = 0.1
+cosine = true
+log_every = 1
+checkpoint_every = 1
+
+[runner]
+metrics = ["psnr"]
+render_chunk = 1024
+output_dir = "results/paper-smoke"
+world_size = 1
+
+[[methods]]
+name = "NTC_N-smoke"
+factory = "apps.texture.build:build_paper_texture"
+kwargs = { method = "ntc_n", signal_resolution = 16, g0_resolution = 8, g0_feature_dim = 2, g1_resolution = 4, g1_feature_dim = 3, hidden_dim = 8, num_layers = 2 }
+expected_encoder_params = 176
+
+[[methods]]
+name = "Grid-PinkPEPS-smoke"
+factory = "apps.texture.build:build_paper_texture"
+kwargs = { method = "grid_pinkpeps4f", resolution = 8, feature_dim = 2, num_frequencies = 2, hidden_dim = 8, num_layers = 2 }
+expected_encoder_params = 128
+
+[[methods]]
+name = "LPE-smoke"
+factory = "apps.texture.build:build_paper_texture"
+kwargs = { method = "lpe", resolution = 8, num_frequencies = 2, hidden_dim = 8, num_layers = 2 }
+expected_encoder_params = 512

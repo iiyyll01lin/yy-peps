@@ -1,0 +1,106 @@
+schema_version = 1
+name = "sdf-table3-full"
+paper = "PEPS Extended arXiv:2604.24167v1"
+task = "sdf"
+profile = "full"
+dataset = "paper-sdf-4-512cubed"
+canonical = true
+seeds = [0]
+
+[training]
+task = "sdf"
+loss = "mape"
+epochs = 3000
+batches_per_epoch = 40
+batch_size = 60000
+model_lr = 0.001
+encoder_lr = 0.001
+cosine = false
+log_every = 200
+checkpoint_every = 1000
+mape_epsilon = 1e-6
+
+[runner]
+metrics = ["iou"]
+render_chunk = 262144
+output_dir = "results/paper"
+world_size = 4
+protocol_note = "Paper MAPE does not state zero-distance epsilon; 1e-6 is frozen and recorded."
+
+[[methods]]
+name = "PE"
+factory = "apps.sdf.build:build_paper_sdf"
+kwargs = { method = "pe" }
+expected_encoder_params = 0
+
+[[methods]]
+name = "LPE"
+factory = "apps.sdf.build:build_paper_sdf"
+kwargs = { method = "lpe" }
+expected_encoder_params = 589824
+
+[[methods]]
+name = "TI-Grid"
+factory = "apps.sdf.build:build_paper_sdf"
+kwargs = { method = "grid" }
+expected_encoder_params = 589824
+
+[[methods]]
+name = "Grid-PEPS"
+factory = "apps.sdf.build:build_paper_sdf"
+kwargs = { method = "grid_peps" }
+expected_encoder_params = 589824
+
+[[methods]]
+name = "Hash"
+factory = "apps.sdf.build:build_paper_sdf"
+kwargs = { method = "hash" }
+expected_encoder_params = 589824
+
+[[methods]]
+name = "Hash-PEPS"
+factory = "apps.sdf.build:build_paper_sdf"
+kwargs = { method = "hash_peps" }
+expected_encoder_params = 589824
+
+[[methods]]
+name = "M-Grid"
+factory = "apps.sdf.build:build_paper_sdf"
+kwargs = { method = "m_grid" }
+expected_encoder_params = 598016
+
+[[methods]]
+name = "M-PEPS"
+factory = "apps.sdf.build:build_paper_sdf"
+kwargs = { method = "m_peps" }
+expected_encoder_params = 598016
+
+[[methods]]
+name = "M-Hash"
+factory = "apps.sdf.build:build_paper_sdf"
+kwargs = { method = "m_hash" }
+expected_encoder_params = 598016
+
+[[methods]]
+name = "M-HashPEPS"
+factory = "apps.sdf.build:build_paper_sdf"
+kwargs = { method = "m_hashpeps" }
+expected_encoder_params = 598016
+
+[[methods]]
+name = "TI-Grid-L1"
+factory = "apps.sdf.build:build_paper_sdf"
+kwargs = { method = "grid" }
+seeds = [0, 1, 2]
+role = "ablation"
+expected_encoder_params = 589824
+training = { loss = "l1", model_lr = 0.01, encoder_lr = 0.01 }
+
+[[methods]]
+name = "Grid-PEPS-L1"
+factory = "apps.sdf.build:build_paper_sdf"
+kwargs = { method = "grid_peps" }
+seeds = [0, 1, 2]
+role = "ablation"
+expected_encoder_params = 589824
+training = { loss = "l1", model_lr = 0.01, encoder_lr = 0.01 }

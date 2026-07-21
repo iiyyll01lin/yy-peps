@@ -1,0 +1,98 @@
+schema_version = 1
+name = "image-table1-full"
+paper = "PEPS Extended arXiv:2604.24167v1"
+task = "image"
+profile = "full"
+dataset = "kodak-24-original"
+canonical = true
+seeds = [0]
+
+[training]
+task = "image"
+loss = "l1"
+steps = 120000
+batch_size = 60000
+model_lr = 0.01
+encoder_lr = 0.01
+cosine = false
+log_every = 500
+checkpoint_every = 5000
+
+[runner]
+metrics = ["psnr", "flip", "lpips", "lsd", "ssim"]
+render_chunk = 262144
+output_dir = "results/paper"
+world_size = 4
+protocol_note = "The paper does not disclose image steps; 120000 is a frozen sensitivity assumption."
+
+[[methods]]
+name = "PE"
+factory = "apps.image.build:build_paper_image"
+kwargs = { method = "pe" }
+expected_encoder_params = 0
+
+[[methods]]
+name = "LPE"
+factory = "apps.image.build:build_paper_image"
+kwargs = { method = "lpe" }
+expected_encoder_params = 401408
+
+[[methods]]
+name = "NTC_N"
+factory = "apps.image.build:build_paper_image"
+kwargs = { method = "ntc_n" }
+expected_encoder_params = 417792
+
+[[methods]]
+name = "Grid"
+factory = "apps.image.build:build_paper_image"
+kwargs = { method = "grid" }
+expected_encoder_params = 426496
+
+[[methods]]
+name = "G-PEPS"
+factory = "apps.image.build:build_paper_image"
+kwargs = { method = "g_peps" }
+expected_encoder_params = 426496
+
+[[methods]]
+name = "G-P-PEPS"
+factory = "apps.image.build:build_paper_image"
+kwargs = { method = "g_p_peps" }
+expected_encoder_params = 426496
+
+[[methods]]
+name = "NTC_PEPS"
+factory = "apps.image.build:build_paper_image"
+kwargs = { method = "ntc_peps" }
+expected_encoder_params = 417792
+
+[[methods]]
+name = "NTC_PinkPEPS"
+factory = "apps.image.build:build_paper_image"
+kwargs = { method = "ntc_pinkpeps" }
+expected_encoder_params = 417792
+
+[[methods]]
+name = "G-P-PEPS-25"
+factory = "apps.image.build:build_paper_image"
+kwargs = { method = "g_p_peps_25" }
+expected_encoder_params = 326144
+
+[[methods]]
+name = "Grid-Table5"
+factory = "apps.image.build:build_paper_image"
+kwargs = { method = "grid", activation = "gelu" }
+seeds = [0, 1, 2]
+role = "ablation"
+expected_encoder_params = 426496
+training = { loss = "l2", model_lr = 0.001, encoder_lr = 0.1, cosine = true }
+
+[[methods]]
+name = "G-P-PEPS-Table5"
+factory = "apps.image.build:build_paper_image"
+kwargs = { method = "g_p_peps", activation = "gelu" }
+seeds = [0, 1, 2]
+role = "ablation"
+expected_encoder_params = 426496
+training = { loss = "l2", model_lr = 0.001, encoder_lr = 0.1, cosine = true }
