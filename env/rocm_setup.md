@@ -29,8 +29,8 @@ rocm-smi         # list GPUs / 列出 GPU
 ## Per-box hardware / 各機硬體
 | Box | GPU | `gfx_target_version` | ISA |
 |---|---|---|---|
-| A `Box A` | Radeon 8060S (Strix Halo) | 115100? (gfx1151) | RDNA 3.5 |
-| B `Box B` | 4× Navi 48 | 120001 (gfx1201) | RDNA 4 |
+| A | Radeon 8060S (Strix Halo) | gfx1151 | RDNA 3.5 |
+| B | 4× Navi 48 | gfx1201 | RDNA 4 |
 
 ## HIP / hipcc (Part V)
 Box A has system ROCm 7.2.3 with `hipcc`. On Box B, install ROCm HIP dev tools if

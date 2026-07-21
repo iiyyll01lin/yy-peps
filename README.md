@@ -19,10 +19,10 @@ shared history. Part V (HIP/WMMA) is written for **both** RDNA generations.
 本專案在**兩台 AMD 機器**上開發與測試,最後融合到同一份 git 歷史。Part V
 (HIP/WMMA)同時針對**兩個** RDNA 世代撰寫。
 
-| Box | Host | GPU | ISA | Role / 角色 |
-|---|---|---|---|---|
-| **A** | `Box A` | Radeon 8060S (Strix Halo iGPU) | `gfx1151` / RDNA 3.5 | RDNA3.5 kernel testing |
-| **B** | `Box B` | 4× Navi 48 (RX 9070-class) | `gfx1201` / RDNA 4 | Main dev; RDNA4 kernel testing |
+| Box | GPU | ISA | Role / 角色 |
+|---|---|---|---|
+| **A** | Radeon 8060S (Strix Halo iGPU) | `gfx1151` / RDNA 3.5 | RDNA3.5 kernel testing |
+| **B** | 4× Navi 48 (RX 9070-class) | `gfx1201` / RDNA 4 | Main dev; RDNA4 kernel testing |
 
 Parts I–IV (PyTorch/ROCm training + quantization) run on either box. Part V
 kernels have per-ISA variants.
