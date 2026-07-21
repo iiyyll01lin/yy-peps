@@ -1,0 +1,3 @@
+method,params,psnr,ssim
+grid,136003,37.739,0.9966
+grid_peps,142147,42.198,0.9988
