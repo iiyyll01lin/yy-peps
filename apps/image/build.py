@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import torch.nn as nn
 
+from apps.image.data import orient_resolution_xy
 from peps import (
     AbsolutePositionalEncoding,
     GridEncoder,
@@ -45,6 +46,7 @@ def _peps_model(
     num_layers: int,
     activation: str,
     output_activation,
+    delta: bool,
 ) -> nn.Module:
     projector = Projector(num_frequencies)
     frequency_allocated = aggregator.lower() in {"pink", "brownian"}
@@ -64,7 +66,7 @@ def _peps_model(
         **aggregate_kwargs,
     )
     decoder = MLP(
-        aggregate.out_dim,
+        aggregate.out_dim + (2 if delta else 0),
         out_dim,
         hidden_dim,
         num_layers,
@@ -76,6 +78,7 @@ def _peps_model(
         encoder,
         aggregate,
         decoder,
+        append_input_delta=delta,
         selective_sampling=frequency_allocated,
     )
 
@@ -120,7 +123,7 @@ def build_grid(
     resolution: int = 128,
     feature_dim: int = 4,
     hidden_dim: int = 64,
-    num_layers: int = 3,
+    num_layers: int = 4,
     out_dim: int = 3,
     activation: str = "relu",
     output_activation=None,
@@ -145,12 +148,19 @@ def build_grid_peps(
     num_frequencies: int = 6,
     aggregator: str = "concat",
     hidden_dim: int = 64,
-    num_layers: int = 3,
+    num_layers: int = 4,
     out_dim: int = 3,
+    delta: bool = False,
     activation: str = "relu",
     output_activation=None,
 ):
-    """Grid-PEPS: shared grid sampled at Lissajous points, then aggregated."""
+    """Grid-PEPS: shared grid sampled at Lissajous points, then aggregated.
+
+    ``delta`` toggles the Eq. (8) input-delta: when True the raw ``(x, y)`` coords
+    are concatenated to the aggregated vector before the decoder (a skip that lets
+    the MLP see the exact position, not only the sampled latents). It is off by
+    default.
+    """
     enc = GridEncoder(dim=2, resolution=resolution, feature_dim=feature_dim)
     model = _peps_model(
         enc,
@@ -161,6 +171,7 @@ def build_grid_peps(
         num_layers=num_layers,
         activation=activation,
         output_activation=output_activation,
+        delta=delta,
     )
     return model, _count(model)
 
@@ -169,7 +180,7 @@ def build_lpe(
     resolution=(196, 128),
     num_frequencies: int = 4,
     hidden_dim: int = 64,
-    num_layers: int = 3,
+    num_layers: int = 4,
     out_dim: int = 3,
     activation: str = "leaky_relu",
     output_activation="sigmoid",
@@ -200,7 +211,7 @@ def build_ntc_n(
     g1_resolution=(96, 64),
     g1_feature_dim: int = 20,
     hidden_dim: int = 64,
-    num_layers: int = 3,
+    num_layers: int = 4,
     out_dim: int = 3,
     activation: str = "leaky_relu",
     output_activation="sigmoid",
@@ -235,10 +246,11 @@ def build_ntc_peps(
     num_frequencies: int = 3,
     aggregator: str = "concat",
     hidden_dim: int = 64,
-    num_layers: int = 3,
+    num_layers: int = 4,
     out_dim: int = 3,
     activation: str = "leaky_relu",
     output_activation="sigmoid",
+    delta: bool = False,
 ):
     """Replace NTC_N's learned grids with shared PEPS sampling."""
 
@@ -250,6 +262,7 @@ def build_ntc_peps(
         g1_feature_dim=g1_feature_dim,
         num_frequencies=num_frequencies,
         aggregator=aggregator,
+        append_input=delta,
     )
     decoder = MLP(
         encoder.feature_dim,
@@ -264,32 +277,59 @@ def build_ntc_peps(
 
 
 def build_paper_image(method: str, *, out_dim: int = 3, **overrides):
-    """Build a Table 1 method from immutable paper defaults."""
+    """Build a Table 1 method from immutable paper defaults.
 
+    ``signal_resolution`` may be supplied in ``(width, height)`` order. Paper
+    grid dimensions are rotated for the seven original-orientation portrait
+    Kodak images so every method retains the reported sampling density.
+    """
+
+    signal_resolution = tuple(overrides.pop("signal_resolution", (768, 512)))
+    grid_resolution = orient_resolution_xy((196, 128), signal_resolution)
+    ntc_g0_resolution = orient_resolution_xy((192, 128), signal_resolution)
+    ntc_g1_resolution = orient_resolution_xy((96, 64), signal_resolution)
     common = {
         "hidden_dim": 64,
-        "num_layers": 3,
+        "num_layers": 4,
         "out_dim": out_dim,
         "activation": "leaky_relu",
-        "output_activation": "sigmoid",
+        "output_activation": None,
     }
     name = method.lower().replace("-", "_")
+    aliases = {
+        "g_pink_peps": "g_p_peps",
+        "g_pink_peps_25": "g_p_peps_25",
+        "grid_peps": "g_peps",
+        "grid_pink_peps": "g_p_peps",
+        "grid_pink_peps_25": "g_p_peps_25",
+        "ntc_pink_peps": "ntc_pinkpeps",
+    }
+    name = aliases.get(name, name)
     if name == "pe":
         kwargs = {**common, "num_frequencies": 10, "hidden_dim": 300}
         kwargs.update(overrides)
         return build_plain_mlp(**kwargs)
     if name == "lpe":
-        kwargs = {**common, "resolution": (196, 128), "num_frequencies": 4}
+        kwargs = {
+            **common,
+            "resolution": grid_resolution,
+            "num_frequencies": 4,
+        }
         kwargs.update(overrides)
         return build_lpe(**kwargs)
     if name == "ntc_n":
-        kwargs = dict(common)
+        kwargs = {
+            **common,
+            "signal_resolution": signal_resolution,
+            "g0_resolution": ntc_g0_resolution,
+            "g1_resolution": ntc_g1_resolution,
+        }
         kwargs.update(overrides)
         return build_ntc_n(**kwargs)
     if name == "grid":
         kwargs = {
             **common,
-            "resolution": _paper_grid_resolution((196, 128)),
+            "resolution": _paper_grid_resolution(grid_resolution),
             "feature_dim": 17,
         }
         kwargs.update(overrides)
@@ -297,7 +337,7 @@ def build_paper_image(method: str, *, out_dim: int = 3, **overrides):
     if name in {"g_peps", "g_p_peps", "g_p_peps_25"}:
         kwargs = {
             **common,
-            "resolution": _paper_grid_resolution((196, 128)),
+            "resolution": _paper_grid_resolution(grid_resolution),
             "feature_dim": 13 if name.endswith("_25") else 17,
             "num_frequencies": 3,
             "aggregator": "pink" if "_p_" in name else "concat",
@@ -307,9 +347,65 @@ def build_paper_image(method: str, *, out_dim: int = 3, **overrides):
     if name in {"ntc_peps", "ntc_pinkpeps"}:
         kwargs = {
             **common,
+            "signal_resolution": signal_resolution,
+            "g0_resolution": ntc_g0_resolution,
+            "g1_resolution": ntc_g1_resolution,
             "num_frequencies": 3,
             "aggregator": "pink" if "pink" in name else "concat",
         }
         kwargs.update(overrides)
         return build_ntc_peps(**kwargs)
     raise ValueError(f"unknown paper image method: {method!r}")
+
+
+def build_paper_fig5(
+    method: str,
+    *,
+    resolution: int,
+    feature_dim: int,
+    out_dim: int = 3,
+    **overrides,
+):
+    """Build one point in the paper's 4K resolution/feature Fig. 5 sweep."""
+
+    if resolution not in {16, 32, 64, 128}:
+        raise ValueError("Fig. 5 resolution must be 16, 32, 64, or 128")
+    if feature_dim not in {8, 16, 32, 64}:
+        raise ValueError("Fig. 5 feature_dim must be 8, 16, 32, or 64")
+    common = {
+        "hidden_dim": 64,
+        "num_layers": 4,
+        "out_dim": out_dim,
+        "activation": "leaky_relu",
+        "output_activation": "sigmoid",
+    }
+    name = method.lower().replace("-", "_")
+    if name in {"grid", "bi_grid"}:
+        kwargs = {
+            **common,
+            "resolution": resolution,
+            "feature_dim": feature_dim,
+        }
+        kwargs.update(overrides)
+        return build_grid(**kwargs)
+    if name == "lpe":
+        if feature_dim % 4:
+            raise ValueError("2D LPE feature_dim must be divisible by four")
+        kwargs = {
+            **common,
+            "resolution": resolution,
+            "num_frequencies": feature_dim // 4,
+        }
+        kwargs.update(overrides)
+        return build_lpe(**kwargs)
+    if name in {"grid_peps", "g_peps"}:
+        kwargs = {
+            **common,
+            "resolution": resolution,
+            "feature_dim": feature_dim,
+            "num_frequencies": 3,
+            "aggregator": "concat",
+        }
+        kwargs.update(overrides)
+        return build_grid_peps(**kwargs)
+    raise ValueError(f"unknown Fig. 5 method: {method!r}")

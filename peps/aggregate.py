@@ -1,9 +1,9 @@
 """PEPS concatenation and frequency-allocation aggregators.
 
-Latents follow ``(x, S_1, ..., S_L, C_1, ..., C_L)``.  For frequency
-``i``, Pink/Brownian allocation is
-``max(min_width, floor(d / f_i**alpha))``.  Cosine slices advance through
-the latent vector while sine slices advance circularly in reverse.
+The point axis follows the paper's exact contract
+``(x, S_1, ..., S_L, C_1, ..., C_L)``.  With the paper schedule, frequency
+``i`` receives ``a_i = max(1, floor(d / 2**i))`` channels.  Cumulative
+allocations ``G_i`` drive forward cosine slices and reverse sine slices.
 """
 
 from __future__ import annotations
@@ -214,9 +214,7 @@ class _FrequencyAllocAggregator(nn.Module):
             )
         if not torch.isfinite(scales).all() or (scales <= 0).any():
             raise ValueError("resolved frequency scales must be finite and positive")
-        self.register_buffer(
-            "frequency_scales", scales.to(dtype=torch.float32), persistent=False
-        )
+        self.register_buffer("frequency_scales", scales, persistent=False)
 
         self.frequency_widths = [
             min(
@@ -233,7 +231,11 @@ class _FrequencyAllocAggregator(nn.Module):
         cumulative = [0]
         for width in self.frequency_widths:
             cumulative.append(cumulative[-1] + width)
+        self.cumulative_allocations = tuple(cumulative)
 
+        # Paper notation:
+        #   l^{S_i}_{-G_i:-G_{i-1}} and l^{C_i}_{G_{i-1}:G_i}.
+        # The point list itself remains grouped as x, all S_i, then all C_i.
         sin_indices = [
             tuple(
                 index % self.feature_dim

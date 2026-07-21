@@ -48,7 +48,7 @@ def build_sdf_grid(
     resolution: int = 64,
     feature_dim: int = 4,
     hidden_dim: int = 64,
-    num_layers: int = 3,
+    num_layers: int = 4,
     activation: str = "relu",
     output_activation=None,
 ):
@@ -69,7 +69,7 @@ def build_sdf_multires(
     n_levels: int = 4,
     feature_dim: int = 2,
     hidden_dim: int = 64,
-    num_layers: int = 3,
+    num_layers: int = 4,
     resolutions=None,
     activation: str = "relu",
     output_activation=None,
@@ -97,7 +97,7 @@ def build_sdf_hash(
     feature_dim: int = 2,
     log2_hashmap_size: int = 18,
     hidden_dim: int = 64,
-    num_layers: int = 3,
+    num_layers: int = 4,
     base_resolution: int = 16,
     per_level_scale: float = 1.5,
     resolutions=None,
@@ -128,7 +128,7 @@ def build_sdf_lpe(
     resolution: int = 32,
     num_frequencies: int = 3,
     hidden_dim: int = 64,
-    num_layers: int = 3,
+    num_layers: int = 4,
     activation: str = "silu",
     output_activation=None,
 ):
@@ -181,12 +181,18 @@ def build_sdf_peps(
     num_frequencies: int = 6,
     aggregator: str = "concat",
     hidden_dim: int = 64,
-    num_layers: int = 3,
+    num_layers: int = 4,
+    delta: bool = False,
     activation: str = "relu",
     output_activation=None,
     **enc_kwargs,
 ):
-    """PEPS-wrapped SDF encoder."""
+    """PEPS-wrapped SDF encoder.
+
+    ``delta`` toggles the Eq. (8) input-delta: the raw ``(x, y, z)`` query coords
+    are concatenated to the aggregated vector before the decoder. It is off by
+    default.
+    """
     proj = Projector(num_frequencies)
     enc = _make_encoder(encoder, enc_kwargs)
     k = enc.feature_dim
@@ -201,8 +207,9 @@ def build_sdf_peps(
         else {}
     )
     agg = make_aggregator(aggregator, proj.num_points, k, **agg_kwargs)
+    delta_dim = 3 if delta else 0
     mlp = _decoder(
-        agg.out_dim,
+        agg.out_dim + delta_dim,
         hidden_dim=hidden_dim,
         num_layers=num_layers,
         activation=activation,
@@ -213,21 +220,51 @@ def build_sdf_peps(
         enc,
         agg,
         mlp,
+        append_input_delta=delta,
         selective_sampling=frequency_allocated,
     )
     return model, _count(model)
 
 
-def build_paper_sdf(method: str, **overrides):
-    """Build a Table 3/6 method with the exact encoder budgets."""
+def build_paper_sdf(
+    method: str,
+    *,
+    encoder_parameter_multiplier: int = 1,
+    **overrides,
+):
+    """Build a paper Table 3 or Table 4 SDF method.
+
+    ``encoder_parameter_multiplier=8`` implements the actual second row of
+    Table 4: every spatial resolution is doubled and hash-table caps grow by
+    three bits. In 3D this multiplies every encoder budget by exactly eight.
+    PE has no learned encoder and is intentionally unchanged between rows.
+    """
+
+    if encoder_parameter_multiplier not in {1, 8}:
+        raise ValueError("encoder_parameter_multiplier must be 1 or 8")
+    spatial_scale = 2 if encoder_parameter_multiplier == 8 else 1
+    hash_log_growth = 3 if encoder_parameter_multiplier == 8 else 0
 
     common = {
         "hidden_dim": 64,
-        "num_layers": 3,
+        "num_layers": 4,
         "activation": "silu",
         "output_activation": None,
     }
     name = method.lower().replace("-", "_")
+    aliases = {
+        "ti_grid": "grid",
+        "multi_grid": "m_grid",
+        "multi_grid_peps": "m_peps",
+        "multi_hash": "m_hash",
+        "multi_hash_peps": "m_hashpeps",
+        "hashpeps": "hash_peps",
+        "gridpeps": "grid_peps",
+        "mpeps": "m_peps",
+        "m_hash_peps": "m_hashpeps",
+        "mhashpeps": "m_hashpeps",
+    }
+    name = aliases.get(name, name)
     if name == "pe":
         kwargs = {**common, "num_frequencies": 10}
         kwargs.update(overrides)
@@ -236,27 +273,37 @@ def build_paper_sdf(method: str, **overrides):
         model = nn.Sequential(encoding, decoder)
         return model, _count(model)
     if name == "lpe":
-        kwargs = {**common, "resolution": 32, "num_frequencies": 3}
+        kwargs = {
+            **common,
+            "resolution": 32 * spatial_scale,
+            "num_frequencies": 3,
+        }
         kwargs.update(overrides)
         return build_sdf_lpe(**kwargs)
     if name == "grid":
-        kwargs = {**common, "resolution": 32, "feature_dim": 18}
+        kwargs = {
+            **common,
+            "resolution": 32 * spatial_scale,
+            "feature_dim": 18,
+        }
         kwargs.update(overrides)
         return build_sdf_grid(**kwargs)
     if name == "hash":
         kwargs = {
             **common,
             "n_levels": 1,
-            "resolutions": (64,),
+            "resolutions": (64 * spatial_scale,),
             "feature_dim": 18,
-            "log2_hashmap_size": 15,
+            "log2_hashmap_size": 15 + hash_log_growth,
         }
         kwargs.update(overrides)
         return build_sdf_hash(**kwargs)
     if name == "m_grid":
         kwargs = {
             **common,
-            "resolutions": (16, 32, 64),
+            "resolutions": tuple(
+                resolution * spatial_scale for resolution in (16, 32, 64)
+            ),
             "feature_dim": 2,
         }
         kwargs.update(overrides)
@@ -264,69 +311,48 @@ def build_paper_sdf(method: str, **overrides):
     if name == "m_hash":
         kwargs = {
             **common,
-            "resolutions": (16, 32, 64, 128),
+            "resolutions": tuple(
+                resolution * spatial_scale
+                for resolution in (16, 32, 64, 128)
+            ),
             "feature_dim": 2,
-            "log2_hashmap_size": 17,
+            "log2_hashmap_size": 17 + hash_log_growth,
         }
         kwargs.update(overrides)
         return build_sdf_hash(**kwargs)
     peps_encoders = {
         "grid_peps": (
             "grid",
-            {"resolution": 32, "feature_dim": 18},
-        ),
-        "gridpeps": (
-            "grid",
-            {"resolution": 32, "feature_dim": 18},
+            {"resolution": 32 * spatial_scale, "feature_dim": 18},
         ),
         "hash_peps": (
             "single_hash",
             {
                 "n_levels": 1,
-                "resolutions": (64,),
+                "resolutions": (64 * spatial_scale,),
                 "feature_dim": 18,
-                "log2_hashmap_size": 15,
-            },
-        ),
-        "hashpeps": (
-            "single_hash",
-            {
-                "n_levels": 1,
-                "resolutions": (64,),
-                "feature_dim": 18,
-                "log2_hashmap_size": 15,
+                "log2_hashmap_size": 15 + hash_log_growth,
             },
         ),
         "m_peps": (
             "multigrid",
-            {"resolutions": (16, 32, 64), "feature_dim": 2},
-        ),
-        "mpeps": (
-            "multigrid",
-            {"resolutions": (16, 32, 64), "feature_dim": 2},
+            {
+                "resolutions": tuple(
+                    resolution * spatial_scale
+                    for resolution in (16, 32, 64)
+                ),
+                "feature_dim": 2,
+            },
         ),
         "m_hashpeps": (
             "multihash",
             {
-                "resolutions": (16, 32, 64, 128),
+                "resolutions": tuple(
+                    resolution * spatial_scale
+                    for resolution in (16, 32, 64, 128)
+                ),
                 "feature_dim": 2,
-                "log2_hashmap_size": 17,
-            },
-        ),
-        "m_hash_peps": (
-            "multihash",
-            {
-                "resolutions": (16, 32, 64, 128),
-                "feature_dim": 2,
-                "log2_hashmap_size": 17,
-            },
-        ),
-        "mhashpeps": (
-            "multihash",
-            {
-                "resolutions": (16, 32, 64, 128),
-                "feature_dim": 2,
-                "log2_hashmap_size": 17,
+                "log2_hashmap_size": 17 + hash_log_growth,
             },
         ),
     }
