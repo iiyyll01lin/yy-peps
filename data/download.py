@@ -12,6 +12,8 @@ from __future__ import annotations
 
 import argparse
 import os
+import shutil
+import subprocess
 import urllib.request
 import zipfile
 
@@ -29,7 +31,12 @@ KODAK_IMAGES = [(f"{i:02d}.png", f"kodim{i:02d}.png") for i in range(1, 25)]
 # AmbientCG download pattern (CC0). 2K PNG bundles.
 AMBIENTCG_TMPL = "https://ambientcg.com/get?file={name}_2K-PNG.zip"
 
-DEFAULT_TEXTURES = ["MetalPlates013", "Metal032", "PlanksDiffuse", "Rock023"]
+# Chosen to span the frequency spectrum where PEPS's advantage varies:
+#   MetalPlates013 = high-freq metal (also NVIDIA RTXNTC's demo set)
+#   Metal032       = second metal, consistency check
+#   Planks020      = wood, mostly low-freq (honest "non-high-freq" case)
+#   Rock023        = mid-freq, noisy, robustness
+DEFAULT_TEXTURES = ["MetalPlates013", "Metal032", "Planks020", "Rock023"]
 
 
 def _get(url: str, dst: str) -> None:
@@ -38,7 +45,15 @@ def _get(url: str, dst: str) -> None:
         print(f"  [skip] {dst}")
         return
     print(f"  [get ] {url}")
-    urllib.request.urlretrieve(url, dst)
+    # AmbientCG 302-redirects to a CDN that urllib mishandles; use curl -L which
+    # follows redirects robustly. Falls back to urllib if curl is unavailable.
+    if shutil.which("curl"):
+        subprocess.run(
+            ["curl", "-sS", "-4", "-L", "--fail", "--max-time", "180", "-o", dst, url],
+            check=True,
+        )
+    else:
+        urllib.request.urlretrieve(url, dst)
 
 
 def fetch_kodak() -> None:
