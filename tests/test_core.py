@@ -6,6 +6,8 @@
 """
 
 import math
+from pathlib import Path
+
 import torch
 
 from peps import (
@@ -120,12 +122,8 @@ def test_peps_forward_shape():
     assert y.shape == (64, 3)
 
 
-def test_identity_peps_matches_ape_capacity():
-    """Sanity check: PEPS with IdentityEncoder + concat produces a feature
-    vector that is an affine-equivalent of the APE features, so a linear layer
-    on either reaches the same fit. We check the projected+identity features
-    span the same info as APE's sin/cos by fitting a linear map between them.
-    """
+def test_identity_peps_is_affinely_equivalent_to_ape():
+    """Identity PEPS and APE differ only by a known affine transform."""
     torch.manual_seed(0)
     L, dim = 3, 2
     x = torch.rand(500, dim)
@@ -140,16 +138,10 @@ def test_identity_peps_matches_ape_capacity():
     ape = AbsolutePositionalEncoding(dim, L, include_input=True)
     ape_feat = ape(x)                              # (N, dim*(1+2L))
 
-    # Both have the same dimensionality and carry the same sin/cos content
-    # (PEPS uses (1+sin)/2 and (1+cos)/2 — an affine transform of APE's sin/cos).
     assert peps_feat.shape[1] == ape_feat.shape[1]
-
-    # Fit a least-squares linear map APE_feat -> peps_feat; residual ~ 0 proves
-    # they are affine-equivalent (hence equal MLP expressive power).
-    A = torch.cat([ape_feat, torch.ones(x.shape[0], 1)], dim=1)
-    sol, *_ = torch.linalg.lstsq(A, peps_feat)
-    resid = (A @ sol - peps_feat).abs().max().item()
-    assert resid < 1e-4, f"residual too large: {resid}"
+    transformed = peps_feat.clone()
+    transformed[:, dim:] = 2.0 * transformed[:, dim:] - 1.0
+    assert torch.allclose(transformed, ape_feat, atol=1e-6)
 
 
 def test_peps_trains_one_step():
@@ -164,3 +156,40 @@ def test_peps_trains_one_step():
     targets = torch.sin(coords[:, :1] * 6.28)
     fit(model, coords, targets,
         TrainConfig(steps=5, batch_size=256, device=torch.device("cpu")))
+
+
+def test_fit_sdf_eikonal_runs_finite_no_double_backward(monkeypatch):
+    """fit_sdf with eikonal_weight>0 must run via finite differences.
+
+    Regression guard: the eikonal term used to call ``torch.autograd.grad(...,
+    create_graph=True)`` + ``loss.backward()`` (double-backward through the
+    input). That crashes on grid_sample because ``aten::grid_sampler_*_backward``
+    has no second derivative in PyTorch core. The finite-difference rewrite must
+    run on CPU for both a plain grid SDF and a Grid-PEPS SDF, with finite loss.
+    """
+    monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[1]))
+
+    from peps.train import fit_sdf, SDFTrainConfig
+    from apps.sdf.build import build_sdf_grid, build_sdf_peps
+    from apps.sdf.data import sample_torus_sdf_near_surface
+
+    torch.manual_seed(0)
+    coords, sdf = sample_torus_sdf_near_surface(2000, near_frac=0.7)
+
+    builders = [
+        lambda: build_sdf_grid(resolution=16, feature_dim=2),
+        lambda: build_sdf_peps("grid", num_frequencies=4, aggregator="concat",
+                               resolution=16, feature_dim=2),
+    ]
+    for builder in builders:
+        model, _ = builder()
+        losses = []
+        fit_sdf(
+            model, coords, sdf,
+            SDFTrainConfig(steps=2, batch_size=512, lr=1e-2,
+                           eikonal_weight=0.1, eikonal_eps=1e-2, log_every=1,
+                           device=torch.device("cpu")),
+            on_log=lambda step, lv: losses.append(lv),
+        )
+        assert len(losses) >= 1
+        assert all(math.isfinite(lv) for lv in losses), losses

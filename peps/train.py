@@ -75,6 +75,103 @@ def fit(
     return model
 
 
+@dataclass
+class SDFTrainConfig(TrainConfig):
+    """Training config for SDF fitting with an eikonal regularizer.
+
+    eikonal_weight: strength of the gradient-norm penalty that pushes the
+        network toward a true signed-distance field (sharper zero-level set).
+        0 disables it (falls back to pure regression).
+    eikonal_eps: finite-difference step ``h`` used to estimate the spatial
+        gradient of the field for the eikonal penalty (central differences).
+    eikonal_target_norm: expected gradient norm with respect to model input
+        coordinates. SDF values use centered ``[-1, 1]^3`` distance units while
+        the models consume ``[0, 1]^3``, so the chain rule gives a norm of 2.
+    """
+    eikonal_weight: float = 0.1
+    eikonal_eps: float = 1e-2
+    eikonal_target_norm: float = 2.0
+
+
+def fit_sdf(
+    model: nn.Module,
+    coords: torch.Tensor,
+    sdf: torch.Tensor,
+    cfg: SDFTrainConfig = SDFTrainConfig(),
+    on_log: Optional[Callable[[int, float], None]] = None,
+) -> nn.Module:
+    """Fit an SDF ``model(coords)->distance`` with MSE + an eikonal penalty.
+
+    The eikonal term is evaluated on random query
+    points each step. The spatial gradient is estimated with **central finite
+    differences** (forward evaluations only): for each input axis ``i`` we take
+    ``(f(q + h e_i) - f(q - h e_i)) / (2h)`` with ``h = cfg.eikonal_eps``. The
+    ``2 * dim`` perturbed points are batched into a single forward pass. This
+    deliberately avoids autograd-through-the-input / double-backward, which is
+    unsupported for ``grid_sample`` (``aten::grid_sampler_*_backward`` has no
+    second derivative in PyTorch core). Combined with near-surface importance
+    sampling it fixes the blurry-surface underfit that pure uniform-MSE produces.
+    """
+    device = cfg.device or auto_device()
+    model = model.to(device)
+    coords = coords.to(device)
+    sdf = sdf.to(device)
+    n = coords.shape[0]
+    if not 0 < cfg.eikonal_eps < 0.5:
+        raise ValueError("eikonal_eps must be between 0 and 0.5")
+    if cfg.eikonal_target_norm <= 0:
+        raise ValueError("eikonal_target_norm must be positive")
+
+    opt = torch.optim.Adam(model.parameters(), lr=cfg.lr, weight_decay=cfg.weight_decay)
+
+    for step in range(cfg.steps):
+        if cfg.batch_size >= n:
+            idx = torch.arange(n, device=device)
+        else:
+            idx = torch.randint(0, n, (cfg.batch_size,), device=device)
+        pred = model(coords[idx])
+        loss = cfg.loss_fn(pred, sdf[idx])
+
+        if cfg.eikonal_weight > 0:
+            # Central finite differences for the gradient-norm constraint.
+            # No autograd through the input (grid_sample has no double-backward).
+            d = coords.shape[1]
+            h = cfg.eikonal_eps
+            # Draw q from the strict interior. Clamping q +/- h changes the
+            # finite-difference span while still dividing by 2h, which biases
+            # boundary derivatives by up to a factor of two.
+            q = (
+                torch.rand(
+                    cfg.batch_size,
+                    d,
+                    device=device,
+                    dtype=coords.dtype,
+                )
+                * (1.0 - 2.0 * h)
+                + h
+            )
+            eye = torch.eye(d, device=device)                         # unit axes
+            q_plus = q.unsqueeze(1) + h * eye                         # (B, d, d)
+            q_minus = q.unsqueeze(1) - h * eye                        # (B, d, d)
+            # one stacked forward over all 2*d perturbations
+            stacked = torch.cat([q_plus, q_minus], dim=1).reshape(-1, d)  # (B*2d, d)
+            out = model(stacked).reshape(cfg.batch_size, 2 * d)       # (B, 2d)
+            grad = (out[:, :d] - out[:, d:]) / (2.0 * h)              # (B, d)
+            eik = (
+                (grad.norm(dim=1) - cfg.eikonal_target_norm) ** 2
+            ).mean()
+            loss = loss + cfg.eikonal_weight * eik
+
+        opt.zero_grad(set_to_none=True)
+        loss.backward()
+        opt.step()
+
+        if (step + 1) % cfg.log_every == 0 or step == 0:
+            if on_log:
+                on_log(step + 1, float(loss.item()))
+    return model
+
+
 def l1_loss(prediction: torch.Tensor, target: torch.Tensor) -> torch.Tensor:
     return nn.functional.l1_loss(prediction, target)
 

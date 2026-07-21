@@ -1,5 +1,5 @@
-material,ntc,grid_peps,ntc_peps
-MetalPlates013,37.79,38.146,38.609
-Metal032,52.135,52.128,52.283
-Planks020,35.43,36.054,36.281
-Rock023,35.126,34.892,35.185
+material,ntc,rtxntc_proxy_unverified,grid_peps,ntc_peps
+MetalPlates013,37.293,45.558,37.874,38.203
+Metal032,51.94,59.597,54.944,52.747
+Planks020,37.141,44.777,35.886,36.284
+Rock023,35.131,47.29,35.11,35.369

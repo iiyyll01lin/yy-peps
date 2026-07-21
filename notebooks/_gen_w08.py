@@ -1,9 +1,4 @@
-"""Generate W08 — neural texture compression notebook.
-
-繁體中文:生成 W08 材質壓縮 notebook。在 4 組 AmbientCG 材質上比較 NTC 基線 /
-Grid-PEPS / NTC_PEPS(pink),重現 Table 2 的逐材質 PSNR,並與 NVIDIA RTXNTC
-的 MetalPlates013 並排(視覺)。執行:python notebooks/_gen_w08.py
-"""
+"""Generate W08 with separate course-fast and paper-exact texture tracks."""
 
 from __future__ import annotations
 
@@ -19,103 +14,140 @@ def _nid():
     return f"w08c{_id[0]:03d}"
 
 
-def md(*l):
-    return {"cell_type": "markdown", "id": _nid(), "metadata": {}, "source": _s(l)}
+def _source(lines):
+    text = "\n".join(lines).split("\n")
+    return [part + "\n" for part in text[:-1]] + [text[-1]]
 
 
-def code(*l):
-    return {"cell_type": "code", "id": _nid(), "metadata": {},
-            "execution_count": None, "outputs": [], "source": _s(l)}
+def md(*lines):
+    return {
+        "cell_type": "markdown",
+        "id": _nid(),
+        "metadata": {},
+        "source": _source(lines),
+    }
 
 
-def _s(l):
-    t = "\n".join(l).split("\n")
-    return [p + "\n" for p in t[:-1]] + [t[-1]]
+def code(*lines):
+    return {
+        "cell_type": "code",
+        "id": _nid(),
+        "metadata": {},
+        "execution_count": None,
+        "outputs": [],
+        "source": _source(lines),
+    }
 
 
 NB = {
     "cells": [
-        md("# W08 · Application 2 — Neural Texture Compression / 神經材質壓縮",
-           "",
-           "**English.** A PBR material is a 9-channel signal (albedo RGB, normal XY,",
-           "roughness, metalness, AO). We fit it with an NTC-style grid baseline and with",
-           "PEPS variants, then compare per-material PSNR — reproducing the structure of",
-           "paper Table 2. MetalPlates013 is exactly NVIDIA RTXNTC's demo set, giving a",
-           "direct point of comparison. PEPS's advantage is largest on high-frequency",
-           "metals and smallest on low-frequency wood — we show this honestly.",
-           "",
-           "**繁體中文.** PBR 材質是 9 通道訊號(albedo RGB、normal XY、roughness、",
-           "metalness、AO)。用 NTC 風格 grid 基線與 PEPS 變體擬合,比較逐材質 PSNR,",
-           "重現論文 Table 2 結構。MetalPlates013 正是 NVIDIA RTXNTC 的示範材質,可直接",
-           "對照。PEPS 優勢在高頻金屬最大、低頻木頭最小 —— 誠實呈現。"),
-        code("import sys, os; sys.path.insert(0, os.path.abspath('..'))",
-             "import torch, numpy as np, matplotlib.pyplot as plt",
-             "from peps.train import auto_device, fit, TrainConfig, render_full",
-             "from peps.metrics import psnr",
-             "from apps.texture.data import load_pbr_bundle, bundle_to_coords_targets, find_bundle, CHANNEL_LAYOUT",
-             "from apps.texture.build import build_ntc_baseline, build_grid_peps_texture",
-             "device = auto_device(); print('device', device, '| bundle channels', sum(c for _,c in CHANNEL_LAYOUT))"),
-        md("## 1. Materials spanning the frequency spectrum / 涵蓋頻率光譜的材質"),
-        code("sets = ['MetalPlates013', 'Metal032', 'Planks020', 'Rock023']",
-             "notes = {'MetalPlates013':'high-freq metal (NVIDIA demo)', 'Metal032':'metal',",
-             "         'Planks020':'low-freq wood', 'Rock023':'mid-freq noisy'}",
-             "bundles = {}",
-             "for s in sets:",
-             "    b = load_pbr_bundle(find_bundle(s), size=512)",
-             "    bundles[s] = b",
-             "    print(f'{s:16s} {b.shape}  ({notes[s]})')"),
-        md("## 2. Train NTC vs Grid-PEPS vs NTC_PEPS per material / 逐材質訓練三方法",
-           "Matched grid resolution/feature dim; PEPS samples the shared grid at 2L+1",
-           "Lissajous points. 相同 grid 解析度/特徵維度;PEPS 在 2L+1 個點取樣共享 grid。"),
-        code("methods = {",
-             "  'ntc':       lambda: build_ntc_baseline(resolution=256, feature_dim=8),",
-             "  'grid_peps': lambda: build_grid_peps_texture(256, 8, 6, 'concat'),",
-             "  'ntc_peps':  lambda: build_grid_peps_texture(256, 8, 6, 'pink'),",
-             "}",
-             "table = {m: {} for m in methods}",
-             "recon = {}  # keep MetalPlates013 recons for the side-by-side",
-             "for s in sets:",
-             "    b = bundles[s]",
-             "    coords, targets, (H, W) = bundle_to_coords_targets(b)",
-             "    for m, builder in methods.items():",
-             "        model, pc = builder()",
-             "        fit(model, coords, targets, TrainConfig(steps=2000, batch_size=32768, lr=1e-2, device=device))",
-             "        pred = render_full(model, coords, device=device).reshape(H, W, -1).clamp(0, 1)",
-             "        table[m][s] = psnr(pred, b)",
-             "        if s == 'MetalPlates013': recon[m] = pred",
-             "    print('done', s)"),
-        md("## 3. Table 2 — per-material PSNR / 逐材質 PSNR"),
-        code("print(f\"{'material':16s} \" + ' '.join(f'{m:>10s}' for m in methods))",
-             "for s in sets:",
-             "    print(f'{s:16s} ' + ' '.join(f'{table[m][s]:10.2f}' for m in methods))",
-             "print()",
-             "for m in methods:",
-             "    print(f'{m:16s} mean PSNR = {np.mean(list(table[m].values())):.2f} dB')"),
-        md("## 4. RTXNTC side-by-side on MetalPlates013 (albedo) / 與 RTXNTC 並排(albedo)"),
-        code("fig, ax = plt.subplots(1, 4, figsize=(14, 4))",
-             "ax[0].imshow(bundles['MetalPlates013'][..., :3]); ax[0].set_title('target albedo'); ax[0].axis('off')",
-             "for i, m in enumerate(methods):",
-             "    ax[i+1].imshow(recon[m][..., :3])",
-             "    ax[i+1].set_title(f'{m}\\n{table[m][\"MetalPlates013\"]:.1f} dB'); ax[i+1].axis('off')",
-             "plt.suptitle('MetalPlates013 — same set NVIDIA RTXNTC demos'); plt.show()"),
-        md("## 5. Save + takeaway / 存檔與小結",
-           "PEPS variants lead on metals; the gap narrows on low-frequency wood — the",
-           "honest picture the paper's Table 2 also shows.",
-           "",
-           "PEPS 變體在金屬領先;低頻木頭差距縮小 —— 這正是論文 Table 2 的誠實圖像。"),
-        code("import csv",
-             "os.makedirs('../results', exist_ok=True)",
-             "with open('../results/table2_texture.csv', 'w', newline='') as f:",
-             "    w = csv.writer(f); w.writerow(['material'] + list(methods))",
-             "    for s in sets: w.writerow([s] + [round(table[m][s], 3) for m in methods])",
-             "print('saved ../results/table2_texture.csv')"),
+        md(
+            "# W08 · Paper texture compression / 論文材質壓縮",
+            "",
+            "`course_fast` is a deterministic synthetic smoke run. `paper_exact` is the",
+            "18-set native-4K Table 2 protocol: every available RGB map is a target,",
+            "NTC_N uses G0 corner concatenation + G1 bilinear sampling + a 3-octave",
+            "8-texel tiled triangular encoding, and all methods train with GELU,",
+            "dual learning rates (grid 0.1 / MLP 0.001), L1, and cosine decay for",
+            "3,000 × 40 batches of 60,000 pixel coordinates.",
+            "",
+            "`course_fast` 是可重現的合成 smoke run；`paper_exact` 才是 18 組原生 4K",
+            "Table 2。每張可用 RGB map 都獨立計分，最後依 AO/ARM/DIFF/Displacement/",
+            "metal/normal/rough/specular 類型與全域彙總。",
+        ),
+        code(
+            "import os, sys, json, subprocess",
+            "sys.path.insert(0, os.path.abspath('..'))",
+            "PROFILE = os.environ.get('PEPS_PROFILE', 'course_fast')",
+            "if PROFILE not in {'course_fast', 'paper_exact'}:",
+            "    raise ValueError('PEPS_PROFILE must be course_fast or paper_exact')",
+            "print('profile:', PROFILE)",
+        ),
+        md(
+            "## 1. Inspect the exact NTC_N input / 檢查精確 NTC_N 輸入",
+            "The paper configuration supplies 48 G0 values, 20 G1 values, and 12",
+            "tiled-encoding values: 80 decoder inputs. This structural check does not",
+            "claim a quality result.",
+        ),
+        code(
+            "from apps.texture.build import build_paper_texture",
+            "model, params = build_paper_texture('ntc_n', num_textures=5)",
+            "encoder = model[0]",
+            "print({'decoder_inputs': encoder.feature_dim,",
+            "       'g0_values': encoder.g0.feature_dim,",
+            "       'g1_values': encoder.g1.feature_dim,",
+            "       'tiled_values': encoder.tiled_encoding.feature_dim,",
+            "       'parameters': params})",
+            "assert encoder.feature_dim == 80",
+        ),
+        md(
+            "## 2. Check data and hardware / 檢查資料與硬體",
+            "The readiness report is machine-readable. Missing maps are errors; the",
+            "loader never invents texture channels.",
+        ),
+        code(
+            "cmd = [sys.executable, '-m', 'experiments.reproduce', 'check',",
+            "       '--profile', PROFILE, '--artifact', 'texture-table2']",
+            "check = subprocess.run(cmd, text=True, capture_output=True)",
+            "print(check.stdout)",
+            "if check.stderr: print(check.stderr)",
+        ),
+        md(
+            "## 3. Execute the selected track / 執行所選軌",
+            "`course_fast` performs a two-step real optimization and writes a run",
+            "manifest. The paper run is intentionally opt-in because it is 18 × 11",
+            "models × 120,000 optimizer steps at 4K.",
+        ),
+        code(
+            "if PROFILE == 'course_fast':",
+            "    run_cmd = [sys.executable, '-m', 'experiments.reproduce', 'smoke',",
+            "               '--task', 'texture']",
+            "elif os.environ.get('RUN_PAPER_EXACT') == '1':",
+            "    run_cmd = [sys.executable, '-m', 'experiments.reproduce', 'run',",
+            "               '--artifact', 'texture-table2']",
+            "else:",
+            "    run_cmd = None",
+            "    print('Paper run not started. Set RUN_PAPER_EXACT=1 after prerequisites pass.')",
+            "if run_cmd:",
+            "    completed = subprocess.run(run_cmd, check=True, text=True, capture_output=True)",
+            "    receipt = json.loads(completed.stdout)",
+            "    print(json.dumps(receipt, indent=2))",
+        ),
+        md(
+            "## 4. RTXNTC proxy policy / RTXNTC proxy 規則",
+            "The local multi-grid module is an **unverified RTXNTC-inspired proxy**,",
+            "not an equivalent implementation. It is available only for course",
+            "discussion and is excluded from paper Table 2.",
+        ),
+        code(
+            "from apps.texture.rtxntc import build_rtxntc_proxy",
+            "proxy, proxy_params = build_rtxntc_proxy()",
+            "print({'label': 'rtxntc_proxy_unverified', 'params': proxy_params,",
+            "       'paper_table2_member': False})",
+        ),
+        md(
+            "## 5. Result contract / 結果契約",
+            "Read `summary.csv` only from the `run_dir` printed above. Its values are",
+            "means of per-map PSNR/SSIM rows; each run directory also contains",
+            "`manifest.json` and `instances.csv`. Legacy `results/table2_texture.csv`",
+            "remains explicitly unverified and is never imported by this notebook.",
+        ),
     ],
-    "metadata": {"kernelspec": {"display_name": "Python 3", "language": "python", "name": "python3"},
-                 "language_info": {"name": "python", "version": "3.12"}},
-    "nbformat": 4, "nbformat_minor": 5,
+    "metadata": {
+        "kernelspec": {
+            "display_name": "Python 3",
+            "language": "python",
+            "name": "python3",
+        },
+        "language_info": {"name": "python", "version": "3.12"},
+    },
+    "nbformat": 4,
+    "nbformat_minor": 5,
 }
 
+
 if __name__ == "__main__":
-    with open(os.path.join(HERE, "W08_texture_ntc.ipynb"), "w", encoding="utf-8") as f:
-        json.dump(NB, f, ensure_ascii=False, indent=1)
+    path = os.path.join(HERE, "W08_texture_ntc.ipynb")
+    with open(path, "w", encoding="utf-8") as handle:
+        json.dump(NB, handle, ensure_ascii=False, indent=1)
     print("wrote W08_texture_ntc.ipynb")
