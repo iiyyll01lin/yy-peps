@@ -1,45 +1,88 @@
 # Part V — AMD hardware (W11–W12) / AMD 硬體
 
-## W11 · From PyTorch to HIP / 從 PyTorch 到 HIP
+> `results/hip_latency.csv` is currently `legacy-unverified`. Paper numbers
+> below are cited external targets; local rows are not accepted hardware claims.
 
-**English.** Parts I–IV run through PyTorch's ROCm backend. Real-time texture
-decode needs custom kernels. HIP is AMD's CUDA-like C++ dialect; `hipcc` compiles
-for a specific arch (`--offload-arch=gfx1201` RDNA4, `gfx1151` RDNA3.5). We fuse
-the PEPS inference inner loop — bilinear grid sample + first MLP layer — into one
-kernel (`hip/fused_peps_kernel.hip`). Fusion keeps latents in registers instead of
-round-tripping through global memory. Measured on Box A (RDNA3.5): 2.36 ms/iter for
-262k points.
+## Paper runtime target / 論文 runtime 目標
 
-**繁體中文.** Part I–IV 走 PyTorch 的 ROCm 後端。即時材質解碼需要自訂 kernel。HIP 是
-AMD 類 CUDA 的 C++ 方言;`hipcc` 針對特定架構編譯。我們把 PEPS 推論內迴圈(雙線性
-grid 取樣 + MLP 第一層)融合成單一 kernel。融合讓 latent 留在暫存器,不必經全域記憶體
-來回。Box A(RDNA3.5)實測:262k 點 2.36 ms/iter。
+The paper's runtime experiment generates one 1024×1024 RGB texture on an RX
+9070 XT. All three methods use a 1024×1024 grid, 16 features, and a decoder with
+three 64-wide hidden layers; PEPS and Pink use three frequencies. The paper
+reports 4.32 ms for BI-grid, 5.47 ms for Grid-PEPS, and 4.86 ms for
+Grid-PinkPEPS.
 
-## W12 · RDNA4 WMMA — matrix acceleration / RDNA4 WMMA 矩陣加速
+Those values are **external paper references**. They are not copied into the
+local results CSV and are not considered reproduced until precision, fusion,
+WMMA use, timing boundaries, and hardware all match.
 
-**English.** The MLP decoder is a stack of small matmuls — ideal for **WMMA** (Wave
-Matrix Multiply-Accumulate). `hip/wmma_mlp.hip` uses rocWMMA with 16×16×16 FP16
-tiles and FP32 accumulate. The **same code** compiles for RDNA3.5 (`gfx1151`) and
-RDNA4 (`gfx1201`); rocWMMA selects the intrinsic per arch. Correctness is checked
-against a CPU reference (matches). The paper's ms figures target RDNA4, so the true
-comparison runs on **Box B**; RDNA3.5 (Box A) is a second data point.
+論文 workload 是 RX 9070 XT 上生成 1024×1024 RGB texture:1024² grid、16 features、
+三層 64-wide hidden MLP,PEPS/Pink 使用三個 frequency。論文數字只作外部參考;本地
+precision、fusion、WMMA、timing boundary 與硬體未全部配對前,不得稱為重現。
 
-Measured MLP-layer latency (16×16×16 WMMA, 4096×64×64):
-- **RDNA3.5 (gfx1151, Box A): ~0.01 ms/iter** (verified end-to-end)
-- **RDNA4 (gfx1201, Box B): run `bash hip/bench_latency.sh` on Box B**
+## W11 · Integrated HIP path / 整合 HIP 路徑
 
-**繁體中文.** MLP 解碼器是一疊小矩陣乘,正適合 **WMMA**。`hip/wmma_mlp.hip` 用 rocWMMA
-的 16×16×16 FP16 tile + FP32 累加。**同一份程式碼**可為 RDNA3.5 與 RDNA4 編譯;rocWMMA
-依架構選 intrinsic。正確性對 CPU 參考驗證(相符)。論文 ms 數字針對 RDNA4,故真正對照
-在 **Box B**;RDNA3.5(Box A)是第二資料點。
+`hip/fused_peps_kernel.hip` now includes the complete workload:
 
-## Honest hardware note / 誠實硬體註記
+1. `phi_i=2^i pi` projection in `(x,S_1..S_L,C_1..C_L)` order;
+2. all bilinear samples from the shared channel-first grid;
+3. baseline, concat, and paper Algorithm 1 Pink modes;
+4. three GELU hidden layers and the RGB output layer.
 
-RDNA3.5 and RDNA4 both expose WMMA, but fragment shapes and int8 paths differ; RDNA4
-adds the faster path RTXNTC uses. The RDNA3.5 numbers are **not** a reproduction of
-the paper's RDNA4 figures — they are a genuine cross-generation comparison the
-course can make because it has both boxes.
+Pink uses `a_i=max(1,floor(C/2^i))`, cumulative `G_i`, reverse circular sine
+slices, and forward circular cosine slices. The CPU reference is independently
+cross-checked against the Python projector, encoder, aggregators, and MLP.
+When HIP is available, binary fixtures cover all three integrated modes in both
+the scalar fp32 path and the fused fp16/rocWMMA path.
 
-RDNA3.5 與 RDNA4 都提供 WMMA,但 fragment 形狀與 int8 路徑不同;RDNA4 多了 RTXNTC 用的
-快路徑。RDNA3.5 數字**不是**論文 RDNA4 數字的重現,而是本課程因擁有兩台而能做的真正
-跨世代對照。
+目前整合 path 包含 projection、所有 shared-grid samples、baseline/concat/Pink 與完整
+三 hidden layer MLP。HIP 可用時,三種 mode 的 scalar fp32 與 fused fp16/rocWMMA
+都以相同 fixture 對 PyTorch reference。
+
+The current **measured** integrated rows use the scalar fp32 reference. The same
+kernel now has a fused fp16/rocWMMA path through all four Linear layers, and its
+baseline/concat/Pink fixtures pass parity, but W11 does not yet record a matched
+integrated fp16 latency row. W11 writes a row only after build, parity, execution,
+and parsing succeed.
+
+Current Box B rerun (gfx1201, ROCm 7.2.3, 20 iterations):
+
+| integrated mode | implementation | ms/iter | parity |
+|---|---|---:|---|
+| baseline | scalar fp32 | 246.3032 | passed |
+| concat PEPS | scalar fp32 | 411.7999 | passed |
+| Pink PEPS | scalar fp32 | 295.3217 | passed |
+
+These are locally measured correctness-reference latencies and every row has
+`comparable_to_paper=false`; they must not be compared as if they reproduced
+the paper's optimized 4–5 ms implementation.
+
+## W12 · WMMA diagnostics / WMMA 診斷
+
+`hip/wmma_mlp.hip` retains isolated fp16 and int8 rocWMMA matrix fixtures and
+microbenchmarks. `fused_peps micro` retains the old sample + first-layer
+diagnostic. Existing values in `results/hip_latency.csv` are preserved under
+`supplementary_microbenchmark`; they are not integrated results and have
+`comparable_to_paper=false`.
+
+WMMA 與舊 sample+first-layer 數字保留為 component diagnostics,但 schema 明確標記
+為 supplementary,不得取代完整 workload。
+
+The current Box B isolated 4096×64×64 rerun measures **15.0896 ms fp16** and
+**15.4592 ms int8**, with parity passed. Older Box A rows and the large 2048³
+Box B rows remain explicitly `legacy_reported`; they are retained for provenance,
+not blended into the current integrated result.
+
+## Result contract and remaining blocker / 結果契約與 blocker
+
+`results/hip_latency.schema.json` requires workload kind, mode, implementation,
+ISA, ROCm version, dimensions, iteration count, parity state, provenance, and
+whether a paper comparison is valid. Integrated fp16 parity now exists on
+gfx1201/ROCm 7.2.3. A 1024² run configured for 10 warmups and 30 iterations did
+not complete within five minutes and was stopped without recording a latency
+row. The bounded runner then passed a clean build and all parity cases, but its
+64² preflight projected **280.6 seconds** even for a one-warmup/two-iteration
+four-method 1024² protocol, so it refused to time or write a row. The exact
+remaining blocker is therefore fp16 integrated-kernel performance and a
+practical repeated target-size measurement—not missing projection,
+aggregation, decoder depth, or parity. Isolated layer speedups still do not
+satisfy the paper-comparison requirement.

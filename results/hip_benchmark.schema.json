@@ -1,0 +1,211 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hip_benchmark.schema.json",
+  "title": "Clean HIP paper-workload benchmark bundle",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "generated_at",
+    "status",
+    "build",
+    "hardware",
+    "parity"
+  ],
+  "properties": {
+    "schema_version": {"const": 3},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "status": {"enum": ["passed", "blocked-performance"]},
+    "build": {
+      "type": "object",
+      "required": [
+        "binary",
+        "binary_sha256",
+        "source_sha256",
+        "git_sha",
+        "compiler",
+        "command",
+        "code_object_targets",
+        "target_isa"
+      ],
+      "properties": {
+        "binary": {"type": "string", "minLength": 1},
+        "binary_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "source_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "git_sha": {"type": "string", "pattern": "^[0-9a-f]{7,40}$"},
+        "compiler": {"type": "string", "minLength": 1},
+        "command": {"type": "array", "items": {"type": "string"}},
+        "code_object_targets": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "items": {"type": "string", "pattern": "^gfx[0-9a-f]+$"}
+        },
+        "target_isa": {"type": "string", "pattern": "^gfx[0-9a-f]+$"}
+      }
+    },
+    "hardware": {
+      "type": "object",
+      "required": ["device_index", "detected_isa", "rocm_version"],
+      "properties": {
+        "device_index": {"type": "integer", "minimum": 0},
+        "detected_isa": {"type": "string", "pattern": "^gfx[0-9a-f]+$"},
+        "rocm_version": {"type": "string", "minLength": 1}
+      }
+    },
+    "protocol": {
+      "type": "object",
+      "required": [
+        "timing",
+        "output_resolution",
+        "grid_resolution",
+        "feature_dim",
+        "hidden_layers",
+        "hidden_dim",
+        "output_dim",
+        "warmup",
+        "timed_iterations"
+      ],
+      "properties": {
+        "timing": {"type": "string", "pattern": "HIP events"},
+        "output_resolution": {
+          "type": "array",
+          "prefixItems": [
+            {"type": "integer", "minimum": 1},
+            {"type": "integer", "minimum": 1}
+          ],
+          "items": false
+        },
+        "grid_resolution": {
+          "type": "array",
+          "prefixItems": [{"const": 1024}, {"const": 1024}],
+          "items": false
+        },
+        "feature_dim": {"const": 16},
+        "hidden_layers": {"const": 3},
+        "hidden_dim": {"const": 64},
+        "output_dim": {"const": 3},
+        "warmup": {"type": "integer", "minimum": 0},
+        "timed_iterations": {"type": "integer", "minimum": 1}
+      }
+    },
+    "parity": {
+      "type": "array",
+      "minItems": 10,
+      "items": {
+        "type": "object",
+        "required": [
+          "case",
+          "method",
+          "precision",
+          "shape",
+          "max_abs_error",
+          "mean_abs_error",
+          "tolerance",
+          "passed"
+        ],
+        "properties": {
+          "precision": {"enum": ["fp32", "fp16"]},
+          "max_abs_error": {"type": "number", "minimum": 0},
+          "mean_abs_error": {"type": "number", "minimum": 0},
+          "tolerance": {"type": "number", "exclusiveMinimum": 0},
+          "passed": {"const": true}
+        }
+      }
+    },
+    "measurements": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "required": [
+          "method",
+          "implementation",
+          "timing",
+          "isa",
+          "compiled_target",
+          "output_width",
+          "output_height",
+          "median_ms",
+          "p95_ms",
+          "paper_reference_ms",
+          "paper_reference_source",
+          "comparable_to_paper"
+        ],
+        "properties": {
+          "method": {
+            "enum": [
+              "bi-grid",
+              "grid-peps-3f",
+              "grid-pink-peps-3f",
+              "grid-pink-peps-4f"
+            ]
+          },
+          "implementation": {"const": "fused_rocwmma_fp16"},
+          "timing": {"const": "hip_events"},
+          "isa": {"type": "string", "pattern": "^gfx[0-9a-f]+$"},
+          "compiled_target": {"type": "string", "pattern": "^gfx[0-9a-f]+$"},
+          "median_ms": {"type": "number", "exclusiveMinimum": 0},
+          "p95_ms": {"type": "number", "exclusiveMinimum": 0},
+          "paper_reference_ms": {"type": "number", "exclusiveMinimum": 0},
+          "paper_reference_source": {"const": "arXiv:2604.24167v1"},
+          "comparable_to_paper": {"const": false}
+        }
+      }
+    },
+    "paper_comparison": {
+      "type": "object",
+      "required": ["reference_gpu", "directly_comparable", "reason"],
+      "properties": {
+        "directly_comparable": {"const": false}
+      }
+    },
+    "rdna35_validation": {
+      "type": "object",
+      "required": ["status", "target_isa"],
+      "properties": {
+        "status": {"enum": ["deferred", "passed"]},
+        "target_isa": {"const": "gfx1151"}
+      }
+    },
+    "preflight": {
+      "type": "object",
+      "required": [
+        "smoke",
+        "estimated_full_protocol_seconds",
+        "estimate_model"
+      ],
+      "properties": {
+        "estimated_full_protocol_seconds": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "estimate_model": {"type": "string", "minLength": 1},
+        "smoke": {"type": "object"}
+      }
+    },
+    "requested_protocol": {"type": "object"},
+    "reason": {"type": "string", "minLength": 1}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "passed"}}},
+      "then": {
+        "required": [
+          "protocol",
+          "measurements",
+          "paper_comparison",
+          "rdna35_validation"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {"status": {"const": "blocked-performance"}}
+      },
+      "then": {
+        "required": ["preflight", "requested_protocol", "reason"]
+      }
+    }
+  ]
+}

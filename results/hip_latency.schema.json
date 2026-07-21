@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hip_latency.schema.json",
+  "title": "HIP latency result",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "benchmark_kind",
+    "kernel",
+    "mode",
+    "implementation",
+    "isa",
+    "dtype",
+    "workload",
+    "iters",
+    "ms_per_iter",
+    "parity_status",
+    "provenance",
+    "comparable_to_paper"
+  ],
+  "properties": {
+    "schema_version": {"enum": [2, 3]},
+    "benchmark_kind": {
+      "enum": ["integrated_paper_workload", "supplementary_microbenchmark"]
+    },
+    "kernel": {"type": "string", "minLength": 1},
+    "method": {"type": ["string", "null"]},
+    "mode": {
+      "enum": [
+        "baseline",
+        "peps",
+        "pink",
+        "first_layer_only",
+        "layer_only"
+      ]
+    },
+    "implementation": {"type": "string", "minLength": 1},
+    "isa": {"type": "string", "pattern": "^gfx[0-9a-f]+$"},
+    "box": {"type": "string"},
+    "rocm_version": {"type": "string"},
+    "dtype": {"enum": ["fp32", "fp16", "int8"]},
+    "output_width": {"type": ["integer", "null"], "minimum": 1},
+    "output_height": {"type": ["integer", "null"], "minimum": 1},
+    "grid_width": {"type": ["integer", "null"], "minimum": 2},
+    "grid_height": {"type": ["integer", "null"], "minimum": 2},
+    "feature_dim": {"type": ["integer", "null"], "minimum": 1},
+    "num_frequencies": {"type": ["integer", "null"], "minimum": 0},
+    "selected_feature_dim": {"type": ["integer", "null"], "minimum": 1},
+    "hidden_dim": {"type": ["integer", "null"], "minimum": 1},
+    "hidden_layers": {"type": ["integer", "null"], "minimum": 1},
+    "out_dim": {"type": ["integer", "null"], "minimum": 1},
+    "activation": {"type": ["string", "null"]},
+    "workload": {"type": "string", "minLength": 1},
+    "warmup": {"type": ["integer", "null"], "minimum": 1},
+    "iters": {"type": "integer", "minimum": 1},
+    "ms_per_iter": {"type": "number", "exclusiveMinimum": 0},
+    "median_ms": {"type": ["number", "null"], "exclusiveMinimum": 0},
+    "p95_ms": {"type": ["number", "null"], "exclusiveMinimum": 0},
+    "mean_ms": {"type": ["number", "null"], "exclusiveMinimum": 0},
+    "stddev_ms": {"type": ["number", "null"], "minimum": 0},
+    "min_ms": {"type": ["number", "null"], "exclusiveMinimum": 0},
+    "max_ms": {"type": ["number", "null"], "exclusiveMinimum": 0},
+    "paper_reference_ms": {"type": ["number", "null"], "exclusiveMinimum": 0},
+    "paper_reference_source": {"type": ["string", "null"]},
+    "parity_status": {"enum": ["passed", "legacy_reported"]},
+    "max_abs_error": {"type": ["number", "null"], "minimum": 0},
+    "mean_abs_error": {"type": ["number", "null"], "minimum": 0},
+    "git_sha": {"type": ["string", "null"]},
+    "source_sha256": {"type": ["string", "null"]},
+    "binary_sha256": {"type": ["string", "null"]},
+    "binary": {"type": ["string", "null"]},
+    "code_object_target": {"type": ["string", "null"]},
+    "provenance": {"type": "string", "minLength": 1},
+    "comparable_to_paper": {"const": false}
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "benchmark_kind": {"const": "integrated_paper_workload"}
+        }
+      },
+      "then": {
+        "required": [
+          "output_width",
+          "output_height",
+          "grid_width",
+          "grid_height",
+          "feature_dim",
+          "num_frequencies",
+          "hidden_dim",
+          "hidden_layers",
+          "out_dim",
+          "activation"
+        ],
+        "properties": {
+          "mode": {"enum": ["baseline", "peps", "pink"]},
+          "hidden_layers": {"const": 3},
+          "comparable_to_paper": {"const": false}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"schema_version": {"const": 3}}
+      },
+      "then": {
+        "required": [
+          "method",
+          "selected_feature_dim",
+          "warmup",
+          "median_ms",
+          "p95_ms",
+          "mean_ms",
+          "stddev_ms",
+          "min_ms",
+          "max_ms",
+          "paper_reference_ms",
+          "paper_reference_source",
+          "max_abs_error",
+          "mean_abs_error",
+          "git_sha",
+          "source_sha256",
+          "binary_sha256",
+          "binary",
+          "code_object_target"
+        ],
+        "properties": {
+          "implementation": {"const": "fused_rocwmma_fp16"},
+          "dtype": {"const": "fp16"},
+          "paper_reference_source": {"const": "arXiv:2604.24167v1"},
+          "parity_status": {"const": "passed"},
+          "comparable_to_paper": {"const": false}
+        }
+      }
+    }
+  ]
+}

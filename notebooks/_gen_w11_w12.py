@@ -1,15 +1,15 @@
-"""Generate W11 (PyTorch->HIP) and W12 (RDNA4 WMMA) notebooks.
+"""Generate W11/W12 integrated HIP workload and diagnostic notebooks.
 
-繁體中文:生成 W11(PyTorch->HIP)與 W12(RDNA4 WMMA)notebook。這兩章的 kernel
-編譯/執行在真實 GPU 上進行;notebook 用 subprocess 呼叫 hipcc 與執行檔,量測延遲。
-在有 hipcc 的機器(Box A gfx1151 / Box B gfx1201)上執行即會實跑;否則印出說明。
-執行:python notebooks/_gen_w11_w12.py
+Local measurements are written only after a successful build/run. Integrated
+baseline/PEPS/Pink rows are separated from supplementary component
+microbenchmarks and are explicitly not labeled paper reproductions.
 """
 
 from __future__ import annotations
 
-import json
 import os
+
+import nbformat
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 _id = [0]
@@ -18,6 +18,12 @@ _id = [0]
 def _nid():
     _id[0] += 1
     return f"hipc{_id[0]:03d}"
+
+
+def _s(src):
+    # Each arg may itself contain newlines; join then re-split into nbformat lines.
+    t = "\n".join(src).split("\n")
+    return [p + "\n" for p in t[:-1]] + [t[-1]]
 
 
 def md(*l):
@@ -29,11 +35,6 @@ def code(*l):
             "execution_count": None, "outputs": [], "source": _s(l)}
 
 
-def _s(l):
-    t = "\n".join(l).split("\n")
-    return [p + "\n" for p in t[:-1]] + [t[-1]]
-
-
 def nb(cells):
     return {"cells": cells,
             "metadata": {"kernelspec": {"display_name": "Python 3", "language": "python", "name": "python3"},
@@ -41,122 +42,280 @@ def nb(cells):
             "nbformat": 4, "nbformat_minor": 5}
 
 
-DETECT = code(
-    "import subprocess, shutil, os",
-    "os.chdir('..')  # repo root",
-    "have_hipcc = shutil.which('hipcc') is not None",
-    "arch = 'unknown'",
-    "if shutil.which('rocminfo'):",
-    "    out = subprocess.run(['rocminfo'], capture_output=True, text=True).stdout",
-    "    import re; m = re.search(r'gfx[0-9a-f]+', out)",
-    "    arch = m.group(0) if m else 'unknown'",
-    "print('hipcc:', have_hipcc, '| gfx arch:', arch)",
-    "print('RDNA4' if arch=='gfx1201' else 'RDNA3.5' if arch=='gfx1151' else '(other)')",
+# ----------------------------------------------------------------- shared setup
+# Robust environment detection: `offload-arch` queries the device directly and
+# works even where `rocminfo` prints no gfx line (observed on the RDNA4 box).
+SETUP = code(
+    "import os, re, shutil, subprocess, sys",
+    "if os.path.basename(os.getcwd()) == 'notebooks':",
+    "    os.chdir('..')  # run from repo root",
+    "",
+    "def _hipcc():",
+    "    candidates = ('/opt/rocm/bin/hipcc', '/opt/rocm/bin/amdclang++',",
+    "                  shutil.which('hipcc'))",
+    "    return next((item for item in candidates if item and os.path.exists(item)), None)",
+    "",
+    "def compiler_command(src, out):",
+    "    compiler = _hipcc()",
+    "    command = [compiler]",
+    "    if os.path.basename(compiler).startswith('amdclang'):",
+    "        command.extend(['-x', 'hip'])",
+    "    command.extend([f'--offload-arch={arch}', src])",
+    "    if os.path.basename(compiler).startswith('amdclang'):",
+    "        command.extend(['-L/opt/rocm/lib', '-lamdhip64'])",
+    "    command.extend(['-o', out])",
+    "    return command",
+    "",
+    "def detect_arch():",
+    "    for tool in ('offload-arch', '/opt/rocm/bin/offload-arch'):",
+    "        exe = tool if (os.path.isabs(tool) and os.path.exists(tool)) else shutil.which(tool)",
+    "        if not exe:",
+    "            continue",
+    "        out = subprocess.run([exe], capture_output=True, text=True).stdout",
+    "        toks = [t for t in out.split() if t.startswith('gfx')]",
+    "        if toks:",
+    "            return toks[0].strip()",
+    "    if shutil.which('rocminfo'):",
+    "        out = subprocess.run(['rocminfo'], capture_output=True, text=True).stdout",
+    "        m = re.search(r'gfx[0-9a-f]+', out)",
+    "        if m:",
+    "            return m.group(0)",
+    "    return 'unknown'",
+    "",
+    "def box_of(arch):",
+    "    # Box B = RDNA4 (gfx1201); Box A = RDNA3.5 (gfx1151); else hostname.",
+    "    return {'gfx1201': 'B', 'gfx1151': 'A'}.get(arch, os.uname().nodename)",
+    "",
+    "have_hipcc = _hipcc() is not None",
+    "arch = detect_arch()",
+    "box = box_of(arch)",
+    "have_gpu = arch != 'unknown'",
+    "rocm_version = 'unknown'",
+    "rocm_version_file = '/opt/rocm/.info/version'",
+    "if os.path.exists(rocm_version_file):",
+    "    with open(rocm_version_file) as handle: rocm_version = handle.read().strip()",
+    "else:",
+    "    hipconfig = shutil.which('hipconfig') or '/opt/rocm/bin/hipconfig'",
+    "    if os.path.exists(hipconfig):",
+    "        rv = subprocess.run([hipconfig, '--version'], capture_output=True, text=True).stdout.strip()",
+    "        if rv: rocm_version = rv.splitlines()[0]",
+    "print('HIP compiler:', _hipcc(), '| gpu:', have_gpu, '| gfx arch:', arch,",
+    "      '| box:', box, '| ROCm:', rocm_version)",
+    "print('RDNA4' if arch == 'gfx1201' else 'RDNA3.5' if arch == 'gfx1151' else '(other)')",
+)
+
+# Build / run / parse / CSV-upsert helpers used by the benchmark cells below.
+BENCH = code(
+    "import csv",
+    "",
+    "CSV_PATH = 'results/hip_latency.csv'",
+    "CSV_COLS = [",
+    " 'schema_version','benchmark_kind','kernel','mode','implementation','isa','box',",
+    " 'rocm_version','dtype','output_width','output_height','grid_width','grid_height',",
+    " 'feature_dim','num_frequencies','hidden_dim','hidden_layers','out_dim','activation',",
+    " 'workload','iters','ms_per_iter','parity_status','provenance','comparable_to_paper']",
+    "",
+    "def build_kernel(src, out):",
+    "    env = dict(os.environ); env['PATH'] = '/opt/rocm/bin:' + env.get('PATH', '')",
+    "    include_path = env.get('CPLUS_INCLUDE_PATH')",
+    "    env['CPLUS_INCLUDE_PATH'] = ('/opt/rocm/include' if not include_path else",
+    "                                 '/opt/rocm/include' + os.pathsep + include_path)",
+    "    r = subprocess.run(compiler_command(src, out),",
+    "                       capture_output=True, text=True, timeout=600, env=env)",
+    "    return r",
+    "",
+    "def run_kernel(binary, args):",
+    "    env = dict(os.environ); env.setdefault('HIP_VISIBLE_DEVICES', '0')",
+    "    return subprocess.run([binary, *map(str, args)], capture_output=True,",
+    "                          text=True, timeout=1800, env=env)",
+    "",
+    "def parse_ms(stdout):",
+    "    m = re.search(r'([0-9.]+)\\s*ms/iter', stdout)",
+    "    return float(m.group(1)) if m else None",
+    "",
+    "def result_row(**values):",
+    "    row = {column: '' for column in CSV_COLS}",
+    "    row.update(schema_version=2, isa=arch, box=box, rocm_version=rocm_version,",
+    "               comparable_to_paper='false', **values)",
+    "    return {column: str(row[column]) for column in CSV_COLS}",
+    "",
+    "def upsert_latency(rows):",
+    "    \"\"\"Upsert local measurements without changing external paper values.\"\"\"",
+    "    existing = []",
+    "    if os.path.exists(CSV_PATH):",
+    "        with open(CSV_PATH) as f:",
+    "            existing = list(csv.DictReader(f))",
+    "    if existing and set(existing[0]) != set(CSV_COLS):",
+    "        legacy_cols = {'kernel','isa','box','dtype','workload','iters','ms_per_iter'}",
+    "        if set(existing[0]) != legacy_cols:",
+    "            raise ValueError('hip_latency.csv has an unknown incompatible schema')",
+    "        migrated = []",
+    "        for old in existing:",
+    "            row = {column: '' for column in CSV_COLS}",
+    "            is_wmma = old['kernel'] == 'wmma_mlp'",
+    "            row.update(schema_version='1',",
+    "                benchmark_kind='legacy_supplementary_microbenchmark',",
+    "                kernel=old['kernel'], mode='layer_only' if is_wmma else 'first_layer',",
+    "                implementation='legacy_rocwmma_tile' if is_wmma else 'legacy_scalar_fp32',",
+    "                isa=old['isa'], box=old['box'], dtype=old['dtype'],",
+    "                workload=old['workload'], iters=old['iters'],",
+    "                ms_per_iter=old['ms_per_iter'], parity_status='legacy_recorded',",
+    "                provenance='legacy_pre_schema2_csv', comparable_to_paper='false')",
+    "            migrated.append(row)",
+    "        existing = migrated",
+    "    key = lambda r: (r['benchmark_kind'],r['kernel'],r['mode'],r['isa'],",
+    "                     r['dtype'],r['workload'])",
+    "    merged = {key(r): {k: r.get(k, '') for k in CSV_COLS} for r in existing}",
+    "    for r in rows:",
+    "        merged[key(r)] = {k: r.get(k, '') for k in CSV_COLS}",
+    "    ordered = sorted(merged.values(),",
+    "        key=lambda r: (r['benchmark_kind'],r['box'],r['kernel'],r['mode'],r['dtype'],r['workload']))",
+    "    os.makedirs('results', exist_ok=True)",
+    "    with open(CSV_PATH, 'w', newline='') as f:",
+    "        w = csv.DictWriter(f, fieldnames=CSV_COLS, lineterminator='\\n'); w.writeheader()",
+    "        w.writerows(ordered)",
+    "    return ordered",
+    "",
+    "def show_latency():",
+    "    if not os.path.exists(CSV_PATH):",
+    "        print('(no results/hip_latency.csv yet)'); return",
+    "    with open(CSV_PATH) as f:",
+    "        print(f.read())",
 )
 
 
 # ----------------------------------------------------------------- W11
 W11 = nb([
-    md("# W11 · From PyTorch to HIP — the AMD stack / 從 PyTorch 到 HIP",
-       "",
-       "**English.** So far everything ran through PyTorch's ROCm backend. Real-time",
-       "texture decode needs custom kernels. HIP is AMD's CUDA-like C++ dialect; `hipcc`",
-       "compiles it for a specific GPU arch (`--offload-arch=gfx1201` for RDNA4,",
-       "`gfx1151` for RDNA3.5). We port the PEPS inference inner loop — grid sample +",
-       "MLP — into one **fused** kernel (`hip/fused_peps_kernel.hip`) and measure it.",
-       "",
-       "**繁體中文.** 目前都走 PyTorch 的 ROCm 後端。即時材質解碼需要自訂 kernel。HIP 是",
-       "AMD 類 CUDA 的 C++ 方言;`hipcc` 針對特定 GPU 架構編譯。我們把 PEPS 推論內迴圈",
-       "(grid 取樣 + MLP)融合成單一 kernel 並量測。"),
-    DETECT,
-    md("## 1. Build the fused kernel for this box / 為本機編譯融合 kernel"),
-    code("if have_hipcc:",
-         "    r = subprocess.run(['hipcc', f'--offload-arch={arch}',",
-         "                        'hip/fused_peps_kernel.hip', '-o', 'hip/fused_peps'],",
-         "                       capture_output=True, text=True)",
-         "    print('build ok' if r.returncode == 0 else r.stderr[:500])",
+    md("# W11 · Integrated PEPS in HIP / HIP 整合 PEPS workload\n"
+       "\n"
+       "`hip/fused_peps_kernel.hip` now runs the complete path: projection, every\n"
+       "shared-grid sample, baseline/concat/paper-Pink aggregation, and four Linear\n"
+       "layers (three hidden + output). The default geometry is the paper runtime\n"
+       "workload: 1024² RGB, a 1024² grid with C=16, L=3, and hidden width 64.\n"
+       "\n"
+       "整合 kernel 包含 projection、所有 shared-grid samples、baseline/concat/\n"
+       "paper-exact Pink,以及完整三 hidden layer MLP。"),
+    SETUP,
+    BENCH,
+    md("## 1. Build only for a detected local GPU / 僅為已偵測 GPU 編譯"),
+    code("build_ok = False",
+         "if have_hipcc and have_gpu:",
+         "    build = build_kernel('hip/fused_peps_kernel.hip', 'hip/fused_peps')",
+         "    build_ok = build.returncode == 0",
+         "    print('build ok' if build_ok else build.stderr[-1200:])",
          "else:",
-         "    print('hipcc not found on this box — see hip/README.md; run on Box A or B.')"),
-    md("## 2. Run and measure / 執行與量測"),
-    code("if have_hipcc and os.path.exists('hip/fused_peps'):",
-         "    r = subprocess.run(['hip/fused_peps', '262144', '200'], capture_output=True, text=True)",
-         "    print(r.stdout.strip() or r.stderr[:300])",
+         "    print('skipped: hipcc and a real AMD architecture are both required')"),
+    md("## 2. End-to-end parity fixtures / 端到端對拍\n"
+       "The three fixture modes are compared with `Projector`, `GridEncoder`, the\n"
+       "corresponding aggregator, and a GELU MLP with exactly three hidden layers.\n"
+       "Fixtures cover both scalar fp32 and fused fp16/rocWMMA implementations."),
+    code("parity = subprocess.run([sys.executable, '-m', 'pytest',",
+         "    'tests/test_hip_parity.py', '-q', '-k', 'integrated'],",
+         "    capture_output=True, text=True)",
+         "parity_ok = parity.returncode == 0",
+         "print((parity.stdout or parity.stderr)[-2000:])"),
+    md("## 3. Measure the integrated geometry / 量測整合 workload\n"
+       "Rows are written only after build, parity, execution, and output parsing all\n"
+       "succeed. This scalar fp32 reference is **not** the paper's optimized WMMA kernel."),
+    code("INTEGRATED_ITERS = int(os.getenv('PEPS_HIP_INTEGRATED_ITERS', '20'))",
+         "rows = []",
+         "if build_ok and parity_ok:",
+         "    for mode in ('baseline', 'peps', 'pink'):",
+         "        run = run_kernel('hip/fused_peps',",
+         "                         ['workload', mode, 1024, INTEGRATED_ITERS])",
+         "        print((run.stdout + run.stderr).strip())",
+         "        ms = parse_ms(run.stdout) if run.returncode == 0 else None",
+         "        if ms is not None:",
+         "            rows.append(result_row(benchmark_kind='integrated_paper_workload',",
+         "                kernel='fused_peps', mode=mode, implementation='scalar_fp32',",
+         "                dtype='fp32', output_width=1024, output_height=1024,",
+         "                grid_width=1024, grid_height=1024, feature_dim=16,",
+         "                num_frequencies=0 if mode == 'baseline' else 3,",
+         "                hidden_dim=64, hidden_layers=3, out_dim=3, activation='gelu',",
+         "                workload='1024x1024_rgb_grid1024_c16_l3_h64x3',",
+         "                iters=INTEGRATED_ITERS, ms_per_iter=f'{ms:.6f}',",
+         "                parity_status='passed', provenance='W11_local_notebook'))",
+         "if rows:",
+         "    upsert_latency(rows); print('wrote', len(rows), 'integrated row(s)')",
          "else:",
-         "    print('(skipped — no hipcc / binary)')"),
-    md("## 3. Why fusion matters / 為何融合重要",
-       "The unfused path writes latents to global memory, then reads them back for the",
-       "MLP. Fusing keeps latents in registers — one kernel launch, no round-trip. On",
-       "real-time texture decode (millions of texels/frame) this is the difference",
-       "between hitting frame budget or not.",
-       "",
-       "未融合路徑把 latent 寫到全域記憶體再讀回給 MLP。融合讓 latent 留在暫存器 —— 一次",
-       "kernel 啟動、無來回。對即時材質解碼(每幀數百萬 texel),這決定能否達到幀預算。"),
+         "    print('no integrated rows written')",
+         "show_latency()"),
+    md("## 4. Comparison boundary / 比較界線\n"
+       "The paper reports 4.32 ms (BI-grid), 5.47 ms (Grid-PEPS), and 4.86 ms\n"
+       "(Grid-PinkPEPS) on RX 9070 XT for this geometry. Those are external paper\n"
+       "values, not rows generated here. The integrated fp16/rocWMMA path now passes\n"
+       "all-mode parity, but a repeated 1024² run exceeded five minutes and was stopped\n"
+       "without a row. Performance optimization and a practical repeated measurement\n"
+       "remain required before any local paper comparison."),
 ])
 
 
 # ----------------------------------------------------------------- W12
 W12 = nb([
-    md("# W12 · RDNA4 WMMA — matrix acceleration / RDNA4 WMMA 矩陣加速",
-       "",
-       "**English.** The MLP decoder is a stack of small matmuls — ideal for **WMMA**",
-       "(Wave Matrix Multiply-Accumulate) hardware. `hip/wmma_mlp.hip` uses rocWMMA with",
-       "16x16x16 FP16 tiles and FP32 accumulate. We build it for this box's arch and",
-       "measure the MLP-layer latency, then compare against the paper's RDNA4 figures.",
-       "The **same code** compiles for RDNA3.5 (`gfx1151`) and RDNA4 (`gfx1201`); the",
-       "paper's ms numbers are RDNA4, so run this on **Box B** for the true comparison.",
-       "",
-       "**繁體中文.** MLP 解碼器是一疊小矩陣乘,正適合 **WMMA** 硬體。`hip/wmma_mlp.hip`",
-       "用 rocWMMA 的 16x16x16 FP16 tile + FP32 累加。為本機架構編譯並量測 MLP 層延遲,",
-       "再與論文 RDNA4 數字對照。**同一份程式碼**可為 RDNA3.5 與 RDNA4 編譯;論文數字為",
-       "RDNA4,故在 **Box B** 上執行才是真正的對照。"),
-    DETECT,
-    md("## 1. Build the WMMA MLP kernel / 編譯 WMMA MLP kernel"),
-    code("if have_hipcc:",
-         "    r = subprocess.run(['hipcc', f'--offload-arch={arch}',",
-         "                        'hip/wmma_mlp.hip', '-o', 'hip/wmma_mlp'],",
-         "                       capture_output=True, text=True)",
-         "    print('build ok' if r.returncode == 0 else r.stderr[:600])",
+    md("# W12 · WMMA diagnostics and the optimization gap / WMMA 診斷與最佳化缺口\n"
+       "\n"
+       "`hip/wmma_mlp.hip` verifies isolated fp16 and int8 rocWMMA GEMMs. They are useful\n"
+       "component diagnostics, but they do not include projection, sampling, aggregation,\n"
+       "biases/activations, or all decoder layers. W11 is the primary workload path.\n"
+       "\n"
+       "本章保留 fp16/int8 rocWMMA component diagnostics;它們不含完整 PEPS pipeline,\n"
+       "因此不能當作 paper-workload latency。"),
+    SETUP,
+    BENCH,
+    md("## 1. Build and run fixture parity / 編譯並對拍"),
+    code("build_ok = False",
+         "if have_hipcc and have_gpu:",
+         "    build = build_kernel('hip/wmma_mlp.hip', 'hip/wmma_mlp')",
+         "    build_ok = build.returncode == 0",
+         "    print('build ok' if build_ok else build.stderr[-1200:])",
          "else:",
-         "    print('hipcc not found — run on Box A (gfx1151) or Box B (gfx1201).')"),
-    md("## 2. Correctness + latency / 正確性與延遲",
-       "The kernel prints C[0,0] vs a CPU reference (must match) and ms/iter.",
-       "kernel 會印 C[0,0] 與 CPU 參考(須相符)及 ms/iter。"),
-    code("if have_hipcc and os.path.exists('hip/wmma_mlp'):",
-         "    r = subprocess.run(['hip/wmma_mlp', '4096', '64', '64', '200'], capture_output=True, text=True)",
-         "    print(r.stdout.strip() or r.stderr[:300])",
+         "    print('skipped: hipcc and a real AMD architecture are both required')",
+         "parity = subprocess.run([sys.executable, '-m', 'pytest',",
+         "    'tests/test_hip_parity.py', '-q', '-k', 'wmma'],",
+         "    capture_output=True, text=True)",
+         "parity_ok = parity.returncode == 0",
+         "print((parity.stdout or parity.stderr)[-2000:])"),
+    md("## 2. Supplementary layer microbenchmarks / 補充 layer microbenchmark\n"
+       "The large GEMM is opt-in to avoid unsafe allocation/runtime on small machines."),
+    code("SIZES = [('4096x64x64', 4096, 64, 64,",
+         "          int(os.getenv('PEPS_HIP_MICRO_ITERS', '1000')))]",
+         "if os.getenv('RUN_LARGE_WMMA', '0') == '1':",
+         "    SIZES.append(('2048x2048x2048', 2048, 2048, 2048,",
+         "                  int(os.getenv('PEPS_HIP_LARGE_ITERS', '200'))))",
+         "rows = []",
+         "if build_ok and parity_ok:",
+         "    for label, M, K, N, it in SIZES:",
+         "        for dt in ('fp16', 'int8'):",
+         "            run = run_kernel('hip/wmma_mlp', ['bench', dt, M, K, N, it])",
+         "            print((run.stdout + run.stderr).strip()); print()",
+         "            ms = parse_ms(run.stdout) if run.returncode == 0 else None",
+         "            if ms is not None:",
+         "                rows.append(result_row(benchmark_kind='supplementary_microbenchmark',",
+         "                    kernel='wmma_mlp', mode='layer_only', implementation='rocwmma_tile',",
+         "                    dtype=dt, feature_dim=K, hidden_dim=N, workload=label,",
+         "                    iters=it, ms_per_iter=f'{ms:.6f}', parity_status='passed',",
+         "                    provenance='W12_local_notebook'))",
+         "if rows:",
+         "    upsert_latency(rows); print('wrote', len(rows), 'diagnostic row(s)')",
          "else:",
-         "    print('(skipped)')"),
-    md("## 3. Compare RDNA3.5 vs RDNA4 / 對照 RDNA3.5 與 RDNA4",
-       "Record the number for this box. Run the same cell on the other box and compare:",
-       "RDNA4 (Box B, gfx1201) is the paper's target; RDNA3.5 (Box A, gfx1151) is our",
-       "second data point. Fill the table below from both runs.",
-       "",
-       "記錄本機數字。在另一台跑同一格並對照:RDNA4(Box B)是論文目標;RDNA3.5(Box A)",
-       "是第二資料點。用兩次執行填下表。"),
-    code("# Measured WMMA MLP layer latency (4096x64x64, 200 iters) on both boxes:",
-         "results = {",
-         "  'RDNA3.5 (gfx1151, Box A)': 0.0116,",
-         "  'RDNA4   (gfx1201, Box B)': 0.0184,",
-         "}",
-         "for k, v in results.items():",
-         "    print(f'{k}: {v} ms/iter')",
-         "# Note: absolute ms depend on matrix size/occupancy; this is a teaching",
-         "# microbenchmark, not the paper's full-pipeline figure. Both ISAs verified."),
-    md("## 4. Takeaway / 小結",
-       "Custom WMMA kernels turn the PEPS decoder into hardware matmuls, closing the",
-       "gap to production texture codecs (RTXNTC's cooperative-vector path). The course",
-       "ends where the paper's hardware story begins — on real AMD silicon.",
-       "",
-       "自訂 WMMA kernel 把 PEPS 解碼器變成硬體矩陣乘,拉近與量產材質編碼器(RTXNTC 的",
-       "cooperative-vector 路徑)的距離。課程在論文硬體故事開始之處結束 —— 在真實 AMD",
-       "晶片上。"),
+         "    print('no diagnostic rows written')",
+         "show_latency()"),
+    md("## 3. What remains before a paper comparison / 論文比較前仍缺什麼\n"
+       "The W11 kernel now integrates rocWMMA across all four Linear layers and passes\n"
+       "baseline/PEPS/Pink fp16 parity. Its current paper-scale performance is not yet\n"
+       "practical for a repeated run. Optimize that integrated path, then record matched\n"
+       "precision, timing boundaries, compiler flags, warmup, and target-GPU receipts."),
 ])
 
 
+def write(name, notebook):
+    path = os.path.join(HERE, name)
+    document = nbformat.from_dict(notebook)
+    nbformat.validate(document)
+    nbformat.write(document, path)
+    print("wrote", name)
+
+
 if __name__ == "__main__":
-    with open(os.path.join(HERE, "W11_hip.ipynb"), "w", encoding="utf-8") as f:
-        json.dump(W11, f, ensure_ascii=False, indent=1)
-    print("wrote W11_hip.ipynb")
-    with open(os.path.join(HERE, "W12_hip_wmma.ipynb"), "w", encoding="utf-8") as f:
-        json.dump(W12, f, ensure_ascii=False, indent=1)
-    print("wrote W12_hip_wmma.ipynb")
+    write("W11_hip.ipynb", W11)
+    write("W12_hip_wmma.ipynb", W12)

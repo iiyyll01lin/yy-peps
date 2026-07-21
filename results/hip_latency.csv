@@ -1,0 +1,14 @@
+schema_version,benchmark_kind,kernel,mode,implementation,isa,box,rocm_version,dtype,output_width,output_height,grid_width,grid_height,feature_dim,num_frequencies,hidden_dim,hidden_layers,out_dim,activation,workload,iters,ms_per_iter,parity_status,provenance,comparable_to_paper
+2,integrated_paper_workload,fused_peps,baseline,scalar_fp32,gfx1201,B,7.2.3,fp32,1024,1024,1024,1024,16,0,64,3,3,gelu,1024x1024_rgb_grid1024_c16_l3_h64x3,20,246.303200,passed,W11_local_notebook,false
+2,integrated_paper_workload,fused_peps,peps,scalar_fp32,gfx1201,B,7.2.3,fp32,1024,1024,1024,1024,16,3,64,3,3,gelu,1024x1024_rgb_grid1024_c16_l3_h64x3,20,411.799900,passed,W11_local_notebook,false
+2,integrated_paper_workload,fused_peps,pink,scalar_fp32,gfx1201,B,7.2.3,fp32,1024,1024,1024,1024,16,3,64,3,3,gelu,1024x1024_rgb_grid1024_c16_l3_h64x3,20,295.321700,passed,W11_local_notebook,false
+2,supplementary_microbenchmark,fused_peps,first_layer_only,scalar_fp32,gfx1151,A,7.2,fp32,,,128,128,8,0,64,1,64,relu,262144pts,1000,2.3443,legacy_reported,legacy_W11_notebook,false
+2,supplementary_microbenchmark,wmma_mlp,layer_only,rocwmma_tile,gfx1151,A,7.2,fp16,,,,,2048,0,2048,1,2048,none,2048x2048x2048,200,5.1521,legacy_reported,legacy_W12_notebook,false
+2,supplementary_microbenchmark,wmma_mlp,layer_only,rocwmma_tile,gfx1151,A,7.2,fp16,,,,,64,0,64,1,64,none,4096x64x64,1000,0.0079,legacy_reported,legacy_W12_notebook,false
+2,supplementary_microbenchmark,wmma_mlp,layer_only,rocwmma_tile,gfx1151,A,7.2,int8,,,,,2048,0,2048,1,2048,none,2048x2048x2048,200,3.9925,legacy_reported,legacy_W12_notebook,false
+2,supplementary_microbenchmark,wmma_mlp,layer_only,rocwmma_tile,gfx1151,A,7.2,int8,,,,,64,0,64,1,64,none,4096x64x64,1000,0.0076,legacy_reported,legacy_W12_notebook,false
+2,supplementary_microbenchmark,fused_peps,first_layer_only,scalar_fp32,gfx1201,B,7.2,fp32,,,128,128,8,0,64,1,64,relu,262144pts,1000,2.3928,legacy_reported,legacy_W11_notebook,false
+2,supplementary_microbenchmark,wmma_mlp,layer_only,rocwmma_tile,gfx1201,B,7.2,fp16,,,,,2048,0,2048,1,2048,none,2048x2048x2048,200,1.5851,legacy_reported,legacy_W12_notebook,false
+2,supplementary_microbenchmark,wmma_mlp,layer_only,rocwmma_tile,gfx1201,B,7.2.3,fp16,,,,,64,,64,,,,4096x64x64,1000,15.089600,passed,W12_local_notebook,false
+2,supplementary_microbenchmark,wmma_mlp,layer_only,rocwmma_tile,gfx1201,B,7.2,int8,,,,,2048,0,2048,1,2048,none,2048x2048x2048,200,1.7046,legacy_reported,legacy_W12_notebook,false
+2,supplementary_microbenchmark,wmma_mlp,layer_only,rocwmma_tile,gfx1201,B,7.2.3,int8,,,,,64,,64,,,,4096x64x64,1000,15.459200,passed,W12_local_notebook,false
