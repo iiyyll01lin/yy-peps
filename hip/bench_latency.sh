@@ -3,12 +3,16 @@
 # 繁體中文:在本機編譯並執行 HIP kernel,印出延遲。自動偵測 GPU 架構。
 set -e
 
+# Ensure ROCm's hipcc/tools are on PATH (Box B installs to /opt/rocm/bin).
+export PATH=/opt/rocm/bin:$PATH
+HIPCC=$(command -v hipcc || echo /opt/rocm/bin/hipcc)
+
 # Detect gfx arch from rocminfo (fallback to gfx1201).
 ARCH=$(rocminfo 2>/dev/null | grep -m1 -oE 'gfx[0-9a-f]+' || echo gfx1201)
 echo "== Building for $ARCH =="
 
-hipcc --offload-arch="$ARCH" wmma_mlp.hip        -o wmma_mlp
-hipcc --offload-arch="$ARCH" fused_peps_kernel.hip -o fused_peps
+"$HIPCC" --offload-arch="$ARCH" wmma_mlp.hip        -o wmma_mlp
+"$HIPCC" --offload-arch="$ARCH" fused_peps_kernel.hip -o fused_peps
 
 echo "== WMMA MLP (16x16x16 tiles) =="
 HIP_VISIBLE_DEVICES=0 ./wmma_mlp 4096 64 64 200

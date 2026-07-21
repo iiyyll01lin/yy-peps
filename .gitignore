@@ -18,6 +18,11 @@ results/**/*.npz
 hip/build/
 *.o
 *.hsaco
+# compiled kernel binaries (built per-box, not committed)
+hip/wmma_mlp
+hip/wmma_mlp_rdna4
+hip/fused_peps
+hip/fused_peps_rdna4
 
 # OS / editor
 .DS_Store
