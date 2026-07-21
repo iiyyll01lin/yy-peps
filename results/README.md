@@ -1,10 +1,17 @@
 # results/ — generated tables & figures / 生成的表格與圖
 
-Every quantitative claim in `docs/` and the notebooks is backed by a file here.
+> **Legacy / unverified:** the checked-in CSVs were generated before the
+> paper-exact core equation fix. They are retained for provenance only and must
+> not be treated as reproduced paper results. Later phases will regenerate and
+> validate them from immutable paper configs.
 
-`docs/` 與 notebook 中的每個量化宣稱都由此處的檔案背書。
+Every future quantitative claim in `docs/` and the notebooks must be backed by
+a validated file here.
 
-- `*.csv` — the **source of truth** (tracked in git, diffable).
+目前 CSV 均為核心公式修正前的 legacy／未驗證產物，只供追溯，不代表已重現論文；
+後續階段會以固定設定重新產生並驗證。
+
+- `*.csv` — tracked, diffable artifacts; current files are legacy/unverified.
 - `*.png` — visualizations regenerated from the CSVs (git-ignored).
 
 Written via `peps.report` (`write_table` / `plot_xy`). Regenerate everything by

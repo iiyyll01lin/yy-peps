@@ -1,17 +1,11 @@
-"""Analytic positional encodings — APE (paper Eq. 1-5) and Identity.
-
-繁體中文:解析式(不可學習)編碼器。
-- AbsolutePositionalEncoding (APE):經典 sin/cos 頻率編碼。
-- IdentityEncoder:原封不動回傳座標。把 IdentityEncoder 放進 PEPS wrapper 時,
-  整個 PEPS 會退化回純 APE —— 這正是論文「PEPS 是 APE 的泛化」宣稱的驗證點,
-  也是我們單元測試的 sanity check。
-"""
+"""Analytic positional encodings — APE (paper Eq. 1-5) and Identity."""
 
 from __future__ import annotations
 
-import math
 import torch
 import torch.nn as nn
+
+from ..projector import resolve_frequency_schedule
 
 
 class IdentityEncoder(nn.Module):
@@ -32,13 +26,18 @@ class IdentityEncoder(nn.Module):
 class AbsolutePositionalEncoding(nn.Module):
     """Classic Fourier / positional encoding (paper Eq. 1-5).
 
-    ``enc(x) = [x, sin(2^0 pi x), cos(2^0 pi x), ..., sin(2^{L-1} pi x), cos(...)]``
+    The feature order mirrors the PEPS point contract:
+    ``[x, sin(phi_1*x), ..., sin(phi_L*x), cos(phi_1*x), ...,
+    cos(phi_L*x)]``, with each entry containing all coordinate dimensions.
+    The paper schedule is ``phi_i = 2**i*pi`` for ``i=1,...,L``.
 
     Args:
         dim: input coordinate dimensionality.
         num_frequencies: ``L``.
         include_input: prepend raw ``x`` to the encoding.
         base: frequency ladder base (2 in the paper).
+        frequency_exponents: optional exponents for ``base**exponent*pi``.
+        frequencies: optional angular coefficients ``phi_i`` supplied directly.
 
     Shape:
         input  ``coords``: ``(N, dim)``.
@@ -49,28 +48,54 @@ class AbsolutePositionalEncoding(nn.Module):
     def __init__(
         self,
         dim: int,
-        num_frequencies: int,
+        num_frequencies: int | None = None,
         include_input: bool = True,
         base: float = 2.0,
+        *,
+        frequency_exponents=None,
+        frequencies=None,
     ) -> None:
         super().__init__()
+        if isinstance(dim, bool) or not isinstance(dim, int):
+            raise TypeError("dim must be an integer")
+        if dim <= 0:
+            raise ValueError("dim must be positive")
+        num_frequencies, freqs, exponents = resolve_frequency_schedule(
+            num_frequencies,
+            base=base,
+            frequency_exponents=frequency_exponents,
+            frequencies=frequencies,
+        )
         self.dim = dim
         self.num_frequencies = num_frequencies
-        self.include_input = include_input
-        freqs = base ** torch.arange(num_frequencies, dtype=torch.float32) * math.pi
+        self.include_input = bool(include_input)
+        self.base = float(base)
         self.register_buffer("freqs", freqs, persistent=False)
-        self.feature_dim = dim * (int(include_input) + 2 * num_frequencies)
+        self.register_buffer("frequency_exponents", exponents, persistent=False)
+        self.feature_dim = dim * (
+            int(self.include_input) + 2 * num_frequencies
+        )
 
     def forward(self, coords: torch.Tensor) -> torch.Tensor:
+        if coords.ndim < 1 or coords.shape[-1] != self.dim:
+            raise ValueError(
+                f"coords must have shape (..., {self.dim}), got "
+                f"{tuple(coords.shape)}"
+            )
+        if not coords.is_floating_point():
+            raise TypeError("coords must be a floating-point tensor")
+
         outs = []
         if self.include_input:
             outs.append(coords)
         if self.num_frequencies > 0:
-            # (N, dim, L)
-            ang = coords.unsqueeze(-1) * self.freqs
-            n = coords.shape[0]
-            outs.append(torch.sin(ang).reshape(n, -1))
-            outs.append(torch.cos(ang).reshape(n, -1))
+            freqs = self.freqs.to(dtype=coords.dtype)
+            ang = coords.unsqueeze(-2) * freqs.view(-1, 1)
+            leading_shape = coords.shape[:-1]
+            outs.append(torch.sin(ang).reshape(*leading_shape, -1))
+            outs.append(torch.cos(ang).reshape(*leading_shape, -1))
+        if not outs:
+            return coords.new_empty((*coords.shape[:-1], 0))
         return torch.cat(outs, dim=-1)
 
     def extra_repr(self) -> str:

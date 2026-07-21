@@ -67,10 +67,20 @@ class GridEncoder(nn.Module):
     def num_params(self) -> int:
         return self.grid.numel()
 
-    def forward(self, coords: torch.Tensor) -> torch.Tensor:
-        # coords: (N, dim) in [0,1] -> grid_sample expects [-1, 1]
+    def _sample_grid(
+        self, grid: torch.Tensor, coords: torch.Tensor
+    ) -> torch.Tensor:
+        if coords.ndim != 2 or coords.shape[1] != self.dim:
+            raise ValueError(
+                f"coords must have shape (N, {self.dim}), got "
+                f"{tuple(coords.shape)}"
+            )
+        if not coords.is_floating_point():
+            raise TypeError("coords must be a floating-point tensor")
+
         n = coords.shape[0]
         g = coords * 2.0 - 1.0  # to [-1, 1]
+        channels = grid.shape[1]
 
         if self.dim == 2:
             # grid_sample 2D wants grid of shape (1, N, 1, 2), coords order (x, y)
@@ -78,18 +88,42 @@ class GridEncoder(nn.Module):
             # and coords[...,1] as y-axis (H) to match (x, y) convention.
             samp = g.view(1, n, 1, 2)
             out = F.grid_sample(
-                self.grid, samp, mode="bilinear",
+                grid, samp, mode="bilinear",
                 align_corners=self.align_corners, padding_mode="border",
             )  # (1, feature_dim, N, 1)
-            return out.view(self.feature_dim, n).t().contiguous()
+            return out.view(channels, n).t().contiguous()
         else:
             # 3D: grid of shape (1, N, 1, 1, 3), coords order (x, y, z)
             samp = g.view(1, n, 1, 1, 3)
             out = F.grid_sample(
-                self.grid, samp, mode="bilinear",
+                grid, samp, mode="bilinear",
                 align_corners=self.align_corners, padding_mode="border",
             )  # (1, feature_dim, N, 1, 1)
-            return out.view(self.feature_dim, n).t().contiguous()
+            return out.view(channels, n).t().contiguous()
+
+    def forward(self, coords: torch.Tensor) -> torch.Tensor:
+        return self._sample_grid(self.grid, coords)
+
+    def sample_channels(
+        self, coords: torch.Tensor, channel_indices
+    ) -> torch.Tensor:
+        """Sample only selected grid channels for Pink/Brownian PEPS.
+
+        Selecting the parameter tensor before ``grid_sample`` avoids computing
+        and materializing channels that the aggregator will discard.
+        """
+
+        indices = torch.as_tensor(
+            channel_indices, dtype=torch.long, device=self.grid.device
+        )
+        if indices.ndim != 1:
+            raise ValueError("channel_indices must be one-dimensional")
+        if indices.numel() == 0:
+            return coords.new_empty((coords.shape[0], 0))
+        if (indices < 0).any() or (indices >= self.feature_dim).any():
+            raise IndexError("channel index is out of range")
+        selected_grid = self.grid.index_select(1, indices)
+        return self._sample_grid(selected_grid, coords)
 
     def extra_repr(self) -> str:
         return (
