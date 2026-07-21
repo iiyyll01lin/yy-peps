@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "peps"
+version = "0.1.0"
+description = "Faithful reimplementation of AMD PEPS (Positional Encoding Projected Sampling) + course materials"
+requires-python = ">=3.10"
+readme = "README.md"
+
+[tool.setuptools]
+packages = ["peps", "peps.encoders", "peps.models", "peps.quant"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

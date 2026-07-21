@@ -1,0 +1,25 @@
+# Core numerics (torch/torchvision installed separately via ROCm wheel index,
+# see README). Pin nothing aggressively — these are teaching deps.
+numpy
+scipy
+pillow
+imageio
+matplotlib
+tqdm
+
+# Metrics
+scikit-image          # SSIM
+lpips                 # perceptual metric
+# FLIP / LSD are implemented in peps/metrics.py
+
+# SDF preprocessing (App 3)
+trimesh
+mesh-to-sdf
+scikit-image          # marching cubes (also above; harmless dup)
+
+# Notebooks
+jupyter
+ipykernel
+
+# Dev
+pytest
