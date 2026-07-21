@@ -12,7 +12,9 @@ from peps import (
     Projector, GridEncoder, MLP, PEPS,
     make_aggregator, IdentityEncoder, AbsolutePositionalEncoding,
 )
-from peps.aggregate import ConcatAggregator, PinkAggregator
+from peps.aggregate import (
+    ConcatAggregator, PinkAggregator, BrownianAggregator, make_aggregator,
+)
 
 
 def test_projector_shape_and_range():
@@ -72,6 +74,39 @@ def test_pink_aggregator_is_smaller_than_concat():
     assert pink.out_dim < concat.out_dim
     lat = torch.randn(4, num_points, k)
     assert pink(lat).shape == (4, pink.out_dim)
+
+
+def test_brownian_smaller_than_pink():
+    """Brownian (alpha=2) allocates even fewer dims than Pink (alpha=1)."""
+    num_points, k = 13, 8
+    pink = PinkAggregator(num_points, k)
+    brown = BrownianAggregator(num_points, k)
+    assert brown.out_dim <= pink.out_dim < ConcatAggregator(num_points, k).out_dim
+    lat = torch.randn(3, num_points, k)
+    assert brown(lat).shape == (3, brown.out_dim)
+
+
+def test_aggregator_factory_kinds():
+    for kind, cls in [("concat", ConcatAggregator),
+                      ("pink", PinkAggregator),
+                      ("brownian", BrownianAggregator)]:
+        agg = make_aggregator(kind, num_points=9, feature_dim=4)
+        assert isinstance(agg, cls)
+    import pytest
+    with pytest.raises(ValueError):
+        make_aggregator("nope", 9, 4)
+
+
+def test_pink_gradient_reaches_whole_feature_dim():
+    """Circular-shifted sub-vectors must let gradients reach every one of the k
+    grid-feature channels across the point set (the whole shared grid learns)."""
+    num_points, k = 9, 8
+    pink = PinkAggregator(num_points, k)
+    lat = torch.randn(5, num_points, k, requires_grad=True)
+    pink(lat).sum().backward()
+    # every feature channel receives gradient from at least one point
+    per_channel = lat.grad.abs().sum(dim=(0, 1))  # (k,)
+    assert (per_channel > 0).all(), per_channel
 
 
 def test_peps_forward_shape():

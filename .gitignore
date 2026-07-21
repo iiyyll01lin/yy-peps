@@ -28,3 +28,8 @@ hip/fused_peps_rdna4
 .DS_Store
 .vscode/
 *.swp
+
+# Local SSH/scp helpers (Box A/B access; not part of the repo)
+.bxb.sh
+.bxa.sh
+.push.sh
