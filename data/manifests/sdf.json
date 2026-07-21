@@ -30,15 +30,18 @@
     "distance_units": "normalized [-1,1] coordinate units",
     "sign_convention": "negative_inside",
     "dtype": "float32",
-    "surface_point_method": "sample",
-    "sign_method": "normal",
+    "surface_point_method": "open3d",
+    "sign_method": "ray_parity",
+    "ray_nsamples": 11,
     "scan_count": 100,
     "scan_resolution": 400,
     "sample_point_count": 10000000,
     "normal_sample_count": 11,
     "seed": 0,
     "automatic_fallback": false,
-    "paper_ambiguity": "The authors state that an unreleased C++/HIP converter produced 512^3 values. These explicit deterministic 10M-point mesh-to-sdf settings are a reproducible approximation, not a bit-exact reconstruction of that converter. Direct surface sampling is used so occluded CT/bone surfaces are not omitted by visibility scans."
+    "backend_dependency": "open3d==0.19.0",
+    "legacy_backend_parameters": "scan_count, scan_resolution, sample_point_count, normal_sample_count, and seed are retained only for explicit non-canonical scan/sample overrides; they do not affect the Open3D canonical path.",
+    "paper_ambiguity": "The authors state that an unreleased C++/HIP converter produced 512^3 values. Open3D exact point-to-triangle distance with eleven-ray parity voting is a deterministic, auditable approximation that remains robust to Lucy's documented topology defects, but is not a bit-exact reconstruction of that converter."
   },
   "assets": [
     {

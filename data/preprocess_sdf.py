@@ -1,7 +1,7 @@
-"""Convert paper meshes into chunked, provenance-tracked 512^3 SDF volumes.
+"""Convert paper meshes into exact, provenance-tracked 512^3 SDF volumes.
 
 The checked-in manifest fixes normalization, grid layout, sign convention, and
-the default ``mesh-to-sdf`` settings. No fallback method is selected silently.
+the triangle-distance backend. No fallback method is selected silently.
 """
 
 from __future__ import annotations
@@ -42,6 +42,7 @@ class SDFConfig:
     resolution: int
     surface_point_method: str
     sign_method: str
+    ray_nsamples: int
     scan_count: int
     scan_resolution: int
     sample_point_count: int
@@ -50,6 +51,63 @@ class SDFConfig:
     max_query_points: int
     query_workers: int
     pyopengl_platform: str
+
+
+class _Open3DTriangleSDF:
+    """Exact point-to-triangle distance with ray-parity inside/outside signs."""
+
+    def __init__(
+        self,
+        mesh: Any,
+        *,
+        workers: int,
+        ray_nsamples: int,
+    ) -> None:
+        try:
+            import open3d as o3d
+        except ModuleNotFoundError as exc:
+            raise RuntimeError(
+                "canonical SDF preprocessing requires open3d==0.19.0; install "
+                "it in the active environment without committing the wheel"
+            ) from exc
+
+        nthreads = 0 if workers == -1 else workers
+        self.o3d = o3d
+        self.ray_nsamples = ray_nsamples
+        self.scene = o3d.t.geometry.RaycastingScene(nthreads=nthreads)
+        vertices = o3d.core.Tensor(
+            np.asarray(mesh.vertices, dtype=np.float32),
+        )
+        triangles = o3d.core.Tensor(
+            np.asarray(mesh.faces, dtype=np.uint32),
+        )
+        self.scene.add_triangles(vertices, triangles)
+
+    def get_sdf_in_batches(
+        self,
+        query_points: np.ndarray,
+        *,
+        use_depth_buffer: bool,
+        sample_count: int,
+        batch_size: int,
+    ) -> np.ndarray:
+        del sample_count
+        if use_depth_buffer:
+            raise ManifestError("Open3D ray parity does not use scan depth buffers")
+        batches = []
+        for start in range(0, len(query_points), batch_size):
+            query = self.o3d.core.Tensor(
+                np.ascontiguousarray(
+                    query_points[start : start + batch_size],
+                    dtype=np.float32,
+                )
+            )
+            signed = self.scene.compute_signed_distance(
+                query,
+                nsamples=self.ray_nsamples,
+            )
+            batches.append(np.asarray(signed.numpy(), dtype=np.float32))
+        return np.concatenate(batches)
 
 
 class _SampledSurfacePointCloud:
@@ -336,7 +394,11 @@ def preprocess_sdf(
             "sign_convention": "negative_inside",
         },
         "algorithm": {
-            "implementation": "mesh-to-sdf",
+            "implementation": (
+                "Open3D RaycastingScene exact triangle distance"
+                if config.surface_point_method == "open3d"
+                else "mesh-to-sdf-compatible sampled surface distance"
+            ),
             **asdict(config),
             "automatic_fallback": False,
         },
@@ -358,12 +420,17 @@ def preprocess_sdf(
             "scipy": importlib_metadata.version("scipy"),
             "trimesh": importlib_metadata.version("trimesh"),
             "mesh-to-sdf": importlib_metadata.version("mesh-to-sdf"),
+            "open3d": (
+                importlib_metadata.version("open3d")
+                if config.surface_point_method == "open3d"
+                else None
+            ),
         },
         "paper_protocol": paper_protocol,
         "known_limit": (
             "The paper states that an unreleased C++/HIP converter was used; "
-            "mesh-to-sdf is a documented reproduction protocol, not a bit-exact "
-            "implementation of the authors' converter."
+            "Open3D exact triangle distance with ray-parity signs is an auditable "
+            "reproduction protocol, not a bit-exact implementation of that converter."
         ),
     }
     _atomic_json(provenance, record)
@@ -435,6 +502,14 @@ def load_sdf_volume(
 
 
 def _build_surface_point_cloud(mesh: Any, config: SDFConfig) -> Any:
+    if config.surface_point_method == "open3d":
+        if config.sign_method != "ray_parity":
+            raise ManifestError("Open3D triangles require sign_method='ray_parity'")
+        return _Open3DTriangleSDF(
+            mesh,
+            workers=config.query_workers,
+            ray_nsamples=config.ray_nsamples,
+        )
     if config.surface_point_method == "scan":
         from mesh_to_sdf import get_surface_point_cloud
 
@@ -487,8 +562,11 @@ def _verify_input_mesh(
             "data/download.py fetch sdf --asset pitted-stonefish after placing "
             "the authorized file"
         )
-    with receipt_path.open("r", encoding="utf-8") as handle:
-        receipt = json.load(handle)
+    try:
+        with receipt_path.open("r", encoding="utf-8") as handle:
+            receipt = json.load(handle)
+    except json.JSONDecodeError as exc:
+        raise DataIntegrityError(f"{receipt_path}: invalid receipt JSON") from exc
     if receipt.get("asset_id") != asset["id"]:
         raise DataIntegrityError("restricted mesh receipt has wrong asset ID")
     file_spec = receipt.get("file", {})
@@ -509,6 +587,7 @@ def _is_canonical_config(
         "resolution",
         "surface_point_method",
         "sign_method",
+        "ray_nsamples",
         "scan_count",
         "scan_resolution",
         "sample_point_count",
@@ -531,6 +610,7 @@ def _config_from_args(
         resolution=chosen("resolution"),
         surface_point_method=chosen("surface_point_method"),
         sign_method=chosen("sign_method"),
+        ray_nsamples=chosen("ray_nsamples"),
         scan_count=chosen("scan_count"),
         scan_resolution=chosen("scan_resolution"),
         sample_point_count=chosen("sample_point_count"),
@@ -546,6 +626,8 @@ def _config_from_args(
         raise ManifestError("max-query-points must fit at least one z slice")
     if config.query_workers == 0 or config.query_workers < -1:
         raise ManifestError("query-workers must be -1 or a positive integer")
+    if config.ray_nsamples < 1 or config.ray_nsamples % 2 != 1:
+        raise ManifestError("ray-nsamples must be a positive odd integer")
     if not _is_canonical_config(config, protocol) and not args.allow_protocol_override:
         raise ManifestError(
             "requested settings differ from the checked-in paper protocol; "
@@ -584,10 +666,15 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--resolution", type=int)
     parser.add_argument(
         "--surface-point-method",
-        choices=("scan", "sample"),
+        choices=("open3d", "scan", "sample"),
         dest="surface_point_method",
     )
-    parser.add_argument("--sign-method", choices=("normal", "depth"), dest="sign_method")
+    parser.add_argument(
+        "--sign-method",
+        choices=("ray_parity", "normal", "depth"),
+        dest="sign_method",
+    )
+    parser.add_argument("--ray-nsamples", type=int, dest="ray_nsamples")
     parser.add_argument("--scan-count", type=int, dest="scan_count")
     parser.add_argument("--scan-resolution", type=int, dest="scan_resolution")
     parser.add_argument("--sample-point-count", type=int, dest="sample_point_count")

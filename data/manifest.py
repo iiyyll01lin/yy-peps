@@ -540,10 +540,16 @@ def _validate_sdf_manifest(manifest: Mapping[str, Any], path: Path) -> None:
         raise ManifestError(f"{path}: SDF sign must be negative inside")
     if protocol.get("axis_order") != "zyx":
         raise ManifestError(f"{path}: SDF axis order must be zyx")
-    if protocol.get("surface_point_method") not in {"sample", "scan"}:
+    if protocol.get("surface_point_method") not in {"open3d", "sample", "scan"}:
         raise ManifestError(f"{path}: unsupported SDF surface point method")
-    if protocol.get("sign_method") not in {"normal", "depth"}:
+    if protocol.get("sign_method") not in {"ray_parity", "normal", "depth"}:
         raise ManifestError(f"{path}: unsupported SDF sign method")
+    if protocol.get("surface_point_method") == "open3d":
+        if protocol.get("sign_method") != "ray_parity":
+            raise ManifestError(f"{path}: Open3D requires ray-parity signs")
+        ray_nsamples = protocol.get("ray_nsamples")
+        if not isinstance(ray_nsamples, int) or ray_nsamples < 1 or ray_nsamples % 2 != 1:
+            raise ManifestError(f"{path}: ray_nsamples must be a positive odd integer")
     for key in (
         "scan_count",
         "scan_resolution",

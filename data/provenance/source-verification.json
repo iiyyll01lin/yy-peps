@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "verified_at_utc": "2026-07-21T17:29:45.368493+00:00",
+  "verified_at_utc": "2026-07-21T19:16:29.906312+00:00",
   "baseline_commit": "0173c51",
   "paper": {
     "title": "PEPS: Positional Encoding Projected Sampling -- Extended",
@@ -20,7 +20,7 @@
       "maps": 78
     },
     "sdf.json": {
-      "sha256": "d401f0e9599803344bfdf6e3d68795253997a778c0d99736766051b683f7e218",
+      "sha256": "ed9c61966be813748c5283a5b4e947acd740cc5a081079645109eb36cfc456e8",
       "assets": 4
     }
   },
@@ -78,34 +78,89 @@
   },
   "sdf_preprocessing": {
     "full_512_status": {
-      "lucy": "pending",
+      "lucy": "complete_and_verified",
       "pitted-stonefish": "blocked_on_authorized_mesh",
-      "thai-statue": "pending",
-      "armadillo": "pending"
+      "thai-statue": "complete_and_verified",
+      "armadillo": "complete_and_verified"
     },
-    "implementation_status": "chunked memmap pipeline implemented with deterministic 10M-point surface sampling, strict normalization, negative-inside sign, zyx layout, adjacent-voxel continuity validation, checksum provenance, and no automatic fallback",
-    "paper_limit": "authors unreleased C++/HIP converter prevents bit-exact source parity",
+    "implementation_status": "Open3D 0.19.0 exact point-to-triangle BVH distance with eleven-ray parity signs, strict AABB normalization, negative-inside sign, zyx memmap output, adjacent-voxel continuity validation, checksum provenance, and no automatic fallback",
+    "paper_limit": "authors unreleased C++/HIP converter prevents bit-exact source parity; the exact-triangle Open3D protocol is frozen and auditable",
     "focused_smokes": [
       {
         "asset": "armadillo",
-        "resolution": 24,
+        "resolution": 32,
         "canonical": false,
-        "surface_point_method": "sample",
-        "output_sha256": "cbeeaaa5a63c78c432a41761622f59cac4d882ef8705c5397015d0b5007664f3",
-        "negative_fraction": 0.059244791666666664,
-        "max_neighbor_delta_over_spacing": 1.0476428866386414,
-        "status": "passed repeatedly with identical hash; output remains git-ignored"
+        "surface_point_method": "open3d",
+        "status": "passed exact-triangle sign and continuity smoke",
+        "output_sha256": "b82e50fac6b1e07b03420966eb1b7d54da004818f841de3f347b5ae2a0d78ee6",
+        "negative_fraction": 0.0618896484375,
+        "max_neighbor_delta_over_spacing": 0.9999938495457172
       }
-    ]
+    ],
+    "protocol_revision": "Replaced the initial 10M-point approximation after measured full-run cost and validation showed Open3D exact triangle distance was both more faithful and substantially faster. Eleven rays are required because three rays produced a rejected sign discontinuity on Lucy.",
+    "public_volumes": {
+      "armadillo": {
+        "shape": [
+          512,
+          512,
+          512
+        ],
+        "dtype": "float32",
+        "sign_convention": "negative_inside",
+        "negative_fraction": 0.06828153133392334,
+        "max_neighbor_delta_over_spacing": 1.0000309264287353,
+        "bytes": 536871040,
+        "sha256": "8c925ffbf9243c76fbcb08bd57593025698b0538e0e274e2b5f810b9bd8c6f36",
+        "provenance": "data/provenance/sdf/armadillo-512.json"
+      },
+      "lucy": {
+        "shape": [
+          512,
+          512,
+          512
+        ],
+        "dtype": "float32",
+        "sign_convention": "negative_inside",
+        "negative_fraction": 0.019937507808208466,
+        "max_neighbor_delta_over_spacing": 1.0000418722629547,
+        "bytes": 536871040,
+        "sha256": "cd5e292b78e74a47239d348d7e19e3beb9a9c0e36c9d93e82d8e767e1b241366",
+        "provenance": "data/provenance/sdf/lucy-512.json"
+      },
+      "thai-statue": {
+        "shape": [
+          512,
+          512,
+          512
+        ],
+        "dtype": "float32",
+        "sign_convention": "negative_inside",
+        "negative_fraction": 0.03609740734100342,
+        "max_neighbor_delta_over_spacing": 1.0047910555731505,
+        "bytes": 536871040,
+        "sha256": "87f64ba60815f49c9e317ba861ebd8648e4dd726817e3d86df4db9aa8ef51240",
+        "provenance": "data/provenance/sdf/thai-statue-512.json"
+      }
+    },
+    "requirements": {
+      "path": "data/requirements-preprocess.txt",
+      "sha256": "9579f46d57bd446893a0cff11304a5f32f3d6ff407d89c6db3285aaa10ea5ef5"
+    }
   },
   "validation": {
-    "manifest_and_loader_tests": "8 passed in tests/test_paper_data.py",
+    "manifest_and_loader_tests": "10 passed in tests/test_paper_data.py",
     "kodak_verify": "24/24 passed",
     "texture_verify": "18 sets / 78 maps passed",
     "public_sdf_verify": "3 archives / 3 extracted meshes passed",
     "dynamic_loader_smoke": "Paving Stones 070 loaded as 32x32x15; normal lengths remained within 1.8e-7 of unit length",
-    "canonical_sdf_dry_run": "512^3 deterministic 10M-point configuration validated without launching full preprocessing",
-    "sdf_continuity_smoke": "maximum adjacent delta was 1.048x grid spacing (limit 1.5x)"
+    "canonical_sdf_dry_run": "512^3 Open3D exact-triangle configuration validated and executed for all three public meshes",
+    "sdf_continuity_smoke": "maximum adjacent delta was 0.999994x grid spacing (limit 1.5x)",
+    "public_sdf_full": "Armadillo, Lucy, and Thai Statue 512^3 shapes, float32 dtype, negative-inside occupancy, continuity, file SHA-256, and provenance verified",
+    "sdf_continuity_full": {
+      "armadillo": 1.0000309264287353,
+      "lucy": 1.0000418722629547,
+      "thai-statue": 1.0047910555731505
+    }
   },
   "secrets_or_raw_data_committed": false
 }

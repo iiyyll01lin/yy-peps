@@ -498,8 +498,11 @@ def _verify_local_receipt(path: Path) -> None:
     receipt_path = path.with_suffix(path.suffix + ".acquisition.json")
     if not receipt_path.is_file():
         raise MissingDataError(f"missing local acquisition receipt: {receipt_path}")
-    with receipt_path.open("r", encoding="utf-8") as handle:
-        receipt = json.load(handle)
+    try:
+        with receipt_path.open("r", encoding="utf-8") as handle:
+            receipt = json.load(handle)
+    except json.JSONDecodeError as exc:
+        raise DataIntegrityError(f"{receipt_path}: invalid receipt JSON") from exc
     file_spec = receipt.get("file")
     if not isinstance(file_spec, dict):
         raise DataIntegrityError(f"{receipt_path}: malformed local receipt")

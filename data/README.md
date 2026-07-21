@@ -92,6 +92,7 @@ canonical paper tables.
 The default command follows `sdf.json` exactly:
 
 ```bash
+python -m pip install -r data/requirements-preprocess.txt
 python data/preprocess_sdf.py armadillo
 ```
 
@@ -99,31 +100,31 @@ It performs one shared normalization for all assets:
 
 1. subtract the axis-aligned bounding-box center;
 2. isotropically scale the largest extent to span `[-1,1]`;
-3. deterministically sample 10 million points on all mesh triangles and use
-   nearby surface normals for the sign (including occluded CT/bone surfaces);
-4. query an inclusive `512 x 512 x 512` grid in `zyx` storage order;
-5. store float32 distance in centered-domain units, negative inside;
-6. write atomically and emit a checksum-bearing provenance JSON.
+3. build an Open3D BVH over every source triangle and compute exact
+   point-to-triangle distance;
+4. classify inside/outside with eleven-ray parity voting, which avoids the
+   isolated sign failures observed on Lucy's documented topology defects;
+5. query an inclusive `512 x 512 x 512` grid in `zyx` storage order;
+6. store float32 distance in centered-domain units, negative inside;
+7. write atomically and emit a checksum-bearing provenance JSON.
 
-The implementation builds one surface point cloud, queries a parallel SciPy
-`cKDTree`, and writes z slabs through a NumPy memmap, so it does not allocate
-all query coordinates at once. There is no automatic sign/method fallback.
+The implementation queries `Open3D RaycastingScene` in z slabs and writes
+through a NumPy memmap, so it does not allocate all query coordinates at once.
+There is no automatic sign/method fallback. Legacy sampled/scan methods remain
+available only through explicit non-canonical overrides.
 
 A small algorithm smoke run must be explicitly marked non-canonical:
 
 ```bash
 python data/preprocess_sdf.py armadillo \
   --resolution 32 \
-  --surface-point-method sample \
-  --sample-point-count 200000 \
-  --normal-sample-count 3 \
   --allow-protocol-override
 ```
 
 The paper says its volumes were produced by an unreleased C++/HIP application.
-The checked-in `mesh-to-sdf` settings are a reproducible approximation, not a
-bit-exact reconstruction of that converter. Preserve this limitation in result
-reports.
+The checked-in exact-triangle Open3D protocol is reproducible and auditable, but
+is not a bit-exact reconstruction of that converter. Preserve this limitation
+in result reports.
 
 ## Licenses
 

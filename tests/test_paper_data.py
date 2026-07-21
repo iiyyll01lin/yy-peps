@@ -15,6 +15,7 @@ from data.download import (
     AccessRequiredError,
     _fetch_stonefish,
     _validate_archive_member,
+    _verify_local_receipt,
 )
 from data.manifest import (
     DataIntegrityError,
@@ -24,6 +25,8 @@ from data.manifest import (
     load_texture_set,
 )
 from data.preprocess_sdf import (
+    _Open3DTriangleSDF,
+    _verify_input_mesh,
     load_sdf_volume,
     normalize_mesh,
     sdf_asset_spec,
@@ -82,6 +85,8 @@ def test_checked_in_manifests_cover_paper_datasets() -> None:
     ]
     assert sdf["preprocessing"]["resolution"] == 512
     assert sdf["preprocessing"]["sign_convention"] == "negative_inside"
+    assert sdf["preprocessing"]["surface_point_method"] == "open3d"
+    assert sdf["preprocessing"]["ray_nsamples"] == 11
     stonefish = sdf_asset_spec("pitted-stonefish", sdf)
     assert stonefish["source"]["uid"] == "0cdc3d1419384fd78fd952dc251a3169"
     assert stonefish["source"]["face_count"] == 10_548_062
@@ -220,6 +225,28 @@ def test_mesh_normalization_is_centered_and_isotropic() -> None:
     assert transform["isotropic_scale"] == pytest.approx(0.25)
 
 
+def test_open3d_triangle_sdf_has_negative_inside_sign() -> None:
+    pytest.importorskip("open3d")
+    trimesh = pytest.importorskip("trimesh")
+    mesh = trimesh.creation.box(extents=(1.0, 1.0, 1.0))
+    backend = _Open3DTriangleSDF(mesh, workers=1, ray_nsamples=3)
+    query = np.array(
+        [
+            [0.0, 0.0, 0.0],
+            [1.0, 0.0, 0.0],
+            [0.5, 0.0, 0.0],
+        ],
+        dtype=np.float32,
+    )
+    sdf = backend.get_sdf_in_batches(
+        query,
+        use_depth_buffer=False,
+        sample_count=1,
+        batch_size=3,
+    )
+    np.testing.assert_allclose(sdf, (-0.5, 0.5, 0.0), atol=1e-6)
+
+
 def test_sdf_loader_requires_matching_provenance_checksum(tmp_path: Path) -> None:
     volume_path = tmp_path / "sdf.npy"
     provenance_path = tmp_path / "sdf.provenance.json"
@@ -271,6 +298,19 @@ def test_stonefish_requires_environment_token_or_manual_file(
     item = sdf_asset_spec("pitted-stonefish")
     with pytest.raises(AccessRequiredError, match="SKETCHFAB_OAUTH_TOKEN"):
         _fetch_stonefish(item, tmp_path)
+
+
+def test_malformed_restricted_receipt_is_rejected(tmp_path: Path) -> None:
+    mesh_path = tmp_path / "pitted_stonefish.glb"
+    mesh_path.write_bytes(b"not-a-real-glb")
+    receipt_path = mesh_path.with_suffix(".glb.acquisition.json")
+    receipt_path.write_text("{invalid", encoding="utf-8")
+    item = sdf_asset_spec("pitted-stonefish")
+
+    with pytest.raises(DataIntegrityError, match="invalid receipt JSON"):
+        _verify_local_receipt(mesh_path)
+    with pytest.raises(DataIntegrityError, match="invalid receipt JSON"):
+        _verify_input_mesh(item, mesh_path)
 
 
 def _synthetic_texture_manifest(maps: list[dict[str, object]]) -> dict[str, object]:

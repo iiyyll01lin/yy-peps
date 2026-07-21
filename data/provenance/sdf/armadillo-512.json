@@ -1,0 +1,143 @@
+{
+  "algorithm": {
+    "automatic_fallback": false,
+    "implementation": "Open3D RaycastingScene exact triangle distance",
+    "max_query_points": 1048576,
+    "normal_sample_count": 11,
+    "pyopengl_platform": "egl",
+    "query_workers": -1,
+    "ray_nsamples": 11,
+    "resolution": 512,
+    "sample_point_count": 10000000,
+    "scan_count": 100,
+    "scan_resolution": 400,
+    "seed": 0,
+    "sign_method": "ray_parity",
+    "surface_point_method": "open3d"
+  },
+  "asset_id": "armadillo",
+  "canonical_paper_protocol": true,
+  "finished_at_utc": "2026-07-21T19:13:43.892912+00:00",
+  "grid": {
+    "axis_order": "zyx",
+    "coordinate_mapping": "paper coordinates [0,1]^3 = (xyz + 1) / 2",
+    "distance_units": "normalized [-1,1] coordinate units",
+    "dtype": "float32",
+    "query_component_order": "xyz",
+    "sample_locations": "inclusive linspace(-1, 1, resolution)",
+    "shape": [
+      512,
+      512,
+      512
+    ],
+    "sign_convention": "negative_inside"
+  },
+  "input": {
+    "bytes": 6919168,
+    "checksum": {
+      "algorithm": "sha256",
+      "value": "483563fca686b66168e1e45339c50e71a5dc8a526a04a545a16b9237d5eaa023"
+    },
+    "checksum_source": "checked-in manifest",
+    "mesh": {
+      "body_count": 1,
+      "faces": 345944,
+      "topology_check": "completed",
+      "vertices": 172974,
+      "watertight": true,
+      "winding_consistent": true
+    },
+    "path": "data/raw/sdf/meshes/Armadillo.ply"
+  },
+  "known_limit": "The paper states that an unreleased C++/HIP converter was used; Open3D exact triangle distance with ray-parity signs is an auditable reproduction protocol, not a bit-exact implementation of that converter.",
+  "normalization": {
+    "center_subtracted": [
+      5.7220458984375e-06,
+      21.41944122314453,
+      -0.000255584716796875
+    ],
+    "formula": "p_normalized = (p - bbox_center) * isotropic_scale",
+    "isotropic_scale": 0.013216852293366688,
+    "method": "axis_aligned_bounding_box",
+    "normalized_domain": [
+      -1.0,
+      1.0
+    ],
+    "original_bounds": [
+      [
+        -63.5001220703125,
+        -54.241539001464844,
+        -57.714515686035156
+      ],
+      [
+        63.5001335144043,
+        97.0804214477539,
+        57.71400451660156
+      ]
+    ],
+    "original_extents": [
+      127.0002555847168,
+      151.32196044921875,
+      115.42852020263672
+    ]
+  },
+  "output": {
+    "bytes": 536871040,
+    "checksum": {
+      "algorithm": "sha256",
+      "value": "8c925ffbf9243c76fbcb08bd57593025698b0538e0e274e2b5f810b9bd8c6f36"
+    },
+    "continuity_limit_over_spacing": 1.5,
+    "grid_spacing": 0.003913894324853229,
+    "max_neighbor_delta": 0.003914015367627144,
+    "max_neighbor_delta_over_spacing": 1.0000309264287353,
+    "maximum": 1.149961233139038,
+    "minimum": -0.33928510546684265,
+    "negative_fraction": 0.06828153133392334,
+    "path": "data/processed/sdf/armadillo/sdf_512.npy",
+    "positive_fraction": 0.9317184463143349
+  },
+  "paper_name": "Armadillo",
+  "paper_protocol": {
+    "automatic_fallback": false,
+    "axis_order": "zyx",
+    "backend_dependency": "open3d==0.19.0",
+    "centered_query_domain": [
+      -1.0,
+      1.0
+    ],
+    "coordinate_domain": [
+      0.0,
+      1.0
+    ],
+    "distance_units": "normalized [-1,1] coordinate units",
+    "dtype": "float32",
+    "legacy_backend_parameters": "scan_count, scan_resolution, sample_point_count, normal_sample_count, and seed are retained only for explicit non-canonical scan/sample overrides; they do not affect the Open3D canonical path.",
+    "normal_sample_count": 11,
+    "normalization": "Subtract axis-aligned bounding-box center; isotropically scale the largest extent to 2.",
+    "paper_ambiguity": "The authors state that an unreleased C++/HIP converter produced 512^3 values. Open3D exact point-to-triangle distance with eleven-ray parity voting is a deterministic, auditable approximation that remains robust to Lucy's documented topology defects, but is not a bit-exact reconstruction of that converter.",
+    "query_component_order": "xyz",
+    "ray_nsamples": 11,
+    "resolution": 512,
+    "sample_locations": "inclusive linspace(-1, 1, 512)",
+    "sample_point_count": 10000000,
+    "scan_count": 100,
+    "scan_resolution": 400,
+    "seed": 0,
+    "sign_convention": "negative_inside",
+    "sign_method": "ray_parity",
+    "surface_point_method": "open3d"
+  },
+  "raw_volume_git_ignored": true,
+  "schema_version": 1,
+  "software": {
+    "mesh-to-sdf": "0.0.15",
+    "numpy": "2.4.4",
+    "open3d": "0.19.0",
+    "python": "3.12.3",
+    "scipy": "1.18.0",
+    "trimesh": "4.12.2"
+  },
+  "started_at_utc": "2026-07-21T19:13:13.182179+00:00",
+  "tracked_provenance_copy": true
+}
