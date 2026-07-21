@@ -14,15 +14,33 @@ pink_peps leads on all three (LSD 0.51 vs grid 0.82).
 ## W08 · Neural texture compression (main track) / 神經材質壓縮(主線)
 
 **English.** A PBR material is a 9-channel signal (albedo, normal, roughness,
-metalness, AO). We fit an NTC-style grid baseline vs Grid-PEPS vs NTC_PEPS on four
-AmbientCG sets spanning the frequency spectrum. NTC_PEPS has the best mean PSNR;
-the gain is largest on high-frequency **MetalPlates013** (the exact set NVIDIA
-RTXNTC demos) and smallest on low-frequency wood — the honest picture of Table 2.
+metalness, AO). We fit four models on AmbientCG sets spanning the frequency
+spectrum: a single-grid NTC baseline, an **RTXNTC-equivalent** (multi-resolution
+latent grid + small MLP, mirroring RTXNTC's inference structure), Grid-PEPS, and
+NTC_PEPS. NTC_PEPS has the best mean PSNR; the gain is largest on high-frequency
+**MetalPlates013** (the exact set NVIDIA RTXNTC demos) and smallest on
+low-frequency wood — the honest picture of Table 2.
 
-**繁體中文.** PBR 材質是 9 通道訊號。用 NTC 風格基線 vs Grid-PEPS vs NTC_PEPS 在四組
-涵蓋頻率光譜的 AmbientCG 材質上擬合。NTC_PEPS 平均 PSNR 最佳;增益在高頻
-**MetalPlates013**(NVIDIA RTXNTC 示範的同一組)最大、在低頻木頭最小——Table 2 的
-誠實圖像。
+> **On the RTXNTC comparison (honest note).** The official NVIDIA RTXNTC SDK
+> cannot be built on our AMD hardware: its compressor hard-requires the CUDA
+> Toolkit (`find_package(CUDAToolkit REQUIRED)` in `tools/cli/CMakeLists.txt`)
+> and its inference path needs Vulkan/DX12 Cooperative Vector with an NVIDIA
+> preview driver. Box B has no NVIDIA GPU, CUDA, or nvcc. We therefore compare
+> against a faithful **PyTorch RTXNTC-equivalent** (`apps/texture/rtxntc.py`)
+> that reproduces the same architecture — multi-res latents, small per-texel MLP,
+> and an int8 path (W10) standing in for RTXNTC's cooperative-vector inference.
+
+**繁體中文.** PBR 材質是 9 通道訊號。在涵蓋頻率光譜的 AmbientCG 材質上擬合四種模型:
+單解析度 NTC 基線、**RTXNTC 等價**(多解析度 latent grid + 小 MLP,對應 RTXNTC 推論
+結構)、Grid-PEPS、NTC_PEPS。NTC_PEPS 平均 PSNR 最佳;增益在高頻 **MetalPlates013**
+(NVIDIA RTXNTC 示範的同一組)最大、在低頻木頭最小——Table 2 的誠實圖像。
+
+> **關於 RTXNTC 對照(誠實註記).** 官方 NVIDIA RTXNTC SDK 在本 AMD 硬體**無法建置**:
+> 壓縮器硬相依 CUDA Toolkit(`tools/cli/CMakeLists.txt` 的
+> `find_package(CUDAToolkit REQUIRED)`),推論路徑需 Vulkan/DX12 Cooperative Vector
+> 加 NVIDIA 預覽驅動。Box B 無 NVIDIA GPU、無 CUDA、無 nvcc。故改與忠實的
+> **PyTorch RTXNTC 等價實作**(`apps/texture/rtxntc.py`)對照,重現相同架構——多解析度
+> latent、小型逐 texel MLP、以 int8 路徑(W10)對應 RTXNTC 的 cooperative-vector 推論。
 
 ## W09 · Signed distance functions / 有號距離函數
 

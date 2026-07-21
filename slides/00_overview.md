@@ -23,14 +23,14 @@ A one-semester course on real AMD silicon
 # Why this course / 為何開這門課
 
 - **Reproduce** AMD's PEPS paper end-to-end (no official code exists)
-- **Benchmark** against NVIDIA RTXNTC on the same textures
+- **Benchmark** vs an RTXNTC-equivalent (official RTXNTC is CUDA-only)
 - **Extend** with a quantization study the paper omits
 - **Land** on RDNA4 HIP/WMMA kernels — real hardware
 
 <br>
 
 - **重現** AMD PEPS 論文(無官方碼)
-- **對照** NVIDIA RTXNTC(相同材質)
+- **對照** RTXNTC 等價 baseline(官方為 CUDA-only)
 - **延伸** 論文未做的量化研究
 - **落地** RDNA4 HIP/WMMA kernel — 真實硬體
 

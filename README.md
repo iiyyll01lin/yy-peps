@@ -2,12 +2,14 @@
 # AMD 上的 PEPS — 課程與重現專案
 
 A university-semester course that reproduces AMD's **PEPS** (Positional Encoding
-Projected Sampling), benchmarks it against NVIDIA's **RTXNTC**, adds a
+Projected Sampling), benchmarks it against an **RTXNTC-equivalent** baseline
+(NVIDIA's official RTXNTC is CUDA-only and unbuildable on AMD — see W08), adds a
 quantization study the original paper omits, and culminates in an RDNA4
 HIP/WMMA kernel chapter.
 
-一門大學一學期的課程,完整重現 AMD 的 **PEPS** 論文、與 NVIDIA **RTXNTC** 對照、
-補上原論文刻意留白的量化研究,並以 RDNA4 HIP/WMMA kernel 章節收尾。
+一門大學一學期的課程,完整重現 AMD 的 **PEPS** 論文、與 **RTXNTC 等價** baseline 對照
+(官方 RTXNTC 為 CUDA-only,在 AMD 上無法建置——見 W08)、補上原論文刻意留白的量化
+研究,並以 RDNA4 HIP/WMMA kernel 章節收尾。
 
 ---
 
