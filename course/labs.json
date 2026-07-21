@@ -1,0 +1,397 @@
+{
+  "schema_version": 1,
+  "policy": {
+    "result_status_required": true,
+    "allowed_profiles": [
+      "course_fast",
+      "paper_exact"
+    ],
+    "note": "Passing a lab checks execution evidence and protocol invariants; it never requires PEPS to win."
+  },
+  "weeks": [
+    {
+      "id": "W01",
+      "topic": "INRs and spectral bias",
+      "topic_zh": "INR 與頻譜偏差",
+      "notebook": "notebooks/W01_intro_inr.ipynb",
+      "readings": [
+        {
+          "title": "On the Spectral Bias of Neural Networks",
+          "url": "https://proceedings.mlr.press/v97/rahaman19a.html",
+          "required": true
+        }
+      ],
+      "success_criteria": [
+        {
+          "id": "finite-training",
+          "description": "Record finite initial and final losses from one seeded run; final loss must be lower.",
+          "evidence": "executed notebook output"
+        },
+        {
+          "id": "source-smoke",
+          "description": "Every Python cell parses and compiles.",
+          "evidence": "python scripts/validate_course.py --notebook W01"
+        }
+      ],
+      "budget": "course-fast"
+    },
+    {
+      "id": "W02",
+      "topic": "Positional encoding and affine equivalence",
+      "topic_zh": "位置編碼與仿射等價",
+      "notebook": "notebooks/W02_positional_encoding.ipynb",
+      "readings": [
+        {
+          "title": "Fourier Features Let Networks Learn High Frequency Functions",
+          "url": "https://proceedings.neurips.cc/paper/2020/hash/55053683268957697aa39fba6f231c68-Abstract.html",
+          "required": true
+        }
+      ],
+      "success_criteria": [
+        {
+          "id": "affine-residual",
+          "description": "The identity-PEPS to APE affine-map residual is finite and at most 1e-5.",
+          "evidence": "pytest -q tests/test_paper_equations.py::test_identity_encoder_peps_is_exact_affine_ape_equivalent"
+        },
+        {
+          "id": "source-smoke",
+          "description": "Every Python cell parses and compiles.",
+          "evidence": "python scripts/validate_course.py --notebook W02"
+        }
+      ],
+      "budget": "quick"
+    },
+    {
+      "id": "W03",
+      "topic": "Grid bottlenecks and experiment profiles",
+      "topic_zh": "Grid 瓶頸與實驗設定",
+      "notebook": "notebooks/W03_grid_bottleneck.ipynb",
+      "readings": [
+        {
+          "title": "PEPS paper, image-representation experiment",
+          "url": "https://doi.org/10.1145/3806062",
+          "required": true
+        }
+      ],
+      "success_criteria": [
+        {
+          "id": "profile-labelled",
+          "description": "The output names course_fast or paper_exact and records seed, resolved config, data checksum, and raw rows.",
+          "evidence": "run manifest plus CSV"
+        },
+        {
+          "id": "profile-contract",
+          "description": "Stable profiles expose their protocol without mutation.",
+          "evidence": "pytest -q tests/test_profiles.py"
+        }
+      ],
+      "budget": "course-fast"
+    },
+    {
+      "id": "W04",
+      "topic": "PEPS wrapper and Equation 8",
+      "topic_zh": "PEPS wrapper 與式 8",
+      "notebook": "notebooks/W04_peps_wrapper.ipynb",
+      "readings": [
+        {
+          "title": "PEPS paper, method section",
+          "url": "https://doi.org/10.1145/3806062",
+          "required": true
+        }
+      ],
+      "success_criteria": [
+        {
+          "id": "wrapper-invariants",
+          "description": "Point order, shared-encoder gradients, delta handling, and affine equivalence pass.",
+          "evidence": "pytest -q tests/test_paper_equations.py -k 'layout or gradients or delta or affine'"
+        },
+        {
+          "id": "source-smoke",
+          "description": "Every Python cell parses and compiles.",
+          "evidence": "python scripts/validate_course.py --notebook W04"
+        }
+      ],
+      "budget": "quick"
+    },
+    {
+      "id": "W05",
+      "topic": "Grid-PEPS image fit",
+      "topic_zh": "Grid-PEPS 影像擬合",
+      "notebook": "notebooks/W05_grid_peps_image.ipynb",
+      "readings": [
+        {
+          "title": "PEPS paper, Kodak protocol and Table 1",
+          "url": "https://doi.org/10.1145/3806062",
+          "required": true
+        }
+      ],
+      "success_criteria": [
+        {
+          "id": "matched-comparison",
+          "description": "Grid and Grid-PEPS use the same image, seed set, training budget, metric implementation, and a documented parameter-matching tolerance.",
+          "evidence": "run manifest plus per-method raw rows"
+        },
+        {
+          "id": "no-win-gate",
+          "description": "Both metrics are finite; no grade depends on which model wins.",
+          "evidence": "generated CSV"
+        }
+      ],
+      "budget": "course-fast"
+    },
+    {
+      "id": "W06",
+      "topic": "Pink-PEPS allocation",
+      "topic_zh": "Pink-PEPS 配置",
+      "notebook": "notebooks/W06_pink_peps.ipynb",
+      "readings": [
+        {
+          "title": "PEPS paper, Pink-PEPS section and Algorithm 1",
+          "url": "https://doi.org/10.1145/3806062",
+          "required": true
+        },
+        {
+          "title": "Modelling the Power Spectra of Natural Images",
+          "url": "https://doi.org/10.1016/0042-6989(96)00002-8",
+          "required": false
+        }
+      ],
+      "success_criteria": [
+        {
+          "id": "allocation-invariants",
+          "description": "The paper worked example, circular wrap, and whole-grid gradient checks pass.",
+          "evidence": "pytest -q tests/test_paper_equations.py -k 'pink or circular'"
+        },
+        {
+          "id": "empirical-status",
+          "description": "Any quality or savings claim is marked legacy-unverified until a new run manifest exists.",
+          "evidence": "results/manifest.json"
+        }
+      ],
+      "budget": "course-fast"
+    },
+    {
+      "id": "W07",
+      "topic": "Image protocol and perceptual metrics",
+      "topic_zh": "影像協定與感知指標",
+      "notebook": "notebooks/W07_image_table1.ipynb",
+      "readings": [
+        {
+          "title": "FLIP: A Difference Evaluator for Alternating Images",
+          "url": "https://doi.org/10.1145/3406183",
+          "required": true
+        },
+        {
+          "title": "Image Quality Assessment: From Error Visibility to SSIM",
+          "url": "https://doi.org/10.1109/TIP.2003.819861",
+          "required": false
+        }
+      ],
+      "success_criteria": [
+        {
+          "id": "dataset-coverage",
+          "description": "paper_exact has 24 checksum-verified Kodak images; a subset must be labelled course_fast.",
+          "evidence": "data manifest and run manifest"
+        },
+        {
+          "id": "raw-metrics",
+          "description": "PSNR, windowed SSIM, FLIP, LPIPS, and spectral metric versions are recorded per image.",
+          "evidence": "raw per-image CSV"
+        }
+      ],
+      "budget": "paper-exact"
+    },
+    {
+      "id": "W08",
+      "topic": "Neural texture compression protocol",
+      "topic_zh": "神經材質壓縮協定",
+      "notebook": "notebooks/W08_texture_ntc.ipynb",
+      "readings": [
+        {
+          "title": "Random-Access Neural Compression of Material Textures",
+          "url": "https://doi.org/10.1145/3592407",
+          "required": true
+        },
+        {
+          "title": "PEPS paper, texture-compression section",
+          "url": "https://doi.org/10.1145/3806062",
+          "required": true
+        }
+      ],
+      "success_criteria": [
+        {
+          "id": "provenance",
+          "description": "Every map has provider, asset ID, license, dimensions, color-space/normal convention, and checksum evidence.",
+          "evidence": "data/manifests/textures.json and downloader verification"
+        },
+        {
+          "id": "baseline-language",
+          "description": "A local proxy is labelled proxy and is not called RTXNTC-equivalent without official parity evidence.",
+          "evidence": "notebook narrative and result metadata"
+        }
+      ],
+      "budget": "paper-exact"
+    },
+    {
+      "id": "W09",
+      "topic": "Signed-distance-function protocol",
+      "topic_zh": "有號距離函數協定",
+      "notebook": "notebooks/W09_sdf.ipynb",
+      "readings": [
+        {
+          "title": "Local Positional Encoding for Multi-Layer Perceptrons",
+          "url": "https://doi.org/10.2312/pg.20231273",
+          "required": true
+        },
+        {
+          "title": "PEPS paper, SDF section",
+          "url": "https://doi.org/10.1145/3806062",
+          "required": true
+        }
+      ],
+      "success_criteria": [
+        {
+          "id": "asset-and-volume-provenance",
+          "description": "All four paper assets and derived 512-cubed volumes have source and checksum receipts; restricted licenses remain outside Git.",
+          "evidence": "data manifest, local acquisition receipts, and run manifest"
+        },
+        {
+          "id": "protocol-labelled",
+          "description": "Loss, sign convention, axis order, sampling, seeds, and per-instance IoU are explicit.",
+          "evidence": "run manifest plus raw CSV"
+        }
+      ],
+      "budget": "paper-exact"
+    },
+    {
+      "id": "W10",
+      "topic": "Quantization evidence",
+      "topic_zh": "量化證據",
+      "notebook": "notebooks/W10_quantization.ipynb",
+      "readings": [
+        {
+          "title": "Quantization and Training of Neural Networks for Efficient Integer-Arithmetic-Only Inference",
+          "url": "https://doi.org/10.1109/CVPR.2018.00068",
+          "required": true
+        }
+      ],
+      "success_criteria": [
+        {
+          "id": "storage-accounting",
+          "description": "Encoded bits include every parameter, scale, zero-point or metadata field used by the scheme.",
+          "evidence": "pytest -q tests/test_quantization.py"
+        },
+        {
+          "id": "causal-restraint",
+          "description": "Multi-seed observations are separated from untested causal explanations.",
+          "evidence": "run manifest, raw rows, and limitations paragraph"
+        }
+      ],
+      "budget": "course-fast"
+    },
+    {
+      "id": "W11",
+      "topic": "HIP parity and workload definition",
+      "topic_zh": "HIP 對拍與工作負載",
+      "notebook": "notebooks/W11_hip.ipynb",
+      "readings": [
+        {
+          "title": "HIP programming documentation",
+          "url": "https://rocm.docs.amd.com/projects/HIP/en/latest/",
+          "required": true
+        }
+      ],
+      "success_criteria": [
+        {
+          "id": "cpu-reference",
+          "description": "The fixture and PyTorch reference agree before an optional HIP binary is used.",
+          "evidence": "pytest -q tests/test_hip_parity.py::test_integrated_features_match_projector_grid_and_aggregator tests/test_hip_parity.py::test_complete_three_hidden_layer_reference_matches_mlp_module"
+        },
+        {
+          "id": "hardware-gate",
+          "description": "GPU evidence names ISA, ROCm version, command, workload, warmup, repetitions, and parity tolerance; unavailable hardware is a documented skip.",
+          "evidence": "hardware receipt or explicit skip reason"
+        }
+      ],
+      "budget": "amd-optional"
+    },
+    {
+      "id": "W12",
+      "topic": "WMMA measurement",
+      "topic_zh": "WMMA 量測",
+      "notebook": "notebooks/W12_hip_wmma.ipynb",
+      "readings": [
+        {
+          "title": "RDNA 4 Instruction Set Architecture Reference Guide",
+          "url": "https://www.amd.com/content/dam/amd/en/documents/radeon-tech-docs/instruction-set-architectures/rdna4-instruction-set-architecture.pdf",
+          "required": true
+        }
+      ],
+      "success_criteria": [
+        {
+          "id": "reference-math",
+          "description": "fp16 and integer reference kernels pass finite and exactness/tolerance checks on CPU.",
+          "evidence": "pytest -q tests/test_hip_parity.py::test_wmma_fp16_ref_matches_torch_half_matmul tests/test_hip_parity.py::test_wmma_int8_ref_is_exact_and_bounded"
+        },
+        {
+          "id": "matched-workload",
+          "description": "No comparison to the paper is made unless the complete fused workload, output size, precision, and timing method match.",
+          "evidence": "hardware receipt and limitations paragraph"
+        }
+      ],
+      "budget": "amd-optional"
+    },
+    {
+      "id": "W13",
+      "topic": "Capstone proposal and verified baseline",
+      "topic_zh": "專題提案與已驗證基線",
+      "notebook": "notebooks/W13_project_kickoff.ipynb",
+      "readings": [
+        {
+          "title": "ACM Artifact Review and Badging",
+          "url": "https://www.acm.org/publications/policies/artifact-review-and-badging-current",
+          "required": true
+        }
+      ],
+      "success_criteria": [
+        {
+          "id": "nonblank-proposal",
+          "description": "Track, hypothesis, profile, metric, baseline value, seed, and evidence path are nonblank and finite where numeric.",
+          "evidence": "python scripts/validate_submission.py <completed-submission.json> --kind capstone"
+        },
+        {
+          "id": "verified-baseline",
+          "description": "The baseline is rerun under the selected profile rather than copied from a legacy CSV.",
+          "evidence": "capstone submission manifest"
+        }
+      ],
+      "budget": "project"
+    },
+    {
+      "id": "W14",
+      "topic": "Capstone evidence and communication",
+      "topic_zh": "專題證據與溝通",
+      "notebook": "notebooks/W14_project_showcase.ipynb",
+      "readings": [
+        {
+          "title": "Good Enough Practices in Scientific Computing",
+          "url": "https://doi.org/10.1371/journal.pcbi.1005510",
+          "required": true
+        }
+      ],
+      "success_criteria": [
+        {
+          "id": "complete-submission",
+          "description": "Baseline and extension rows are finite and nonblank; notebook, CSV, slide, run manifest, and limitations all exist.",
+          "evidence": "python scripts/validate_submission.py <submission.json> --kind capstone"
+        },
+        {
+          "id": "honest-conclusion",
+          "description": "The conclusion follows the measured result, including a null or negative result.",
+          "evidence": "limitations and conclusion fields in the submission manifest"
+        }
+      ],
+      "budget": "project"
+    }
+  ]
+}

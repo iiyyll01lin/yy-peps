@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "submission_kind": "midterm",
+  "status": "draft",
+  "student_id": "REPLACE_ME",
+  "profile": "course_fast",
+  "git_commit": "REPLACE_ME",
+  "seeds": [
+    0
+  ],
+  "data_checksums": [
+    {
+      "asset": "kodim01.png",
+      "sha256": "REPLACE_ME"
+    }
+  ],
+  "matched_conditions": [
+    "same input data",
+    "same seeds",
+    "same optimizer and step budget",
+    "documented parameter-budget tolerance"
+  ],
+  "artifacts": {
+    "notebook": "REPLACE_ME.ipynb",
+    "results_csv": "results/midterm_REPLACE_ME.csv",
+    "run_manifest": "results/runs/REPLACE_ME.json"
+  },
+  "csv_contract": {
+    "required_columns": [
+      "task",
+      "method",
+      "seed",
+      "metric",
+      "value",
+      "profile",
+      "status"
+    ],
+    "numeric_columns": [
+      "seed",
+      "value"
+    ],
+    "minimum_rows": 4
+  },
+  "conclusion": "REPLACE_ME",
+  "limitations": "REPLACE_ME"
+}

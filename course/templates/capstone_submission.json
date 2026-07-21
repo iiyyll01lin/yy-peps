@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "submission_kind": "capstone",
+  "status": "draft",
+  "student_id": "REPLACE_ME",
+  "track": "A",
+  "profile": "course_fast",
+  "git_commit": "REPLACE_ME",
+  "hypothesis": "REPLACE_ME",
+  "primary_metric": "REPLACE_ME",
+  "seeds": [
+    0
+  ],
+  "data_checksums": [
+    {
+      "asset": "REPLACE_ME",
+      "sha256": "REPLACE_ME"
+    }
+  ],
+  "baseline": {
+    "label": "REPLACE_ME",
+    "value": "REPLACE_ME",
+    "units": "REPLACE_ME",
+    "source": "rerun"
+  },
+  "extension": {
+    "label": "REPLACE_ME",
+    "value": "REPLACE_ME",
+    "units": "REPLACE_ME"
+  },
+  "artifacts": {
+    "notebook": "REPLACE_ME.ipynb",
+    "results_csv": "results/capstone_REPLACE_ME.csv",
+    "run_manifest": "results/runs/REPLACE_ME.json",
+    "slide": "slides/06_capstone_REPLACE_ME.md"
+  },
+  "csv_contract": {
+    "required_columns": [
+      "stage",
+      "metric",
+      "value",
+      "units",
+      "profile",
+      "seed",
+      "status"
+    ],
+    "numeric_columns": [
+      "value",
+      "seed"
+    ],
+    "minimum_rows": 2
+  },
+  "conclusion": "REPLACE_ME",
+  "limitations": "REPLACE_ME"
+}

@@ -1,13 +1,20 @@
 # Syllabus / 教學大綱
 
-**PEPS on AMD — reproducing Positional Encoding Projected Sampling**
-**AMD 上的 PEPS — 重現位置編碼投影取樣**
+**PEPS on AMD — studying Positional Encoding Projected Sampling**
+**AMD 上的 PEPS — 研讀位置編碼投影取樣**
 
 12 teaching weeks + 2 project weeks. Each week: one concept lecture + one runnable
 lab notebook + reading. Everything builds one master repo.
 
 12 教學週 + 2 專題週。每週:一堂概念講授 + 一堂可跑實作 notebook + 指定閱讀。
 全部堆進同一個母 repo。
+
+This is an educational reimplementation with separate `course_fast` and
+`paper_exact` protocols. Existing result CSVs remain `legacy-unverified` until
+rerun with complete manifests.
+
+本 repo 是教學型重實作,明確區分 `course_fast` 與 `paper_exact`;既有結果 CSV 在附完整
+manifest 重跑前皆為 `legacy-unverified`。
 
 ## Hardware / 硬體
 Two AMD boxes, merged into one git history:
@@ -29,16 +36,27 @@ Two AMD boxes, merged into one git history:
 | W10 | Quantization study (original) / 量化研究(原創) | `W10_quantization.ipynb` |
 | W11 | PyTorch -> HIP / HIP 移植 | `W11_hip.ipynb` |
 | W12 | RDNA4 WMMA / RDNA4 WMMA | `W12_hip_wmma.ipynb` |
-| W13-14 | Project weeks / 專題週 | student choice |
+| W13 | Project kickoff / 專題起跑 | `W13_project_kickoff.ipynb` |
+| W14 | Project showcase / 專題成果展 | `W14_project_showcase.ipynb` |
 
 ## Assessment / 評量
-Weekly labs; a mid-term reproduction milestone (Fig. 5 + Table 1); a final project
-extending PEPS or the quantization study.
+Weekly labs; a matched-evidence midterm (Fig. 5 + Table 1); and a final
+**capstone** (W13–W14). The capstone has
+**four concrete tracks** (short 3D video / calibration or QAT / new aggregator /
+end-to-end runtime optimization), each shipping a validated notebook, results,
+run/submission manifests, and one slide, graded by a shared rubric. Full brief,
+tracks, and rubric: `06_capstone.md`. Midterm details: `08_midterm.md`.
 
-每週實作;期中重現里程碑(Fig.5 + Table 1);期末專題(延伸 PEPS 或量化研究)。
+每週實作;期中交付 Fig.5 + Table 1 的公平證據;期末**專題**(W13–W14)有
+**四條具體軌道**(3D 短片 / 校準或 QAT / 新聚合器 /
+端到端效能優化),每條交付通過驗證的 notebook、results、run/submission manifest
+與一張投影片,依共用評分表評分。完整說明見 `06_capstone.md` 與 `08_midterm.md`。
 
-## Reproduction targets / 重現目標
-See `../results/` and the plan's §8 table. Each figure/table has a success
-criterion checked by the corresponding week's lab.
+## Readings and success criteria / 閱讀與成功門檻
 
-見 `../results/` 與計畫 §8 表。每個圖表都有對應週次實作檢驗的成功標準。
+The required/optional reading, runtime class, and evidence-based success
+criteria for every week are in `07_readings_and_labs.md`; the machine-readable
+source is `../course/labs.json`.
+
+每週必讀/選讀、時間分級與證據式成功門檻見 `07_readings_and_labs.md`;機器可讀來源為
+`../course/labs.json`。
