@@ -1,8 +1,10 @@
-"""RTXNTC-equivalent baseline (PyTorch) — the honest AMD substitute.
+"""Unverified RTXNTC-inspired proxy retained for the course track.
 
-繁體中文:RTXNTC 對照 baseline。README 主打「對照 NVIDIA RTXNTC」,但官方
-RTXNTC 在本 AMD 硬體上**無法建置**(spike 結論,見下),故本檔提供論文架構等價的
-PyTorch 重實作,讓 W08 仍能做三方對照(grid / Grid-PEPS / RTXNTC-equivalent)。
+This module is *not* an RTXNTC-equivalent implementation. It only shares the
+broad idea of multi-resolution latent grids followed by a small MLP; it does
+not reproduce the official codec, latent quantization, network inputs,
+training, mip handling, or inference math. It must be labelled ``proxy`` in
+artifacts and is excluded from paper-exact Table 2.
 
 ========================================================================
 RTXNTC build spike (Box B, RDNA4 gfx1201, ROCm 7.2.3) — 結論:不可建置
@@ -16,13 +18,11 @@ Box B 現況:無 NVIDIA GPU、無 /usr/local/cuda、無 nvcc(lspci 僅見 AMD RD
 → 依計畫 fallback 到本等價實作,並在 docs 誠實標註。
 ========================================================================
 
-RTXNTC 的推論架構(對照本檔重實作的對應):
+The proxy components are:
   1. 多解析度 latent 網格(NTC 的壓縮表示)  -> MultiResGridEncoder
   2. 小 MLP 解碼器(逐 texel 推論)          -> peps.MLP
   3. int8 cooperative-vector 硬體推論路徑    -> quant/ptq.py 的 int8 模擬
-本檔把這三者組成一個「NTC 風格」模型,與 Grid-PEPS 在相同參數預算下對照。
-與 apps/texture/build.py 的 build_ntc_baseline(單解析度 grid)不同:此處用
-多解析度 latent，更貼近 RTXNTC 的實際壓縮表示。
+These similarities are insufficient to establish parity with RTXNTC.
 """
 
 from __future__ import annotations
@@ -35,20 +35,15 @@ from peps.encoders.multires import MultiResGridEncoder
 OUT_CHANNELS = 9  # PBR bundle: albedo(3)+normal(3)+rough+metal+ao
 
 
-def build_rtxntc_equiv(
+def build_rtxntc_proxy(
     base_resolution: int = 64,
     n_levels: int = 4,
     per_level_feature: int = 4,
     per_level_scale: float = 2.0,
     hidden_dim: int = 64,
-    num_layers: int = 3,
+    num_layers: int = 4,
 ):
-    """RTXNTC-equivalent: multi-resolution latent grid -> small MLP -> 9ch.
-
-    Mirrors RTXNTC's inference structure (compressed multi-res latents + a small
-    per-texel MLP). Quantize with ``peps.quant.ptq`` to emulate the int8
-    cooperative-vector path. Returns ``(model, param_count)``.
-    """
+    """Build the unverified multi-grid course proxy."""
     enc = MultiResGridEncoder(
         dim=2,
         base_resolution=base_resolution,
@@ -59,3 +54,8 @@ def build_rtxntc_equiv(
     mlp = MLP(enc.feature_dim, OUT_CHANNELS, hidden_dim, num_layers)
     model = nn.Sequential(enc, mlp)
     return model, sum(p.numel() for p in model.parameters())
+
+
+# Backward-compatible import for old notebooks. New code and all displayed
+# labels must use ``build_rtxntc_proxy`` / ``rtxntc_proxy``.
+build_rtxntc_equiv = build_rtxntc_proxy

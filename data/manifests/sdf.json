@@ -1,0 +1,221 @@
+{
+  "schema_version": 1,
+  "kind": "sdf_dataset",
+  "dataset_id": "peps-paper-four-sdf",
+  "paper": {
+    "title": "PEPS: Positional Encoding Projected Sampling -- Extended",
+    "arxiv": "2604.24167v1",
+    "section": "7 and Appendix E",
+    "instances": [
+      "Lucy",
+      "Pitted Stonefish",
+      "Thai Statue",
+      "Armadillo"
+    ]
+  },
+  "preprocessing": {
+    "resolution": 512,
+    "coordinate_domain": [
+      0.0,
+      1.0
+    ],
+    "centered_query_domain": [
+      -1.0,
+      1.0
+    ],
+    "axis_order": "zyx",
+    "query_component_order": "xyz",
+    "sample_locations": "inclusive linspace(-1, 1, 512)",
+    "normalization": "Subtract axis-aligned bounding-box center; isotropically scale the largest extent to 2.",
+    "distance_units": "normalized [-1,1] coordinate units",
+    "sign_convention": "negative_inside",
+    "dtype": "float32",
+    "surface_point_method": "sample",
+    "sign_method": "normal",
+    "scan_count": 100,
+    "scan_resolution": 400,
+    "sample_point_count": 10000000,
+    "normal_sample_count": 11,
+    "seed": 0,
+    "automatic_fallback": false,
+    "paper_ambiguity": "The authors state that an unreleased C++/HIP converter produced 512^3 values. These explicit deterministic 10M-point mesh-to-sdf settings are a reproducible approximation, not a bit-exact reconstruction of that converter. Direct surface sampling is used so occluded CT/bone surfaces are not omitted by visibility scans."
+  },
+  "assets": [
+    {
+      "id": "lucy",
+      "paper_name": "Lucy",
+      "access": "public",
+      "canonical": true,
+      "source": {
+        "provider": "Stanford 3D Scanning Repository",
+        "page_url": "https://graphics.stanford.edu/data/3Dscanrep/3Dscanrep.html",
+        "reconstruction": "VRIP at 0.5 mm with hole filling"
+      },
+      "license": {
+        "name": "Stanford 3D Scanning Repository research/non-commercial terms",
+        "url": "https://graphics.stanford.edu/data/3Dscanrep/3Dscanrep.html",
+        "spdx": null,
+        "requirements": "Credit Stanford Computer Graphics Laboratory; research and free redistribution only; no commercial/product use without permission. Lucy and Thai Statue must be used in good taste and not animated, morphed, destructively simulated, or Boolean-modified."
+      },
+      "archive": {
+        "url": "https://graphics.stanford.edu/data/3Dscanrep/lucy.tar.gz",
+        "local_path": "sdf/archives/lucy.tar.gz",
+        "bytes": 321969388,
+        "checksum": {
+          "algorithm": "sha256",
+          "value": "c4beb1f7bfa965643bbbf889bd1849a4b4b955e95c731941be61e6edac65616a"
+        },
+        "format": "tar.gz",
+        "compression": "tar.gz"
+      },
+      "mesh": {
+        "local_path": "sdf/meshes/lucy.ply",
+        "archive_member": "lucy.ply",
+        "bytes": 533059290,
+        "checksum": {
+          "algorithm": "sha256",
+          "value": "bfb191b35f0155214844c6d211302231d7bc77f3437b7719c92e0abfa9db5abe"
+        },
+        "format": "PLY",
+        "vertex_count": 14027872,
+        "face_count": 28055742
+      }
+    },
+    {
+      "id": "pitted-stonefish",
+      "paper_name": "Pitted Stonefish",
+      "access": "academic_token_or_manual",
+      "canonical": true,
+      "source": {
+        "provider": "Sketchfab",
+        "creator": "ffish.asia / floraZia.com",
+        "uid": "0cdc3d1419384fd78fd952dc251a3169",
+        "page_url": "https://sketchfab.com/3d-models/ct-scan-pitted-stonefish-e-erosa-0cdc3d1419384fd78fd952dc251a3169",
+        "metadata_url": "https://api.sketchfab.com/v3/models/0cdc3d1419384fd78fd952dc251a3169",
+        "download_api_url": "https://api.sketchfab.com/v3/models/0cdc3d1419384fd78fd952dc251a3169/download",
+        "published_at": "2023-04-07T06:09:07.723203",
+        "face_count": 10548062,
+        "vertex_count": 5243728,
+        "license_slug": "by-nc-sa",
+        "updated_at": "2025-03-21T06:55:44.893998"
+      },
+      "license": {
+        "name": "CC BY-NC-SA 4.0; uploader additionally states Academic only",
+        "url": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+        "requirements": "Attribution required; non-commercial; share adaptations alike; use only when authorized for the academic reproduction."
+      },
+      "credential_env": [
+        "SKETCHFAB_OAUTH_TOKEN",
+        "SKETCHFAB_API_TOKEN"
+      ],
+      "manual_flow": "Place an authorized GLB at data/raw/sdf/meshes/pitted_stonefish.glb, then run data/download.py fetch sdf --asset pitted-stonefish to create a git-ignored local checksum receipt.",
+      "archive": null,
+      "mesh": {
+        "local_path": "sdf/meshes/pitted_stonefish.glb",
+        "checksum": null,
+        "format": "GLB",
+        "vertex_count": 5243728,
+        "face_count": 10548062,
+        "checksum_policy": "git-ignored local acquisition receipt required before preprocessing"
+      },
+      "substitutions": [
+        {
+          "id": "cc0-surface-scan",
+          "canonical": false,
+          "allowed_only_with_explicit_reporting": true,
+          "creator": "ffish.asia / floraZia.com",
+          "uid": "7db8da6be6434143af1bc618a4062fb3",
+          "page_url": "https://sketchfab.com/3d-models/cc0-pitted-stonefish-erosa-erosa-7db8da6be6434143af1bc618a4062fb3",
+          "metadata_url": "https://api.sketchfab.com/v3/models/7db8da6be6434143af1bc618a4062fb3",
+          "license": {
+            "name": "CC0 1.0 Universal",
+            "url": "https://creativecommons.org/publicdomain/zero/1.0/"
+          },
+          "vertex_count": 328163,
+          "face_count": 655591,
+          "reason_noncanonical": "This is a surface scan, not the 10.5M-face CT scan cited by the paper; results must not be mixed into canonical tables."
+        }
+      ]
+    },
+    {
+      "id": "thai-statue",
+      "paper_name": "Thai Statue",
+      "access": "public",
+      "canonical": true,
+      "source": {
+        "provider": "Stanford 3D Scanning Repository / XYZ RGB Inc.",
+        "page_url": "https://graphics.stanford.edu/data/3Dscanrep/3Dscanrep.html",
+        "reconstruction": "Decimated reconstruction supplied at 10 million polygons"
+      },
+      "license": {
+        "name": "Stanford 3D Scanning Repository research/non-commercial terms",
+        "url": "https://graphics.stanford.edu/data/3Dscanrep/3Dscanrep.html",
+        "spdx": null,
+        "requirements": "Credit Stanford Computer Graphics Laboratory; research and free redistribution only; no commercial/product use without permission. Lucy and Thai Statue must be used in good taste and not animated, morphed, destructively simulated, or Boolean-modified."
+      },
+      "archive": {
+        "url": "https://graphics.stanford.edu/data/3Dscanrep/xyzrgb/xyzrgb_statuette.ply.gz",
+        "local_path": "sdf/archives/xyzrgb_statuette.ply.gz",
+        "bytes": 106051627,
+        "checksum": {
+          "algorithm": "sha256",
+          "value": "1d867b6540c02935caa777bd6746429a62d4a5d23f11c9bfdfebbaa90c05ca8b"
+        },
+        "format": "ply.gz",
+        "compression": "gzip"
+      },
+      "mesh": {
+        "local_path": "sdf/meshes/xyzrgb_statuette.ply",
+        "archive_member": "xyzrgb_statuette.ply",
+        "bytes": 190000131,
+        "checksum": {
+          "algorithm": "sha256",
+          "value": "01470da9fc1241dcb4b075cc057ff6bf88d8dc721ce24b5847b9efdfbb8c0345"
+        },
+        "format": "PLY",
+        "vertex_count": 4999996,
+        "face_count": 10000000
+      }
+    },
+    {
+      "id": "armadillo",
+      "paper_name": "Armadillo",
+      "access": "public",
+      "canonical": true,
+      "source": {
+        "provider": "Stanford 3D Scanning Repository",
+        "page_url": "https://graphics.stanford.edu/data/3Dscanrep/3Dscanrep.html",
+        "reconstruction": "VRIP, conservatively decimated"
+      },
+      "license": {
+        "name": "Stanford 3D Scanning Repository research/non-commercial terms",
+        "url": "https://graphics.stanford.edu/data/3Dscanrep/3Dscanrep.html",
+        "spdx": null,
+        "requirements": "Credit Stanford Computer Graphics Laboratory; research and free redistribution only; no commercial/product use without permission. Lucy and Thai Statue must be used in good taste and not animated, morphed, destructively simulated, or Boolean-modified."
+      },
+      "archive": {
+        "url": "https://graphics.stanford.edu/pub/3Dscanrep/armadillo/Armadillo.ply.gz",
+        "local_path": "sdf/archives/Armadillo.ply.gz",
+        "bytes": 3874291,
+        "checksum": {
+          "algorithm": "sha256",
+          "value": "8b9b56cc36e66d54429b1e1e75bd89e833645bfe0dc7c1afd1205877a7356a3f"
+        },
+        "format": "ply.gz",
+        "compression": "gzip"
+      },
+      "mesh": {
+        "local_path": "sdf/meshes/Armadillo.ply",
+        "archive_member": "Armadillo.ply",
+        "bytes": 6919168,
+        "checksum": {
+          "algorithm": "sha256",
+          "value": "483563fca686b66168e1e45339c50e71a5dc8a526a04a545a16b9237d5eaa023"
+        },
+        "format": "PLY",
+        "vertex_count": 172974,
+        "face_count": 345944
+      }
+    }
+  ]
+}

@@ -1,5 +1,33 @@
-"""Quantization module (Week 10, our original chapter).
+"""Quantization simulation and packed-model size accounting."""
 
-繁體中文:量化模組(第 10 週,原創貢獻)。int8 PTQ 對 latent 與 MLP 權重量化,
-用來檢驗 PEPS 的參數優勢在量化後是否仍成立。實作見 W10 章節,此處先留介面。
-"""
+from .ptq import (
+    EncodingMetadata,
+    ModelEncoding,
+    QuantizationConfig,
+    QuantizationSpec,
+    TensorEncoding,
+    dequantize_tensor,
+    estimate_model_bits,
+    fake_quantize,
+    make_config,
+    model_bitrate,
+    quantize_model,
+    quantize_module_params,
+    quantize_tensor,
+)
+
+__all__ = [
+    "EncodingMetadata",
+    "ModelEncoding",
+    "QuantizationConfig",
+    "QuantizationSpec",
+    "TensorEncoding",
+    "dequantize_tensor",
+    "estimate_model_bits",
+    "fake_quantize",
+    "make_config",
+    "model_bitrate",
+    "quantize_model",
+    "quantize_module_params",
+    "quantize_tensor",
+]

@@ -1,0 +1,2331 @@
+{
+  "schema_version": 1,
+  "kind": "texture_set_dataset",
+  "dataset_id": "peps-paper-4k-texture-sets",
+  "paper": {
+    "title": "PEPS: Positional Encoding Projected Sampling -- Extended",
+    "arxiv": "2604.24167v1",
+    "appendix": "D NTC",
+    "count": 18
+  },
+  "licenses": {
+    "polyhaven-cc0": {
+      "name": "CC0 1.0 Universal",
+      "url": "https://polyhaven.com/license",
+      "provider": "Poly Haven"
+    },
+    "ambientcg-cc0": {
+      "name": "CC0 1.0 Universal",
+      "url": "https://docs.ambientcg.com/license/",
+      "provider": "ambientCG"
+    }
+  },
+  "resolution": [
+    4096,
+    4096
+  ],
+  "semantic_order": [
+    "AO",
+    "ARM",
+    "DIFF",
+    "Displacement",
+    "metal",
+    "normal",
+    "rough",
+    "specular"
+  ],
+  "loader_contract": {
+    "map_unit": "Every listed texture map is one RGB target (3 channels), matching T(x) in R^(3k).",
+    "grayscale": "Replicate the stored scalar channel to RGB without inventing a missing map.",
+    "alpha": "Discard alpha; it is not a Table 2 map category.",
+    "normal": "Use OpenGL normals. Filter decoded vectors, renormalize to unit length, then re-encode to [0,1].",
+    "missing": "Every map listed for a set is required; missing maps are fatal.",
+    "color": "DIFF is sRGB-encoded; all data maps are linear."
+  },
+  "selection_protocol": {
+    "polyhaven": "Use packed ARM plus DIFF color variants, OpenGL normal, displacement, and specular when available. Omit separate AO/rough/metal maps that duplicate ARM and omit source-only masks, opacity, bump, and rough_ao auxiliaries.",
+    "ambientcg": "Use Color, AmbientOcclusion, Displacement, Metalness when supplied, NormalGL, and Roughness from the lossless 4K-PNG archive.",
+    "paper_ambiguity": "The paper names assets and categories but does not publish an exact per-file manifest or channel order. This frozen non-duplicating selection is explicit and must be reported as a reproduction assumption."
+  },
+  "sets": [
+    {
+      "id": "bench-vice-01",
+      "paper_name": "bench vice 01",
+      "source": {
+        "provider": "polyhaven",
+        "asset_id": "bench_vice_01",
+        "asset_type": "model",
+        "page_url": "https://polyhaven.com/a/bench_vice_01",
+        "metadata_url": "https://api.polyhaven.com/info/bench_vice_01",
+        "files_url": "https://api.polyhaven.com/files/bench_vice_01",
+        "files_hash_sha1": "e1b894759ca8b4ed6359bd7503a34c974494a620",
+        "max_resolution": [
+          4096,
+          4096
+        ]
+      },
+      "license": "polyhaven-cc0",
+      "archive": null,
+      "maps": [
+        {
+          "id": "arm",
+          "semantic": "ARM",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/4k/bench_vice_01/bench_vice_01_arm_4k.png",
+          "local_path": "textures/bench-vice-01/bench_vice_01_arm_4k.png",
+          "bytes": 58391508,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "3186252b49c0bc310ff06d368bbb2e64bb14e42917bf9473b4830ac1e016ec57"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "channel_semantics": [
+            "ambient_occlusion",
+            "roughness",
+            "metalness"
+          ],
+          "source_map_key": "arm",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "8a9e4cbe1dc3cf65c49f6e1fe069f29a"
+          },
+          "storage_mode": "RGB"
+        },
+        {
+          "id": "diffuse",
+          "semantic": "DIFF",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/4k/bench_vice_01/bench_vice_01_diff_4k.png",
+          "local_path": "textures/bench-vice-01/bench_vice_01_diff_4k.png",
+          "bytes": 54896506,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "04cf7c6815a7691399b8694910c0935a8adfc6e0db19709110137f635b0f86e2"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "sRGB",
+          "encoded_bit_depth": 8,
+          "source_map_key": "Diffuse",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "b580c0b513a201419723f73afae44744"
+          },
+          "storage_mode": "RGB"
+        },
+        {
+          "id": "normal",
+          "semantic": "normal",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/4k/bench_vice_01/bench_vice_01_nor_gl_4k.png",
+          "local_path": "textures/bench-vice-01/bench_vice_01_nor_gl_4k.png",
+          "bytes": 84460814,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "223017bb73169a12de7bcd513b5e10ba37ae54dc389a44feb3b384663d19116a"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "normal_convention": "OpenGL",
+          "vector_encoding": "RGB UNORM mapped to [-1,1]",
+          "renormalize_after_filter": true,
+          "source_map_key": "nor_gl",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "b54eb1a37bb6b97b8f1569058c21666f"
+          },
+          "storage_mode": "RGB"
+        }
+      ]
+    },
+    {
+      "id": "cardboard-box-01",
+      "paper_name": "cardboard box 01",
+      "source": {
+        "provider": "polyhaven",
+        "asset_id": "cardboard_box_01",
+        "asset_type": "model",
+        "page_url": "https://polyhaven.com/a/cardboard_box_01",
+        "metadata_url": "https://api.polyhaven.com/info/cardboard_box_01",
+        "files_url": "https://api.polyhaven.com/files/cardboard_box_01",
+        "files_hash_sha1": "2a37ded0aeebc15100db0e1d285ad36cf40b8f42",
+        "max_resolution": [
+          4096,
+          4096
+        ]
+      },
+      "license": "polyhaven-cc0",
+      "archive": null,
+      "maps": [
+        {
+          "id": "arm",
+          "semantic": "ARM",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/4k/cardboard_box_01/cardboard_box_01_arm_4k.png",
+          "local_path": "textures/cardboard-box-01/cardboard_box_01_arm_4k.png",
+          "bytes": 21110431,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "1618bdd39afb78652af71d3000d5f58c43105b24921b8b006585846587953690"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "channel_semantics": [
+            "ambient_occlusion",
+            "roughness",
+            "metalness"
+          ],
+          "source_map_key": "arm",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "c6064cf1e721580d7caa57135667e2be"
+          },
+          "storage_mode": "RGB"
+        },
+        {
+          "id": "diffuse",
+          "semantic": "DIFF",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/4k/cardboard_box_01/cardboard_box_01_diff_4k.png",
+          "local_path": "textures/cardboard-box-01/cardboard_box_01_diff_4k.png",
+          "bytes": 41915708,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "efaae0408d4520b37e0cbb1a4d2cda80a0f45d97aff165637a82032f6f8bf055"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "sRGB",
+          "encoded_bit_depth": 8,
+          "source_map_key": "Diffuse",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "b3bbef1de10baffa71cd036db7c6dc5a"
+          },
+          "storage_mode": "RGB"
+        },
+        {
+          "id": "normal",
+          "semantic": "normal",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/4k/cardboard_box_01/cardboard_box_01_nor_gl_4k.png",
+          "local_path": "textures/cardboard-box-01/cardboard_box_01_nor_gl_4k.png",
+          "bytes": 51306126,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "7d6e9a9630a35282cd028ad540008d7e4f0beb03e9574669a4419c916cdb8ef3"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "normal_convention": "OpenGL",
+          "vector_encoding": "RGB UNORM mapped to [-1,1]",
+          "renormalize_after_filter": true,
+          "source_map_key": "nor_gl",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "2b382e748ca0abe365c1fb02c66eb8df"
+          },
+          "storage_mode": "RGB"
+        }
+      ]
+    },
+    {
+      "id": "cannon-01",
+      "paper_name": "cannon 01",
+      "source": {
+        "provider": "polyhaven",
+        "asset_id": "cannon_01",
+        "asset_type": "model",
+        "page_url": "https://polyhaven.com/a/cannon_01",
+        "metadata_url": "https://api.polyhaven.com/info/cannon_01",
+        "files_url": "https://api.polyhaven.com/files/cannon_01",
+        "files_hash_sha1": "b5953e044c4cd782c0352204a8d9731b3e0ad0bd",
+        "max_resolution": [
+          8192,
+          8192
+        ]
+      },
+      "license": "polyhaven-cc0",
+      "archive": null,
+      "maps": [
+        {
+          "id": "arm",
+          "semantic": "ARM",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/4k/cannon_01/cannon_01_arm_4k.png",
+          "local_path": "textures/cannon-01/cannon_01_arm_4k.png",
+          "bytes": 59881345,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "6eee0afdbbbf2e964e99a1bd228ad14a9b1012df753f762513c24b69d21639b5"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "channel_semantics": [
+            "ambient_occlusion",
+            "roughness",
+            "metalness"
+          ],
+          "source_map_key": "arm",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "95706f610d6ec868268b76fed496f0ec"
+          },
+          "storage_mode": "RGB"
+        },
+        {
+          "id": "diffuse",
+          "semantic": "DIFF",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/4k/cannon_01/cannon_01_diff_4k.png",
+          "local_path": "textures/cannon-01/cannon_01_diff_4k.png",
+          "bytes": 89701965,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "30f3c536f07d85eb407249b1480941de6c4b4374dda1876f4f6ff4a7555421d4"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "sRGB",
+          "encoded_bit_depth": 8,
+          "source_map_key": "Diffuse",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "e0aeae612edcfe38c9b203a8b9aae930"
+          },
+          "storage_mode": "RGBA",
+          "alpha_handling": "drop"
+        },
+        {
+          "id": "normal",
+          "semantic": "normal",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/4k/cannon_01/cannon_01_nor_gl_4k.png",
+          "local_path": "textures/cannon-01/cannon_01_nor_gl_4k.png",
+          "bytes": 85293050,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "476bf48494ddea78015141a3f15468ea55720c20cf01ad26490f7008f7339595"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "normal_convention": "OpenGL",
+          "vector_encoding": "RGB UNORM mapped to [-1,1]",
+          "renormalize_after_filter": true,
+          "source_map_key": "nor_gl",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "527eb2dc30b316e8d61561094cadc656"
+          },
+          "storage_mode": "RGB"
+        }
+      ]
+    },
+    {
+      "id": "clay-roof-tiles-02",
+      "paper_name": "clay roof tiles 02",
+      "source": {
+        "provider": "polyhaven",
+        "asset_id": "clay_roof_tiles_02",
+        "asset_type": "texture",
+        "page_url": "https://polyhaven.com/a/clay_roof_tiles_02",
+        "metadata_url": "https://api.polyhaven.com/info/clay_roof_tiles_02",
+        "files_url": "https://api.polyhaven.com/files/clay_roof_tiles_02",
+        "files_hash_sha1": "a9f30dc8f73f248bfbaeed2325690422c5c8dd1d",
+        "max_resolution": [
+          8192,
+          8192
+        ]
+      },
+      "license": "polyhaven-cc0",
+      "archive": null,
+      "maps": [
+        {
+          "id": "arm",
+          "semantic": "ARM",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/clay_roof_tiles_02/clay_roof_tiles_02_arm_4k.png",
+          "local_path": "textures/clay-roof-tiles-02/clay_roof_tiles_02_arm_4k.png",
+          "bytes": 44881395,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "90bfc5e9d76904619a0754b7ba2d2bdb79d82a2c40daa429052424303e168560"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "channel_semantics": [
+            "ambient_occlusion",
+            "roughness",
+            "metalness"
+          ],
+          "source_map_key": "arm",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "eca563f359707cd79550a35461b78b34"
+          },
+          "storage_mode": "RGB"
+        },
+        {
+          "id": "diffuse",
+          "semantic": "DIFF",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/clay_roof_tiles_02/clay_roof_tiles_02_diff_4k.png",
+          "local_path": "textures/clay-roof-tiles-02/clay_roof_tiles_02_diff_4k.png",
+          "bytes": 88430121,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "7ecc1e285954bee288485ec64e5ba9d5ead93f565fe9924a2c37b7e3749dd5cc"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "sRGB",
+          "encoded_bit_depth": 8,
+          "source_map_key": "Diffuse",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "4db9375e5d95012cdce468f98d969330"
+          },
+          "storage_mode": "RGB"
+        },
+        {
+          "id": "displacement",
+          "semantic": "Displacement",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/clay_roof_tiles_02/clay_roof_tiles_02_disp_4k.png",
+          "local_path": "textures/clay-roof-tiles-02/clay_roof_tiles_02_disp_4k.png",
+          "bytes": 22520787,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "115330ee85a780ed1b4bf044c389a9711279c2ed9768d69cfb9dbc28c7b76226"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 16,
+          "source_map_key": "Displacement",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "2794239aca73a02c43be74de609c2ab5"
+          },
+          "storage_mode": "I;16"
+        },
+        {
+          "id": "normal",
+          "semantic": "normal",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/clay_roof_tiles_02/clay_roof_tiles_02_nor_gl_4k.png",
+          "local_path": "textures/clay-roof-tiles-02/clay_roof_tiles_02_nor_gl_4k.png",
+          "bytes": 84031705,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "bb97a22ce8e91ffff717a59524897a5d638039fada15742a3862379ff015bfcd"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "normal_convention": "OpenGL",
+          "vector_encoding": "RGB UNORM mapped to [-1,1]",
+          "renormalize_after_filter": true,
+          "source_map_key": "nor_gl",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "e8d082ac01b682605d876618e7a4508a"
+          },
+          "storage_mode": "RGB"
+        }
+      ]
+    },
+    {
+      "id": "fabric-pattern-07",
+      "paper_name": "fabric pattern 07",
+      "source": {
+        "provider": "polyhaven",
+        "asset_id": "fabric_pattern_07",
+        "asset_type": "texture",
+        "page_url": "https://polyhaven.com/a/fabric_pattern_07",
+        "metadata_url": "https://api.polyhaven.com/info/fabric_pattern_07",
+        "files_url": "https://api.polyhaven.com/files/fabric_pattern_07",
+        "files_hash_sha1": "af042f95980f6ccc87285c3bc23e11671a5fecde",
+        "max_resolution": [
+          8192,
+          8192
+        ]
+      },
+      "license": "polyhaven-cc0",
+      "archive": null,
+      "maps": [
+        {
+          "id": "arm",
+          "semantic": "ARM",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/fabric_pattern_07/fabric_pattern_07_arm_4k.png",
+          "local_path": "textures/fabric-pattern-07/fabric_pattern_07_arm_4k.png",
+          "bytes": 17376585,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "ef2b696b4db21b7c8321a474ac15d0a7e6a40ab9d314bb18a38bae842a44a4c8"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "channel_semantics": [
+            "ambient_occlusion",
+            "roughness",
+            "metalness"
+          ],
+          "source_map_key": "arm",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "039ec05fc308f041a427e4c8f939652f"
+          },
+          "storage_mode": "RGB"
+        },
+        {
+          "id": "diffuse-col-1",
+          "semantic": "DIFF",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/fabric_pattern_07/fabric_pattern_07_col_1_4k.png",
+          "local_path": "textures/fabric-pattern-07/fabric_pattern_07_col_1_4k.png",
+          "bytes": 100434390,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "6aff5a32a6c76698c60ce48e6322ced2499a1ce6d01613c4d60dc97038022d3f"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "sRGB",
+          "encoded_bit_depth": 8,
+          "source_map_key": "col_1",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "ac6c418e4c2cbd07caa70ccec2814ce6"
+          },
+          "storage_mode": "RGBA",
+          "alpha_handling": "drop"
+        },
+        {
+          "id": "diffuse-col-2",
+          "semantic": "DIFF",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/fabric_pattern_07/fabric_pattern_07_col_2_4k.png",
+          "local_path": "textures/fabric-pattern-07/fabric_pattern_07_col_2_4k.png",
+          "bytes": 31255992,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "59143b8f2c7adb156a3a3d1a7ffce2b622d9ee79e53ec6d813c7b65e23033f22"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "sRGB",
+          "encoded_bit_depth": 8,
+          "source_map_key": "col_2",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "268ce7b5f0bcca8d0b97544b299c113d"
+          },
+          "storage_mode": "RGB"
+        },
+        {
+          "id": "diffuse-col-03",
+          "semantic": "DIFF",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/fabric_pattern_07/fabric_pattern_07_col_03_4k.png",
+          "local_path": "textures/fabric-pattern-07/fabric_pattern_07_col_03_4k.png",
+          "bytes": 100557859,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "65b305850287d2646d8a65aacc10cc62d5b59477786fb26513dedf4f32fb7d6e"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "sRGB",
+          "encoded_bit_depth": 8,
+          "source_map_key": "col_03",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "9bf8e07701e3086299a7eccd7d0636ac"
+          },
+          "storage_mode": "RGBA",
+          "alpha_handling": "drop"
+        },
+        {
+          "id": "normal",
+          "semantic": "normal",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/fabric_pattern_07/fabric_pattern_07_nor_gl_4k.png",
+          "local_path": "textures/fabric-pattern-07/fabric_pattern_07_nor_gl_4k.png",
+          "bytes": 20018627,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "51438ec29903e75884b0f728e549467fe5528c3acefc02e550e7ab6d815fef69"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "normal_convention": "OpenGL",
+          "vector_encoding": "RGB UNORM mapped to [-1,1]",
+          "renormalize_after_filter": true,
+          "source_map_key": "nor_gl",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "fed9bda9b5ef561aac3369ed99ab2303"
+          },
+          "storage_mode": "RGB"
+        }
+      ]
+    },
+    {
+      "id": "garden-gnome",
+      "paper_name": "garden gnome",
+      "source": {
+        "provider": "polyhaven",
+        "asset_id": "garden_gnome",
+        "asset_type": "model",
+        "page_url": "https://polyhaven.com/a/garden_gnome",
+        "metadata_url": "https://api.polyhaven.com/info/garden_gnome",
+        "files_url": "https://api.polyhaven.com/files/garden_gnome",
+        "files_hash_sha1": "d9916cd986eeec9226772870af437dea0fdf8366",
+        "max_resolution": [
+          4096,
+          4096
+        ]
+      },
+      "license": "polyhaven-cc0",
+      "archive": null,
+      "maps": [
+        {
+          "id": "arm",
+          "semantic": "ARM",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/4k/garden_gnome/garden_gnome_arm_4k.png",
+          "local_path": "textures/garden-gnome/garden_gnome_arm_4k.png",
+          "bytes": 8296334,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "ca81261e255b56ed7b9b780376b0ca7f6bf0d9b95d8b12799229ad2c63c54cb7"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "channel_semantics": [
+            "ambient_occlusion",
+            "roughness",
+            "metalness"
+          ],
+          "source_map_key": "arm",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "79b7c2bd54957160f766b7737573f116"
+          },
+          "storage_mode": "RGB"
+        },
+        {
+          "id": "diffuse",
+          "semantic": "DIFF",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/4k/garden_gnome/garden_gnome_diff_4k.png",
+          "local_path": "textures/garden-gnome/garden_gnome_diff_4k.png",
+          "bytes": 9183757,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "73ac1520f23ba812f4791fdd397fd83650e6afae4be603d44c7cf5787871dd87"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "sRGB",
+          "encoded_bit_depth": 8,
+          "source_map_key": "Diffuse",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "ef87b06f1b4a607325882ad6493359f6"
+          },
+          "storage_mode": "RGB"
+        },
+        {
+          "id": "normal",
+          "semantic": "normal",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/4k/garden_gnome/garden_gnome_nor_gl_4k.png",
+          "local_path": "textures/garden-gnome/garden_gnome_nor_gl_4k.png",
+          "bytes": 11970443,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "3ebb9f71e72c43969937a2298cfcc2a77fc397db38a2d251e5aa00d3c3c2c360"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "normal_convention": "OpenGL",
+          "vector_encoding": "RGB UNORM mapped to [-1,1]",
+          "renormalize_after_filter": true,
+          "source_map_key": "nor_gl",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "2495c258ddd313ea640f40c5cd22704f"
+          },
+          "storage_mode": "RGB"
+        }
+      ]
+    },
+    {
+      "id": "garden-sprinkler-01",
+      "paper_name": "garden sprinkler 01",
+      "source": {
+        "provider": "polyhaven",
+        "asset_id": "garden_sprinkler_01",
+        "asset_type": "model",
+        "page_url": "https://polyhaven.com/a/garden_sprinkler_01",
+        "metadata_url": "https://api.polyhaven.com/info/garden_sprinkler_01",
+        "files_url": "https://api.polyhaven.com/files/garden_sprinkler_01",
+        "files_hash_sha1": "3dfbbc58ed8f575c82e68d35b24379633fd5c955",
+        "max_resolution": [
+          4096,
+          4096
+        ]
+      },
+      "license": "polyhaven-cc0",
+      "archive": null,
+      "maps": [
+        {
+          "id": "arm",
+          "semantic": "ARM",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/4k/garden_sprinkler_01/garden_sprinkler_01_arm_4k.png",
+          "local_path": "textures/garden-sprinkler-01/garden_sprinkler_01_arm_4k.png",
+          "bytes": 16624110,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "47706007f3760a73dbe944acf67d77cd60baf817ee49b4181d6c12c674446486"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "channel_semantics": [
+            "ambient_occlusion",
+            "roughness",
+            "metalness"
+          ],
+          "source_map_key": "arm",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "aca0441c8717806bfa3cdf63131aa5f8"
+          },
+          "storage_mode": "RGB"
+        },
+        {
+          "id": "diffuse",
+          "semantic": "DIFF",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/4k/garden_sprinkler_01/garden_sprinkler_01_diff_4k.png",
+          "local_path": "textures/garden-sprinkler-01/garden_sprinkler_01_diff_4k.png",
+          "bytes": 44620304,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "5b5b5a5b2e9d0de5378df6281b47a557cd4d70df6b415d14db80feb86b71a1ca"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "sRGB",
+          "encoded_bit_depth": 8,
+          "source_map_key": "Diffuse",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "dffa88412fb092ccd0b952f6376a30d7"
+          },
+          "storage_mode": "RGB"
+        },
+        {
+          "id": "displacement",
+          "semantic": "Displacement",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/4k/garden_sprinkler_01/garden_sprinkler_01_height_4k.png",
+          "local_path": "textures/garden-sprinkler-01/garden_sprinkler_01_height_4k.png",
+          "bytes": 13244941,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "6455bfe28c5f632fc4843f9abe6d75a5a3d2a84afb763bbf77891b43a451a568"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 16,
+          "source_map_key": "Displacement",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "8ab82965fbc6a21676bb0d6cb9fbe9ce"
+          },
+          "storage_mode": "I;16"
+        },
+        {
+          "id": "normal",
+          "semantic": "normal",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/4k/garden_sprinkler_01/garden_sprinkler_01_nor_gl_4k.png",
+          "local_path": "textures/garden-sprinkler-01/garden_sprinkler_01_nor_gl_4k.png",
+          "bytes": 67056456,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "feaea08aa0031a7928cfac30c77a719ecad6e47df0752fd85d4c62a9129a8571"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "normal_convention": "OpenGL",
+          "vector_encoding": "RGB UNORM mapped to [-1,1]",
+          "renormalize_after_filter": true,
+          "source_map_key": "nor_gl",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "0fadd933491c8efd95adb286747ad949"
+          },
+          "storage_mode": "RGB"
+        }
+      ]
+    },
+    {
+      "id": "wood-planks",
+      "paper_name": "wood planks",
+      "source": {
+        "provider": "polyhaven",
+        "asset_id": "wood_planks",
+        "asset_type": "texture",
+        "page_url": "https://polyhaven.com/a/wood_planks",
+        "metadata_url": "https://api.polyhaven.com/info/wood_planks",
+        "files_url": "https://api.polyhaven.com/files/wood_planks",
+        "files_hash_sha1": "1742bf4a727e0443e7ca3fc67b01f68ff45a2ec2",
+        "max_resolution": [
+          8192,
+          8192
+        ]
+      },
+      "license": "polyhaven-cc0",
+      "archive": null,
+      "maps": [
+        {
+          "id": "arm",
+          "semantic": "ARM",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/wood_planks/wood_planks_arm_4k.png",
+          "local_path": "textures/wood-planks/wood_planks_arm_4k.png",
+          "bytes": 40084833,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "0fee3ac42fc8c7e199e319c858a582506e56a45c1f5dd788959cf99766e0ee04"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "channel_semantics": [
+            "ambient_occlusion",
+            "roughness",
+            "metalness"
+          ],
+          "source_map_key": "arm",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "1f19c5e175d59322fa4f95090f30f20e"
+          },
+          "storage_mode": "RGB"
+        },
+        {
+          "id": "diffuse",
+          "semantic": "DIFF",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/wood_planks/wood_planks_diff_4k.png",
+          "local_path": "textures/wood-planks/wood_planks_diff_4k.png",
+          "bytes": 61545750,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "a9f0c816676c77f56662df57abf1c216377beb0e45b543897b8ca388296d8c84"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "sRGB",
+          "encoded_bit_depth": 8,
+          "source_map_key": "Diffuse",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "5ecd3fcc50685ca4612b19f88528b795"
+          },
+          "storage_mode": "RGB"
+        },
+        {
+          "id": "displacement",
+          "semantic": "Displacement",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/wood_planks/wood_planks_disp_4k.png",
+          "local_path": "textures/wood-planks/wood_planks_disp_4k.png",
+          "bytes": 20712521,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "3d1bb68fb900896512015c58d4dcdc8affd12fd5580e8c1559b26cb8f889f7dd"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 16,
+          "source_map_key": "Displacement",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "377fa54f526014f481dfb776d77dfffc"
+          },
+          "storage_mode": "I;16"
+        },
+        {
+          "id": "normal",
+          "semantic": "normal",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/wood_planks/wood_planks_nor_gl_4k.png",
+          "local_path": "textures/wood-planks/wood_planks_nor_gl_4k.png",
+          "bytes": 96869735,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "cd74e1eaa0b7f86899e302f6db124e43dd84105cf089af854f4d4f18ba1070df"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "normal_convention": "OpenGL",
+          "vector_encoding": "RGB UNORM mapped to [-1,1]",
+          "renormalize_after_filter": true,
+          "source_map_key": "nor_gl",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "37d0bfc166195e71cebd53590ad8b6fb"
+          },
+          "storage_mode": "RGBA",
+          "alpha_handling": "drop"
+        }
+      ]
+    },
+    {
+      "id": "treasure-chest",
+      "paper_name": "treasure chest",
+      "source": {
+        "provider": "polyhaven",
+        "asset_id": "treasure_chest",
+        "asset_type": "model",
+        "page_url": "https://polyhaven.com/a/treasure_chest",
+        "metadata_url": "https://api.polyhaven.com/info/treasure_chest",
+        "files_url": "https://api.polyhaven.com/files/treasure_chest",
+        "files_hash_sha1": "0ae2580ba667a1c67340426abc76f7665306406e",
+        "max_resolution": [
+          8192,
+          8192
+        ]
+      },
+      "license": "polyhaven-cc0",
+      "archive": null,
+      "maps": [
+        {
+          "id": "arm",
+          "semantic": "ARM",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/4k/treasure_chest/treasure_chest_arm_4k.png",
+          "local_path": "textures/treasure-chest/treasure_chest_arm_4k.png",
+          "bytes": 17032497,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "be9bfad6f2bd7e91d61e5a6b08528c62ad23df7fdc431beff7d2401804aaf8ab"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "channel_semantics": [
+            "ambient_occlusion",
+            "roughness",
+            "metalness"
+          ],
+          "source_map_key": "arm",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "26422e3587db38c25d267f38191fdec4"
+          },
+          "storage_mode": "RGB"
+        },
+        {
+          "id": "diffuse",
+          "semantic": "DIFF",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/4k/treasure_chest/treasure_chest_diff_4k.png",
+          "local_path": "textures/treasure-chest/treasure_chest_diff_4k.png",
+          "bytes": 73923816,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "5f0ffd16562275807a90c616cb7697b5808ad41520d000d01c8c54369dbb6b9c"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "sRGB",
+          "encoded_bit_depth": 8,
+          "source_map_key": "Diffuse",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "c60ea33dbf40f50ef62e6ac3567d7099"
+          },
+          "storage_mode": "RGB"
+        },
+        {
+          "id": "normal",
+          "semantic": "normal",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/4k/treasure_chest/treasure_chest_nor_gl_4k.png",
+          "local_path": "textures/treasure-chest/treasure_chest_nor_gl_4k.png",
+          "bytes": 87232602,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "46d8351db7898577b08b8b2d4704f99a2c3d6f99b27f4d939336814b03cd5328"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "normal_convention": "OpenGL",
+          "vector_encoding": "RGB UNORM mapped to [-1,1]",
+          "renormalize_after_filter": true,
+          "source_map_key": "nor_gl",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "667d1a6ca4728e62be4fc493d3daf93f"
+          },
+          "storage_mode": "RGB"
+        }
+      ]
+    },
+    {
+      "id": "red-dirt-mud-01",
+      "paper_name": "red dirt mud 01",
+      "source": {
+        "provider": "polyhaven",
+        "asset_id": "red_dirt_mud_01",
+        "asset_type": "texture",
+        "page_url": "https://polyhaven.com/a/red_dirt_mud_01",
+        "metadata_url": "https://api.polyhaven.com/info/red_dirt_mud_01",
+        "files_url": "https://api.polyhaven.com/files/red_dirt_mud_01",
+        "files_hash_sha1": "5b112074006dedd7ea5e2550f0d906cb20fb96e3",
+        "max_resolution": [
+          8192,
+          8192
+        ]
+      },
+      "license": "polyhaven-cc0",
+      "archive": null,
+      "maps": [
+        {
+          "id": "arm",
+          "semantic": "ARM",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/red_dirt_mud_01/red_dirt_mud_01_arm_4k.png",
+          "local_path": "textures/red-dirt-mud-01/red_dirt_mud_01_arm_4k.png",
+          "bytes": 26815426,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "c73a5882672df68e166c32ef082d59f7f1000071c22c55cac52f1c5e54e6ea31"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "channel_semantics": [
+            "ambient_occlusion",
+            "roughness",
+            "metalness"
+          ],
+          "source_map_key": "arm",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "4b348b6ecaed6b3319f7be8fb2ab3d1b"
+          },
+          "storage_mode": "RGB"
+        },
+        {
+          "id": "diffuse",
+          "semantic": "DIFF",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/red_dirt_mud_01/red_dirt_mud_01_diff_4k.png",
+          "local_path": "textures/red-dirt-mud-01/red_dirt_mud_01_diff_4k.png",
+          "bytes": 31187122,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "abd2762ee150fd497ca8f827bb350dc47ac58248996fa26debd687b7d02b1845"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "sRGB",
+          "encoded_bit_depth": 8,
+          "source_map_key": "Diffuse",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "5135e01eda84b95b8440c24a2b03455c"
+          },
+          "storage_mode": "RGB"
+        },
+        {
+          "id": "displacement",
+          "semantic": "Displacement",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/red_dirt_mud_01/red_dirt_mud_01_disp_4k.png",
+          "local_path": "textures/red-dirt-mud-01/red_dirt_mud_01_disp_4k.png",
+          "bytes": 31828804,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "d36362a1a8edc86932c544e295a70849cf7cb22b13e933935d8842c5c5713311"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 16,
+          "source_map_key": "Displacement",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "a1a586df8d008b6d902a019c56607bfc"
+          },
+          "storage_mode": "I;16"
+        },
+        {
+          "id": "normal",
+          "semantic": "normal",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/red_dirt_mud_01/red_dirt_mud_01_nor_gl_4k.png",
+          "local_path": "textures/red-dirt-mud-01/red_dirt_mud_01_nor_gl_4k.png",
+          "bytes": 26840028,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "ad9d02ed07f4d8d9a95e613389dd5551e6b54b7cfba2c316e33f99e6904f1abb"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "normal_convention": "OpenGL",
+          "vector_encoding": "RGB UNORM mapped to [-1,1]",
+          "renormalize_after_filter": true,
+          "source_map_key": "nor_gl",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "85a430c58b79418324cd965d14d2f9fa"
+          },
+          "storage_mode": "RGB"
+        },
+        {
+          "id": "specular",
+          "semantic": "specular",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/red_dirt_mud_01/red_dirt_mud_01_spec_4k.png",
+          "local_path": "textures/red-dirt-mud-01/red_dirt_mud_01_spec_4k.png",
+          "bytes": 1926834,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "665aeb33550fc47e390bc8a495a4489a26184822bea735e406c05c4c8d9c4ac0"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "source_map_key": "spec",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "2e73804553f12e5211275baa8c179cce"
+          },
+          "storage_mode": "L"
+        }
+      ]
+    },
+    {
+      "id": "aerial-rocks-02",
+      "paper_name": "Aerial Rocks 02",
+      "source": {
+        "provider": "polyhaven",
+        "asset_id": "aerial_rocks_02",
+        "asset_type": "texture",
+        "page_url": "https://polyhaven.com/a/aerial_rocks_02",
+        "metadata_url": "https://api.polyhaven.com/info/aerial_rocks_02",
+        "files_url": "https://api.polyhaven.com/files/aerial_rocks_02",
+        "files_hash_sha1": "76c3c2d202e28839b72e336a5b1839e58e2da2e3",
+        "max_resolution": [
+          8192,
+          8192
+        ]
+      },
+      "license": "polyhaven-cc0",
+      "archive": null,
+      "maps": [
+        {
+          "id": "arm",
+          "semantic": "ARM",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/aerial_rocks_02/aerial_rocks_02_arm_4k.png",
+          "local_path": "textures/aerial-rocks-02/aerial_rocks_02_arm_4k.png",
+          "bytes": 23186112,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "5040e4b10fc0d6b105306331041345b327272866fdece55ef379fb87a45d2f54"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "channel_semantics": [
+            "ambient_occlusion",
+            "roughness",
+            "metalness"
+          ],
+          "source_map_key": "arm",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "97ba887f68b5854ec3083cce2bdc8ca1"
+          },
+          "storage_mode": "RGB"
+        },
+        {
+          "id": "diffuse",
+          "semantic": "DIFF",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/aerial_rocks_02/aerial_rocks_02_diff_4k.png",
+          "local_path": "textures/aerial-rocks-02/aerial_rocks_02_diff_4k.png",
+          "bytes": 30701993,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "4170ef1faad95c04e7faf6a5c2d8a4c424c2da08d38f7c60c4aeeecfd0a19e5b"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "sRGB",
+          "encoded_bit_depth": 8,
+          "source_map_key": "Diffuse",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "686d7bd2b6a4b6413804eef963800f5d"
+          },
+          "storage_mode": "RGB"
+        },
+        {
+          "id": "displacement",
+          "semantic": "Displacement",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/aerial_rocks_02/aerial_rocks_02_disp_4k.png",
+          "local_path": "textures/aerial-rocks-02/aerial_rocks_02_disp_4k.png",
+          "bytes": 22634032,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "1a851a2577dce00f2a22005b00ef7d8341bd0e4cfc454ff81857c054cfd7cfe3"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "source_map_key": "Displacement",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "f48b8149b7d488bd1df8e9c153457f7b"
+          },
+          "storage_mode": "RGBA",
+          "alpha_handling": "drop"
+        },
+        {
+          "id": "normal",
+          "semantic": "normal",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/aerial_rocks_02/aerial_rocks_02_nor_gl_4k.png",
+          "local_path": "textures/aerial-rocks-02/aerial_rocks_02_nor_gl_4k.png",
+          "bytes": 32446554,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "105fd3ffe55374e4a2c726b01fe3eda1672bb28b5b990c3cb774336e15bcdc53"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "normal_convention": "OpenGL",
+          "vector_encoding": "RGB UNORM mapped to [-1,1]",
+          "renormalize_after_filter": true,
+          "source_map_key": "nor_gl",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "34d2e809a4bd07957597917be896abd0"
+          },
+          "storage_mode": "RGB"
+        }
+      ]
+    },
+    {
+      "id": "forest-sand-01",
+      "paper_name": "forest sand 01",
+      "source": {
+        "provider": "polyhaven",
+        "asset_id": "forrest_sand_01",
+        "asset_type": "texture",
+        "page_url": "https://polyhaven.com/a/forrest_sand_01",
+        "metadata_url": "https://api.polyhaven.com/info/forrest_sand_01",
+        "files_url": "https://api.polyhaven.com/files/forrest_sand_01",
+        "files_hash_sha1": "9d47a0e0b1ce4e53d58432d3e9417de821a5472b",
+        "max_resolution": [
+          8192,
+          8192
+        ]
+      },
+      "license": "polyhaven-cc0",
+      "archive": null,
+      "maps": [
+        {
+          "id": "arm",
+          "semantic": "ARM",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/forrest_sand_01/forrest_sand_01_arm_4k.png",
+          "local_path": "textures/forest-sand-01/forrest_sand_01_arm_4k.png",
+          "bytes": 24953665,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "952c3f40441115fcd37548e89deb44915f4fb1e7ec5440cd6bba753822c28d48"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "channel_semantics": [
+            "ambient_occlusion",
+            "roughness",
+            "metalness"
+          ],
+          "source_map_key": "arm",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "423c514b61db9c5160837ce426651bb5"
+          },
+          "storage_mode": "RGB"
+        },
+        {
+          "id": "diffuse",
+          "semantic": "DIFF",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/forrest_sand_01/forrest_sand_01_diff_4k.png",
+          "local_path": "textures/forest-sand-01/forrest_sand_01_diff_4k.png",
+          "bytes": 40065343,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "70164d3e37b6fc18b1759a8add3800c9dfa2fed72812fbb7bc3e9a15afdf411c"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "sRGB",
+          "encoded_bit_depth": 8,
+          "source_map_key": "Diffuse",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "f7ab1496200c135224727cf97bcc90b2"
+          },
+          "storage_mode": "RGB"
+        },
+        {
+          "id": "displacement",
+          "semantic": "Displacement",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/forrest_sand_01/forrest_sand_01_disp_4k.png",
+          "local_path": "textures/forest-sand-01/forrest_sand_01_disp_4k.png",
+          "bytes": 32558000,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "fac15686a129b959b7438da390e4ac6e271dc4ae332a6931b0fe7a26342bf2ea"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 16,
+          "source_map_key": "Displacement",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "e2a32db60725a21bcfcff8a92de1cac6"
+          },
+          "storage_mode": "I;16"
+        },
+        {
+          "id": "normal",
+          "semantic": "normal",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/forrest_sand_01/forrest_sand_01_nor_gl_4k.png",
+          "local_path": "textures/forest-sand-01/forrest_sand_01_nor_gl_4k.png",
+          "bytes": 29891531,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "facadf5408a9207fc5698dc253efda00c7e692b59fdf7652cd41bf0e53d8171e"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "normal_convention": "OpenGL",
+          "vector_encoding": "RGB UNORM mapped to [-1,1]",
+          "renormalize_after_filter": true,
+          "source_map_key": "nor_gl",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "1d1dcbbc9430801b055368f83dcbef1c"
+          },
+          "storage_mode": "RGB"
+        },
+        {
+          "id": "specular",
+          "semantic": "specular",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/forrest_sand_01/forrest_sand_01_spec_4k.png",
+          "local_path": "textures/forest-sand-01/forrest_sand_01_spec_4k.png",
+          "bytes": 7916512,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "2cb84c94e06b88b17fd19d089f506433c572510613a34092a6d8d4920531334f"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "source_map_key": "spec",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "58c4e138d57034a60702ff34aa7b3735"
+          },
+          "storage_mode": "L"
+        }
+      ]
+    },
+    {
+      "id": "roof-09",
+      "paper_name": "roof 09",
+      "source": {
+        "provider": "polyhaven",
+        "asset_id": "roof_09",
+        "asset_type": "texture",
+        "page_url": "https://polyhaven.com/a/roof_09",
+        "metadata_url": "https://api.polyhaven.com/info/roof_09",
+        "files_url": "https://api.polyhaven.com/files/roof_09",
+        "files_hash_sha1": "3266fb10021af18ef9b383b65c707237fda3073a",
+        "max_resolution": [
+          8192,
+          8192
+        ]
+      },
+      "license": "polyhaven-cc0",
+      "archive": null,
+      "maps": [
+        {
+          "id": "arm",
+          "semantic": "ARM",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/roof_09/roof_09_arm_4k.png",
+          "local_path": "textures/roof-09/roof_09_arm_4k.png",
+          "bytes": 69331249,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "f5d5001e74d9f8a9aed9e28485c332ede6654f98f6525e071c7e4388e2b13736"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "channel_semantics": [
+            "ambient_occlusion",
+            "roughness",
+            "metalness"
+          ],
+          "source_map_key": "arm",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "392b30f42bf2109fc95cc463142d788a"
+          },
+          "storage_mode": "RGBA",
+          "alpha_handling": "drop"
+        },
+        {
+          "id": "diffuse",
+          "semantic": "DIFF",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/roof_09/roof_09_diff_4k.png",
+          "local_path": "textures/roof-09/roof_09_diff_4k.png",
+          "bytes": 96057881,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "26348a19731527e0054cbfa5c313a7bd0928d00f19c0dc11b15c39853fe5c861"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "sRGB",
+          "encoded_bit_depth": 8,
+          "source_map_key": "Diffuse",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "8d1845ebe721aab4271f303559eebf0c"
+          },
+          "storage_mode": "RGBA",
+          "alpha_handling": "drop"
+        },
+        {
+          "id": "displacement",
+          "semantic": "Displacement",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/roof_09/roof_09_disp_4k.png",
+          "local_path": "textures/roof-09/roof_09_disp_4k.png",
+          "bytes": 17355951,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "a46ae4877bea36c49882394f8876f97515f430b7d0ace2a47260ea45eea98721"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "source_map_key": "Displacement",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "1233ee40dbacdc6a8a9a65c4aab594a4"
+          },
+          "storage_mode": "RGBA",
+          "alpha_handling": "drop"
+        },
+        {
+          "id": "normal",
+          "semantic": "normal",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/roof_09/roof_09_nor_gl_4k.png",
+          "local_path": "textures/roof-09/roof_09_nor_gl_4k.png",
+          "bytes": 64367024,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "f7b5cb71663c18cb3016cc54cee084c28ed7cc93f8e1971c11e4f62597434acb"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "normal_convention": "OpenGL",
+          "vector_encoding": "RGB UNORM mapped to [-1,1]",
+          "renormalize_after_filter": true,
+          "source_map_key": "nor_gl",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "d46404c2aab8484484d09f6bab70ec26"
+          },
+          "storage_mode": "RGB"
+        },
+        {
+          "id": "specular",
+          "semantic": "specular",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/roof_09/roof_09_spec_4k.png",
+          "local_path": "textures/roof-09/roof_09_spec_4k.png",
+          "bytes": 14679953,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "ba0d8b2f41ddb3f1fa381c104bd410a2537d07e014f42f27ea21163d8ea71a44"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "source_map_key": "spec",
+          "provider_checksum": {
+            "algorithm": "md5",
+            "value": "ed6eed49e41c622e68c1aeaf921e92b4"
+          },
+          "storage_mode": "RGBA",
+          "alpha_handling": "drop"
+        }
+      ]
+    },
+    {
+      "id": "paving-stones-070",
+      "paper_name": "Paving Stones 070",
+      "source": {
+        "provider": "ambientcg",
+        "asset_id": "PavingStones070",
+        "asset_type": "material",
+        "page_url": "https://ambientcg.com/a/PavingStones070",
+        "metadata_url": "https://ambientcg.com/api/v2/full_json?id=PavingStones070&include=downloadData",
+        "reported_maps": [
+          "color",
+          "displacement",
+          "normal",
+          "roughness",
+          "ambient-occlusion"
+        ]
+      },
+      "license": "ambientcg-cc0",
+      "archive": {
+        "url": "https://ambientcg.com/get?file=PavingStones070_4K-PNG.zip",
+        "local_path": "textures/archives/PavingStones070_4K-PNG.zip",
+        "bytes": 265401913,
+        "checksum": {
+          "algorithm": "sha256",
+          "value": "cd7347c96f987fa777965d787cef9160ea3e0c4950c90ef904086d005900a6a8"
+        },
+        "format": "zip",
+        "attribute": "4K-PNG"
+      },
+      "maps": [
+        {
+          "id": "ambient-occlusion",
+          "semantic": "AO",
+          "url": "https://ambientcg.com/get?file=PavingStones070_4K-PNG.zip",
+          "local_path": "textures/paving-stones-070/PavingStones070_4K-PNG_AmbientOcclusion.png",
+          "bytes": 3754358,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "7c689324368252a68e6d8e1e5bb9a83b01688d400273bd947942b701eb8c8154"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "archive_member": "PavingStones070_4K-PNG_AmbientOcclusion.png",
+          "storage_mode": "L",
+          "source_map_key": "AmbientOcclusion"
+        },
+        {
+          "id": "color",
+          "semantic": "DIFF",
+          "url": "https://ambientcg.com/get?file=PavingStones070_4K-PNG.zip",
+          "local_path": "textures/paving-stones-070/PavingStones070_4K-PNG_Color.png",
+          "bytes": 40662815,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "9656b1998f0b0084e1f536f7eac12ae472395ae192e462e6285361143ddb0ef1"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "sRGB",
+          "encoded_bit_depth": 8,
+          "archive_member": "PavingStones070_4K-PNG_Color.png",
+          "storage_mode": "RGB",
+          "source_map_key": "Color"
+        },
+        {
+          "id": "displacement",
+          "semantic": "Displacement",
+          "url": "https://ambientcg.com/get?file=PavingStones070_4K-PNG.zip",
+          "local_path": "textures/paving-stones-070/PavingStones070_4K-PNG_Displacement.png",
+          "bytes": 24224069,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "26399a92ba63ed521da15a1796e3c2ee8427f62453167f38356b2b5b95f43e30"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 16,
+          "archive_member": "PavingStones070_4K-PNG_Displacement.png",
+          "storage_mode": "I;16",
+          "source_map_key": "Displacement"
+        },
+        {
+          "id": "normal-gl",
+          "semantic": "normal",
+          "url": "https://ambientcg.com/get?file=PavingStones070_4K-PNG.zip",
+          "local_path": "textures/paving-stones-070/PavingStones070_4K-PNG_NormalGL.png",
+          "bytes": 92265667,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "c22e7d8cd4d2a1c8b2e67cc271124aecd7f6a09edab60e18e9bc958271506eef"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "normal_convention": "OpenGL",
+          "vector_encoding": "RGB UNORM mapped to [-1,1]",
+          "renormalize_after_filter": true,
+          "archive_member": "PavingStones070_4K-PNG_NormalGL.png",
+          "storage_mode": "RGB",
+          "source_map_key": "NormalGL"
+        },
+        {
+          "id": "roughness",
+          "semantic": "rough",
+          "url": "https://ambientcg.com/get?file=PavingStones070_4K-PNG.zip",
+          "local_path": "textures/paving-stones-070/PavingStones070_4K-PNG_Roughness.png",
+          "bytes": 10638613,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "cdafe00afd46d88b579a2647e0ac43007a624f28bce96f24757716625fd5dfc1"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "archive_member": "PavingStones070_4K-PNG_Roughness.png",
+          "storage_mode": "L",
+          "source_map_key": "Roughness"
+        }
+      ]
+    },
+    {
+      "id": "rails-001",
+      "paper_name": "Rails 001",
+      "source": {
+        "provider": "ambientcg",
+        "asset_id": "Rails001",
+        "asset_type": "material",
+        "page_url": "https://ambientcg.com/a/Rails001",
+        "metadata_url": "https://ambientcg.com/api/v2/full_json?id=Rails001&include=downloadData",
+        "reported_maps": [
+          "color",
+          "displacement",
+          "normal",
+          "roughness",
+          "ambient-occlusion",
+          "metalness"
+        ]
+      },
+      "license": "ambientcg-cc0",
+      "archive": {
+        "url": "https://ambientcg.com/get?file=Rails001_4K-PNG.zip",
+        "local_path": "textures/archives/Rails001_4K-PNG.zip",
+        "bytes": 251284736,
+        "checksum": {
+          "algorithm": "sha256",
+          "value": "788c970577ee22c350f0df603b619aca32ec43944c1f6127be3d9255ff8f12a7"
+        },
+        "format": "zip",
+        "attribute": "4K-PNG"
+      },
+      "maps": [
+        {
+          "id": "ambient-occlusion",
+          "semantic": "AO",
+          "url": "https://ambientcg.com/get?file=Rails001_4K-PNG.zip",
+          "local_path": "textures/rails-001/Rails001_4K-PNG_AmbientOcclusion.png",
+          "bytes": 7905409,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "49f7fa7730170455e5c46da71d0abbcefd0265f5fe26dda12c4c3ed216c8c3ee"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "archive_member": "Rails001_4K-PNG_AmbientOcclusion.png",
+          "storage_mode": "L",
+          "source_map_key": "AmbientOcclusion"
+        },
+        {
+          "id": "color",
+          "semantic": "DIFF",
+          "url": "https://ambientcg.com/get?file=Rails001_4K-PNG.zip",
+          "local_path": "textures/rails-001/Rails001_4K-PNG_Color.png",
+          "bytes": 33594872,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "0a3829ab66b534eb587c9afc64d1a9a5cd8131c4bc6b974faaa0cfb4074a873b"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "sRGB",
+          "encoded_bit_depth": 8,
+          "archive_member": "Rails001_4K-PNG_Color.png",
+          "storage_mode": "RGBA",
+          "source_map_key": "Color",
+          "alpha_handling": "drop"
+        },
+        {
+          "id": "displacement",
+          "semantic": "Displacement",
+          "url": "https://ambientcg.com/get?file=Rails001_4K-PNG.zip",
+          "local_path": "textures/rails-001/Rails001_4K-PNG_Displacement.png",
+          "bytes": 21835135,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "b32339bb3023b36d8eb03322dfc20a6b86abbbd399191be97f5181c8421e41a4"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 16,
+          "archive_member": "Rails001_4K-PNG_Displacement.png",
+          "storage_mode": "I;16",
+          "source_map_key": "Displacement"
+        },
+        {
+          "id": "metalness",
+          "semantic": "metal",
+          "url": "https://ambientcg.com/get?file=Rails001_4K-PNG.zip",
+          "local_path": "textures/rails-001/Rails001_4K-PNG_Metalness.png",
+          "bytes": 44614,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "1ebe73c9212c0c96c3f506f61489e8611b82ab12a6463891aa8e324cc58c9431"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "archive_member": "Rails001_4K-PNG_Metalness.png",
+          "storage_mode": "L",
+          "source_map_key": "Metalness"
+        },
+        {
+          "id": "normal-gl",
+          "semantic": "normal",
+          "url": "https://ambientcg.com/get?file=Rails001_4K-PNG.zip",
+          "local_path": "textures/rails-001/Rails001_4K-PNG_NormalGL.png",
+          "bytes": 89788496,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "7b0345feae6c1a81c9c1bacf40b47657cbaa38e97086c0493d7d5293f225ed45"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "normal_convention": "OpenGL",
+          "vector_encoding": "RGB UNORM mapped to [-1,1]",
+          "renormalize_after_filter": true,
+          "archive_member": "Rails001_4K-PNG_NormalGL.png",
+          "storage_mode": "RGB",
+          "source_map_key": "NormalGL"
+        },
+        {
+          "id": "roughness",
+          "semantic": "rough",
+          "url": "https://ambientcg.com/get?file=Rails001_4K-PNG.zip",
+          "local_path": "textures/rails-001/Rails001_4K-PNG_Roughness.png",
+          "bytes": 6740578,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "daabcc13773bd914b082636f2776272267c6ece15a60ff45a8e2e1d1b9317912"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "archive_member": "Rails001_4K-PNG_Roughness.png",
+          "storage_mode": "L",
+          "source_map_key": "Roughness"
+        }
+      ]
+    },
+    {
+      "id": "bricks-090",
+      "paper_name": "Bricks 090",
+      "source": {
+        "provider": "ambientcg",
+        "asset_id": "Bricks090",
+        "asset_type": "material",
+        "page_url": "https://ambientcg.com/a/Bricks090",
+        "metadata_url": "https://ambientcg.com/api/v2/full_json?id=Bricks090&include=downloadData",
+        "reported_maps": [
+          "color",
+          "displacement",
+          "normal",
+          "roughness",
+          "ambient-occlusion"
+        ]
+      },
+      "license": "ambientcg-cc0",
+      "archive": {
+        "url": "https://ambientcg.com/get?file=Bricks090_4K-PNG.zip",
+        "local_path": "textures/archives/Bricks090_4K-PNG.zip",
+        "bytes": 253648043,
+        "checksum": {
+          "algorithm": "sha256",
+          "value": "a90a1d29db5bcf2665b591249a803424eae45022d1799ff30aa8a8a313b16fc0"
+        },
+        "format": "zip",
+        "attribute": "4K-PNG"
+      },
+      "maps": [
+        {
+          "id": "ambient-occlusion",
+          "semantic": "AO",
+          "url": "https://ambientcg.com/get?file=Bricks090_4K-PNG.zip",
+          "local_path": "textures/bricks-090/Bricks090_4K-PNG_AmbientOcclusion.png",
+          "bytes": 7789455,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "d7c14128ff523dc17bb7eebc2a02744fa74a83d2e4b00a3769c38f9f3569c8b5"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "archive_member": "Bricks090_4K-PNG_AmbientOcclusion.png",
+          "storage_mode": "L",
+          "source_map_key": "AmbientOcclusion"
+        },
+        {
+          "id": "color",
+          "semantic": "DIFF",
+          "url": "https://ambientcg.com/get?file=Bricks090_4K-PNG.zip",
+          "local_path": "textures/bricks-090/Bricks090_4K-PNG_Color.png",
+          "bytes": 29405369,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "ab7ef3f19d17e224ecf85b2da1f00a3405c9af6a092a9086c6ac49cfd0693ec6"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "sRGB",
+          "encoded_bit_depth": 8,
+          "archive_member": "Bricks090_4K-PNG_Color.png",
+          "storage_mode": "RGBA",
+          "source_map_key": "Color",
+          "alpha_handling": "drop"
+        },
+        {
+          "id": "displacement",
+          "semantic": "Displacement",
+          "url": "https://ambientcg.com/get?file=Bricks090_4K-PNG.zip",
+          "local_path": "textures/bricks-090/Bricks090_4K-PNG_Displacement.png",
+          "bytes": 21756515,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "1adb2753c2da25c1c88a38e05101de09ab7eb7d38a1eca6f99bd15650ab52694"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 16,
+          "archive_member": "Bricks090_4K-PNG_Displacement.png",
+          "storage_mode": "I;16",
+          "source_map_key": "Displacement"
+        },
+        {
+          "id": "normal-gl",
+          "semantic": "normal",
+          "url": "https://ambientcg.com/get?file=Bricks090_4K-PNG.zip",
+          "local_path": "textures/bricks-090/Bricks090_4K-PNG_NormalGL.png",
+          "bytes": 91461960,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "b6986884e95cc1747f5feda23c8275d3964f96b6d268dad78a9996d89d89dbc6"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "normal_convention": "OpenGL",
+          "vector_encoding": "RGB UNORM mapped to [-1,1]",
+          "renormalize_after_filter": true,
+          "archive_member": "Bricks090_4K-PNG_NormalGL.png",
+          "storage_mode": "RGBA",
+          "source_map_key": "NormalGL",
+          "alpha_handling": "drop"
+        },
+        {
+          "id": "roughness",
+          "semantic": "rough",
+          "url": "https://ambientcg.com/get?file=Bricks090_4K-PNG.zip",
+          "local_path": "textures/bricks-090/Bricks090_4K-PNG_Roughness.png",
+          "bytes": 10058126,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "0950e89d1a270f6cc38ec6e1628bc0c308dc82b4c1a663d0ab937626f47b1734"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "archive_member": "Bricks090_4K-PNG_Roughness.png",
+          "storage_mode": "L",
+          "source_map_key": "Roughness"
+        }
+      ]
+    },
+    {
+      "id": "metal-plates-013",
+      "paper_name": "Metal Plates 013",
+      "source": {
+        "provider": "ambientcg",
+        "asset_id": "MetalPlates013",
+        "asset_type": "material",
+        "page_url": "https://ambientcg.com/a/MetalPlates013",
+        "metadata_url": "https://ambientcg.com/api/v2/full_json?id=MetalPlates013&include=downloadData",
+        "reported_maps": [
+          "color",
+          "displacement",
+          "normal",
+          "roughness",
+          "ambient-occlusion",
+          "metalness"
+        ]
+      },
+      "license": "ambientcg-cc0",
+      "archive": {
+        "url": "https://ambientcg.com/get?file=MetalPlates013_4K-PNG.zip",
+        "local_path": "textures/archives/MetalPlates013_4K-PNG.zip",
+        "bytes": 226127397,
+        "checksum": {
+          "algorithm": "sha256",
+          "value": "6cebde237aad55a85d69bab17a93e272986eef4b0cb0347015c333c50fd5b60a"
+        },
+        "format": "zip",
+        "attribute": "4K-PNG"
+      },
+      "maps": [
+        {
+          "id": "ambient-occlusion",
+          "semantic": "AO",
+          "url": "https://ambientcg.com/get?file=MetalPlates013_4K-PNG.zip",
+          "local_path": "textures/metal-plates-013/MetalPlates013_4K-PNG_AmbientOcclusion.png",
+          "bytes": 1581137,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "41e1605bda0a49ecc01ef32798c466d65b093565ca2f05d6d9d76f5bf8232736"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "archive_member": "MetalPlates013_4K-PNG_AmbientOcclusion.png",
+          "storage_mode": "L",
+          "source_map_key": "AmbientOcclusion"
+        },
+        {
+          "id": "color",
+          "semantic": "DIFF",
+          "url": "https://ambientcg.com/get?file=MetalPlates013_4K-PNG.zip",
+          "local_path": "textures/metal-plates-013/MetalPlates013_4K-PNG_Color.png",
+          "bytes": 23062369,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "e7ad1b82d6e313c05ea18aca53b1e025c8363bd0bd952f3864f03874e787d96d"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "sRGB",
+          "encoded_bit_depth": 8,
+          "archive_member": "MetalPlates013_4K-PNG_Color.png",
+          "storage_mode": "RGB",
+          "source_map_key": "Color"
+        },
+        {
+          "id": "displacement",
+          "semantic": "Displacement",
+          "url": "https://ambientcg.com/get?file=MetalPlates013_4K-PNG.zip",
+          "local_path": "textures/metal-plates-013/MetalPlates013_4K-PNG_Displacement.png",
+          "bytes": 22480702,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "309b85995add2b3f2bac7c13df288341c10b8a2fac69edc8ee53ff0583e3ca59"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 16,
+          "archive_member": "MetalPlates013_4K-PNG_Displacement.png",
+          "storage_mode": "I;16",
+          "source_map_key": "Displacement"
+        },
+        {
+          "id": "metalness",
+          "semantic": "metal",
+          "url": "https://ambientcg.com/get?file=MetalPlates013_4K-PNG.zip",
+          "local_path": "textures/metal-plates-013/MetalPlates013_4K-PNG_Metalness.png",
+          "bytes": 3518550,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "1cbcde6c2625f880503e809384d6eca738f878ca741702eaeb58ae14494194c3"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "archive_member": "MetalPlates013_4K-PNG_Metalness.png",
+          "storage_mode": "L",
+          "source_map_key": "Metalness"
+        },
+        {
+          "id": "normal-gl",
+          "semantic": "normal",
+          "url": "https://ambientcg.com/get?file=MetalPlates013_4K-PNG.zip",
+          "local_path": "textures/metal-plates-013/MetalPlates013_4K-PNG_NormalGL.png",
+          "bytes": 82819590,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "e3014030f041eb28caec75e2e9568fe69dc7349e5c087f98e5d9731ae81aa516"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "normal_convention": "OpenGL",
+          "vector_encoding": "RGB UNORM mapped to [-1,1]",
+          "renormalize_after_filter": true,
+          "archive_member": "MetalPlates013_4K-PNG_NormalGL.png",
+          "storage_mode": "RGB",
+          "source_map_key": "NormalGL"
+        },
+        {
+          "id": "roughness",
+          "semantic": "rough",
+          "url": "https://ambientcg.com/get?file=MetalPlates013_4K-PNG.zip",
+          "local_path": "textures/metal-plates-013/MetalPlates013_4K-PNG_Roughness.png",
+          "bytes": 8294295,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "cbd15c7a735b78b807803ca8782649abfe3f38836bb7fd21c27fe60dfc801b51"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "archive_member": "MetalPlates013_4K-PNG_Roughness.png",
+          "storage_mode": "L",
+          "source_map_key": "Roughness"
+        }
+      ]
+    },
+    {
+      "id": "wood-063",
+      "paper_name": "Wood 063",
+      "source": {
+        "provider": "ambientcg",
+        "asset_id": "Wood063",
+        "asset_type": "material",
+        "page_url": "https://ambientcg.com/a/Wood063",
+        "metadata_url": "https://ambientcg.com/api/v2/full_json?id=Wood063&include=downloadData",
+        "reported_maps": [
+          "color",
+          "displacement",
+          "normal",
+          "roughness",
+          "ambient-occlusion"
+        ]
+      },
+      "license": "ambientcg-cc0",
+      "archive": {
+        "url": "https://ambientcg.com/get?file=Wood063_4K-PNG.zip",
+        "local_path": "textures/archives/Wood063_4K-PNG.zip",
+        "bytes": 271848633,
+        "checksum": {
+          "algorithm": "sha256",
+          "value": "5a3ca44639c23bdd197c65b2dd749cccfba80082c224d1db7523797536665f36"
+        },
+        "format": "zip",
+        "attribute": "4K-PNG"
+      },
+      "maps": [
+        {
+          "id": "ambient-occlusion",
+          "semantic": "AO",
+          "url": "https://ambientcg.com/get?file=Wood063_4K-PNG.zip",
+          "local_path": "textures/wood-063/Wood063_4K-PNG_AmbientOcclusion.png",
+          "bytes": 7976300,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "dddf8eb25d8c050f509c5ceea5e3f8092e4f4aa7ae14b7cc97a30a51158dd64e"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "archive_member": "Wood063_4K-PNG_AmbientOcclusion.png",
+          "storage_mode": "L",
+          "source_map_key": "AmbientOcclusion"
+        },
+        {
+          "id": "color",
+          "semantic": "DIFF",
+          "url": "https://ambientcg.com/get?file=Wood063_4K-PNG.zip",
+          "local_path": "textures/wood-063/Wood063_4K-PNG_Color.png",
+          "bytes": 37482584,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "93d9a96e5de0e104b91405e8abe7b5573f8c0119fe1dea5b6c193cecb478057d"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "sRGB",
+          "encoded_bit_depth": 8,
+          "archive_member": "Wood063_4K-PNG_Color.png",
+          "storage_mode": "RGB",
+          "source_map_key": "Color"
+        },
+        {
+          "id": "displacement",
+          "semantic": "Displacement",
+          "url": "https://ambientcg.com/get?file=Wood063_4K-PNG.zip",
+          "local_path": "textures/wood-063/Wood063_4K-PNG_Displacement.png",
+          "bytes": 27346540,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "00443c8debb39b1b6dc9c23ae2dae32c7d403563de7eb84bb78e62fade38b70e"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 16,
+          "archive_member": "Wood063_4K-PNG_Displacement.png",
+          "storage_mode": "I;16",
+          "source_map_key": "Displacement"
+        },
+        {
+          "id": "normal-gl",
+          "semantic": "normal",
+          "url": "https://ambientcg.com/get?file=Wood063_4K-PNG.zip",
+          "local_path": "textures/wood-063/Wood063_4K-PNG_NormalGL.png",
+          "bytes": 94158904,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "40adea9acf879900a38259026b60a8bf0615a2069679642f754d7fe9174bffb2"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "normal_convention": "OpenGL",
+          "vector_encoding": "RGB UNORM mapped to [-1,1]",
+          "renormalize_after_filter": true,
+          "archive_member": "Wood063_4K-PNG_NormalGL.png",
+          "storage_mode": "RGB",
+          "source_map_key": "NormalGL"
+        },
+        {
+          "id": "roughness",
+          "semantic": "rough",
+          "url": "https://ambientcg.com/get?file=Wood063_4K-PNG.zip",
+          "local_path": "textures/wood-063/Wood063_4K-PNG_Roughness.png",
+          "bytes": 9124341,
+          "checksum": {
+            "algorithm": "sha256",
+            "value": "49d289c94c28047ca3c1ff7c7fc91f1fd33708a540537190ac3e6d0db9f3db9e"
+          },
+          "format": "PNG",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3,
+          "color_space": "linear",
+          "encoded_bit_depth": 8,
+          "archive_member": "Wood063_4K-PNG_Roughness.png",
+          "storage_mode": "L",
+          "source_map_key": "Roughness"
+        }
+      ]
+    }
+  ]
+}

@@ -4,8 +4,66 @@ from __future__ import annotations
 
 import importlib.metadata
 import math
+from dataclasses import dataclass
 
 import torch
+
+
+PAPER_METRIC_ORACLES = {
+    "psnr": {
+        "equation": "10*log10(data_range^2/mean((prediction-target)^2))",
+        "data_range": 1.0,
+    },
+    "ssim": {
+        "implementation": "torchmetrics.functional.image.structural_similarity_index_measure",
+        "gaussian_kernel": True,
+        "kernel_size": 11,
+        "sigma": 1.5,
+        "k1": 0.01,
+        "k2": 0.03,
+    },
+    "flip": {
+        "implementation": "flip_evaluator.evaluate",
+        "mode": "LDR",
+        "reduction": "mean_error",
+    },
+    "lpips": {
+        "implementation": "lpips.LPIPS",
+        "network": "alex",
+        "input_range": [-1.0, 1.0],
+    },
+    "lsd": {
+        "implementation": "peps.metrics.lsd",
+        "equation": "mean_channel(rms(log1p(|FFT2_ortho(pred)|)-log1p(|FFT2_ortho(target)|)))",
+        "ambiguity": "The PEPS paper names LSD but does not publish its normalization; this frozen oracle is an explicit reproduction assumption.",
+    },
+    "iou": {
+        "equation": "count(prediction<0 and target<0)/count(prediction<0 or target<0)",
+    },
+}
+
+
+@dataclass
+class IoUAccumulator:
+    """Exact integer accumulator for streamed 512^3 occupancy evaluation."""
+
+    intersection: int = 0
+    union: int = 0
+
+    def update(
+        self,
+        pred_occupancy: torch.Tensor,
+        target_occupancy: torch.Tensor,
+    ) -> None:
+        prediction = pred_occupancy.bool()
+        target = target_occupancy.bool()
+        if prediction.shape != target.shape:
+            raise ValueError("occupancy tensors must have matching shapes")
+        self.intersection += int((prediction & target).sum().item())
+        self.union += int((prediction | target).sum().item())
+
+    def compute(self) -> float:
+        return self.intersection / self.union if self.union else 1.0
 
 
 def psnr(pred: torch.Tensor, target: torch.Tensor, data_range: float = 1.0) -> float:
@@ -20,16 +78,16 @@ def _as_nchw(image: torch.Tensor) -> torch.Tensor:
     if image.ndim == 2:
         return image.unsqueeze(0).unsqueeze(0)
     if image.ndim == 3:
-        # Repository data is HWC. Preserve explicit CHW tensors when the final
-        # two dimensions clearly look spatial.
-        if image.shape[0] <= 16 and image.shape[-1] > 16:
+        if image.shape[-1] in {1, 3, 4}:
+            return image.permute(2, 0, 1).unsqueeze(0)
+        if image.shape[0] in {1, 3, 4}:
             return image.unsqueeze(0)
-        return image.permute(2, 0, 1).unsqueeze(0)
+        raise ValueError("rank-3 images must have an explicit 1/3/4 channel axis")
     if image.ndim == 4:
-        if image.shape[1] <= 16:
-            return image
-        if image.shape[-1] <= 16:
+        if image.shape[-1] in {1, 3, 4}:
             return image.permute(0, 3, 1, 2)
+        if image.shape[1] in {1, 3, 4}:
+            return image
     raise ValueError("image must have shape HW, HWC, CHW, NHWC, or NCHW")
 
 
@@ -63,6 +121,12 @@ def ssim(pred: torch.Tensor, target: torch.Tensor, data_range: float = 1.0) -> f
             prediction.float(),
             reference.float(),
             data_range=data_range,
+            gaussian_kernel=True,
+            sigma=1.5,
+            kernel_size=11,
+            k1=0.01,
+            k2=0.03,
+            reduction="elementwise_mean",
         )
     return float(value.item())
 
@@ -129,11 +193,46 @@ def lpsd(pred: torch.Tensor, target: torch.Tensor) -> float:
 
 def iou(pred_occupancy: torch.Tensor, target_occupancy: torch.Tensor) -> float:
     """Intersection-over-Union of two boolean occupancy grids (SDF, W09)."""
-    p = pred_occupancy.bool()
-    t = target_occupancy.bool()
-    inter = (p & t).sum().item()
-    union = (p | t).sum().item()
-    return inter / union if union > 0 else 1.0
+    accumulator = IoUAccumulator()
+    accumulator.update(pred_occupancy, target_occupancy)
+    return accumulator.compute()
+
+
+def mean_absolute_error(pred: torch.Tensor, target: torch.Tensor) -> float:
+    """Mean absolute error used to audit L1 SDF runs."""
+
+    if pred.shape != target.shape:
+        raise ValueError("metric inputs must have matching shapes")
+    return float((pred - target).abs().mean().item())
+
+
+def mean_absolute_percentage_error(
+    pred: torch.Tensor,
+    target: torch.Tensor,
+    *,
+    epsilon: float,
+    percentage_scale: float = 100.0,
+) -> float:
+    """Explicit finite MAPE oracle matching :func:`peps.train.mape_loss`."""
+
+    if pred.shape != target.shape:
+        raise ValueError("metric inputs must have matching shapes")
+    if epsilon <= 0:
+        raise ValueError("epsilon must be positive")
+    value = (
+        percentage_scale
+        * ((target - pred).abs() / target.abs().clamp_min(epsilon)).mean()
+    )
+    return float(value.item())
+
+
+def metric_oracles() -> dict[str, dict[str, object]]:
+    """Detached metric definitions suitable for run manifests."""
+
+    return {
+        name: dict(definition)
+        for name, definition in PAPER_METRIC_ORACLES.items()
+    }
 
 
 _lpips_models = {}

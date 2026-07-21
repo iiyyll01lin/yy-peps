@@ -1,0 +1,10 @@
+schema,schema_version,run_id,artifact,profile,scope,method,metric,count,mean,unit
+peps.paper_artifact_summary,1,20260721T175053994434Z-smoke-image-course_fast-s0-3cfadfa6,smoke-image,course_fast,global,G-PEPS-smoke,lpsd,1,0.10018481913409749,
+peps.paper_artifact_summary,1,20260721T175053994434Z-smoke-image-course_fast-s0-3cfadfa6,smoke-image,course_fast,global,G-PEPS-smoke,lsd,1,0.205733583804015,
+peps.paper_artifact_summary,1,20260721T175053994434Z-smoke-image-course_fast-s0-3cfadfa6,smoke-image,course_fast,global,G-PEPS-smoke,psnr,1,10.439540587533235,dB
+peps.paper_artifact_summary,1,20260721T175053994434Z-smoke-image-course_fast-s0-3cfadfa6,smoke-image,course_fast,global,Grid-smoke,lpsd,1,0.11839385779481147,
+peps.paper_artifact_summary,1,20260721T175053994434Z-smoke-image-course_fast-s0-3cfadfa6,smoke-image,course_fast,global,Grid-smoke,lsd,1,0.20622604987606108,
+peps.paper_artifact_summary,1,20260721T175053994434Z-smoke-image-course_fast-s0-3cfadfa6,smoke-image,course_fast,global,Grid-smoke,psnr,1,10.262842387867936,dB
+peps.paper_artifact_summary,1,20260721T175053994434Z-smoke-image-course_fast-s0-3cfadfa6,smoke-image,course_fast,global,LPE-smoke,lpsd,1,0.09291824557495061,
+peps.paper_artifact_summary,1,20260721T175053994434Z-smoke-image-course_fast-s0-3cfadfa6,smoke-image,course_fast,global,LPE-smoke,lsd,1,0.20513925728346882,
+peps.paper_artifact_summary,1,20260721T175053994434Z-smoke-image-course_fast-s0-3cfadfa6,smoke-image,course_fast,global,LPE-smoke,psnr,1,10.488245478724561,dB

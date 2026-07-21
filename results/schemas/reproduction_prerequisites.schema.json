@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/iiyyll01lin/yy-peps/results/schemas/reproduction_prerequisites.schema.json",
+  "title": "PEPS reproduction prerequisite report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schema_version",
+    "profile",
+    "checked_at_utc",
+    "ready",
+    "environment",
+    "artifacts"
+  ],
+  "properties": {
+    "schema": {
+      "const": "peps.reproduction_prerequisites"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "profile": {
+      "enum": [
+        "paper_exact",
+        "course_fast"
+      ]
+    },
+    "checked_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "ready": {
+      "type": "boolean"
+    },
+    "environment": {
+      "type": "object"
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "artifact",
+          "ready",
+          "checks",
+          "blockers",
+          "warnings"
+        ],
+        "properties": {
+          "artifact": {
+            "type": "string"
+          },
+          "ready": {
+            "type": "boolean"
+          },
+          "checks": {
+            "type": "object"
+          },
+          "blockers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "artifact",
+                "code",
+                "requirement",
+                "detail",
+                "remediation"
+              ],
+              "properties": {
+                "artifact": {
+                  "type": "string"
+                },
+                "code": {
+                  "type": "string"
+                },
+                "requirement": {
+                  "type": "string"
+                },
+                "detail": {
+                  "type": "string"
+                },
+                "remediation": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "warnings": {
+            "type": "array"
+          }
+        }
+      }
+    }
+  }
+}

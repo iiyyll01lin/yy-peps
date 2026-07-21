@@ -1,0 +1,6 @@
+schema,schema_version,run_id,artifact,profile,scope,method,metric,count,mean,unit
+peps.paper_artifact_summary,1,20260721T175154356740Z-smoke-sdf-course_fast-s0-d66561b7,smoke-sdf,course_fast,global,Grid-PEPS-smoke,iou,1,0.10546875,
+peps.paper_artifact_summary,1,20260721T175154356740Z-smoke-sdf-course_fast-s0-d66561b7,smoke-sdf,course_fast,global,Grid-smoke,iou,1,0.0,
+peps.paper_artifact_summary,1,20260721T175154356740Z-smoke-sdf-course_fast-s0-d66561b7,smoke-sdf,course_fast,global,Hash-smoke,iou,1,0.10546875,
+peps.paper_artifact_summary,1,20260721T175154356740Z-smoke-sdf-course_fast-s0-d66561b7,smoke-sdf,course_fast,global,LPE-smoke,iou,1,0.10546875,
+peps.paper_artifact_summary,1,20260721T175154356740Z-smoke-sdf-course_fast-s0-d66561b7,smoke-sdf,course_fast,global,M-Grid-smoke,iou,1,0.10546875,

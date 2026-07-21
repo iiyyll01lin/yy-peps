@@ -5,13 +5,25 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "peps"
 version = "0.1.0"
-description = "Faithful reimplementation of AMD PEPS (Positional Encoding Projected Sampling) + course materials"
+description = "Educational PEPS reimplementation with course-fast and paper-exact protocols"
 requires-python = ">=3.10"
 readme = "README.md"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Jason YY, Lin", email = "iiyyll01lin@gmail.com"},
+]
 dependencies = [
-    "torch",
-    "numpy",
-    "Pillow",
+    "torch>=2.4",
+    "numpy>=1.26",
+    "Pillow>=10",
+]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
 
 [project.optional-dependencies]
@@ -23,9 +35,27 @@ paper = [
 test = [
     "pytest",
 ]
+course = [
+    "imageio",
+    "ipykernel",
+    "jupyter",
+    "matplotlib",
+    "scipy",
+    "tqdm",
+]
+sdf = [
+    "mesh-to-sdf",
+    "trimesh",
+]
 
 [project.scripts]
 peps-experiment = "experiments.run:main"
+peps-reproduce = "experiments.reproduce:main"
+
+[project.urls]
+Repository = "https://github.com/iiyyll01lin/yy-peps"
+Paper = "https://doi.org/10.1145/3806062"
+Issues = "https://github.com/iiyyll01lin/yy-peps/issues"
 
 [tool.setuptools]
 packages = [
@@ -37,7 +67,12 @@ packages = [
     "apps.image",
     "apps.texture",
     "apps.sdf",
+    "data",
+    "hip",
 ]
+
+[tool.setuptools.package-data]
+data = ["manifests/*.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

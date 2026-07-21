@@ -11,7 +11,7 @@ from ..projector import resolve_frequency_schedule
 class IdentityEncoder(nn.Module):
     """Return coordinates unchanged. Encodes to ``feature_dim == dim``.
 
-    Used to prove the ``Identity-encoder PEPS == APE`` equivalence.
+    Identity-encoder PEPS features are affinely equivalent to APE features.
     """
 
     def __init__(self, dim: int) -> None:

@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "w10_rate_distortion.schema.json",
+  "title": "W10 matched-size quantization result",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "run_id",
+    "source_kind",
+    "method",
+    "ablation",
+    "claim_status"
+  ],
+  "properties": {
+    "schema_version": {"const": 2},
+    "run_id": {"type": "string", "minLength": 1},
+    "source_kind": {
+      "enum": ["repeated_matched_run", "legacy_unmatched_single_seed"]
+    },
+    "legacy_method_label": {"type": ["string", "null"]},
+    "nominal_payload_bits_per_parameter": {
+      "type": ["number", "null"],
+      "minimum": 0
+    },
+    "seed": {"type": ["integer", "null"]},
+    "profile": {"type": "string"},
+    "method": {"enum": ["grid", "peps"]},
+    "train_steps": {"type": ["integer", "null"], "minimum": 1},
+    "model_params": {"type": ["integer", "null"], "minimum": 1},
+    "ablation": {"type": "string", "minLength": 1},
+    "latent_bits": {"type": "integer", "minimum": 2},
+    "weight_bits": {"type": "integer", "minimum": 2},
+    "bias_bits": {"type": "integer", "minimum": 2},
+    "latent_granularity": {"enum": ["per_tensor", "per_channel"]},
+    "weight_granularity": {"enum": ["per_tensor", "per_channel"]},
+    "payload_bits": {"type": ["integer", "null"], "minimum": 0},
+    "scale_bits": {"type": ["integer", "null"], "minimum": 0},
+    "metadata_bits": {"type": ["integer", "null"], "minimum": 0},
+    "total_encoded_bits": {"type": ["integer", "null"], "minimum": 0},
+    "total_encoded_bytes": {"type": ["integer", "null"], "minimum": 0},
+    "bits_per_parameter": {"type": ["number", "null"], "minimum": 0},
+    "bits_per_pixel": {"type": ["number", "null"], "minimum": 0},
+    "bits_per_texel": {"type": ["number", "null"], "minimum": 0},
+    "psnr_db": {"type": "number"},
+    "paired_size_gap_pct": {"type": ["number", "null"], "minimum": 0},
+    "matched_size": {"type": ["boolean", "null"]},
+    "claim_status": {
+      "enum": [
+        "hypothesis_pending_repeated_matched_size",
+        "legacy_unmatched_size_not_claim_evidence"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"source_kind": {"const": "repeated_matched_run"}}
+      },
+      "then": {
+        "required": [
+          "seed",
+          "model_params",
+          "payload_bits",
+          "scale_bits",
+          "metadata_bits",
+          "total_encoded_bits",
+          "bits_per_parameter",
+          "bits_per_pixel",
+          "bits_per_texel",
+          "paired_size_gap_pct",
+          "matched_size"
+        ]
+      }
+    }
+  ]
+}

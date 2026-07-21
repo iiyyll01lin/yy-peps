@@ -1,0 +1,45 @@
+cff-version: 1.2.0
+message: >-
+  If you use this educational reimplementation, cite this repository and the
+  PEPS paper listed under references.
+type: software
+title: "PEPS on AMD: Course and Reimplementation Repository"
+version: 0.1.0
+authors:
+  - family-names: Lin
+    given-names: "Jason YY"
+    email: iiyyll01lin@gmail.com
+repository-code: "https://github.com/iiyyll01lin/yy-peps"
+url: "https://github.com/iiyyll01lin/yy-peps"
+license: MIT
+keywords:
+  - implicit neural representations
+  - positional encoding
+  - neural texture compression
+  - AMD ROCm
+  - education
+abstract: >-
+  An educational, independently maintained reimplementation of Positional
+  Encoding Projected Sampling (PEPS), with course-fast and paper-exact
+  protocols. Repository-produced numerical artifacts are not reproduction
+  evidence unless their run manifests mark them verified.
+references:
+  - type: article
+    title: "PEPS: Positional Encoding Projected Sampling"
+    authors:
+      - family-names: Perez
+        given-names: Guillaume
+        orcid: "https://orcid.org/0000-0001-6473-583X"
+      - family-names: Matai
+        given-names: Janarbek
+        orcid: "https://orcid.org/0009-0006-8823-3248"
+      - family-names: Harada
+        given-names: Takahiro
+        orcid: "https://orcid.org/0000-0001-5158-8455"
+    journal: "Proceedings of the ACM on Computer Graphics and Interactive Techniques"
+    volume: 9
+    issue: 1
+    start: 1
+    end: 19
+    year: 2026
+    doi: "10.1145/3806062"

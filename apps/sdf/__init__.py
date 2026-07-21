@@ -1,21 +1,43 @@
-"""Application 3 — signed distance functions (extension track).
+"""Application 3 — course analytic SDFs and paper 512^3 volumes.
 
-繁體中文:應用三,有號距離函數(延伸)。把形狀表示為 f(x,y,z)->有號距離,
-用座標網路擬合。提供程序生成形狀(球/torus,免下載即可跑)與真實網格→SDF 取樣
-(mesh-to-sdf,給 Stanford Armadillo/Thai Statue)。對照 TI-grid / hash / multi-res
-及其 PEPS 版本,重現 Table 3(IoU)與 Table 4 困難實例。
+The paper path exposes all Table 3 encoders and exact 1x/8x Table 4 builders;
+the procedural sphere/torus helpers remain the explicitly separate course path.
 """
 
-from .data import sample_sphere_sdf, sample_torus_sdf, sample_mesh_sdf, make_query_grid
-from .build import build_sdf_grid, build_sdf_multires, build_sdf_hash, build_sdf_peps
+from .data import (
+    SDF_COORDINATE_SCALE,
+    PaperSDFVolume,
+    iter_query_slabs,
+    load_paper_sdf_volume,
+    make_query_grid,
+    sample_mesh_sdf,
+    sample_sdf_tensor,
+    sample_sdf_volume,
+    sample_sphere_sdf,
+    sample_torus_sdf,
+)
+from .build import (
+    build_paper_sdf,
+    build_sdf_grid,
+    build_sdf_hash,
+    build_sdf_multires,
+    build_sdf_peps,
+)
 
 __all__ = [
     "sample_sphere_sdf",
     "sample_torus_sdf",
     "sample_mesh_sdf",
+    "sample_sdf_tensor",
+    "sample_sdf_volume",
+    "load_paper_sdf_volume",
+    "iter_query_slabs",
+    "PaperSDFVolume",
+    "SDF_COORDINATE_SCALE",
     "make_query_grid",
     "build_sdf_grid",
     "build_sdf_multires",
     "build_sdf_hash",
     "build_sdf_peps",
+    "build_paper_sdf",
 ]

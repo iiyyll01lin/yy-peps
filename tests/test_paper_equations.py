@@ -1,6 +1,7 @@
 """Independent semantic oracles for the PEPS paper equations."""
 
 import math
+from pathlib import Path
 
 import pytest
 import torch
@@ -170,6 +171,7 @@ def test_pink_paper_example_has_22_values_and_exact_circular_slices():
         "cos_3",
     )
     assert aggregator.frequency_widths == [4, 2, 1]
+    assert aggregator.cumulative_allocations == (0, 4, 6, 7)
     assert aggregator.widths == [8, 4, 2, 1, 4, 2, 1]
     assert aggregator.out_dim == 22
     assert aggregator.point_channel_indices == (
@@ -193,6 +195,16 @@ def test_pink_paper_example_has_22_values_and_exact_circular_slices():
         dim=1,
     )
     assert torch.equal(aggregator(latents), expected)
+
+    differentiable = torch.randn(2, 7, 8, requires_grad=True)
+    aggregator(differentiable).sum().backward()
+    expected_mask = torch.zeros((7, 8), dtype=torch.bool)
+    for point, indices in enumerate(aggregator.point_channel_indices):
+        expected_mask[point, list(indices)] = True
+    assert torch.equal(
+        differentiable.grad.ne(0).any(dim=0),
+        expected_mask,
+    )
 
 
 def test_brownian_uses_floor_and_squared_frequency():
@@ -374,12 +386,11 @@ def test_grid_channel_selective_sampling_matches_full_aggregation_at_borders():
     assert torch.allclose(selective(x), expected)
 
 
-def test_mlp_num_layers_counts_hidden_layers_and_output_activation():
+def test_mlp_default_has_three_hidden_layers_without_breaking_num_layers_api():
     model = MLP(
         in_dim=5,
         out_dim=2,
         hidden_dim=7,
-        num_layers=3,
         activation="leaky_relu",
         output_activation="sigmoid",
     )
@@ -389,6 +400,7 @@ def test_mlp_num_layers_counts_hidden_layers_and_output_activation():
     hidden_activations = [
         module for module in model.net if isinstance(module, nn.LeakyReLU)
     ]
+    assert model.num_layers == 4
     assert model.num_hidden_layers == 3
     assert len(linear_layers) == 4
     assert [layer.in_features for layer in linear_layers] == [5, 7, 7, 7]
@@ -397,21 +409,55 @@ def test_mlp_num_layers_counts_hidden_layers_and_output_activation():
     output = model(torch.randn(6, 5))
     assert ((0.0 <= output) & (output <= 1.0)).all()
 
-    assert len(
-        [
-            module
-            for module in MLP(2, 1, num_layers=0).net
-            if isinstance(module, nn.Linear)
-        ]
-    ) == 1
+    # Explicit values preserve the original total-Linear-layer contract.
+    legacy = MLP(2, 1, num_layers=3)
+    legacy_linears = [
+        module for module in legacy.net if isinstance(module, nn.Linear)
+    ]
+    assert legacy.num_layers == 3
+    assert legacy.num_hidden_layers == 2
+    assert len(legacy_linears) == 3
+
     assert any(
         isinstance(module, nn.GELU)
-        for module in MLP(2, 1, num_layers=1, activation="gelu").net
+        for module in MLP(2, 1, num_layers=2, activation="gelu").net
     )
     assert any(
         isinstance(module, nn.SiLU)
-        for module in MLP(2, 1, num_layers=1, activation="silu").net
+        for module in MLP(2, 1, num_layers=2, activation="silu").net
     )
 
+    with pytest.raises(ValueError, match="num_layers"):
+        MLP(2, 1, num_layers=0)
     with pytest.raises(ValueError, match="unknown activation"):
         MLP(2, 1, activation="not-an-activation")
+
+
+def test_app_builder_defaults_use_paper_depth_and_pink_schedule(monkeypatch):
+    monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[1]))
+
+    from apps.image.build import build_grid, build_grid_peps
+    from apps.sdf.build import build_sdf_grid
+    from apps.texture.build import build_ntc_baseline
+
+    models = [
+        build_grid(resolution=4, feature_dim=2)[0],
+        build_ntc_baseline(resolution=4, feature_dim=2)[0],
+        build_sdf_grid(resolution=4, feature_dim=2)[0],
+    ]
+    for model in models:
+        decoder = model[-1]
+        assert isinstance(decoder, MLP)
+        assert decoder.num_hidden_layers == 3
+
+    pink, _ = build_grid_peps(
+        resolution=4,
+        feature_dim=8,
+        num_frequencies=6,
+        aggregator="pink",
+    )
+    assert pink.model.num_hidden_layers == 3
+    assert pink.aggregator.frequency_widths == [4, 2, 1, 1, 1, 1]
+    assert pink.aggregator.out_dim == 28
+    assert pink.aggregator.point_layout == pink.projector.point_layout
+    assert pink.selective_sampling

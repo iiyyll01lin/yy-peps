@@ -5,7 +5,7 @@ task = "sdf"
 profile = "full"
 dataset = "paper-sdf-4-512cubed"
 canonical = true
-seeds = [0]
+seeds = [0, 1, 2]
 
 [training]
 task = "sdf"
@@ -86,21 +86,3 @@ name = "M-HashPEPS"
 factory = "apps.sdf.build:build_paper_sdf"
 kwargs = { method = "m_hashpeps" }
 expected_encoder_params = 598016
-
-[[methods]]
-name = "TI-Grid-L1"
-factory = "apps.sdf.build:build_paper_sdf"
-kwargs = { method = "grid" }
-seeds = [0, 1, 2]
-role = "ablation"
-expected_encoder_params = 589824
-training = { loss = "l1", model_lr = 0.01, encoder_lr = 0.01 }
-
-[[methods]]
-name = "Grid-PEPS-L1"
-factory = "apps.sdf.build:build_paper_sdf"
-kwargs = { method = "grid_peps" }
-seeds = [0, 1, 2]
-role = "ablation"
-expected_encoder_params = 589824
-training = { loss = "l1", model_lr = 0.01, encoder_lr = 0.01 }

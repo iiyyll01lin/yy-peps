@@ -1,0 +1,535 @@
+{
+  "config": {
+    "metric_oracles": {
+      "flip": {
+        "implementation": "flip_evaluator.evaluate",
+        "mode": "LDR",
+        "reduction": "mean_error"
+      },
+      "iou": {
+        "equation": "count(prediction<0 and target<0)/count(prediction<0 or target<0)"
+      },
+      "lpips": {
+        "implementation": "lpips.LPIPS",
+        "input_range": [
+          -1.0,
+          1.0
+        ],
+        "network": "alex"
+      },
+      "lsd": {
+        "ambiguity": "The PEPS paper names LSD but does not publish its normalization; this frozen oracle is an explicit reproduction assumption.",
+        "equation": "mean_channel(rms(log1p(|FFT2_ortho(pred)|)-log1p(|FFT2_ortho(target)|)))",
+        "implementation": "peps.metrics.lsd"
+      },
+      "psnr": {
+        "data_range": 1.0,
+        "equation": "10*log10(data_range^2/mean((prediction-target)^2))"
+      },
+      "ssim": {
+        "gaussian_kernel": true,
+        "implementation": "torchmetrics.functional.image.structural_similarity_index_measure",
+        "k1": 0.01,
+        "k2": 0.03,
+        "kernel_size": 11,
+        "sigma": 1.5
+      }
+    },
+    "profile": {
+      "image": {
+        "dataset": {
+          "instance_ids": [
+            "kodim01",
+            "kodim05",
+            "kodim19"
+          ],
+          "max_image_side": 384,
+          "name": "Kodak_subset"
+        },
+        "metrics": [
+          "psnr",
+          "ssim",
+          "lsd"
+        ],
+        "models": {
+          "grid": {
+            "feature_dim": 8,
+            "resolution": 128
+          },
+          "grid_peps": {
+            "aggregation": "concat",
+            "feature_dim": 8,
+            "frequencies": 6,
+            "resolution": 128
+          },
+          "pink_peps": {
+            "aggregation": "pink",
+            "feature_dim": 8,
+            "frequencies": 6,
+            "resolution": 128
+          }
+        },
+        "network": {
+          "activation": "relu",
+          "hidden_dim": 64,
+          "hidden_layers": 3
+        },
+        "training": {
+          "batch_size": 32768,
+          "learning_rate": 0.01,
+          "loss": "mse",
+          "optimizer": "adam",
+          "optimizer_steps": 2000
+        }
+      },
+      "name": "course_fast",
+      "paper_reference": "arXiv:2604.24167v1",
+      "quantization": {
+        "bit_widths": [
+          8,
+          6,
+          4
+        ],
+        "dataset": {
+          "instance_ids": [
+            "kodim01"
+          ],
+          "max_image_side": 384
+        },
+        "enabled": true,
+        "metrics": [
+          "effective_bits_per_parameter",
+          "psnr"
+        ],
+        "models": {
+          "grid": {
+            "feature_dim": 8,
+            "resolution": 128
+          },
+          "grid_peps": {
+            "aggregation": "concat",
+            "feature_dim": 8,
+            "frequencies": 6,
+            "resolution": 128
+          }
+        },
+        "reference_precision_bits": 32,
+        "scheme": "symmetric_per_tensor_fake_ptq",
+        "status": "course_extension_not_in_paper",
+        "storage_accounting": "parameter_bits_only_scales_and_metadata_excluded",
+        "targets": [
+          "grid_latents",
+          "mlp_weights_and_biases"
+        ],
+        "training": {
+          "batch_size": 32768,
+          "learning_rate": 0.01,
+          "loss": "mse",
+          "optimizer": "adam",
+          "optimizer_steps": 2500
+        }
+      },
+      "runtime": {
+        "architectures": [
+          "gfx1151",
+          "gfx1201"
+        ],
+        "fused_teaching_kernel": {
+          "iterations": 1000,
+          "query_points": 262144,
+          "scope": "one_bilinear_grid_sample_plus_first_mlp_layer"
+        },
+        "precisions": [
+          "fp16",
+          "int8"
+        ],
+        "status": "teaching_microbenchmarks_not_paper_comparable",
+        "timing": {
+          "device_synchronize_before_and_after": true,
+          "timer": "host_chrono",
+          "warmup_iterations": 1
+        },
+        "wmma_workloads": [
+          {
+            "iterations": 1000,
+            "k": 64,
+            "m": 4096,
+            "n": 64
+          },
+          {
+            "iterations": 200,
+            "k": 2048,
+            "m": 2048,
+            "n": 2048
+          }
+        ]
+      },
+      "schema": "peps.experiment_profile",
+      "schema_version": 1,
+      "sdf": {
+        "dataset": {
+          "name": "analytic_torus",
+          "near_surface_fraction": 0.7,
+          "near_surface_sigma": 0.05,
+          "query_resolution": 64,
+          "training_samples": 120000
+        },
+        "metrics": [
+          "occupancy_iou"
+        ],
+        "models": {
+          "grid": {
+            "feature_dim": 4,
+            "resolution": 48
+          },
+          "grid_peps": {
+            "feature_dim": 4,
+            "frequencies": 6,
+            "resolution": 48
+          },
+          "hash": {
+            "feature_dim": 2,
+            "levels": 8,
+            "max_hash_table_log2": 17
+          },
+          "multi_grid": {
+            "base_resolution": 16,
+            "feature_dim": 2,
+            "levels": 4
+          }
+        },
+        "network": {
+          "activation": "relu",
+          "hidden_dim": 64,
+          "hidden_layers": 3
+        },
+        "training": {
+          "batch_size": 16384,
+          "eikonal_epsilon": 0.01,
+          "eikonal_weight": 0.1,
+          "learning_rate": 0.01,
+          "loss": "mse_plus_eikonal",
+          "optimizer": "adam",
+          "optimizer_steps": 800,
+          "render_optimizer_steps": 1200
+        }
+      },
+      "summary": "Small CPU/GPU-friendly workloads used by the course notebooks.",
+      "texture": {
+        "dataset": {
+          "instance_ids": [
+            "MetalPlates013",
+            "Metal032",
+            "Planks020",
+            "Rock023"
+          ],
+          "output_resolution": [
+            512,
+            512
+          ]
+        },
+        "metrics": [
+          "psnr"
+        ],
+        "models": {
+          "grid": {
+            "feature_dim": 8,
+            "resolution": 256
+          },
+          "grid_peps": {
+            "feature_dim": 8,
+            "frequencies": 6,
+            "resolution": 256
+          },
+          "pink_peps": {
+            "feature_dim": 8,
+            "frequencies": 6,
+            "resolution": 256
+          }
+        },
+        "network": {
+          "activation": "relu",
+          "hidden_dim": 64,
+          "hidden_layers": 3
+        },
+        "training": {
+          "batch_size": 32768,
+          "learning_rate": 0.01,
+          "loss": "mse",
+          "optimizer": "adam",
+          "optimizer_steps": 2000
+        }
+      }
+    },
+    "resolved_experiment": {
+      "canonical": false,
+      "dataset": "synthetic-sdf-tensor",
+      "methods": [
+        {
+          "expected_encoder_params": 128,
+          "expected_total_params": null,
+          "factory": "apps.sdf.build:build_paper_sdf",
+          "kwargs": {
+            "feature_dim": 2,
+            "hidden_dim": 8,
+            "method": "grid",
+            "num_layers": 2,
+            "resolution": 4
+          },
+          "name": "Grid-smoke",
+          "role": "canonical",
+          "seeds": null,
+          "training": {}
+        },
+        {
+          "expected_encoder_params": 128,
+          "expected_total_params": null,
+          "factory": "apps.sdf.build:build_paper_sdf",
+          "kwargs": {
+            "feature_dim": 2,
+            "hidden_dim": 8,
+            "method": "grid_peps",
+            "num_frequencies": 2,
+            "num_layers": 2,
+            "resolution": 4
+          },
+          "name": "Grid-PEPS-smoke",
+          "role": "canonical",
+          "seeds": null,
+          "training": {}
+        },
+        {
+          "expected_encoder_params": 32,
+          "expected_total_params": null,
+          "factory": "apps.sdf.build:build_paper_sdf",
+          "kwargs": {
+            "feature_dim": 2,
+            "hidden_dim": 8,
+            "log2_hashmap_size": 4,
+            "method": "hash",
+            "n_levels": 1,
+            "num_layers": 2,
+            "resolutions": [
+              4
+            ]
+          },
+          "name": "Hash-smoke",
+          "role": "canonical",
+          "seeds": null,
+          "training": {}
+        },
+        {
+          "expected_encoder_params": 144,
+          "expected_total_params": null,
+          "factory": "apps.sdf.build:build_paper_sdf",
+          "kwargs": {
+            "feature_dim": 2,
+            "hidden_dim": 8,
+            "method": "m_grid",
+            "num_layers": 2,
+            "resolutions": [
+              2,
+              4
+            ]
+          },
+          "name": "M-Grid-smoke",
+          "role": "canonical",
+          "seeds": null,
+          "training": {}
+        },
+        {
+          "expected_encoder_params": 768,
+          "expected_total_params": null,
+          "factory": "apps.sdf.build:build_paper_sdf",
+          "kwargs": {
+            "hidden_dim": 8,
+            "method": "lpe",
+            "num_frequencies": 2,
+            "num_layers": 2,
+            "resolution": 4
+          },
+          "name": "LPE-smoke",
+          "role": "canonical",
+          "seeds": null,
+          "training": {}
+        }
+      ],
+      "name": "sdf-paper-smoke",
+      "paper": "PEPS Extended arXiv:2604.24167v1",
+      "profile": "smoke",
+      "runner": {
+        "metrics": [
+          "iou"
+        ],
+        "output_dir": "results/paper-smoke",
+        "render_chunk": 1024,
+        "world_size": 1
+      },
+      "schema_version": 1,
+      "seeds": [
+        0
+      ],
+      "source": "/home/aup/yy/workspace/peps/configs/paper/sdf_smoke.toml",
+      "task": "sdf",
+      "training": {
+        "batch_size": 32,
+        "batches_per_epoch": 2,
+        "checkpoint_every": 1,
+        "cosine": false,
+        "encoder_lr": 0.001,
+        "epochs": 1,
+        "log_every": 1,
+        "loss": "mape",
+        "mape_epsilon": 0.0001,
+        "model_lr": 0.001,
+        "task": "sdf"
+      }
+    }
+  },
+  "config_sha256": "8f5e637f9f3004b43ca34e2a14d4d7dca8b171b6e11bb8d84a32bfcb71ac79ba",
+  "created_at_utc": "2026-07-21T17:51:54.356740Z",
+  "experiment": "smoke-sdf",
+  "instances": {
+    "columns": [
+      "schema",
+      "schema_version",
+      "run_id",
+      "experiment",
+      "profile",
+      "seed",
+      "instance_id",
+      "split",
+      "method",
+      "metric",
+      "value",
+      "unit",
+      "status",
+      "duration_seconds",
+      "metadata_json"
+    ],
+    "format": "csv",
+    "path": "instances.csv",
+    "row_count": 5,
+    "schema": "peps.instance_metric",
+    "schema_version": 1
+  },
+  "metadata": {
+    "artifact": "smoke-sdf",
+    "raw_output": "results/work/smoke-sdf/3724ff6048141e09",
+    "summary": "summary.csv",
+    "verification_status": "course_fast_smoke_not_paper_comparable"
+  },
+  "profile": "course_fast",
+  "provenance": {
+    "datasets": [
+      {
+        "algorithm": "sha256",
+        "bytes": 5893,
+        "digest": "920180633e50c32021e25d03a9b283779318c6fd3a6fceeb4916f1c587265efc",
+        "id": "synthetic-sdf",
+        "path": "results/smoke-inputs/sdf.pt"
+      }
+    ],
+    "environment": {
+      "collection_errors": [],
+      "gpu": {
+        "available": true,
+        "count": 4,
+        "devices": [
+          {
+            "architecture": "gfx1201",
+            "capability": [
+              12,
+              0
+            ],
+            "index": 0,
+            "multiprocessor_count": 32,
+            "name": "AMD Radeon Graphics",
+            "total_memory_bytes": 34208743424
+          },
+          {
+            "architecture": "gfx1201",
+            "capability": [
+              12,
+              0
+            ],
+            "index": 1,
+            "multiprocessor_count": 32,
+            "name": "AMD Radeon Graphics",
+            "total_memory_bytes": 34208743424
+          },
+          {
+            "architecture": "gfx1201",
+            "capability": [
+              12,
+              0
+            ],
+            "index": 2,
+            "multiprocessor_count": 32,
+            "name": "AMD Radeon Graphics",
+            "total_memory_bytes": 34208743424
+          },
+          {
+            "architecture": "gfx1201",
+            "capability": [
+              12,
+              0
+            ],
+            "index": 3,
+            "multiprocessor_count": 32,
+            "name": "AMD Radeon Graphics",
+            "total_memory_bytes": 34208743424
+          }
+        ]
+      },
+      "packages": {
+        "Pillow": "12.2.0",
+        "flip-evaluator": "1.7",
+        "imageio": "2.37.4",
+        "lpips": "0.1.4",
+        "matplotlib": "3.11.1",
+        "mesh-to-sdf": "0.0.15",
+        "numpy": "2.4.4",
+        "peps": "0.1.0",
+        "scikit-image": "0.26.0",
+        "scipy": "1.18.0",
+        "torch": "2.10.0+rocm7.0",
+        "torchmetrics": "1.9.0",
+        "torchvision": "0.25.0+rocm7.0",
+        "tqdm": "4.69.0",
+        "trimesh": "4.12.2"
+      },
+      "platform": {
+        "machine": "x86_64",
+        "python_executable": "/home/aup/yy/workspace/peps/.venv/bin/python",
+        "python_version": "3.12.3",
+        "release": "6.14.0-27-generic",
+        "system": "Linux"
+      },
+      "pytorch": {
+        "available": true,
+        "cuda_version": null,
+        "hip_version": "7.0.51831",
+        "version": "2.10.0+rocm7.0"
+      },
+      "rocm": {
+        "rocm_home": null,
+        "runtime_version": "7.2.3",
+        "torch_hip_version": "7.0.51831"
+      }
+    },
+    "git": {
+      "available": true,
+      "branch": "master",
+      "dirty": true,
+      "error": null,
+      "sha": "3fc29615b7af535cc522eefd6c84f2eb66ac853d",
+      "tracked_changes": 63,
+      "untracked_files": 51
+    }
+  },
+  "run_id": "20260721T175154356740Z-smoke-sdf-course_fast-s0-d66561b7",
+  "schema": "peps.run_manifest",
+  "schema_version": 1,
+  "seed": 0
+}

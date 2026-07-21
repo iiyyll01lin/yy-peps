@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "verified_at_utc": "2026-07-21T17:29:45.368493+00:00",
+  "baseline_commit": "0173c51",
+  "paper": {
+    "title": "PEPS: Positional Encoding Projected Sampling -- Extended",
+    "arxiv": "2604.24167v1",
+    "url": "https://arxiv.org/pdf/2604.24167",
+    "bytes": 3139033,
+    "sha256": "338029e8f373fc26c2daec930a5860bba0f27fbe988a9771060d05ee855fba74"
+  },
+  "manifests": {
+    "kodak.json": {
+      "sha256": "82bdbfb3c46c5d4bf71c6ff2ec04d4cfcf7e107429e876b3926eddc877ccc837",
+      "entries": 24
+    },
+    "textures.json": {
+      "sha256": "63e6597b835b6b3f25dca64ea1f0832e42ae49869010795ef8e02117d56070e1",
+      "sets": 18,
+      "maps": 78
+    },
+    "sdf.json": {
+      "sha256": "d401f0e9599803344bfdf6e3d68795253997a778c0d99736766051b683f7e218",
+      "assets": 4
+    }
+  },
+  "acquisition": {
+    "kodak": {
+      "status": "downloaded_and_checksum_verified",
+      "source": "r0k.us canonical PNG mirror of Kodak PCD0992",
+      "images": 24,
+      "source_bytes": 15394305,
+      "dimensions": "18 landscape 768x512; 6 portrait 512x768",
+      "credits": "all 24 photographer names and source credit pages recorded",
+      "license_status": "terms verified; not represented as CC0"
+    },
+    "textures": {
+      "status": "downloaded_and_checksum_verified",
+      "sets": 18,
+      "maps": 78,
+      "polyhaven": {
+        "sets": 13,
+        "maps": 51,
+        "verification": "API files_hash and official per-file MD5 checked; every selected 4K PNG downloaded, assigned a local SHA-256, and storage mode/dimensions verified"
+      },
+      "ambientcg": {
+        "sets": 5,
+        "maps": 27,
+        "verification": "five 4K-PNG archives and every selected archive member downloaded; archive/member SHA-256 and storage mode/dimensions verified"
+      },
+      "license_status": "official CC0 pages verified for both providers",
+      "selection_status": "explicit frozen assumption because the paper does not publish a per-file/channel manifest"
+    },
+    "sdf_public_meshes": {
+      "status": "downloaded_extracted_and_checksum_verified",
+      "assets": [
+        "lucy",
+        "thai-statue",
+        "armadillo"
+      ],
+      "archive_bytes": 431895306,
+      "mesh_bytes": 729978589,
+      "license_status": "Stanford research/non-commercial and cultural-use terms verified"
+    },
+    "pitted_stonefish": {
+      "status": "blocked_without_user_authorization",
+      "metadata_verified": true,
+      "uid": "0cdc3d1419384fd78fd952dc251a3169",
+      "creator": "ffish.asia / floraZia.com",
+      "vertices": 5243728,
+      "faces": 10548062,
+      "license": "CC BY-NC-SA 4.0 plus uploader Academic-only statement",
+      "download_api_result": "HTTP 401 without account token (expected)",
+      "credential_handling": "SKETCHFAB_OAUTH_TOKEN or SKETCHFAB_API_TOKEN only; token and signed URL are never persisted",
+      "raw_asset_present": false,
+      "cc0_substitution": "UID 7db8da6be6434143af1bc618a4062fb3 metadata verified, but disabled for canonical results because it is a 655,591-face surface scan rather than the cited CT scan"
+    }
+  },
+  "sdf_preprocessing": {
+    "full_512_status": {
+      "lucy": "pending",
+      "pitted-stonefish": "blocked_on_authorized_mesh",
+      "thai-statue": "pending",
+      "armadillo": "pending"
+    },
+    "implementation_status": "chunked memmap pipeline implemented with deterministic 10M-point surface sampling, strict normalization, negative-inside sign, zyx layout, adjacent-voxel continuity validation, checksum provenance, and no automatic fallback",
+    "paper_limit": "authors unreleased C++/HIP converter prevents bit-exact source parity",
+    "focused_smokes": [
+      {
+        "asset": "armadillo",
+        "resolution": 24,
+        "canonical": false,
+        "surface_point_method": "sample",
+        "output_sha256": "cbeeaaa5a63c78c432a41761622f59cac4d882ef8705c5397015d0b5007664f3",
+        "negative_fraction": 0.059244791666666664,
+        "max_neighbor_delta_over_spacing": 1.0476428866386414,
+        "status": "passed repeatedly with identical hash; output remains git-ignored"
+      }
+    ]
+  },
+  "validation": {
+    "manifest_and_loader_tests": "8 passed in tests/test_paper_data.py",
+    "kodak_verify": "24/24 passed",
+    "texture_verify": "18 sets / 78 maps passed",
+    "public_sdf_verify": "3 archives / 3 extracted meshes passed",
+    "dynamic_loader_smoke": "Paving Stones 070 loaded as 32x32x15; normal lengths remained within 1.8e-7 of unit length",
+    "canonical_sdf_dry_run": "512^3 deterministic 10M-point configuration validated without launching full preprocessing",
+    "sdf_continuity_smoke": "maximum adjacent delta was 1.048x grid spacing (limit 1.5x)"
+  },
+  "secrets_or_raw_data_committed": false
+}

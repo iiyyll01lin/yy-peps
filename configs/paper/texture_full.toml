@@ -5,7 +5,7 @@ task = "texture"
 profile = "full"
 dataset = "paper-textures-18-4k"
 canonical = true
-seeds = [0]
+seeds = [0, 1, 2]
 
 [training]
 task = "texture"
@@ -90,11 +90,3 @@ name = "NTC_PinkPEPS-25"
 factory = "apps.texture.build:build_paper_texture"
 kwargs = { method = "ntc_pinkpeps_25" }
 expected_encoder_params = 13369344
-
-[[methods]]
-name = "Grid-PinkPEPS3F"
-factory = "apps.texture.build:build_paper_texture"
-kwargs = { method = "grid_pinkpeps4f", num_frequencies = 3 }
-seeds = [0, 1, 2]
-role = "ablation"
-expected_encoder_params = 17825792

@@ -1,0 +1,73 @@
+{
+  "artifact": "smoke-sdf",
+  "rows": [
+    {
+      "artifact": "smoke-sdf",
+      "count": 1,
+      "mean": 0.10546875,
+      "method": "Grid-PEPS-smoke",
+      "metric": "iou",
+      "profile": "course_fast",
+      "run_id": "20260721T175154356740Z-smoke-sdf-course_fast-s0-d66561b7",
+      "schema": "peps.paper_artifact_summary",
+      "schema_version": 1,
+      "scope": "global",
+      "unit": ""
+    },
+    {
+      "artifact": "smoke-sdf",
+      "count": 1,
+      "mean": 0.0,
+      "method": "Grid-smoke",
+      "metric": "iou",
+      "profile": "course_fast",
+      "run_id": "20260721T175154356740Z-smoke-sdf-course_fast-s0-d66561b7",
+      "schema": "peps.paper_artifact_summary",
+      "schema_version": 1,
+      "scope": "global",
+      "unit": ""
+    },
+    {
+      "artifact": "smoke-sdf",
+      "count": 1,
+      "mean": 0.10546875,
+      "method": "Hash-smoke",
+      "metric": "iou",
+      "profile": "course_fast",
+      "run_id": "20260721T175154356740Z-smoke-sdf-course_fast-s0-d66561b7",
+      "schema": "peps.paper_artifact_summary",
+      "schema_version": 1,
+      "scope": "global",
+      "unit": ""
+    },
+    {
+      "artifact": "smoke-sdf",
+      "count": 1,
+      "mean": 0.10546875,
+      "method": "LPE-smoke",
+      "metric": "iou",
+      "profile": "course_fast",
+      "run_id": "20260721T175154356740Z-smoke-sdf-course_fast-s0-d66561b7",
+      "schema": "peps.paper_artifact_summary",
+      "schema_version": 1,
+      "scope": "global",
+      "unit": ""
+    },
+    {
+      "artifact": "smoke-sdf",
+      "count": 1,
+      "mean": 0.10546875,
+      "method": "M-Grid-smoke",
+      "metric": "iou",
+      "profile": "course_fast",
+      "run_id": "20260721T175154356740Z-smoke-sdf-course_fast-s0-d66561b7",
+      "schema": "peps.paper_artifact_summary",
+      "schema_version": 1,
+      "scope": "global",
+      "unit": ""
+    }
+  ],
+  "run_id": "20260721T175154356740Z-smoke-sdf-course_fast-s0-d66561b7",
+  "schema": "peps.paper_artifact_summary",
+  "schema_version": 1
+}

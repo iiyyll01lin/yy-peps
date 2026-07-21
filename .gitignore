@@ -9,10 +9,19 @@ venv/
 # Data & results (large / generated)
 data/raw/
 data/cache/
+data/processed/
+data/provenance/local/
+data/**/*.part-*
 results/**/*.png
 results/**/*.pt
 results/**/*.npz
+results/work/
+results/smoke-inputs/
 *.ckpt
+slides/build/
+slides/*.pdf
+slides/*.pptx
+slides/*.html
 
 # HIP build artifacts
 hip/build/

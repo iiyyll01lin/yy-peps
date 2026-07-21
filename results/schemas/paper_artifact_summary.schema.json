@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/iiyyll01lin/yy-peps/results/schemas/paper_artifact_summary.schema.json",
+  "title": "PEPS paper artifact summary",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schema_version",
+    "run_id",
+    "artifact",
+    "rows"
+  ],
+  "properties": {
+    "schema": {
+      "const": "peps.paper_artifact_summary"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "artifact": {
+      "enum": [
+        "image-fig5",
+        "image-table1",
+        "texture-table2",
+        "sdf-table3-mape",
+        "sdf-table3-l1",
+        "sdf-table4",
+        "smoke-image",
+        "smoke-texture",
+        "smoke-sdf"
+      ]
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "schema",
+          "schema_version",
+          "run_id",
+          "artifact",
+          "profile",
+          "scope",
+          "method",
+          "metric",
+          "count",
+          "mean",
+          "unit"
+        ],
+        "properties": {
+          "schema": {
+            "const": "peps.paper_artifact_summary"
+          },
+          "schema_version": {
+            "const": 1
+          },
+          "run_id": {
+            "type": "string"
+          },
+          "artifact": {
+            "type": "string"
+          },
+          "profile": {
+            "enum": [
+              "paper_exact",
+              "course_fast"
+            ]
+          },
+          "scope": {
+            "type": "string"
+          },
+          "method": {
+            "type": "string"
+          },
+          "metric": {
+            "type": "string"
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "mean": {
+            "type": "number"
+          },
+          "unit": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

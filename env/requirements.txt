@@ -1,5 +1,10 @@
-# Core numerics (torch/torchvision installed separately via ROCm wheel index,
-# see README). Pin nothing aggressively — these are teaching deps.
+# Install with the checked-in constraints:
+#   python -m pip install -r env/requirements.txt -c env/constraints.txt
+#
+# torch/torchvision are selected separately because CPU and ROCm use different
+# wheel indexes. See README.md and env/rocm_setup.md.
+
+# Core numerics
 numpy
 scipy
 pillow
@@ -8,14 +13,15 @@ matplotlib
 tqdm
 
 # Metrics
-scikit-image          # SSIM
-lpips                 # perceptual metric
-# FLIP / LSD are implemented in peps/metrics.py
+scikit-image
+torchmetrics
+lpips
+flip-evaluator
+# LSD/LPSD are implemented in peps/metrics.py.
 
 # SDF preprocessing (App 3)
 trimesh
 mesh-to-sdf
-scikit-image          # marching cubes (also above; harmless dup)
 
 # Notebooks
 jupyter

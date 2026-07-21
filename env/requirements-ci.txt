@@ -1,0 +1,8 @@
+# Minimal CPU-CI dependencies. Install with env/constraints.txt.
+numpy
+scipy
+pillow
+imageio
+matplotlib
+scikit-image
+pytest

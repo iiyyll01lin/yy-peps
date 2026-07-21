@@ -1,4 +1,4 @@
-"""Small MLP decoder with explicit hidden-layer semantics."""
+"""Small MLP decoder with paper-faithful default depth."""
 
 from __future__ import annotations
 
@@ -44,10 +44,12 @@ def _validate_dimension(value: int, name: str, *, allow_zero: bool = False) -> i
 
 
 class MLP(nn.Module):
-    """A decoder whose ``num_layers`` is the number of hidden layers.
+    """Small decoder with a paper-faithful three-hidden-layer default.
 
-    Thus the paper's ``num_layers=3`` creates three 64-neuron hidden layers
-    followed by a separate output layer.
+    ``num_layers`` retains its original API meaning: the total number of
+    :class:`~torch.nn.Linear` layers, including the output layer.  The default
+    is therefore four linear layers (three hidden layers plus output), matching
+    the paper without changing the meaning of explicit legacy values.
     """
 
     def __init__(
@@ -55,7 +57,7 @@ class MLP(nn.Module):
         in_dim: int,
         out_dim: int,
         hidden_dim: int = 64,
-        num_layers: int = 3,
+        num_layers: int = 4,
         activation: str | nn.Module = "relu",
         output_activation=None,
         negative_slope: float = 0.01,
@@ -64,12 +66,8 @@ class MLP(nn.Module):
         self.in_dim = _validate_dimension(in_dim, "in_dim")
         self.out_dim = _validate_dimension(out_dim, "out_dim")
         self.hidden_dim = _validate_dimension(hidden_dim, "hidden_dim")
-        self.num_hidden_layers = _validate_dimension(
-            num_layers, "num_layers", allow_zero=True
-        )
-        # Compatibility for callers that inspect this attribute. Its meaning is
-        # now explicit: hidden layers, not total Linear layers.
-        self.num_layers = self.num_hidden_layers
+        self.num_layers = _validate_dimension(num_layers, "num_layers")
+        self.num_hidden_layers = self.num_layers - 1
         if not math.isfinite(negative_slope) or negative_slope < 0:
             raise ValueError("negative_slope must be finite and non-negative")
 

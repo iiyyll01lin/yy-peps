@@ -1,0 +1,216 @@
+{
+  "artifacts": [
+    {
+      "artifact": "image-fig5",
+      "blockers": [
+        {
+          "artifact": "image-fig5",
+          "code": "fig5_dataset_not_reported",
+          "detail": "The paper does not identify the Fig. 5 images or image count.",
+          "remediation": "Pass --fig5-manifest using results/schemas/fig5_dataset.schema.json.",
+          "requirement": "checksum manifest for the unnamed native-4K image suite"
+        },
+        {
+          "artifact": "image-fig5",
+          "code": "fig5_training_budget_not_reported",
+          "detail": "The paper states only equal steps across methods.",
+          "remediation": "Run with explicit --assumed-steps/--assumed-batch-size and report the output as a protocol-assumption sensitivity run.",
+          "requirement": "reported optimizer, batch size, and number of training steps"
+        }
+      ],
+      "checks": {},
+      "ready": false,
+      "warnings": []
+    },
+    {
+      "artifact": "image-table1",
+      "blockers": [
+        {
+          "artifact": "image-table1",
+          "code": "image_training_steps_not_reported",
+          "detail": "The frozen 120000-step value is a local sensitivity assumption.",
+          "remediation": "Use --allow-protocol-assumptions and retain verification_status=protocol_assumption.",
+          "requirement": "paper-reported image optimizer-step count"
+        }
+      ],
+      "checks": {
+        "jobs": 648,
+        "methods": 9,
+        "optimizer_steps_per_job": 120000,
+        "optimizer_steps_total": 77760000,
+        "seeds": 3,
+        "verified_images": 24
+      },
+      "ready": false,
+      "warnings": [
+        {
+          "code": "table1_loss_text_conflict",
+          "detail": "Published Table 1 values equal the appendix L2/GELU/dual-LR row, while the main narrative says L1/fixed LR."
+        },
+        {
+          "code": "large_compute_budget",
+          "detail": "The configured three-seed run contains 648 jobs and 77,760,000 optimizer steps."
+        }
+      ]
+    },
+    {
+      "artifact": "texture-table2",
+      "blockers": [],
+      "checks": {
+        "jobs": 594,
+        "methods": 11,
+        "optimizer_steps_per_job": 120000,
+        "optimizer_steps_total": 71280000,
+        "seeds": 3,
+        "verified_maps": 78,
+        "verified_sets": 18
+      },
+      "ready": true,
+      "warnings": [
+        {
+          "code": "texture_file_selection_assumption",
+          "detail": "The paper names sets/categories but not exact source files; the checked-in manifest freezes a non-duplicating selection."
+        },
+        {
+          "code": "optimizer_and_seed_not_reported",
+          "detail": "The runner freezes Adam and three seeds; the paper does not report either choice."
+        },
+        {
+          "code": "large_compute_budget",
+          "detail": "The configured three-seed run contains 594 jobs and 71,280,000 optimizer steps at native 4K."
+        }
+      ]
+    },
+    {
+      "artifact": "sdf-table3-mape",
+      "blockers": [
+        {
+          "artifact": "sdf-table3-mape",
+          "code": "paper_sdf_unavailable",
+          "detail": "missing SDF provenance: /home/aup/yy/workspace/peps/data/processed/sdf/lucy/sdf_512.provenance.json",
+          "remediation": "python data/download.py fetch sdf && python data/preprocess_sdf.py lucy",
+          "requirement": "four provenance-validated 512^3 SDF volumes"
+        }
+      ],
+      "checks": {
+        "instances": 4,
+        "jobs": 40,
+        "methods": 10,
+        "optimizer_steps_per_job": 120000,
+        "optimizer_steps_total": 4800000,
+        "verified_volumes": []
+      },
+      "ready": false,
+      "warnings": [
+        {
+          "code": "unreleased_sdf_converter",
+          "detail": "The authors' C++/HIP mesh converter is unavailable; the checksum-bearing mesh-to-sdf protocol is an approximation."
+        },
+        {
+          "code": "optimizer_and_seed_not_reported",
+          "detail": "The runner freezes Adam and seed 0; the paper does not report either choice."
+        }
+      ]
+    },
+    {
+      "artifact": "sdf-table3-l1",
+      "blockers": [
+        {
+          "artifact": "sdf-table3-l1",
+          "code": "paper_sdf_unavailable",
+          "detail": "missing SDF provenance: /home/aup/yy/workspace/peps/data/processed/sdf/lucy/sdf_512.provenance.json",
+          "remediation": "python data/download.py fetch sdf && python data/preprocess_sdf.py lucy",
+          "requirement": "four provenance-validated 512^3 SDF volumes"
+        }
+      ],
+      "checks": {
+        "instances": 4,
+        "jobs": 40,
+        "methods": 10,
+        "optimizer_steps_per_job": 120000,
+        "optimizer_steps_total": 4800000,
+        "verified_volumes": []
+      },
+      "ready": false,
+      "warnings": [
+        {
+          "code": "unreleased_sdf_converter",
+          "detail": "The authors' C++/HIP mesh converter is unavailable; the checksum-bearing mesh-to-sdf protocol is an approximation."
+        },
+        {
+          "code": "optimizer_and_seed_not_reported",
+          "detail": "The runner freezes Adam and seed 0; the paper does not report either choice."
+        }
+      ]
+    },
+    {
+      "artifact": "sdf-table4",
+      "blockers": [
+        {
+          "artifact": "sdf-table4",
+          "code": "paper_sdf_unavailable",
+          "detail": "missing SDF provenance: /home/aup/yy/workspace/peps/data/processed/sdf/pitted-stonefish/sdf_512.provenance.json",
+          "remediation": "python data/download.py fetch sdf && python data/preprocess_sdf.py pitted-stonefish",
+          "requirement": "provenance-validated Pitted Stonefish 512^3 volume"
+        }
+      ],
+      "checks": {
+        "budget_rows": 2,
+        "jobs": 17,
+        "methods": 9,
+        "optimizer_steps_per_job": 120000,
+        "optimizer_steps_total": 2040000,
+        "verified_volumes": []
+      },
+      "ready": false,
+      "warnings": [
+        {
+          "code": "unreleased_sdf_converter",
+          "detail": "The authors' C++/HIP mesh converter is unavailable; the checksum-bearing mesh-to-sdf protocol is an approximation."
+        },
+        {
+          "code": "optimizer_and_seed_not_reported",
+          "detail": "The runner freezes Adam and seed 0; the paper does not report either choice."
+        }
+      ]
+    }
+  ],
+  "checked_at_utc": "2026-07-21T18:01:48.720140+00:00",
+  "environment": {
+    "gpu": {
+      "available": true,
+      "count": 4,
+      "devices": [
+        {
+          "architecture": "gfx1201",
+          "index": 0,
+          "name": "AMD Radeon Graphics",
+          "total_memory_bytes": 34208743424
+        },
+        {
+          "architecture": "gfx1201",
+          "index": 1,
+          "name": "AMD Radeon Graphics",
+          "total_memory_bytes": 34208743424
+        },
+        {
+          "architecture": "gfx1201",
+          "index": 2,
+          "name": "AMD Radeon Graphics",
+          "total_memory_bytes": 34208743424
+        },
+        {
+          "architecture": "gfx1201",
+          "index": 3,
+          "name": "AMD Radeon Graphics",
+          "total_memory_bytes": 34208743424
+        }
+      ]
+    },
+    "torch": "2.10.0+rocm7.0"
+  },
+  "profile": "paper_exact",
+  "ready": false,
+  "schema": "peps.reproduction_prerequisites",
+  "schema_version": 1
+}

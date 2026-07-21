@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/iiyyll01lin/yy-peps/results/schemas/fig5_dataset.schema.json",
+  "title": "Checksum receipt for the unnamed PEPS Figure 5 image suite",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schema_version",
+    "dataset_id",
+    "images"
+  ],
+  "properties": {
+    "schema": {
+      "const": "peps.fig5_dataset"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "dataset_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "note": {
+      "type": "string"
+    },
+    "images": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "path",
+          "sha256",
+          "resolution_xy",
+          "color_space"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "resolution_xy": {
+            "type": "array",
+            "prefixItems": [
+              {
+                "type": "integer",
+                "minimum": 2048
+              },
+              {
+                "type": "integer",
+                "minimum": 2048
+              }
+            ],
+            "minItems": 2,
+            "maxItems": 2,
+            "contains": {
+              "type": "integer",
+              "minimum": 3840
+            },
+            "minContains": 1
+          },
+          "color_space": {
+            "const": "sRGB"
+          }
+        }
+      }
+    }
+  }
+}

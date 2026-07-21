@@ -1,0 +1,81 @@
+name: CPU and course CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cpu-course-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  cpu-tests:
+    name: CPU tests (Python 3.12)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            env/constraints.txt
+            env/requirements-ci.txt
+            env/torch-cpu.txt
+      - name: Install constrained CPU environment
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r env/torch-cpu.txt \
+            --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -r env/requirements-ci.txt -c env/constraints.txt
+          python -m pip install -e . --no-deps
+      - name: Run CPU-safe tests
+        run: pytest -q --ignore=tests/test_hip_parity.py
+      - name: Run HIP CPU reference smoke
+        run: |
+          pytest -q \
+            tests/test_hip_parity.py::test_integrated_features_match_projector_grid_and_aggregator \
+            tests/test_hip_parity.py::test_complete_three_hidden_layer_reference_matches_mlp_module \
+            tests/test_hip_parity.py::test_wmma_fp16_ref_matches_torch_half_matmul \
+            tests/test_hip_parity.py::test_wmma_int8_ref_is_exact_and_bounded
+
+  notebook-smoke:
+    name: Notebook and release static smoke
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Parse and compile notebook cells
+        run: python scripts/validate_course.py
+      - name: Confirm blank submissions are rejected
+        run: |
+          if python scripts/validate_submission.py \
+            course/templates/capstone_submission.json --kind capstone; then
+            echo "Blank capstone template unexpectedly passed" >&2
+            exit 1
+          fi
+          if python scripts/validate_submission.py \
+            course/templates/midterm_submission.json --kind midterm; then
+            echo "Blank midterm template unexpectedly passed" >&2
+            exit 1
+          fi
+
+  marp:
+    name: Marp HTML build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Build every deck as HTML
+        run: make -C slides validate

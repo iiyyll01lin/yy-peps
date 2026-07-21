@@ -231,6 +231,24 @@ def _build_model(
         and ("out_dim" in signature.parameters or accepts_kwargs)
     ):
         kwargs["out_dim"] = instance.targets.shape[1]
+    if (
+        config.task in {"image", "texture"}
+        and instance.shape is not None
+        and len(instance.shape) >= 2
+        and "signal_resolution" not in kwargs
+        and ("signal_resolution" in signature.parameters or accepts_kwargs)
+    ):
+        kwargs["signal_resolution"] = (
+            int(instance.shape[1]),
+            int(instance.shape[0]),
+        )
+    if (
+        config.task == "texture"
+        and instance.targets.shape[1] % 3 == 0
+        and "num_textures" not in kwargs
+        and ("num_textures" in signature.parameters or accepts_kwargs)
+    ):
+        kwargs["num_textures"] = instance.targets.shape[1] // 3
     built = factory(**kwargs)
     if isinstance(built, tuple):
         model, reported_count = built
@@ -308,6 +326,33 @@ def evaluate_metrics(
         "lsd": lsd,
         "lpsd": lpsd,
     }
+    texture_maps = instance.metadata.get("texture_maps")
+    if task == "texture" and texture_maps is not None:
+        per_metric: dict[str, list[float]] = {name: [] for name in names}
+        per_semantic: dict[tuple[str, str], list[float]] = {}
+        evaluated = predicted_image.clamp(0.0, 1.0)
+        for map_spec in texture_maps:
+            map_id = str(map_spec["map_id"])
+            semantic = str(map_spec["semantic"])
+            start = int(map_spec["channel_start"])
+            stop = int(map_spec["channel_stop"])
+            if stop - start != 3 or not 0 <= start < stop <= predicted_image.shape[-1]:
+                raise ValueError(f"invalid texture map channel slice for {map_id}")
+            for name in names:
+                if name not in {"psnr", "ssim"}:
+                    raise ValueError(f"unsupported paper texture metric: {name}")
+                value = functions[name](
+                    evaluated[..., start:stop],
+                    target_image[..., start:stop],
+                )
+                results[f"{name}/map/{map_id}/{semantic}"] = value
+                per_metric[name].append(value)
+                per_semantic.setdefault((name, semantic), []).append(value)
+        for name, values in per_metric.items():
+            results[name] = sum(values) / len(values)
+        for (name, semantic), values in per_semantic.items():
+            results[f"{name}/semantic/{semantic}"] = sum(values) / len(values)
+        return results
     for name in names:
         if name not in functions:
             raise ValueError(f"unsupported image metric: {name}")
