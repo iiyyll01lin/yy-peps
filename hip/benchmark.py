@@ -477,7 +477,8 @@ def update_latency_csv(
         for row in rows
         if not (
             row.get("schema_version") == "3"
-            and row.get("source_sha256") == build["source_sha256"]
+            and row.get("implementation") == "fused_rocwmma_fp16"
+            and row.get("code_object_target") == build["target_isa"]
         )
     ]
     parity_by_method = {
@@ -547,7 +548,12 @@ def update_latency_csv(
     ]
     temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
     with temporary.open("w", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fields, extrasaction="ignore")
+        writer = csv.DictWriter(
+            handle,
+            fieldnames=fields,
+            extrasaction="ignore",
+            lineterminator="\n",
+        )
         writer.writeheader()
         writer.writerows(rows)
     os.replace(temporary, path)

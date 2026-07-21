@@ -1,7 +1,7 @@
 # HIP / WMMA kernels — Part V (W11–W12)
 
-The primary path is now an **integrated paper-workload reference**, not the old
-“one grid sample + first MLP layer” component benchmark.
+The primary path is a **paper-scale fused PEPS decoder**, not the old “one grid
+sample + first MLP layer” component benchmark.
 
 ## Integrated path
 
@@ -19,8 +19,9 @@ Two implementations share the same fixture contract:
 - `fp16`: one-wave fused rocWMMA path. It builds selected features, runs all
   four Linear layers, applies fp32 biases/GELU, and writes only RGB globally.
 
-The workload geometry is 1024×1024 output and grid, 16 grid features, three
-frequencies, three 64-wide hidden layers, GELU, and RGB output.
+The benchmark geometry is 1024×1024 output and grid, 16 grid features, three
+64-wide hidden layers, GELU, and RGB output. It covers BI Grid, Grid-PEPS 3F,
+and selective Grid-PinkPEPS 3F/4F.
 
 ```bash
 # parity fixtures
@@ -36,13 +37,15 @@ frequencies, three 64-wide hidden layers, GELU, and RGB output.
 ./fused_peps benchmark bi-grid 1024 20 100
 ./fused_peps benchmark grid-peps-3f 1024 20 100
 ./fused_peps benchmark grid-pink-peps-3f 1024 20 100
+./fused_peps benchmark grid-pink-peps-4f 1024 20 100
 ```
 
 Both implementations have baseline/concat/Pink binary parity fixtures. The
 benchmark emits JSON receipts with `comparable_to_paper=false`; paper timings
 are included only as sourced external references, never as local measurements.
-The current fp16 path is functionally complete but still requires performance
-work before a repeated 1024² run is practical.
+The fp16 path is functionally complete. It is not the authors' unreleased
+kernel, so paper values remain external references rather than an exact timing
+target.
 
 整合路徑包含 projection、所有 shared-grid samples、concat / paper-exact Pink、
 三個 hidden layers 與輸出層。scalar fp32 與 fused fp16/rocWMMA 皆完成 parity;
@@ -80,20 +83,22 @@ bash bench_latency.sh
 ```
 
 The script requires a compatible local HIP compiler and a detected AMD
-architecture. It prefers `/opt/rocm/bin/hipcc`, falls back to ROCm's
-`amdclang++ -x hip` packaging, and uses a system `hipcc` only last; this avoids
-silently selecting an older compiler that cannot target `gfx1201`. It exits
-instead of guessing an ISA. Set `RUN_LARGE_WMMA=1` only when the larger
-supplementary GEMMs are safe on the machine.
+architecture. It removes the previous build directory, names the binary with
+the ISA and git SHA, and verifies the single embedded target with `roc-obj-ls`.
+It then runs fp32/fp16 full-output parity, a bounded preflight, and the four
+HIP-event benchmarks before atomically updating:
 
-The integrated fp16 paper-scale benchmark is intentionally not part of the
-default script yet: on the current gfx1201/ROCm 7.2.3 host, a 30-iteration
-1024² attempt exceeded five minutes and was stopped without recording a result.
-`hip/benchmark.py` now runs parity and a bounded 64² preflight first. Its current
-receipt (`results/hip_benchmark_gfx1201.json`) predicts 280.6 seconds even for a
-one-warmup/two-iteration four-method protocol and exits without modifying the
-latency CSV. This is a performance blocker, not missing parity or workload
-coverage; `--force-slow` is an explicit opt-in.
+- `results/hip_benchmark_<isa>.json`: build command/hash, code-object receipt,
+  hardware/clock/power snapshots, parity errors, median/p95 and protocol;
+- `results/hip_latency.csv`: schema-v3 summary rows while retaining legacy rows.
+
+The exclusive local gfx1201 run (ROCm 7.2.3, 30 warmups, 100 timed iterations)
+measured medians of 42.304/48.200/51.070/53.787 ms for BI Grid, Grid-PEPS 3F,
+PinkPEPS 3F, and PinkPEPS 4F. The device reports 32 compute units and a generic
+GPU name; the paper reports 4.32/5.47/4.86/4.99 ms on an RX 9070 XT without its
+precision or timing protocol. The local medians are 8.81–10.78× those external
+references, and the receipt therefore marks direct comparison false.
+Performance matching remains open; correctness and workload coverage do not.
 
 `gfx1151` and `gfx1201` have different WMMA encodings. rocWMMA selects the target
 intrinsic, while the explicit device macros in `wmma_mlp.hip` report generation
