@@ -1,0 +1,167 @@
+schema_version = 1
+artifact = "sdf-table3-mape-public-three"
+paper = "PEPS Extended arXiv:2604.24167v1"
+paper_table = "Table 3"
+profile = "full"
+status = "runnable"
+scope = "three_shape_subset"
+canonical_four_shape = false
+paper_global_comparable = false
+assets = ["lucy", "thai-statue", "armadillo"]
+seed = 0
+
+[training]
+loss = "mape"
+epochs = 3000
+batches_per_epoch = 40
+batch_size = 60000
+model_lr = 0.001
+encoder_lr = 0.001
+optimizer = "adam"
+adam_beta1 = 0.9
+adam_beta2 = 0.999
+adam_epsilon = 1e-8
+weight_decay = 0.0
+activation = "silu"
+hidden_layers = 3
+hidden_width = 64
+frequencies = 3
+coordinate_sampling = "fresh_uniform_[0,1]^3_each_batch"
+target_sampling = "trilinear_512cubed_align_corners_true"
+eikonal = false
+cosine = false
+checkpoint_every = 1000
+log_every = 200
+mape_epsilon = 1e-6
+
+[evaluation]
+metric = "iou"
+resolution = 512
+chunk_size = 262144
+occupancy_rule = "sdf<0"
+axis_order = "zyx"
+query_component_order = "xyz"
+
+[sharding]
+mode = "independent_job_modulo"
+world_size = 4
+same_model_distributed = false
+
+[render]
+enabled = false
+
+[reporting]
+aggregate_label = "three_shape_aggregate"
+forbidden_aggregate_labels = ["Global", "global", "four_shape_global"]
+deferred_asset = "pitted-stonefish"
+deferred_status = "deferred_auth_required"
+
+[[methods]]
+name = "PE"
+key = "pe"
+expected_encoder_params = 0
+expected_decoder_params = 12481
+expected_total_params = 12481
+[methods.paper_iou]
+lucy = 0.893
+"thai-statue" = 0.918
+armadillo = 0.952
+
+[[methods]]
+name = "LPE"
+key = "lpe"
+expected_encoder_params = 589824
+expected_decoder_params = 9601
+expected_total_params = 599425
+[methods.paper_iou]
+lucy = 0.902
+"thai-statue" = 0.925
+armadillo = 0.956
+
+[[methods]]
+name = "TI-Grid"
+key = "grid"
+expected_encoder_params = 589824
+expected_decoder_params = 9601
+expected_total_params = 599425
+[methods.paper_iou]
+lucy = 0.904
+"thai-statue" = 0.926
+armadillo = 0.955
+
+[[methods]]
+name = "Grid-PEPS"
+key = "grid_peps"
+expected_encoder_params = 589824
+expected_decoder_params = 16513
+expected_total_params = 606337
+[methods.paper_iou]
+lucy = 0.909
+"thai-statue" = 0.930
+armadillo = 0.957
+
+[[methods]]
+name = "Hash"
+key = "hash"
+expected_encoder_params = 589824
+expected_decoder_params = 9601
+expected_total_params = 599425
+[methods.paper_iou]
+lucy = 0.640
+"thai-statue" = 0.574
+armadillo = 0.637
+
+[[methods]]
+name = "Hash-PEPS"
+key = "hash_peps"
+expected_encoder_params = 589824
+expected_decoder_params = 16513
+expected_total_params = 606337
+[methods.paper_iou]
+lucy = 0.876
+"thai-statue" = 0.831
+armadillo = 0.788
+
+[[methods]]
+name = "M-Grid"
+key = "m_grid"
+expected_encoder_params = 598016
+expected_decoder_params = 8833
+expected_total_params = 606849
+[methods.paper_iou]
+lucy = 0.902
+"thai-statue" = 0.924
+armadillo = 0.956
+
+[[methods]]
+name = "M-PEPS"
+key = "m_peps"
+expected_encoder_params = 598016
+expected_decoder_params = 11137
+expected_total_params = 609153
+[methods.paper_iou]
+lucy = 0.908
+"thai-statue" = 0.930
+armadillo = 0.957
+
+[[methods]]
+name = "M-Hash"
+key = "m_hash"
+expected_encoder_params = 598016
+expected_decoder_params = 8961
+expected_total_params = 606977
+[methods.paper_iou]
+lucy = 0.910
+"thai-statue" = 0.930
+armadillo = 0.957
+
+[[methods]]
+name = "M-HashPEPS"
+key = "m_hashpeps"
+expected_encoder_params = 598016
+expected_decoder_params = 12033
+expected_total_params = 610049
+[methods.paper_iou]
+lucy = 0.910
+"thai-statue" = 0.930
+armadillo = 0.957

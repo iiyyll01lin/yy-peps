@@ -1,0 +1,254 @@
+{
+  "asset": {
+    "auth_env_names": [
+      "SKETCHFAB_OAUTH_TOKEN",
+      "SKETCHFAB_API_TOKEN"
+    ],
+    "canonical_source_uid": "0cdc3d1419384fd78fd952dc251a3169",
+    "data_access_attempted": false,
+    "id": "pitted-stonefish"
+  },
+  "authorized_job_plan": {
+    "encoder_budget_rows": [
+      1,
+      8
+    ],
+    "jobs_if_authorized": 17,
+    "methods": 9,
+    "pe_shared_between_rows": true
+  },
+  "claims": {
+    "canonical_stonefish_run_completed": false,
+    "table4_reproduced": false
+  },
+  "config": {
+    "schema": "configs/paper/sdf/config.schema.json",
+    "sha256": "81487e608f44c1532546ad6d1790c3d36871bde5883066dfcf4e3f985daf1d7f",
+    "source": "configs/paper/sdf/table4_deferred.toml"
+  },
+  "numeric_results": {
+    "allowed": false,
+    "generated": false,
+    "paper_values_embedded": false
+  },
+  "paper": "PEPS Extended arXiv:2604.24167v1",
+  "paper_table": "Table 4",
+  "parameter_assertions": [
+    {
+      "assertion": "passed",
+      "encoder_parameter_multiplier": 1,
+      "key": "grid",
+      "method": "TI-Grid",
+      "parameters": {
+        "decoder": 9601,
+        "encoder": 589824,
+        "total": 599425
+      }
+    },
+    {
+      "assertion": "passed",
+      "encoder_parameter_multiplier": 8,
+      "encoder_ratio_from_1x": 8,
+      "key": "grid",
+      "method": "TI-Grid",
+      "parameters": {
+        "decoder": 9601,
+        "encoder": 4718592,
+        "total": 4728193
+      }
+    },
+    {
+      "assertion": "passed",
+      "encoder_parameter_multiplier": 1,
+      "key": "hash",
+      "method": "Hash",
+      "parameters": {
+        "decoder": 9601,
+        "encoder": 589824,
+        "total": 599425
+      }
+    },
+    {
+      "assertion": "passed",
+      "encoder_parameter_multiplier": 8,
+      "encoder_ratio_from_1x": 8,
+      "key": "hash",
+      "method": "Hash",
+      "parameters": {
+        "decoder": 9601,
+        "encoder": 4718592,
+        "total": 4728193
+      }
+    },
+    {
+      "assertion": "passed",
+      "encoder_parameter_multiplier": 1,
+      "key": "lpe",
+      "method": "LPE",
+      "parameters": {
+        "decoder": 9601,
+        "encoder": 589824,
+        "total": 599425
+      }
+    },
+    {
+      "assertion": "passed",
+      "encoder_parameter_multiplier": 8,
+      "encoder_ratio_from_1x": 8,
+      "key": "lpe",
+      "method": "LPE",
+      "parameters": {
+        "decoder": 9601,
+        "encoder": 4718592,
+        "total": 4728193
+      }
+    },
+    {
+      "assertion": "passed",
+      "encoder_parameter_multiplier": 1,
+      "key": "grid_peps",
+      "method": "Grid-PEPS",
+      "parameters": {
+        "decoder": 16513,
+        "encoder": 589824,
+        "total": 606337
+      }
+    },
+    {
+      "assertion": "passed",
+      "encoder_parameter_multiplier": 8,
+      "encoder_ratio_from_1x": 8,
+      "key": "grid_peps",
+      "method": "Grid-PEPS",
+      "parameters": {
+        "decoder": 16513,
+        "encoder": 4718592,
+        "total": 4735105
+      }
+    },
+    {
+      "assertion": "passed",
+      "encoder_parameter_multiplier": 1,
+      "key": "pe",
+      "method": "PE",
+      "parameters": {
+        "decoder": 12481,
+        "encoder": 0,
+        "total": 12481
+      }
+    },
+    {
+      "assertion": "passed",
+      "encoder_parameter_multiplier": 8,
+      "encoder_ratio_from_1x": 1,
+      "key": "pe",
+      "method": "PE",
+      "parameters": {
+        "decoder": 12481,
+        "encoder": 0,
+        "total": 12481
+      }
+    },
+    {
+      "assertion": "passed",
+      "encoder_parameter_multiplier": 1,
+      "key": "m_peps",
+      "method": "M-PEPS",
+      "parameters": {
+        "decoder": 11137,
+        "encoder": 598016,
+        "total": 609153
+      }
+    },
+    {
+      "assertion": "passed",
+      "encoder_parameter_multiplier": 8,
+      "encoder_ratio_from_1x": 8,
+      "key": "m_peps",
+      "method": "M-PEPS",
+      "parameters": {
+        "decoder": 11137,
+        "encoder": 4784128,
+        "total": 4795265
+      }
+    },
+    {
+      "assertion": "passed",
+      "encoder_parameter_multiplier": 1,
+      "key": "m_grid",
+      "method": "M-Grid",
+      "parameters": {
+        "decoder": 8833,
+        "encoder": 598016,
+        "total": 606849
+      }
+    },
+    {
+      "assertion": "passed",
+      "encoder_parameter_multiplier": 8,
+      "encoder_ratio_from_1x": 8,
+      "key": "m_grid",
+      "method": "M-Grid",
+      "parameters": {
+        "decoder": 8833,
+        "encoder": 4784128,
+        "total": 4792961
+      }
+    },
+    {
+      "assertion": "passed",
+      "encoder_parameter_multiplier": 1,
+      "key": "m_hash",
+      "method": "M-Hash",
+      "parameters": {
+        "decoder": 8961,
+        "encoder": 598016,
+        "total": 606977
+      }
+    },
+    {
+      "assertion": "passed",
+      "encoder_parameter_multiplier": 8,
+      "encoder_ratio_from_1x": 8,
+      "key": "m_hash",
+      "method": "M-Hash",
+      "parameters": {
+        "decoder": 8961,
+        "encoder": 4784128,
+        "total": 4793089
+      }
+    },
+    {
+      "assertion": "passed",
+      "encoder_parameter_multiplier": 1,
+      "key": "m_hashpeps",
+      "method": "M-HashPEPS",
+      "parameters": {
+        "decoder": 12033,
+        "encoder": 598016,
+        "total": 610049
+      }
+    },
+    {
+      "assertion": "passed",
+      "encoder_parameter_multiplier": 8,
+      "encoder_ratio_from_1x": 8,
+      "key": "m_hashpeps",
+      "method": "M-HashPEPS",
+      "parameters": {
+        "decoder": 12033,
+        "encoder": 4784128,
+        "total": 4796161
+      }
+    }
+  ],
+  "reason": "canonical Pitted Stonefish requires an authorized Sketchfab academic download",
+  "schema": "peps.sdf_table4_deferred",
+  "schema_version": 1,
+  "scope": "canonical_pitted_stonefish_only",
+  "status": "deferred_auth_required",
+  "substitution": {
+    "allowed": false,
+    "used": false
+  }
+}

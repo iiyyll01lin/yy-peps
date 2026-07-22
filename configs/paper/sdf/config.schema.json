@@ -1,0 +1,211 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/peps/sdf-reproduction-config.schema.json",
+  "title": "PEPS SDF reproduction configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "artifact",
+    "paper",
+    "paper_table",
+    "profile",
+    "status",
+    "scope",
+    "canonical_four_shape",
+    "paper_global_comparable",
+    "assets",
+    "seed",
+    "training",
+    "evaluation",
+    "sharding",
+    "render",
+    "reporting",
+    "methods"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "artifact": {"type": "string", "minLength": 1},
+    "paper": {"const": "PEPS Extended arXiv:2604.24167v1"},
+    "paper_table": {"enum": ["Table 3", "Table 4", "Table 6", "smoke-only"]},
+    "profile": {"enum": ["full", "smoke"]},
+    "status": {"enum": ["runnable", "deferred_auth_required"]},
+    "scope": {"type": "string", "minLength": 1},
+    "canonical_four_shape": {"type": "boolean"},
+    "paper_global_comparable": {"type": "boolean"},
+    "assets": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "seed": {"type": "integer", "minimum": 0},
+    "training": {"$ref": "#/$defs/training"},
+    "evaluation": {"$ref": "#/$defs/evaluation"},
+    "sharding": {"$ref": "#/$defs/sharding"},
+    "render": {"type": "object", "required": ["enabled"]},
+    "reporting": {"$ref": "#/$defs/reporting"},
+    "deferred": {"$ref": "#/$defs/deferred"},
+    "methods": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/method"}
+    }
+  },
+  "$defs": {
+    "training": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "loss",
+        "epochs",
+        "batches_per_epoch",
+        "batch_size",
+        "model_lr",
+        "encoder_lr",
+        "optimizer",
+        "adam_beta1",
+        "adam_beta2",
+        "adam_epsilon",
+        "weight_decay",
+        "activation",
+        "hidden_layers",
+        "hidden_width",
+        "frequencies",
+        "coordinate_sampling",
+        "target_sampling",
+        "eikonal",
+        "cosine",
+        "checkpoint_every",
+        "log_every",
+        "mape_epsilon"
+      ],
+      "properties": {
+        "loss": {"enum": ["mape", "l1"]},
+        "epochs": {"type": "integer", "minimum": 1},
+        "batches_per_epoch": {"type": "integer", "minimum": 1},
+        "batch_size": {"type": "integer", "minimum": 1},
+        "model_lr": {"type": "number", "exclusiveMinimum": 0},
+        "encoder_lr": {"type": "number", "exclusiveMinimum": 0},
+        "optimizer": {"const": "adam"},
+        "adam_beta1": {"type": "number", "minimum": 0, "exclusiveMaximum": 1},
+        "adam_beta2": {"type": "number", "minimum": 0, "exclusiveMaximum": 1},
+        "adam_epsilon": {"type": "number", "exclusiveMinimum": 0},
+        "weight_decay": {"type": "number", "minimum": 0},
+        "activation": {"const": "silu"},
+        "hidden_layers": {"type": "integer", "minimum": 1},
+        "hidden_width": {"type": "integer", "minimum": 1},
+        "frequencies": {"type": "integer", "minimum": 1},
+        "coordinate_sampling": {"type": "string"},
+        "target_sampling": {"type": "string"},
+        "eikonal": {"const": false},
+        "cosine": {"const": false},
+        "checkpoint_every": {"type": "integer", "minimum": 1},
+        "log_every": {"type": "integer", "minimum": 1},
+        "mape_epsilon": {"type": "number", "exclusiveMinimum": 0}
+      }
+    },
+    "evaluation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "metric",
+        "resolution",
+        "chunk_size",
+        "occupancy_rule",
+        "axis_order",
+        "query_component_order"
+      ],
+      "properties": {
+        "metric": {"const": "iou"},
+        "resolution": {"type": "integer", "minimum": 2},
+        "chunk_size": {"type": "integer", "minimum": 1},
+        "occupancy_rule": {"const": "sdf<0"},
+        "axis_order": {"const": "zyx"},
+        "query_component_order": {"const": "xyz"}
+      }
+    },
+    "sharding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "world_size", "same_model_distributed"],
+      "properties": {
+        "mode": {"const": "independent_job_modulo"},
+        "world_size": {"type": "integer", "minimum": 1},
+        "same_model_distributed": {"const": false}
+      }
+    },
+    "reporting": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "aggregate_label",
+        "forbidden_aggregate_labels",
+        "deferred_asset",
+        "deferred_status"
+      ],
+      "properties": {
+        "aggregate_label": {"type": "string", "minLength": 1},
+        "forbidden_aggregate_labels": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "deferred_asset": {"const": "pitted-stonefish"},
+        "deferred_status": {"const": "deferred_auth_required"}
+      }
+    },
+    "deferred": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reason",
+        "auth_env_names",
+        "substitution_allowed",
+        "numeric_results_allowed",
+        "canonical_source_uid",
+        "required_receipt_status"
+      ],
+      "properties": {
+        "reason": {"type": "string", "minLength": 1},
+        "auth_env_names": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string"}
+        },
+        "substitution_allowed": {"const": false},
+        "numeric_results_allowed": {"const": false},
+        "canonical_source_uid": {"const": "0cdc3d1419384fd78fd952dc251a3169"},
+        "required_receipt_status": {"const": "deferred_auth_required"}
+      }
+    },
+    "method": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "key"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "key": {"type": "string", "minLength": 1},
+        "kwargs": {"type": "object"},
+        "paper_iou": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "lucy": {"type": "number", "minimum": 0, "maximum": 1},
+            "thai-statue": {"type": "number", "minimum": 0, "maximum": 1},
+            "armadillo": {"type": "number", "minimum": 0, "maximum": 1}
+          }
+        },
+        "shared_no_encoder_measurement": {"type": "boolean"},
+        "expected_encoder_params": {"type": "integer", "minimum": 0},
+        "expected_decoder_params": {"type": "integer", "minimum": 1},
+        "expected_total_params": {"type": "integer", "minimum": 1},
+        "expected_encoder_params_1x": {"type": "integer", "minimum": 0},
+        "expected_decoder_params_1x": {"type": "integer", "minimum": 1},
+        "expected_total_params_1x": {"type": "integer", "minimum": 1},
+        "expected_encoder_params_8x": {"type": "integer", "minimum": 0},
+        "expected_decoder_params_8x": {"type": "integer", "minimum": 1},
+        "expected_total_params_8x": {"type": "integer", "minimum": 1}
+      }
+    }
+  }
+}

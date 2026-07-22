@@ -1,0 +1,33 @@
+{
+  "armadillo_flip_renders": 9,
+  "artifacts": [
+    "sdf-table3-mape-public-three",
+    "sdf-table6-l1-public-three"
+  ],
+  "full_volume_queries": 7650410496,
+  "full_volume_queries_per_job": {
+    "sdf-table3-mape-public-three": 134217728,
+    "sdf-table6-l1-public-three": 134217728
+  },
+  "jobs": 57,
+  "memory_floor_per_worker": {
+    "note": "Model, Adam state, activations, and framework workspace are additional.",
+    "volume_payload_bytes": 536870912
+  },
+  "optimizer_steps": 6840000,
+  "runtime_note": "Wall time is hardware/method dependent. Measure representative step and 512^3 inference rates before assigning an hour estimate.",
+  "sampled_training_points": 410400000000,
+  "schema": "peps.sdf_repro_cost",
+  "schema_version": 1,
+  "sharding": {
+    "jobs_per_rank": [
+      15,
+      14,
+      14,
+      14
+    ],
+    "mode": "independent_job_modulo",
+    "same_model_distributed": false,
+    "world_size": 4
+  }
+}

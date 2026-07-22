@@ -1,0 +1,73 @@
+schema_version = 1
+artifact = "sdf-repro-cpu-smoke"
+paper = "PEPS Extended arXiv:2604.24167v1"
+paper_table = "smoke-only"
+profile = "smoke"
+status = "runnable"
+scope = "synthetic_non_paper"
+canonical_four_shape = false
+paper_global_comparable = false
+assets = ["synthetic-sphere"]
+seed = 17
+
+[training]
+loss = "mape"
+epochs = 1
+batches_per_epoch = 4
+batch_size = 64
+model_lr = 0.001
+encoder_lr = 0.001
+optimizer = "adam"
+adam_beta1 = 0.9
+adam_beta2 = 0.999
+adam_epsilon = 1e-8
+weight_decay = 0.0
+activation = "silu"
+hidden_layers = 1
+hidden_width = 8
+frequencies = 2
+coordinate_sampling = "fresh_uniform_[0,1]^3_each_batch"
+target_sampling = "trilinear_volume_align_corners_true"
+eikonal = false
+cosine = false
+checkpoint_every = 2
+log_every = 1
+mape_epsilon = 1e-4
+
+[evaluation]
+metric = "iou"
+resolution = 16
+chunk_size = 256
+occupancy_rule = "sdf<0"
+axis_order = "zyx"
+query_component_order = "xyz"
+
+[sharding]
+mode = "independent_job_modulo"
+world_size = 1
+same_model_distributed = false
+
+[render]
+enabled = false
+
+[reporting]
+aggregate_label = "smoke_aggregate"
+forbidden_aggregate_labels = ["Global", "global", "three_shape_aggregate"]
+deferred_asset = "pitted-stonefish"
+deferred_status = "deferred_auth_required"
+
+[[methods]]
+name = "TI-Grid-smoke"
+key = "grid"
+kwargs = { resolution = 4, feature_dim = 2, hidden_dim = 8, num_layers = 2 }
+expected_encoder_params = 128
+expected_decoder_params = 33
+expected_total_params = 161
+
+[[methods]]
+name = "Grid-PEPS-smoke"
+key = "grid_peps"
+kwargs = { resolution = 4, feature_dim = 2, num_frequencies = 2, hidden_dim = 8, num_layers = 2 }
+expected_encoder_params = 128
+expected_decoder_params = 97
+expected_total_params = 225

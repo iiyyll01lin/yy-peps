@@ -1,0 +1,101 @@
+{
+  "checked_at_utc": "2026-07-22T00:43:12.541125+00:00",
+  "checksums_verified": true,
+  "paper": "PEPS Extended arXiv:2604.24167v1",
+  "schema": "peps.sdf_volume_validation",
+  "schema_version": 1,
+  "scope": "public_three_shape_subset",
+  "status": "passed",
+  "stonefish": {
+    "asset_id": "pitted-stonefish",
+    "checked": false,
+    "status": "deferred_auth_required",
+    "substitution_used": false
+  },
+  "volumes": [
+    {
+      "asset_id": "lucy",
+      "axis_order": "zyx",
+      "canonical_paper_protocol": true,
+      "checksum_verified": true,
+      "distance_units": "normalized [-1,1] coordinate units",
+      "dtype": "float32",
+      "local_provenance_path": "data/processed/sdf/lucy/sdf_512.provenance.json",
+      "local_provenance_sha256": "04fc6ea3f82339f7f43c24e99b3638d3f9898b5a5edd383922915eb85afe1aca",
+      "max_neighbor_delta_over_spacing": 1.0000418722629547,
+      "maximum": 1.2639025449752808,
+      "minimum": -0.1623612940311432,
+      "negative_fraction": 0.019937507808208466,
+      "preprocessor_known_limit": "The paper states that an unreleased C++/HIP converter was used; Open3D exact triangle distance with ray-parity signs is an auditable reproduction protocol, not a bit-exact implementation of that converter.",
+      "query_component_order": "xyz",
+      "shape": [
+        512,
+        512,
+        512
+      ],
+      "sign_convention": "negative_inside",
+      "status": "checksum_and_provenance_verified",
+      "tracked_provenance_path": "data/provenance/sdf/lucy-512.json",
+      "tracked_provenance_sha256": "bd4f2ca98e64d2cabd3cb4d1beedf080c2b6805b11051579e0e4aa91fb18885b",
+      "volume_bytes": 536871040,
+      "volume_path": "data/processed/sdf/lucy/sdf_512.npy",
+      "volume_sha256": "cd5e292b78e74a47239d348d7e19e3beb9a9c0e36c9d93e82d8e767e1b241366"
+    },
+    {
+      "asset_id": "thai-statue",
+      "axis_order": "zyx",
+      "canonical_paper_protocol": true,
+      "checksum_verified": true,
+      "distance_units": "normalized [-1,1] coordinate units",
+      "dtype": "float32",
+      "local_provenance_path": "data/processed/sdf/thai-statue/sdf_512.provenance.json",
+      "local_provenance_sha256": "eca81062e39decc2db0a0cbf747e80b6bac48f1a316def382f7c4a5aa0adfc7b",
+      "max_neighbor_delta_over_spacing": 1.0047910555731505,
+      "maximum": 1.3428497314453125,
+      "minimum": -0.2218431830406189,
+      "negative_fraction": 0.03609740734100342,
+      "preprocessor_known_limit": "The paper states that an unreleased C++/HIP converter was used; Open3D exact triangle distance with ray-parity signs is an auditable reproduction protocol, not a bit-exact implementation of that converter.",
+      "query_component_order": "xyz",
+      "shape": [
+        512,
+        512,
+        512
+      ],
+      "sign_convention": "negative_inside",
+      "status": "checksum_and_provenance_verified",
+      "tracked_provenance_path": "data/provenance/sdf/thai-statue-512.json",
+      "tracked_provenance_sha256": "11359e14deffc0aeaa04fe8ccd36b3bba4742fedd3569cb633a1125d5991d97b",
+      "volume_bytes": 536871040,
+      "volume_path": "data/processed/sdf/thai-statue/sdf_512.npy",
+      "volume_sha256": "87f64ba60815f49c9e317ba861ebd8648e4dd726817e3d86df4db9aa8ef51240"
+    },
+    {
+      "asset_id": "armadillo",
+      "axis_order": "zyx",
+      "canonical_paper_protocol": true,
+      "checksum_verified": true,
+      "distance_units": "normalized [-1,1] coordinate units",
+      "dtype": "float32",
+      "local_provenance_path": "data/processed/sdf/armadillo/sdf_512.provenance.json",
+      "local_provenance_sha256": "a0c698446c53a31b3f76fe1b464beb589324adcf0d49a42b5ffb6da4ed73c9a0",
+      "max_neighbor_delta_over_spacing": 1.0000309264287353,
+      "maximum": 1.149961233139038,
+      "minimum": -0.33928510546684265,
+      "negative_fraction": 0.06828153133392334,
+      "preprocessor_known_limit": "The paper states that an unreleased C++/HIP converter was used; Open3D exact triangle distance with ray-parity signs is an auditable reproduction protocol, not a bit-exact implementation of that converter.",
+      "query_component_order": "xyz",
+      "shape": [
+        512,
+        512,
+        512
+      ],
+      "sign_convention": "negative_inside",
+      "status": "checksum_and_provenance_verified",
+      "tracked_provenance_path": "data/provenance/sdf/armadillo-512.json",
+      "tracked_provenance_sha256": "b8ca68b72fef3cd14a06cda688b262081eb39d655b8994faa9a3e5939198155b",
+      "volume_bytes": 536871040,
+      "volume_path": "data/processed/sdf/armadillo/sdf_512.npy",
+      "volume_sha256": "8c925ffbf9243c76fbcb08bd57593025698b0538e0e274e2b5f810b9bd8c6f36"
+    }
+  ]
+}

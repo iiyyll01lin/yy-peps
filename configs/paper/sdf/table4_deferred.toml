@@ -1,0 +1,156 @@
+schema_version = 1
+artifact = "sdf-table4-deferred"
+paper = "PEPS Extended arXiv:2604.24167v1"
+paper_table = "Table 4"
+profile = "full"
+status = "deferred_auth_required"
+scope = "canonical_stonefish_only"
+canonical_four_shape = false
+paper_global_comparable = false
+assets = ["pitted-stonefish"]
+seed = 0
+
+[training]
+loss = "l1"
+epochs = 3000
+batches_per_epoch = 40
+batch_size = 60000
+model_lr = 0.01
+encoder_lr = 0.01
+optimizer = "adam"
+adam_beta1 = 0.9
+adam_beta2 = 0.999
+adam_epsilon = 1e-8
+weight_decay = 0.0
+activation = "silu"
+hidden_layers = 3
+hidden_width = 64
+frequencies = 3
+coordinate_sampling = "fresh_uniform_[0,1]^3_each_batch"
+target_sampling = "trilinear_512cubed_align_corners_true"
+eikonal = false
+cosine = false
+checkpoint_every = 1000
+log_every = 200
+mape_epsilon = 1e-6
+
+[evaluation]
+metric = "iou"
+resolution = 512
+chunk_size = 262144
+occupancy_rule = "sdf<0"
+axis_order = "zyx"
+query_component_order = "xyz"
+
+[sharding]
+mode = "independent_job_modulo"
+world_size = 4
+same_model_distributed = false
+
+[render]
+enabled = false
+
+[reporting]
+aggregate_label = "not_generated"
+forbidden_aggregate_labels = ["Global", "global", "three_shape_aggregate"]
+deferred_asset = "pitted-stonefish"
+deferred_status = "deferred_auth_required"
+
+[deferred]
+reason = "canonical Pitted Stonefish requires an authorized Sketchfab academic download"
+auth_env_names = ["SKETCHFAB_OAUTH_TOKEN", "SKETCHFAB_API_TOKEN"]
+substitution_allowed = false
+numeric_results_allowed = false
+canonical_source_uid = "0cdc3d1419384fd78fd952dc251a3169"
+required_receipt_status = "deferred_auth_required"
+
+[[methods]]
+name = "TI-Grid"
+key = "grid"
+expected_encoder_params_1x = 589824
+expected_decoder_params_1x = 9601
+expected_total_params_1x = 599425
+expected_encoder_params_8x = 4718592
+expected_decoder_params_8x = 9601
+expected_total_params_8x = 4728193
+
+[[methods]]
+name = "Hash"
+key = "hash"
+expected_encoder_params_1x = 589824
+expected_decoder_params_1x = 9601
+expected_total_params_1x = 599425
+expected_encoder_params_8x = 4718592
+expected_decoder_params_8x = 9601
+expected_total_params_8x = 4728193
+
+[[methods]]
+name = "LPE"
+key = "lpe"
+expected_encoder_params_1x = 589824
+expected_decoder_params_1x = 9601
+expected_total_params_1x = 599425
+expected_encoder_params_8x = 4718592
+expected_decoder_params_8x = 9601
+expected_total_params_8x = 4728193
+
+[[methods]]
+name = "Grid-PEPS"
+key = "grid_peps"
+expected_encoder_params_1x = 589824
+expected_decoder_params_1x = 16513
+expected_total_params_1x = 606337
+expected_encoder_params_8x = 4718592
+expected_decoder_params_8x = 16513
+expected_total_params_8x = 4735105
+
+[[methods]]
+name = "PE"
+key = "pe"
+shared_no_encoder_measurement = true
+expected_encoder_params_1x = 0
+expected_decoder_params_1x = 12481
+expected_total_params_1x = 12481
+expected_encoder_params_8x = 0
+expected_decoder_params_8x = 12481
+expected_total_params_8x = 12481
+
+[[methods]]
+name = "M-PEPS"
+key = "m_peps"
+expected_encoder_params_1x = 598016
+expected_decoder_params_1x = 11137
+expected_total_params_1x = 609153
+expected_encoder_params_8x = 4784128
+expected_decoder_params_8x = 11137
+expected_total_params_8x = 4795265
+
+[[methods]]
+name = "M-Grid"
+key = "m_grid"
+expected_encoder_params_1x = 598016
+expected_decoder_params_1x = 8833
+expected_total_params_1x = 606849
+expected_encoder_params_8x = 4784128
+expected_decoder_params_8x = 8833
+expected_total_params_8x = 4792961
+
+[[methods]]
+name = "M-Hash"
+key = "m_hash"
+expected_encoder_params_1x = 598016
+expected_decoder_params_1x = 8961
+expected_total_params_1x = 606977
+expected_encoder_params_8x = 4784128
+expected_decoder_params_8x = 8961
+expected_total_params_8x = 4793089
+
+[[methods]]
+name = "M-HashPEPS"
+key = "m_hashpeps"
+expected_encoder_params_1x = 598016
+expected_decoder_params_1x = 12033
+expected_total_params_1x = 610049
+expected_encoder_params_8x = 4784128
+expected_decoder_params_8x = 12033
+expected_total_params_8x = 4796161

@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/peps/sdf-table4-deferred.schema.json",
+  "title": "PEPS Table 4 deferred authentication receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schema_version",
+    "paper",
+    "paper_table",
+    "status",
+    "scope",
+    "config",
+    "asset",
+    "reason",
+    "substitution",
+    "numeric_results",
+    "claims",
+    "parameter_assertions",
+    "authorized_job_plan"
+  ],
+  "properties": {
+    "schema": {"const": "peps.sdf_table4_deferred"},
+    "schema_version": {"const": 1},
+    "paper": {"const": "PEPS Extended arXiv:2604.24167v1"},
+    "paper_table": {"const": "Table 4"},
+    "status": {"const": "deferred_auth_required"},
+    "scope": {"const": "canonical_pitted_stonefish_only"},
+    "config": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "sha256", "schema"],
+      "properties": {
+        "source": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "schema": {"type": "string", "minLength": 1}
+      }
+    },
+    "asset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "canonical_source_uid",
+        "auth_env_names",
+        "data_access_attempted"
+      ],
+      "properties": {
+        "id": {"const": "pitted-stonefish"},
+        "canonical_source_uid": {
+          "const": "0cdc3d1419384fd78fd952dc251a3169"
+        },
+        "auth_env_names": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string"}
+        },
+        "data_access_attempted": {"const": false}
+      }
+    },
+    "reason": {"type": "string", "minLength": 1},
+    "substitution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["allowed", "used"],
+      "properties": {
+        "allowed": {"const": false},
+        "used": {"const": false}
+      }
+    },
+    "numeric_results": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["allowed", "generated", "paper_values_embedded"],
+      "properties": {
+        "allowed": {"const": false},
+        "generated": {"const": false},
+        "paper_values_embedded": {"const": false}
+      }
+    },
+    "claims": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "table4_reproduced",
+        "canonical_stonefish_run_completed"
+      ],
+      "properties": {
+        "table4_reproduced": {"const": false},
+        "canonical_stonefish_run_completed": {"const": false}
+      }
+    },
+    "parameter_assertions": {
+      "type": "array",
+      "minItems": 18,
+      "maxItems": 18,
+      "items": {
+        "type": "object",
+        "required": [
+          "method",
+          "key",
+          "encoder_parameter_multiplier",
+          "parameters",
+          "assertion"
+        ],
+        "properties": {
+          "method": {"type": "string", "minLength": 1},
+          "key": {"type": "string", "minLength": 1},
+          "encoder_parameter_multiplier": {"enum": [1, 8]},
+          "parameters": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["encoder", "decoder", "total"],
+            "properties": {
+              "encoder": {"type": "integer", "minimum": 0},
+              "decoder": {"type": "integer", "minimum": 1},
+              "total": {"type": "integer", "minimum": 1}
+            }
+          },
+          "assertion": {"const": "passed"},
+          "encoder_ratio_from_1x": {"enum": [1, 8]}
+        }
+      }
+    },
+    "authorized_job_plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "methods",
+        "encoder_budget_rows",
+        "pe_shared_between_rows",
+        "jobs_if_authorized"
+      ],
+      "properties": {
+        "methods": {"const": 9},
+        "encoder_budget_rows": {
+          "type": "array",
+          "prefixItems": [{"const": 1}, {"const": 8}],
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "pe_shared_between_rows": {"const": true},
+        "jobs_if_authorized": {"const": 17}
+      }
+    }
+  }
+}
