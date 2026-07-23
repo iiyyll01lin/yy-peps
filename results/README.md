@@ -21,10 +21,41 @@ re-running the weekly notebooks, or the per-app build scripts.
 
 透過 `peps.report` 產生。重跑各週 notebook 或各 app 的 build 腳本即可重生。
 
+## Course release evidence
+
+The authoritative teaching-release receipt is
+`course_release/receipt.json`, validated by
+`schemas/course_release_receipt.schema.json`. The practical handoff checklist is
+`../course/RELEASE_CHECKLIST.md`. Exactly six evidence bundles are release
+indexed:
+
+- `course-fast-image-smoke`, `course-fast-texture-smoke`, and
+  `course-fast-sdf-smoke` are
+  `validated-course-smoke-not-paper-comparable`. Each has a checked-in
+  `peps.run_manifest`, raw instance rows, and a summary. They use synthetic
+  inputs and validate executable paths only.
+- `kodak-convergence-pilot` and `texture-convergence-pilot` are
+  `validated-inconclusive-pilot-not-paper-comparable`. Both completed their
+  bounded plans, but neither met its decision rule; neither recommends a budget
+  or authorizes a full paper run.
+- `sdf-public-512-provenance` is
+  `validated-input-provenance-not-numeric-result`. Lucy, Thai Statue, and
+  Armadillo have checksum- and schema-validated 512³ receipts. This is input
+  provenance, not trained-model evidence.
+
+The release contains **zero paper-comparable results**. Pitted Stonefish remains
+`deferred_auth_required`, and no substitute or Table 4 number is included.
+Figure 5 identities/budget, the Kodak training budget, the Table 1 loss/recipe
+conflict, optimizer/seed choices, and the authors' unreleased SDF converter
+remain explicit `paper_exact` limitations.
+
 ## Manifest-backed paper artifacts
 
-`python -m experiments.reproduce` is the only paper-artifact producer. It never
-reads the legacy tables. A successful execution creates:
+`python -m experiments.reproduce` produces the common run-manifest contract and
+never reads the legacy tables. The specialized image, texture, and SDF
+calibration runners write separate versioned receipts and raw rows; their
+outputs are not paper evidence unless the release status explicitly says so. A
+successful common-run execution creates:
 
 ```text
 results/runs/<run-id>/
@@ -59,7 +90,7 @@ manifest contract but are marked `course_fast_smoke_not_paper_comparable`.
 | `pink_param_savings.csv` | W06 | current course rerun; unverified |
 | `hip_latency.csv` | W11 / W12 | current Box B integrated rows + legacy diagnostics; unverified |
 | `hip_latency.schema.json` | W11 / W12 | workload/provenance row contract |
-| `hip_benchmark_gfx1201.json` | HIP runner | blocked-performance receipt; parity passed |
+| `hip_benchmark_gfx1201.json` | HIP runner | completed clean-build receipt; not paper-comparable |
 | `hip_benchmark.schema.json` | HIP runner | passed/blocked benchmark bundle contract |
 | `hip_benchmark_receipt.schema.json` | HIP CLI | integrated fp16 timing receipt contract |
 
@@ -75,8 +106,10 @@ Current rerun summaries (historical teaching output, not verified paper evidence
   **246.3032 / 411.7999 / 295.3217 ms/iter**, parity passed and
   `comparable_to_paper=false`.
 - W12 isolated 4096×64×64 Box B WMMA: **15.0896 ms fp16 / 15.4592 ms int8**.
-- Fused fp16 all-mode parity passed, but its safety preflight projected
-  **280.6 s** for only one warmup plus two iterations across four methods; the
-  bounded runner refused the paper-scale timing and wrote no latency row.
+- The clean-build fused-fp16 receipt completed 30 warmups plus 100 timed 1024²
+  iterations per method. Local medians were **42.4544 / 48.2829 / 51.1820 /
+  53.9012 ms** for BI-grid / Grid-PEPS-3f / Grid-PinkPEPS-3f /
+  Grid-PinkPEPS-4f. Every row keeps `comparable_to_paper=false`; the paper's
+  precision, timing boundaries, and kernel are not disclosed.
 
 Component microbenchmarks are never treated as paper-workload comparisons.

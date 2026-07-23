@@ -86,10 +86,10 @@
       "blockers": [
         {
           "artifact": "sdf-table3-mape",
-          "code": "paper_sdf_unavailable",
-          "detail": "missing SDF provenance: /home/aup/yy/workspace/peps/data/processed/sdf/lucy/sdf_512.provenance.json",
-          "remediation": "python data/download.py fetch sdf && python data/preprocess_sdf.py lucy",
-          "requirement": "four provenance-validated 512^3 SDF volumes"
+          "code": "pitted_stonefish_authorization_required",
+          "detail": "missing SDF provenance: /home/aup/yy/workspace/peps/data/processed/sdf/pitted-stonefish/sdf_512.provenance.json",
+          "remediation": "Acquire the canonical Sketchfab asset with an authorized academic account, then preprocess it; do not substitute another mesh.",
+          "requirement": "authorized canonical Pitted Stonefish 512^3 volume"
         }
       ],
       "checks": {
@@ -98,7 +98,11 @@
         "methods": 10,
         "optimizer_steps_per_job": 120000,
         "optimizer_steps_total": 4800000,
-        "verified_volumes": []
+        "verified_volumes": [
+          "lucy",
+          "thai-statue",
+          "armadillo"
+        ]
       },
       "ready": false,
       "warnings": [
@@ -117,10 +121,10 @@
       "blockers": [
         {
           "artifact": "sdf-table3-l1",
-          "code": "paper_sdf_unavailable",
-          "detail": "missing SDF provenance: /home/aup/yy/workspace/peps/data/processed/sdf/lucy/sdf_512.provenance.json",
-          "remediation": "python data/download.py fetch sdf && python data/preprocess_sdf.py lucy",
-          "requirement": "four provenance-validated 512^3 SDF volumes"
+          "code": "pitted_stonefish_authorization_required",
+          "detail": "missing SDF provenance: /home/aup/yy/workspace/peps/data/processed/sdf/pitted-stonefish/sdf_512.provenance.json",
+          "remediation": "Acquire the canonical Sketchfab asset with an authorized academic account, then preprocess it; do not substitute another mesh.",
+          "requirement": "authorized canonical Pitted Stonefish 512^3 volume"
         }
       ],
       "checks": {
@@ -129,7 +133,11 @@
         "methods": 10,
         "optimizer_steps_per_job": 120000,
         "optimizer_steps_total": 4800000,
-        "verified_volumes": []
+        "verified_volumes": [
+          "lucy",
+          "thai-statue",
+          "armadillo"
+        ]
       },
       "ready": false,
       "warnings": [
@@ -148,10 +156,10 @@
       "blockers": [
         {
           "artifact": "sdf-table4",
-          "code": "paper_sdf_unavailable",
+          "code": "pitted_stonefish_authorization_required",
           "detail": "missing SDF provenance: /home/aup/yy/workspace/peps/data/processed/sdf/pitted-stonefish/sdf_512.provenance.json",
-          "remediation": "python data/download.py fetch sdf && python data/preprocess_sdf.py pitted-stonefish",
-          "requirement": "provenance-validated Pitted Stonefish 512^3 volume"
+          "remediation": "Acquire the canonical Sketchfab asset with an authorized academic account, then preprocess it; do not substitute another mesh.",
+          "requirement": "authorized canonical Pitted Stonefish 512^3 volume"
         }
       ],
       "checks": {
@@ -175,7 +183,7 @@
       ]
     }
   ],
-  "checked_at_utc": "2026-07-21T18:01:48.720140+00:00",
+  "checked_at_utc": "2026-07-22T02:25:23.570858+00:00",
   "environment": {
     "gpu": {
       "available": true,

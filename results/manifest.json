@@ -11,6 +11,11 @@
       "software and hardware metadata",
       "raw per-instance measurements"
     ],
+    "release_statuses": {
+      "validated-course-smoke-not-paper-comparable": "Manifest-backed synthetic smoke with resolved configuration, provenance, raw rows, and summary; validates the execution path only.",
+      "validated-inconclusive-pilot-not-paper-comparable": "Bounded pilot with complete auditable observations whose decision rule did not authorize a paper budget.",
+      "validated-input-provenance-not-numeric-result": "Checksum- and schema-validated input provenance; does not contain a trained-model result."
+    },
     "note": "A CSV is not reproduction evidence merely because it is tracked or rendered in course material."
   },
   "artifacts": {
@@ -25,9 +30,19 @@
       "reason": "Current Box B integrated parity/latency rows coexist with legacy diagnostics, but no complete run manifest or paper-comparable optimized implementation exists."
     },
     "hip_benchmark_gfx1201.json": {
-      "status": "blocked-performance",
+      "status": "legacy-unverified",
       "producer": "hip/benchmark.py",
-      "reason": "Clean gfx1201 build and fp32/fp16 all-mode parity passed; the safe 64-squared preflight predicted 280.6 seconds even for the requested one-warmup/two-iteration four-method protocol, so no paper-scale fp16 latency row was written."
+      "reason": "A clean gfx1201 build, fp32/fp16 all-mode parity, and a 30-warmup/100-iteration 1024-squared local run completed, but the receipt explicitly sets directly_comparable=false because the paper does not disclose matching precision, timing, or kernel details."
+    },
+    "image_repro_instances.csv": {
+      "status": "legacy-unverified",
+      "producer": "experiments/image_repro.py",
+      "reason": "Auditable per-instance projection currently combines smoke rows with one partial protocol-assumption Table 1 job; row-level verification labels must be respected."
+    },
+    "image_repro_summary.csv": {
+      "status": "legacy-unverified",
+      "producer": "experiments/image_repro.py",
+      "reason": "Derived summary includes smoke and incomplete protocol-assumption matrices and is not verified paper evidence."
     },
     "pink_param_savings.csv": {
       "status": "legacy-unverified",
@@ -54,5 +69,65 @@
       "producer": "W10",
       "reason": "Current three-seed matched-size course-fast rerun with schema-v2 packed-rate rows, but no complete run manifest or pinned input receipt."
     }
+  },
+  "release_evidence": {
+    "course-fast-image-smoke": {
+      "status": "validated-course-smoke-not-paper-comparable",
+      "paper_comparable": false,
+      "claim_scope": "Synthetic image execution-path smoke only; no Kodak or paper-quality claim.",
+      "receipt": "results/runs/20260721T175053994434Z-smoke-image-course_fast-s0-3cfadfa6/manifest.json",
+      "raw_rows": "results/runs/20260721T175053994434Z-smoke-image-course_fast-s0-3cfadfa6/instances.csv",
+      "summary": "results/runs/20260721T175053994434Z-smoke-image-course_fast-s0-3cfadfa6/summary.json"
+    },
+    "course-fast-texture-smoke": {
+      "status": "validated-course-smoke-not-paper-comparable",
+      "paper_comparable": false,
+      "claim_scope": "Synthetic texture execution-path smoke only; no native-4K Table 2 claim.",
+      "receipt": "results/runs/20260721T175141764666Z-smoke-texture-course_fast-s0-737949da/manifest.json",
+      "raw_rows": "results/runs/20260721T175141764666Z-smoke-texture-course_fast-s0-737949da/instances.csv",
+      "summary": "results/runs/20260721T175141764666Z-smoke-texture-course_fast-s0-737949da/summary.json"
+    },
+    "course-fast-sdf-smoke": {
+      "status": "validated-course-smoke-not-paper-comparable",
+      "paper_comparable": false,
+      "claim_scope": "Synthetic SDF execution-path smoke only; no 512-cubed paper-table claim.",
+      "receipt": "results/runs/20260721T175154356740Z-smoke-sdf-course_fast-s0-d66561b7/manifest.json",
+      "raw_rows": "results/runs/20260721T175154356740Z-smoke-sdf-course_fast-s0-d66561b7/instances.csv",
+      "summary": "results/runs/20260721T175154356740Z-smoke-sdf-course_fast-s0-d66561b7/summary.json"
+    },
+    "kodak-convergence-pilot": {
+      "status": "validated-inconclusive-pilot-not-paper-comparable",
+      "paper_comparable": false,
+      "claim_scope": "Three-image, two-seed local budget calibration; no Table 1 budget or numeric reproduction was established.",
+      "receipt": "results/image_convergence/receipt.json",
+      "raw_rows": "results/image_convergence/curves.csv"
+    },
+    "texture-convergence-pilot": {
+      "status": "validated-inconclusive-pilot-not-paper-comparable",
+      "paper_comparable": false,
+      "claim_scope": "Two-set bounded early-step calibration; no Table 2 budget or numeric reproduction was established.",
+      "receipt": "results/texture_repro/convergence_pilot.json",
+      "raw_rows": "results/texture_repro/convergence_pilot_observations.csv",
+      "recovery_receipt": "results/texture_repro/convergence_pilot_recovery.json"
+    },
+    "sdf-public-512-provenance": {
+      "status": "validated-input-provenance-not-numeric-result",
+      "paper_comparable": false,
+      "claim_scope": "Public Lucy, Thai Statue, and Armadillo 512-cubed volume provenance only; Pitted Stonefish remains authorization-blocked.",
+      "receipt": "results/sdf_repro/volume_validation.json",
+      "provenance": [
+        "data/provenance/sdf/lucy-512.json",
+        "data/provenance/sdf/thai-statue-512.json",
+        "data/provenance/sdf/armadillo-512.json"
+      ]
+    }
+  },
+  "course_release": {
+    "status": "course-ready-paper-exact-blocked",
+    "paper_exact_ready": false,
+    "paper_comparable_results": 0,
+    "receipt": "results/course_release/receipt.json",
+    "schema": "results/schemas/course_release_receipt.schema.json",
+    "checklist": "course/RELEASE_CHECKLIST.md"
   }
 }

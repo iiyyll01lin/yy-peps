@@ -589,7 +589,7 @@ def validate_course_release(
         isinstance(texture_progress, dict)
         and texture_progress.get("complete") is True
         and texture_progress.get("active_workers") == 0
-        and texture_progress.get("observations") == 90
+        and texture_progress.get("observations") == 180
         and isinstance(texture_recovery, dict)
         and texture_recovery.get("process_reconciliation", {}).get(
             "active_related_processes"

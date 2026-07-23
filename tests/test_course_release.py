@@ -226,7 +226,7 @@ def test_pilots_remain_complete_inconclusive_and_unauthorized() -> None:
     )
     assert progress["complete"] is True
     assert progress["active_workers"] == 0
-    assert progress["observations"] == progress["expected_observations"] == 90
+    assert progress["observations"] == progress["expected_observations"] == 180
     assert texture["decision"]["status"] == "inconclusive_bounded_pilot"
     assert texture["decision"]["recommended_table2_steps"] is None
     assert texture["decision"]["full_71m_step_run_authorized"] is False

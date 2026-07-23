@@ -1,0 +1,411 @@
+{
+  "schema": "peps.course_release_receipt",
+  "schema_version": 1,
+  "release_id": "peps-course-2026-07-22",
+  "generated_at_utc": "2026-07-22T02:59:12.885108+00:00",
+  "status": "course-ready-paper-exact-blocked",
+  "paper_comparable_results": 0,
+  "manifest": "results/manifest.json",
+  "checklist": "course/RELEASE_CHECKLIST.md",
+  "promoted_evidence": [
+    {
+      "id": "course-fast-image-smoke",
+      "status": "validated-course-smoke-not-paper-comparable",
+      "paper_comparable": false,
+      "claim_scope": "Synthetic image execution-path smoke only; no Kodak or paper-quality claim.",
+      "files": [
+        {
+          "role": "run_manifest",
+          "path": "results/runs/20260721T175053994434Z-smoke-image-course_fast-s0-3cfadfa6/manifest.json"
+        },
+        {
+          "role": "raw_rows",
+          "path": "results/runs/20260721T175053994434Z-smoke-image-course_fast-s0-3cfadfa6/instances.csv"
+        },
+        {
+          "role": "summary",
+          "path": "results/runs/20260721T175053994434Z-smoke-image-course_fast-s0-3cfadfa6/summary.json"
+        }
+      ],
+      "validation": {
+        "run_id": "20260721T175053994434Z-smoke-image-course_fast-s0-3cfadfa6",
+        "profile": "course_fast",
+        "manifest_schema": "peps.run_manifest/v1",
+        "raw_row_count": 9,
+        "all_rows_status_ok": true,
+        "verification_status": "course_fast_smoke_not_paper_comparable"
+      }
+    },
+    {
+      "id": "course-fast-texture-smoke",
+      "status": "validated-course-smoke-not-paper-comparable",
+      "paper_comparable": false,
+      "claim_scope": "Synthetic texture execution-path smoke only; no native-4K Table 2 claim.",
+      "files": [
+        {
+          "role": "run_manifest",
+          "path": "results/runs/20260721T175141764666Z-smoke-texture-course_fast-s0-737949da/manifest.json"
+        },
+        {
+          "role": "raw_rows",
+          "path": "results/runs/20260721T175141764666Z-smoke-texture-course_fast-s0-737949da/instances.csv"
+        },
+        {
+          "role": "summary",
+          "path": "results/runs/20260721T175141764666Z-smoke-texture-course_fast-s0-737949da/summary.json"
+        }
+      ],
+      "validation": {
+        "run_id": "20260721T175141764666Z-smoke-texture-course_fast-s0-737949da",
+        "profile": "course_fast",
+        "manifest_schema": "peps.run_manifest/v1",
+        "raw_row_count": 15,
+        "all_rows_status_ok": true,
+        "verification_status": "course_fast_smoke_not_paper_comparable"
+      }
+    },
+    {
+      "id": "course-fast-sdf-smoke",
+      "status": "validated-course-smoke-not-paper-comparable",
+      "paper_comparable": false,
+      "claim_scope": "Synthetic SDF execution-path smoke only; no 512-cubed paper-table claim.",
+      "files": [
+        {
+          "role": "run_manifest",
+          "path": "results/runs/20260721T175154356740Z-smoke-sdf-course_fast-s0-d66561b7/manifest.json"
+        },
+        {
+          "role": "raw_rows",
+          "path": "results/runs/20260721T175154356740Z-smoke-sdf-course_fast-s0-d66561b7/instances.csv"
+        },
+        {
+          "role": "summary",
+          "path": "results/runs/20260721T175154356740Z-smoke-sdf-course_fast-s0-d66561b7/summary.json"
+        }
+      ],
+      "validation": {
+        "run_id": "20260721T175154356740Z-smoke-sdf-course_fast-s0-d66561b7",
+        "profile": "course_fast",
+        "manifest_schema": "peps.run_manifest/v1",
+        "raw_row_count": 5,
+        "all_rows_status_ok": true,
+        "verification_status": "course_fast_smoke_not_paper_comparable"
+      }
+    },
+    {
+      "id": "kodak-convergence-pilot",
+      "status": "validated-inconclusive-pilot-not-paper-comparable",
+      "paper_comparable": false,
+      "claim_scope": "Three-image, two-seed local budget calibration; no Table 1 budget or numeric reproduction was established.",
+      "files": [
+        {
+          "role": "receipt",
+          "path": "results/image_convergence/receipt.json"
+        },
+        {
+          "role": "raw_curves",
+          "path": "results/image_convergence/curves.csv"
+        },
+        {
+          "role": "recovery_incident",
+          "path": "results/image_convergence/external_table1_recovery_incident.json"
+        }
+      ],
+      "validation": {
+        "jobs": "18/18",
+        "optimizer_steps": "540000/540000",
+        "curve_points": "90/90",
+        "active_workers": 0,
+        "integrity_valid": true,
+        "outcome": "inconclusive",
+        "recommended_budget_steps": null,
+        "verified_table1": false,
+        "external_recovery_process_groups_stopped": 8,
+        "table1_accounted_optimizer_steps_legacy_unverified": 416500
+      }
+    },
+    {
+      "id": "texture-convergence-pilot",
+      "status": "validated-inconclusive-pilot-not-paper-comparable",
+      "paper_comparable": false,
+      "claim_scope": "Two-set bounded convergence pilot extended to 5000 steps (30 trajectories, 180 observations) on GPUs 2/3; method ranking is stable across budgets but curves have not plateaued, so no Table 2 budget or numeric reproduction was established.",
+      "files": [
+        {
+          "role": "receipt",
+          "path": "results/texture_repro/convergence_pilot.json"
+        },
+        {
+          "role": "raw_observations",
+          "path": "results/texture_repro/convergence_pilot_observations.csv"
+        },
+        {
+          "role": "progress",
+          "path": "results/texture_repro/convergence_pilot_progress.json"
+        },
+        {
+          "role": "recovery",
+          "path": "results/texture_repro/convergence_pilot_recovery.json"
+        }
+      ],
+      "validation": {
+        "trajectories": "30/30",
+        "optimizer_steps": "150000/150000",
+        "observations": "180/180",
+        "active_workers": 0,
+        "outcome": "inconclusive_bounded_pilot",
+        "recommended_budget_steps": null,
+        "full_71m_step_run_authorized": false
+      }
+    },
+    {
+      "id": "sdf-public-512-provenance",
+      "status": "validated-input-provenance-not-numeric-result",
+      "paper_comparable": false,
+      "claim_scope": "Public Lucy, Thai Statue, and Armadillo 512-cubed volume provenance only; Pitted Stonefish remains authorization-blocked.",
+      "files": [
+        {
+          "role": "validation_receipt",
+          "path": "results/sdf_repro/volume_validation.json"
+        },
+        {
+          "role": "lucy_provenance",
+          "path": "data/provenance/sdf/lucy-512.json"
+        },
+        {
+          "role": "thai_statue_provenance",
+          "path": "data/provenance/sdf/thai-statue-512.json"
+        },
+        {
+          "role": "armadillo_provenance",
+          "path": "data/provenance/sdf/armadillo-512.json"
+        }
+      ],
+      "validation": {
+        "public_assets": 3,
+        "checksums_verified": true,
+        "schemas_validated": true,
+        "stonefish_status": "deferred_auth_required",
+        "substitution_used": false
+      }
+    }
+  ],
+  "legacy_top_level_csvs": {
+    "status": "legacy-unverified",
+    "count": 9,
+    "files": [
+      "delta_ablation.csv",
+      "hip_latency.csv",
+      "image_repro_instances.csv",
+      "image_repro_summary.csv",
+      "pink_param_savings.csv",
+      "table1_image.csv",
+      "table2_texture.csv",
+      "table3_sdf.csv",
+      "w10_rate_distortion.csv"
+    ]
+  },
+  "sdf_public_provenance": [
+    {
+      "asset_id": "lucy",
+      "status": "checksum_and_provenance_verified",
+      "shape": [
+        512,
+        512,
+        512
+      ],
+      "receipt": "data/provenance/sdf/lucy-512.json",
+      "volume_sha256": "cd5e292b78e74a47239d348d7e19e3beb9a9c0e36c9d93e82d8e767e1b241366",
+      "known_limit": "The paper states that an unreleased C++/HIP converter was used; Open3D exact triangle distance with ray-parity signs is an auditable reproduction protocol, not a bit-exact implementation of that converter."
+    },
+    {
+      "asset_id": "thai-statue",
+      "status": "checksum_and_provenance_verified",
+      "shape": [
+        512,
+        512,
+        512
+      ],
+      "receipt": "data/provenance/sdf/thai-statue-512.json",
+      "volume_sha256": "87f64ba60815f49c9e317ba861ebd8648e4dd726817e3d86df4db9aa8ef51240",
+      "known_limit": "The paper states that an unreleased C++/HIP converter was used; Open3D exact triangle distance with ray-parity signs is an auditable reproduction protocol, not a bit-exact implementation of that converter."
+    },
+    {
+      "asset_id": "armadillo",
+      "status": "checksum_and_provenance_verified",
+      "shape": [
+        512,
+        512,
+        512
+      ],
+      "receipt": "data/provenance/sdf/armadillo-512.json",
+      "volume_sha256": "8c925ffbf9243c76fbcb08bd57593025698b0538e0e274e2b5f810b9bd8c6f36",
+      "known_limit": "The paper states that an unreleased C++/HIP converter was used; Open3D exact triangle distance with ray-parity signs is an auditable reproduction protocol, not a bit-exact implementation of that converter."
+    }
+  ],
+  "pilot_decisions": {
+    "kodak": {
+      "status": "inconclusive",
+      "recommended_budget_steps": null,
+      "paper_comparable": false,
+      "full_run_authorized": false,
+      "receipt": "results/image_convergence/receipt.json"
+    },
+    "texture": {
+      "status": "inconclusive_bounded_pilot",
+      "recommended_budget_steps": null,
+      "paper_comparable": false,
+      "full_run_authorized": false,
+      "receipt": "results/texture_repro/convergence_pilot.json"
+    }
+  },
+  "paper_exact": {
+    "ready": false,
+    "paper_comparable_results": 0,
+    "prerequisite_report": "results/paper_exact_prerequisites.json",
+    "blockers": [
+      {
+        "code": "fig5_dataset_not_reported",
+        "scope": "image Figure 5",
+        "status": "not_reported",
+        "detail": "The paper does not identify the native-4K Figure 5 image suite or image count.",
+        "evidence": "results/paper_exact_prerequisites.json"
+      },
+      {
+        "code": "fig5_training_budget_not_reported",
+        "scope": "image Figure 5",
+        "status": "not_reported",
+        "detail": "The paper states only equal steps across Figure 5 methods and does not disclose the optimizer-step or batch budget.",
+        "evidence": "results/paper_exact_prerequisites.json"
+      },
+      {
+        "code": "image_training_steps_not_reported",
+        "scope": "image Table 1",
+        "status": "not_reported",
+        "detail": "The local 120000-step and batch-60000 values are sensitivity assumptions, not published protocol.",
+        "evidence": "results/paper_exact_prerequisites.json"
+      },
+      {
+        "code": "table1_loss_recipe_conflict",
+        "scope": "image Table 1",
+        "status": "protocol_conflict",
+        "detail": "Published Table 1 values align with the Appendix L2/GELU/dual-cosine row while the main text describes L1/LeakyReLU/fixed LR.",
+        "evidence": "results/image_repro_status.json"
+      },
+      {
+        "code": "optimizer_and_seed_not_reported",
+        "scope": "image, texture, and SDF",
+        "status": "not_reported",
+        "detail": "Local runners freeze optimizer and seed choices that the paper does not fully report.",
+        "evidence": "results/paper_exact_prerequisites.json"
+      },
+      {
+        "code": "unreleased_sdf_converter",
+        "scope": "SDF Tables 3, 4, and 6",
+        "status": "not_bit_exact",
+        "detail": "The authors' C++/HIP 512-cubed converter is unreleased; the Open3D protocol is auditable but not bit-exact.",
+        "evidence": "results/sdf_repro/volume_validation.json"
+      },
+      {
+        "code": "pitted_stonefish_authorization_required",
+        "scope": "SDF Tables 3, 4, and 6",
+        "status": "authorization_required",
+        "detail": "Canonical Pitted Stonefish requires an authorized academic Sketchfab download; no substitute or numeric Table 4 result is permitted.",
+        "evidence": "results/sdf_repro/table4_deferred_auth_required.json"
+      },
+      {
+        "code": "table1_incomplete",
+        "scope": "image Table 1",
+        "status": "incomplete",
+        "detail": "The stopped full matrix has 1 of 648 jobs complete and four checkpointed incomplete jobs; active workers are zero.",
+        "evidence": "results/image_repro_status.json"
+      },
+      {
+        "code": "kodak_budget_unresolved",
+        "scope": "image Table 1",
+        "status": "incomplete",
+        "detail": "The bounded Kodak pilot was inconclusive and recommends no optimizer-step budget.",
+        "evidence": "results/image_convergence/receipt.json"
+      },
+      {
+        "code": "texture_table2_run_unauthorized",
+        "scope": "texture Table 2",
+        "status": "incomplete",
+        "detail": "The bounded texture pilot was inconclusive and explicitly did not authorize the 71280000-step run.",
+        "evidence": "results/texture_repro/convergence_pilot.json"
+      }
+    ]
+  },
+  "process_audit": {
+    "checked_at_utc": "2026-07-22T02:59:12.885108+00:00",
+    "active_recovery_or_full_training_processes": 0,
+    "method": "Stopped transient user service peps-image-repro-table1.service and permanently masked its exact user-unit name to /dev/null, then sampled the live process table, KFD registry, and mask 25 times at five-second intervals from 2026-07-22T02:57:12.177219Z through 2026-07-22T02:59:12.885108Z. Every sample contained zero launcher/recovery/full-training processes, zero KFD GPU processes, and the mask remained present; all Cursor wake sleepers were exited and unrearmed."
+  },
+  "validation": {
+    "status": "passed-with-explicit-blocker",
+    "commands": [
+      {
+        "command": ".venv/bin/python -m pytest -q --ignore=tests/test_hip_parity.py",
+        "status": "passed",
+        "detail": "Final CPU-safe suite, including release receipt and all checked-in JSON Schema checks: 165 passed, 2 skipped in 11.13 seconds."
+      },
+      {
+        "command": ".venv/bin/python -m pytest -q tests/test_hip_parity.py::<four CPU reference selections>",
+        "status": "passed",
+        "detail": "Final rerun: six parameterized CPU reference cases passed in 0.70 seconds."
+      },
+      {
+        "command": "PEPS_RUN_4GPU_TESTS=1 .venv/bin/python -m pytest -q tests/test_distributed.py",
+        "status": "passed",
+        "detail": "Seven tests passed in 13.79 seconds after the four-GPU idle gate; the GPU cases use synthetic data and at most two optimizer steps."
+      },
+      {
+        "command": ".venv/bin/python -m experiments.reproduce check --profile paper_exact --output results/paper_exact_prerequisites.json",
+        "status": "passed",
+        "detail": "Returned the expected blocker exit code 2 without training; refreshed 24 Kodak, 18-set/78-map texture, three-public-SDF, protocol-omission, and Stonefish authorization status."
+      },
+      {
+        "command": "systemctl --user stop peps-image-repro-table1.service; systemctl --user mask peps-image-repro-table1.service; bounded process/KFD/mask observation; .venv/bin/python -m experiments.image_repro status",
+        "status": "passed",
+        "detail": "Stopped only transient user-service control group 148804 with ranks 148878-148881, permanently masked its exact unit name, preserved and revalidated all five canonical checkpoints, refreshed Table 1 as 1/648 complete plus four checkpointed incomplete jobs and 416500 legacy-unverified accounted steps, then observed zero related/KFD processes with the mask present in all 25 five-second samples."
+      },
+      {
+        "command": ".venv/bin/python -m pytest -q tests/test_image_reproduction.py tests/test_reproduction_artifacts.py tests/test_image_repro_manager.py tests/test_image_convergence.py tests/test_course_release.py",
+        "status": "passed",
+        "detail": "Post-mask launcher, direct API, legacy API, systemd manager, bounded-pilot isolation, incident receipt, and release-state regression suite: 55 passed in 2.74 seconds."
+      },
+      {
+        "command": ".venv/bin/python -m compileall -q experiments/full_run_authorization.py experiments/image_repro.py experiments/reproduce.py scripts/manage_image_repro_4gpu.py tests/test_image_reproduction.py tests/test_reproduction_artifacts.py tests/test_image_repro_manager.py tests/test_course_release.py; bash -n scripts/run_image_repro_4gpu.sh",
+        "status": "passed",
+        "detail": "All edited recovery Python files compiled and the shell launcher passed syntax validation."
+      },
+      {
+        "command": ".venv/bin/python -m compileall -q apps course data experiments hip peps scripts tests",
+        "status": "passed",
+        "detail": "All practical Python source trees compiled successfully."
+      },
+      {
+        "command": ".venv/bin/python scripts/validate_course.py",
+        "status": "passed",
+        "detail": "Final release, notebook-cell compile, data manifest, result index, receipt, and Marp source validator passed."
+      },
+      {
+        "command": "git diff --check",
+        "status": "passed",
+        "detail": "No whitespace errors were reported in the working-tree diff."
+      },
+      {
+        "command": "make -C slides validate",
+        "status": "blocked",
+        "detail": "Not run because npx is absent; source-level Marp validation remains part of scripts/validate_course.py."
+      }
+    ],
+    "marp": {
+      "status": "blocked",
+      "detail": "npx is not installed, so the pinned Marp 4.5.0 HTML build could not run."
+    },
+    "hardware_smoke": {
+      "status": "passed",
+      "detail": "All four gfx1201 devices passed three idle observations (maximum 3% busy and 111955968 bytes used), then the bounded two-step synthetic DDP suite passed 7 tests."
+    }
+  }
+}
