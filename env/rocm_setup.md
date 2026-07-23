@@ -30,10 +30,45 @@ The checked-in ROCm wheel file currently selects PyTorch `2.10.0+rocm7.0` and
 torchvision `0.25.0+rocm7.0`. Do not mix CPU and ROCm wheel indexes in one
 environment. Capture `python -m pip freeze --all` with every experiment.
 
+## Version policy / 版本策略
+
+Keep the Python and native HIP stacks isolated:
+
+- `.venv` uses the checked-in PyTorch `2.10.0+rocm7.0` wheel. The wheel bundles
+  its ROCm user-space runtime, so do not point `LD_LIBRARY_PATH` at system ROCm
+  when running Python.
+- Native kernels use the compiler, headers, and libraries from one
+  `ROCM_HOME` (normally `/opt/rocm`). Do not fall back to an older distro
+  `/usr/bin/hipcc` when an active ROCm tree is present.
+- Keep a working distro/kernel `amdgpu` driver unless the selected ROCm release
+  explicitly requires a driver change. Matching a kernel module's package
+  version to a bundled PyTorch runtime is neither required nor safe.
+
+This policy deliberately preserves the validated PyTorch environment while
+preventing 5.x and 7.x native tools from being mixed in one build.
+
+## Four-GPU PCIe RCCL / 四卡 PCIe RCCL
+
+On the four-card `gfx1201` host with a mainline kernel, scope these variables to
+the multi-GPU command:
+
+```bash
+HSA_ENABLE_IPC_MODE_LEGACY=0 \
+HSA_FORCE_FINE_GRAIN_PCIE=1 \
+python -m experiments.multigpu suite --gpus 4 --rccl-p2p on
+```
+
+`HSA_ENABLE_IPC_MODE_LEGACY=0` selects ROCr's dma-buf IPC implementation;
+without it, RCCL can fail in `hipIpcGetMemHandle` even when `iommu=pt` is active.
+Keep `--rccl-p2p on` during validation so a direct-transport failure exits
+instead of silently falling back. `NCCL_DMABUF_ENABLE` configures a different
+RCCL network path and does not replace the ROCr IPC setting above. Do not export
+the experimental IPC mode globally; keep it attached to the tested command.
+
 ## Verify / 驗證
 ```bash
 python -c "import torch; print(torch.__version__, torch.cuda.is_available(), torch.cuda.device_count())"
-rocm-smi         # list GPUs / 列出 GPU
+"${ROCM_HOME:-/opt/rocm}/bin/offload-arch"   # list GPU ISAs / 列出 GPU ISA
 ```
 
 PyTorch intentionally exposes ROCm devices through the `torch.cuda` API.
@@ -45,13 +80,28 @@ PyTorch intentionally exposes ROCm devices through the `torch.cuda` API.
 | B | 4× Navi 48 | gfx1201 | RDNA 4 |
 
 ## HIP / hipcc (Part V)
-Box A has system ROCm 7.2.3 with `hipcc`. On Box B, install ROCm HIP dev tools if
-building kernels there:
+Native HIP builds require one complete ROCm development tree. Some ROCm 7.2
+installs expose `amdclang++` without a `hipcc` wrapper, so select the compiler
+from the active tree rather than whichever `hipcc` appears first on `PATH`:
 ```bash
-hipcc --version
+ROCM_HOME=${ROCM_HOME:-/opt/rocm}
+if [[ -x "$ROCM_HOME/bin/hipcc" ]]; then
+  HIP_CXX=("$ROCM_HOME/bin/hipcc")
+  HIP_LINK=()
+elif [[ -x "$ROCM_HOME/bin/amdclang++" ]]; then
+  HIP_CXX=("$ROCM_HOME/bin/amdclang++" -x hip)
+  HIP_LINK=(-L"$ROCM_HOME/lib" -lamdhip64)
+else
+  echo "No HIP compiler under $ROCM_HOME" >&2
+  exit 1
+fi
+export PATH="$ROCM_HOME/bin:$PATH"
+export CPLUS_INCLUDE_PATH="$ROCM_HOME/include${CPLUS_INCLUDE_PATH:+:$CPLUS_INCLUDE_PATH}"
+"${HIP_CXX[@]}" --version
+
 # Build for a specific arch:
-hipcc --offload-arch=gfx1201 hip/wmma_mlp.hip -o wmma_mlp     # RDNA4 (Box B)
-hipcc --offload-arch=gfx1151 hip/wmma_mlp.hip -o wmma_mlp     # RDNA3.5 (Box A)
+"${HIP_CXX[@]}" --offload-arch=gfx1201 hip/wmma_mlp.hip "${HIP_LINK[@]}" -o wmma_mlp     # RDNA4 (Box B)
+"${HIP_CXX[@]}" --offload-arch=gfx1151 hip/wmma_mlp.hip "${HIP_LINK[@]}" -o wmma_mlp     # RDNA3.5 (Box A)
 ```
 
 **Note / 注意**: WMMA intrinsics differ between RDNA 3.5 (`gfx1151`) and RDNA 4

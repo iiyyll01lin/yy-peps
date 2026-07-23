@@ -37,6 +37,21 @@ One wrapper, three signals — three protocols to verify.
 
 ---
 
+# Course release evidence / 課程發布證據
+
+- Three manifest-backed **synthetic smokes**: execution paths only
+- Kodak pilot: complete, **inconclusive**, no budget recommendation
+- Texture pilot: complete, **inconclusive**, full run not authorized
+- Public 512³ provenance: Lucy · Thai Statue · Armadillo
+
+<br>
+
+- 狀態皆明列為 **not paper-comparable**
+- Pitted Stonefish: `deferred_auth_required`, no substitute
+- Paper-comparable results in this release: **0**
+
+---
+
 # W07 · Image & why LSD / 影像與 LSD
 
 - Evaluate grid / Grid-PEPS / Pink-PEPS on PSNR, SSIM, **LSD**

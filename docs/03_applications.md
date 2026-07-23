@@ -2,9 +2,33 @@
 
 > **Artifact status:** `table1_image.csv`, `table2_texture.csv`, and
 > `table3_sdf.csv` are `legacy-unverified`. Values below describe historical
-> teaching artifacts only; none is current paper-reproduction evidence. New
-> runs are produced only by `python -m experiments.reproduce` and live under
-> `results/runs/<run-id>/` with a manifest, raw per-instance rows, and summary.
+> teaching artifacts only; none is current paper-reproduction evidence. The
+> common runner writes `results/runs/<run-id>/`; specialized calibration runners
+> write separate versioned receipts. Their exact release statuses are indexed
+> by `results/course_release/receipt.json`.
+
+## Released teaching evidence / 已發布教學證據
+
+The release validates executable paths and provenance, not paper numbers:
+
+- image, texture, and SDF synthetic `course_fast` runs each retain a run
+  manifest, raw rows, and summary and are
+  `validated-course-smoke-not-paper-comparable`;
+- the Kodak three-image/two-seed convergence pilot is complete but
+  **inconclusive**: no optimizer-step budget is recommended;
+- the two-set texture convergence pilot is complete but **inconclusive**:
+  method ordering is unstable and the 71,280,000-step run is not authorized;
+- Lucy, Thai Statue, and Armadillo have validated public 512³ provenance
+  receipts. This is input evidence, not SDF model-quality evidence.
+
+The release has zero paper-comparable results. Figure 5 dataset/training-budget
+omissions, the Table 1 training-step omission and loss/recipe conflict,
+optimizer/seed assumptions, and the unreleased SDF converter remain visible.
+Pitted Stonefish remains `deferred_auth_required`; no substitute is used.
+
+本次 course release 只驗證執行路徑與來源:三個 synthetic smoke、兩個**無結論**
+pilot、以及 Lucy/Thai Statue/Armadillo 的 512³ provenance。論文可比結果仍為零，
+Stonefish 仍需授權，且不以替代資料冒充。
 
 ## W07 · Implicit image representation (full Table 1) / 隱式影像(完整 Table 1)
 
@@ -89,13 +113,18 @@ Stonefish 的 1×/8× encoder；不是用小 torus 類比。由於距離單位�
 
 ```bash
 python -m experiments.reproduce check --profile paper_exact
-python -m experiments.reproduce run --artifact image-table1 \
-  --allow-protocol-assumptions
+# image-table1 is code-disabled pending the separate full-reproduction gate.
 python -m experiments.reproduce run --artifact texture-table2
 python -m experiments.reproduce run --artifact sdf-table3-mape
 python -m experiments.reproduce run --artifact sdf-table3-l1
 python -m experiments.reproduce run --artifact sdf-table4
 ```
+
+Table 1 currently accepts no receipt and exits before loading data or creating
+workers. A future full-reproduction gate must deliberately change the
+code-level interlock; its receipt contract is frozen in
+`results/schemas/full_run_authorization.schema.json`. Convergence-pilot
+evidence is non-authorizing.
 
 Figure 5 additionally requires a user-supplied checksum receipt because the
 paper does not name its 4K image suite:

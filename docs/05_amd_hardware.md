@@ -38,23 +38,25 @@ the scalar fp32 path and the fused fp16/rocWMMA path.
 三 hidden layer MLP。HIP 可用時,三種 mode 的 scalar fp32 與 fused fp16/rocWMMA
 都以相同 fixture 對 PyTorch reference。
 
-The current **measured** integrated rows use the scalar fp32 reference. The same
-kernel now has a fused fp16/rocWMMA path through all four Linear layers, and its
-baseline/concat/Pink fixtures pass parity, but W11 does not yet record a matched
-integrated fp16 latency row. W11 writes a row only after build, parity, execution,
-and parsing succeed.
+The tracked CSV retains scalar fp32 correctness-reference rows and now also
+contains a clean-build fused fp16/rocWMMA run through all four Linear layers.
+The runner wrote these rows only after code-object inspection, full-output
+parity, execution, and receipt validation succeeded.
 
-Current Box B rerun (gfx1201, ROCm 7.2.3, 20 iterations):
+Current fused Box B receipt (gfx1201, ROCm 7.2.3, 30 warmups and 100 timed
+iterations per method):
 
 | integrated mode | implementation | ms/iter | parity |
 |---|---|---:|---|
-| baseline | scalar fp32 | 246.3032 | passed |
-| concat PEPS | scalar fp32 | 411.7999 | passed |
-| Pink PEPS | scalar fp32 | 295.3217 | passed |
+| baseline | fused fp16/rocWMMA | 42.4544 | passed |
+| concat PEPS 3F | fused fp16/rocWMMA | 48.2829 | passed |
+| Pink PEPS 3F | fused fp16/rocWMMA | 51.1820 | passed |
+| Pink PEPS 4F | fused fp16/rocWMMA | 53.9012 | passed |
 
-These are locally measured correctness-reference latencies and every row has
-`comparable_to_paper=false`; they must not be compared as if they reproduced
-the paper's optimized 4–5 ms implementation.
+These are local measurements, not a paper reproduction. Every row and the
+bundle set `comparable_to_paper=false` / `directly_comparable=false` because
+the paper does not disclose matching precision, timing boundaries,
+synchronization, or kernel source.
 
 ## W12 · WMMA diagnostics / WMMA 診斷
 
@@ -72,17 +74,15 @@ The current Box B isolated 4096×64×64 rerun measures **15.0896 ms fp16** and
 Box B rows remain explicitly `legacy_reported`; they are retained for provenance,
 not blended into the current integrated result.
 
-## Result contract and remaining blocker / 結果契約與 blocker
+## Result contract and comparison blocker / 結果契約與比較限制
 
 `results/hip_latency.schema.json` requires workload kind, mode, implementation,
 ISA, ROCm version, dimensions, iteration count, parity state, provenance, and
-whether a paper comparison is valid. Integrated fp16 parity now exists on
-gfx1201/ROCm 7.2.3. A 1024² run configured for 10 warmups and 30 iterations did
-not complete within five minutes and was stopped without recording a latency
-row. The bounded runner then passed a clean build and all parity cases, but its
-64² preflight projected **280.6 seconds** even for a one-warmup/two-iteration
-four-method 1024² protocol, so it refused to time or write a row. The exact
-remaining blocker is therefore fp16 integrated-kernel performance and a
-practical repeated target-size measurement—not missing projection,
-aggregation, decoder depth, or parity. Isolated layer speedups still do not
-satisfy the paper-comparison requirement.
+whether a paper comparison is valid. Integrated fp16 parity and a practical
+repeated 1024² measurement now exist on gfx1201/ROCm 7.2.3. The remaining
+blocker is **comparison fidelity**, not missing workload coverage: the local
+device reports only a generic GPU name, and the paper does not publish its
+precision, timing/synchronization protocol, or kernel. The tracked receipt is
+therefore useful local hardware evidence but remains `legacy-unverified` and
+must not be presented as reproducing the paper's 4–5 ms figures. Isolated layer
+speedups still do not satisfy the paper-comparison requirement.

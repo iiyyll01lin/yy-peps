@@ -10,11 +10,13 @@ lab notebook + reading. Everything builds one master repo.
 全部堆進同一個母 repo。
 
 This is an educational reimplementation with separate `course_fast` and
-`paper_exact` protocols. Existing result CSVs remain `legacy-unverified` until
-rerun with complete manifests.
+`paper_exact` protocols. Existing result CSVs remain `legacy-unverified`.
+The teaching release indexes manifest-backed synthetic smokes, two explicitly
+inconclusive pilots, and three public 512³ SDF provenance receipts; none is
+paper-comparable.
 
 本 repo 是教學型重實作,明確區分 `course_fast` 與 `paper_exact`;既有結果 CSV 在附完整
-manifest 重跑前皆為 `legacy-unverified`。
+manifest 重跑前皆為 `legacy-unverified`。已發布證據不含論文可比數值。
 
 ## Hardware / 硬體
 Two AMD boxes, merged into one git history:

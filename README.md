@@ -8,13 +8,15 @@ HIP/WMMA exercises. Local texture baselines are proxies; they are not official
 RTXNTC parity implementations.
 
 > **Current evidence status:** every tracked `results/*.csv` is
-> `legacy-unverified` in `results/manifest.json`. The repository is not yet a
-> verified end-to-end reproduction of the paper. Numerical claims require a
-> fresh run manifest and raw per-instance evidence.
+> `legacy-unverified` in `results/manifest.json`. The course release separately
+> indexes three manifest-backed synthetic smokes, two complete but inconclusive
+> pilots, and three public 512³ SDF provenance receipts. It contains zero
+> paper-comparable results; see `results/course_release/receipt.json`.
 
 本專案是一學期的 PEPS 課程與獨立實作,明確區分縮小的 `course_fast` 與論文協定
 `paper_exact`,並包含量化研究與選配 HIP/WMMA 練習。現有 CSV 皆為
-`legacy-unverified`;完成附 manifest 的重跑前,不得宣稱完整重現。
+`legacy-unverified`;course release 只發布 synthetic smoke、無結論 pilot 與三個
+公開 512³ SDF provenance,不包含可與論文比較的數值。
 
 ---
 
@@ -85,6 +87,10 @@ make -C slides validate
 The notebook smoke parses and compiles every Python cell; it deliberately does
 not execute full training notebooks in CPU CI.
 
+The release checklist is `course/RELEASE_CHECKLIST.md`. It forbids paper/full
+training during release validation and requires the machine-readable receipt to
+retain all protocol and authorization blockers.
+
 ---
 
 ## Repo layout / 專案結構
@@ -133,6 +139,44 @@ python -m experiments.reproduce run --artifact sdf-table3-mape
 Image Figure 5 and Table 1 remain marked with protocol assumptions because the
 paper omits the Figure 5 image identities and image training-step count. See
 `docs/03_applications.md` for the exact commands and Table 1 loss inconsistency.
+
+## Multi-GPU modes / 多 GPU 模式
+
+The repository has two deliberately separate modes:
+
+- `experiments.run` assigns **different jobs** (instance/method/seed tuples) to
+  ranks. Its `world_size` is job-shard metadata, not DDP.
+- `experiments.ddp` trains **one selected job** with PyTorch DDP. On AMD wheels
+  devices are still named `cuda:N`; PyTorch backend `nccl` dispatches to RCCL.
+  `training.batch_size` remains global, so the paper value 60,000 becomes
+  15,000 samples per rank with four GPUs.
+
+```bash
+# Existing independent-job sharding (aggregate throughput, not one-job speedup)
+.venv/bin/torchrun --standalone --nproc-per-node=4 -m experiments.run \
+  --config configs/paper/image_full.toml --input /path/to/instances.pt \
+  --output results/paper/image-job-shards
+
+# New: one G-PEPS training job across all four GPUs
+.venv/bin/torchrun --standalone --nproc-per-node=4 -m experiments.ddp \
+  --config configs/paper/image_full.toml --input /path/to/instances.pt \
+  --output results/paper/image-g-peps-ddp \
+  --instance kodim01 --method G-PEPS --seed 0
+
+# Topology, directed P2P copies, RCCL all-reduce, and fixed-global-batch
+# 1-GPU versus 4-GPU training throughput
+.venv/bin/python -m experiments.multigpu suite \
+  --output results/multigpu/benchmark.json
+```
+
+The DDP output/checkpoint is rank-0-only and resumes automatically. Checkpoints
+store the underlying model state without a `module.` prefix, so they can resume
+on one or multiple GPUs. If RCCL peer IPC fails on a PCIe host booted without
+IOMMU passthrough, the benchmark's default `--rccl-p2p auto` mode records the
+failure and retries with host transport. For a training run, the equivalent
+explicit diagnostic fallback is `--disable-rccl-p2p`; it is slower and must not
+be reported as direct P2P collective performance. See
+`docs/reproducibility.md` for the tensor input schema and timing methodology.
 
 ## Data / 資料
 

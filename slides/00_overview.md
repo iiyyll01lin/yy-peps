@@ -73,13 +73,15 @@ The optional self-hosted workflow targets both ISAs; CPU CI makes no GPU claim.
 
 # Evidence status / 證據狀態
 
-- Current tracked CSVs are **legacy-unverified**
-- They may illustrate the curriculum, but are not paper-reproduction evidence
-- Verification requires profile + config + seeds + Git/data hashes + environment
-  + runtime + raw per-instance rows
-- `results/manifest.json` is authoritative
+- Every top-level result CSV remains **legacy-unverified**
+- Released: 3 manifest-backed synthetic smokes, 2 **inconclusive** pilots,
+  and 3 public 512³ SDF provenance receipts
+- All released evidence is explicitly **not paper-comparable**
+- Pitted Stonefish remains authorization-blocked; paper result count = **0**
+- `results/course_release/receipt.json` is authoritative
 
-現有 CSV 皆為 **legacy-unverified**;只能示意課程,不能當論文重現證據。
+現有 CSV 皆為 **legacy-unverified**;course release 只含執行 smoke、無結論 pilot
+與輸入 provenance,不能當論文數值重現。
 
 ---
 

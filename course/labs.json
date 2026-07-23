@@ -252,8 +252,8 @@
       "success_criteria": [
         {
           "id": "asset-and-volume-provenance",
-          "description": "All four paper assets and derived 512-cubed volumes have source and checksum receipts; restricted licenses remain outside Git.",
-          "evidence": "data manifest, local acquisition receipts, and run manifest"
+          "description": "Lucy, Thai Statue, and Armadillo have source and checksum receipts for derived 512-cubed volumes; Pitted Stonefish remains an explicit authorization blocker until legitimately acquired, with no substitute.",
+          "evidence": "results/sdf_repro/volume_validation.json and data/provenance/sdf/*.json"
         },
         {
           "id": "protocol-labelled",

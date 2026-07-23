@@ -243,10 +243,10 @@ W11 = nb([
     md("## 4. Comparison boundary / 比較界線\n"
        "The paper reports 4.32 ms (BI-grid), 5.47 ms (Grid-PEPS), and 4.86 ms\n"
        "(Grid-PinkPEPS) on RX 9070 XT for this geometry. Those are external paper\n"
-       "values, not rows generated here. The integrated fp16/rocWMMA path now passes\n"
-       "all-mode parity, but a repeated 1024² run exceeded five minutes and was stopped\n"
-       "without a row. Performance optimization and a practical repeated measurement\n"
-       "remain required before any local paper comparison."),
+       "values, not rows generated here. A clean-build 30-warmup/100-iteration 1024²\n"
+       "fused-fp16 receipt now passes all-mode parity and timing, but explicitly sets\n"
+       "`directly_comparable=false`: the paper does not disclose matching precision,\n"
+       "timing/synchronization boundaries, or kernel source."),
 ])
 
 
@@ -302,9 +302,10 @@ W12 = nb([
          "show_latency()"),
     md("## 3. What remains before a paper comparison / 論文比較前仍缺什麼\n"
        "The W11 kernel now integrates rocWMMA across all four Linear layers and passes\n"
-       "baseline/PEPS/Pink fp16 parity. Its current paper-scale performance is not yet\n"
-       "practical for a repeated run. Optimize that integrated path, then record matched\n"
-       "precision, timing boundaries, compiler flags, warmup, and target-GPU receipts."),
+       "baseline/PEPS/Pink fp16 parity and repeated 1024² timing. The remaining gate is\n"
+       "comparison fidelity: match disclosed precision/timing boundaries and target-GPU\n"
+       "identity, retain compiler and warmup provenance, and never promote local timings\n"
+       "to paper reproduction while the receipt says `directly_comparable=false`."),
 ])
 
 

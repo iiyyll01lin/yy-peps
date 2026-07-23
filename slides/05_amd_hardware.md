@@ -67,14 +67,15 @@ Sources target both ISAs; the gated self-hosted workflow must verify each toolch
 
 | mode | implementation | Box B ms/iter |
 |---|---|---:|
-| baseline | scalar fp32 | **246.3032** |
-| concat PEPS | scalar fp32 | **411.7999** |
-| Pink PEPS | scalar fp32 | **295.3217** |
+| baseline | fused fp16 | **42.4544** |
+| concat PEPS 3F | fused fp16 | **48.2829** |
+| Pink PEPS 3F | fused fp16 | **51.1820** |
+| Pink PEPS 4F | fused fp16 | **53.9012** |
 
-ROCm 7.2.3 · 1024² RGB · 20 iterations · parity passed.
-These correctness-reference rows are **not paper-comparable**.
+ROCm 7.2.3 · 1024² RGB · 30 warmups + 100 timed iterations · parity passed.
+The receipt is **not paper-comparable**.
 
-正確性參考實測,`comparable_to_paper=false`,不可冒充論文 4–5 ms 數字。
+本地實測 `comparable_to_paper=false`,不可冒充論文 4–5 ms 數字。
 
 ---
 
@@ -117,30 +118,30 @@ both pass parity. Large 2048³ and Box A rows remain `legacy_reported`.
 
 # The paper comparison gate / 論文比較門檻
 
-- Optimize the integrated fp16/WMMA path (all-mode parity already passes)
-- Match precision, activation/bias handling, fusion, and timing boundaries
-- Record compiler/warmup/timing provenance
-- Measure on target RX 9070 XT (`gfx1201`)
+- Full-output fp16 parity and repeated 1024² timing now pass
+- Paper precision, synchronization, timing boundaries, and kernel are undisclosed
+- Local device identity is generic; receipt fixes `directly_comparable=false`
+- Keep compiler/warmup/timing provenance before any future comparison
 
 <br>
 
-- integrated fp16/WMMA parity 已通過,下一步是效能最佳化
-- precision、activation/bias、fusion、timing boundary 必須配對
-- 記錄 compiler、warmup、timing provenance 後才可比較
+- fp16 對拍與重複 1024² timing 已通過
+- 論文未公開 precision、同步、timing boundary 與 kernel
+- 本地 receipt 固定 `directly_comparable=false`
 
 ---
 
 # Honest limitations / 誠實的限制
 
-1. Current measured integrated rows are scalar fp32
-2. Current and legacy component rows are diagnostics, not generation throughput
-3. Safe fp16 preflight projected **280.6 s** for only 1 warmup + 2 iterations; no row
+1. The clean-build full-workload receipt remains `legacy-unverified`
+2. Legacy component rows are diagnostics, not generation throughput
+3. Local fp16 timings are hardware evidence, **not paper reproduction**
 
 <br>
 
-1. 目前整合實測是 scalar fp32
-2. 現有實測列為 component diagnostics
-3. fp16 safety preflight 即預估 **280.6 秒**,因此未寫入結果列
+1. clean-build 完整 workload receipt 仍是 `legacy-unverified`
+2. legacy component 列只能作 diagnostics
+3. 本地 fp16 timing 是硬體證據,**不是論文重現**
 
 ---
 
