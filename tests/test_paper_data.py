@@ -105,6 +105,41 @@ def test_source_verification_references_current_manifests() -> None:
     assert record["secrets_or_raw_data_committed"] is False
 
 
+def test_public_sdf_provenance_and_validation_receipts_match_schemas() -> None:
+    jsonschema = pytest.importorskip("jsonschema")
+    root = Path(__file__).resolve().parents[1]
+    provenance_schema = json.loads(
+        (
+            root / "results/schemas/sdf_volume_provenance.schema.json"
+        ).read_text(encoding="utf-8")
+    )
+    for asset in ("lucy", "thai-statue", "armadillo"):
+        payload = json.loads(
+            (
+                root / "data/provenance/sdf" / f"{asset}-512.json"
+            ).read_text(encoding="utf-8")
+        )
+        jsonschema.validate(payload, provenance_schema)
+        assert payload["asset_id"] == asset
+
+    validation_schema = json.loads(
+        (
+            root / "results/schemas/sdf_volume_validation.schema.json"
+        ).read_text(encoding="utf-8")
+    )
+    validation = json.loads(
+        (
+            root / "results/sdf_repro/volume_validation.json"
+        ).read_text(encoding="utf-8")
+    )
+    jsonschema.validate(validation, validation_schema)
+    assert {item["asset_id"] for item in validation["volumes"]} == {
+        "lucy",
+        "thai-statue",
+        "armadillo",
+    }
+
+
 def test_dynamic_loader_is_strict_and_renormalizes_normals(tmp_path: Path) -> None:
     raw = tmp_path / "raw"
     texture_dir = raw / "textures" / "synthetic"

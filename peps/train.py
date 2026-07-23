@@ -14,6 +14,17 @@ from typing import Callable, Optional
 import torch
 import torch.nn as nn
 
+from .distributed import (
+    DistributedContext,
+    ddp_loss_scale,
+    distributed_barrier,
+    local_minibatch_indices,
+    per_rank_batch_sizes,
+    reduce_weighted_mean,
+    unwrap_distributed,
+    wrap_distributed,
+)
+
 
 def auto_device() -> torch.device:
     return torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -394,7 +405,15 @@ class MinibatchStream:
             if int(state[field_name]) != getattr(self, field_name):
                 raise ValueError(f"minibatch stream {field_name} does not match")
         self.draws = int(state["draws"])
-        self.generator.set_state(state["generator_state"])
+        generator_state = state["generator_state"]
+        if not isinstance(generator_state, torch.Tensor):
+            raise TypeError("minibatch stream generator_state must be a tensor")
+        if generator_state.dtype != torch.uint8:
+            raise TypeError("minibatch stream generator_state must be uint8")
+        # Checkpoints may be loaded with map_location set to a GPU.  This
+        # stream deliberately owns a CPU generator, whose state must likewise
+        # be a CPU ByteTensor.
+        self.generator.set_state(generator_state.cpu())
 
 
 def split_encoder_decoder_parameters(
@@ -476,6 +495,7 @@ def _training_state(
     scheduler,
     stream: MinibatchStream,
 ) -> dict:
+    model = unwrap_distributed(model)
     return {
         "schema_version": 1,
         "step": step,
@@ -574,6 +594,198 @@ def fit_paper(
     if return_state:
         return model, final_state
     return model
+
+
+def _distributed_training_state(
+    *,
+    step: int,
+    model: nn.Module,
+    optimizer: torch.optim.Optimizer,
+    scheduler,
+    stream: MinibatchStream,
+    context: DistributedContext,
+    effective_global_batch_size: int,
+) -> dict:
+    state = _training_state(
+        step=step,
+        model=model,
+        optimizer=optimizer,
+        scheduler=scheduler,
+        stream=stream,
+    )
+    state["parallelism"] = {
+        "mode": "ddp_single_job",
+        "world_size": context.world_size,
+        "backend": context.backend,
+        "global_batch_size": effective_global_batch_size,
+        "per_rank_batch_sizes": list(
+            per_rank_batch_sizes(
+                effective_global_batch_size,
+                context.world_size,
+            )
+        ),
+    }
+    return state
+
+
+def fit_paper_distributed(
+    model: nn.Module,
+    coords: torch.Tensor,
+    targets: torch.Tensor,
+    config: PaperTrainConfig,
+    *,
+    context: DistributedContext,
+    on_log: Optional[Callable[[int, float], None]] = None,
+    on_checkpoint: Optional[Callable[[int, Mapping], None]] = None,
+    resume_state: Mapping | None = None,
+    return_state: bool = False,
+):
+    """Run one paper training job with DDP and a global batch-size contract.
+
+    ``config.batch_size`` remains the global batch size.  Every rank recreates
+    the same deterministic global index stream and consumes a disjoint slice.
+    For uneven splits, local mean losses are scaled so DDP's rank-averaged
+    gradients are exactly the gradient of the global sample mean.
+
+    The caller must explicitly create ``context`` with
+    :func:`peps.distributed.distributed_session`; this prevents a torchrun
+    environment from silently changing the existing :func:`fit_paper` API.
+    """
+
+    if coords.ndim != 2 or targets.ndim != 2:
+        raise ValueError("coords and targets must both be rank-2 tensors")
+    if coords.shape[0] != targets.shape[0]:
+        raise ValueError("coords and targets must contain the same number of rows")
+    if context.is_distributed and not context.process_group_initialized:
+        raise RuntimeError("distributed context has no initialized process group")
+    if config.device is not None:
+        requested = torch.device(config.device)
+        if (
+            requested.type != context.device.type
+            or requested.index not in {None, context.device.index}
+        ):
+            raise ValueError(
+                f"config device {requested} does not match rank device "
+                f"{context.device}"
+            )
+
+    effective_global_batch_size = min(config.batch_size, coords.shape[0])
+    local_sizes = per_rank_batch_sizes(
+        effective_global_batch_size,
+        context.world_size,
+    )
+    if min(local_sizes) < 1:
+        raise ValueError(
+            "effective global batch size must be at least WORLD_SIZE so every "
+            "DDP rank receives a sample"
+        )
+
+    device = context.device
+    base_model = unwrap_distributed(model).to(device)
+    coords = coords.to(device)
+    targets = targets.to(device)
+    optimizer = make_paper_optimizer(base_model, config)
+    scheduler = (
+        torch.optim.lr_scheduler.CosineAnnealingLR(
+            optimizer,
+            T_max=config.total_steps,
+        )
+        if config.cosine
+        else None
+    )
+    stream = MinibatchStream(
+        coords.shape[0],
+        config.batch_size,
+        config.seed,
+    )
+    start_step = 0
+    if resume_state is not None:
+        if int(resume_state.get("schema_version", 0)) != 1:
+            raise ValueError("unsupported training checkpoint schema")
+        base_model.load_state_dict(resume_state["model"])
+        optimizer.load_state_dict(resume_state["optimizer"])
+        if scheduler is not None:
+            if resume_state["scheduler"] is None:
+                raise ValueError("checkpoint is missing cosine scheduler state")
+            scheduler.load_state_dict(resume_state["scheduler"])
+        stream.load_state_dict(resume_state["minibatch_stream"])
+        start_step = int(resume_state["step"])
+        if start_step > config.total_steps:
+            raise ValueError("checkpoint step exceeds configured total steps")
+
+    training_model = wrap_distributed(base_model, context)
+    loss_function = _paper_loss(config)
+    final_state = None
+    for step_index in range(start_step, config.total_steps):
+        global_indices = stream.next()
+        local_indices = local_minibatch_indices(
+            global_indices,
+            context,
+        ).to(device=device)
+        local_count = local_indices.numel()
+        prediction = training_model(coords.index_select(0, local_indices))
+        local_loss = loss_function(
+            prediction,
+            targets.index_select(0, local_indices),
+        )
+        backward_loss = local_loss * ddp_loss_scale(
+            local_count,
+            global_indices.numel(),
+            context.world_size,
+        )
+        optimizer.zero_grad(set_to_none=True)
+        backward_loss.backward()
+        optimizer.step()
+        if scheduler is not None:
+            scheduler.step()
+
+        completed_step = step_index + 1
+        should_log = (
+            completed_step == 1
+            or completed_step % config.log_every == 0
+        )
+        if should_log:
+            global_loss = reduce_weighted_mean(
+                local_loss,
+                local_count,
+                context,
+            )
+            if context.is_main and on_log is not None:
+                on_log(completed_step, global_loss)
+
+        should_checkpoint = (
+            config.checkpoint_every > 0
+            and completed_step % config.checkpoint_every == 0
+        )
+        if context.is_main and (
+            should_checkpoint or completed_step == config.total_steps
+        ):
+            final_state = _distributed_training_state(
+                step=completed_step,
+                model=base_model,
+                optimizer=optimizer,
+                scheduler=scheduler,
+                stream=stream,
+                context=context,
+                effective_global_batch_size=effective_global_batch_size,
+            )
+            if on_checkpoint is not None:
+                on_checkpoint(completed_step, final_state)
+
+    distributed_barrier(context)
+    if return_state:
+        if final_state is None:
+            final_state = _distributed_training_state(
+                step=config.total_steps,
+                model=base_model,
+                optimizer=optimizer,
+                scheduler=scheduler,
+                stream=stream,
+                context=context,
+                effective_global_batch_size=effective_global_batch_size,
+            )
+        return base_model, final_state
+    return base_model
 
 
 @torch.no_grad()

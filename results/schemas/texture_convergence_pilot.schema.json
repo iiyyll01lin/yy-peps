@@ -1,0 +1,277 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/iiyyll01lin/yy-peps/results/schemas/texture_convergence_pilot.schema.json",
+  "title": "PEPS Texture Table 2 convergence pilot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schema_version",
+    "generated_at_utc",
+    "artifact",
+    "paper",
+    "profile",
+    "canonical",
+    "progress",
+    "protocol",
+    "curves",
+    "rankings",
+    "ranking_agreements",
+    "final_interval_psnr_gains",
+    "runtime",
+    "decision",
+    "evidence",
+    "limitations"
+  ],
+  "properties": {
+    "schema": {
+      "const": "peps.texture_convergence_pilot_report"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "generated_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "artifact": {
+      "const": "texture-table2-convergence-pilot"
+    },
+    "paper": {
+      "const": "PEPS Extended arXiv:2604.24167v1"
+    },
+    "profile": {
+      "const": "bounded_convergence_pilot"
+    },
+    "canonical": {
+      "const": false
+    },
+    "progress": {
+      "type": "object"
+    },
+    "protocol": {
+      "type": "object",
+      "required": [
+        "sets",
+        "providers",
+        "semantic_coverage",
+        "methods",
+        "seeds",
+        "step_budgets",
+        "full_schedule_steps",
+        "evaluation_side",
+        "evaluation_sampling",
+        "table2_numeric_comparable"
+      ],
+      "properties": {
+        "sets": {
+          "const": [
+            "rails-001",
+            "roof-09"
+          ]
+        },
+        "providers": {
+          "const": [
+            "polyhaven",
+            "ambientcg"
+          ]
+        },
+        "semantic_coverage": {
+          "const": [
+            "AO",
+            "ARM",
+            "DIFF",
+            "Displacement",
+            "metal",
+            "normal",
+            "rough",
+            "specular"
+          ]
+        },
+        "methods": {
+          "const": [
+            "LPE",
+            "BI-Grid",
+            "Grid-PinkPEPS4F",
+            "NTC_N",
+            "NTC_PinkPEPS"
+          ]
+        },
+        "seeds": {
+          "const": [
+            0,
+            1,
+            2
+          ]
+        },
+        "step_budgets": {
+          "oneOf": [
+            {
+              "const": [
+                10,
+                50,
+                200
+              ]
+            },
+            {
+              "const": [
+                10,
+                50,
+                200,
+                1000,
+                2000,
+                5000
+              ]
+            }
+          ]
+        },
+        "full_schedule_steps": {
+          "const": 120000
+        },
+        "evaluation_side": {
+          "const": 256
+        },
+        "evaluation_sampling": {
+          "const": "deterministic_native_pixel_lattice"
+        },
+        "table2_numeric_comparable": {
+          "const": false
+        }
+      }
+    },
+    "curves": {
+      "type": "array",
+      "maxItems": 30,
+      "items": {
+        "type": "object",
+        "required": [
+          "budget_steps",
+          "method",
+          "trajectory_count",
+          "expected_trajectory_count",
+          "complete",
+          "psnr_mean",
+          "psnr_stddev",
+          "ssim_mean",
+          "ssim_stddev",
+          "interval_train_seconds",
+          "aggregate_steps_per_second",
+          "semantic_psnr_mean"
+        ]
+      }
+    },
+    "rankings": {
+      "type": "array",
+      "maxItems": 6
+    },
+    "ranking_agreements": {
+      "type": "array",
+      "maxItems": 5
+    },
+    "final_interval_psnr_gains": {
+      "type": "object"
+    },
+    "runtime": {
+      "type": "object",
+      "required": [
+        "measured_optimizer_steps",
+        "summed_gpu_train_seconds",
+        "mean_gpu_seconds_per_optimizer_step",
+        "observed_parallel_wall_seconds",
+        "rough_full_table2_four_gpu_seconds",
+        "full_projection_warning"
+      ]
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "recommended_table2_steps",
+        "recommendation_scope",
+        "ranking_stable",
+        "last_interval_max_abs_psnr_gain_db",
+        "plateau_threshold_db",
+        "minimum_recommendation_steps",
+        "reasons",
+        "next_pilot_budgets",
+        "full_71m_step_run_authorized"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "budget_recommended",
+            "inconclusive_bounded_pilot"
+          ]
+        },
+        "recommended_table2_steps": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "recommendation_scope": {
+          "enum": [
+            "local_checkpoint_continuation_protocol_assumption",
+            "none_inconclusive"
+          ]
+        },
+        "ranking_stable": {
+          "type": "boolean"
+        },
+        "last_interval_max_abs_psnr_gain_db": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "plateau_threshold_db": {
+          "const": 0.1
+        },
+        "minimum_recommendation_steps": {
+          "const": 5000
+        },
+        "reasons": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "next_pilot_budgets": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 119999
+          }
+        },
+        "full_71m_step_run_authorized": {
+          "const": false
+        }
+      }
+    },
+    "evidence": {
+      "type": "object"
+    },
+    "limitations": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "required": [
+          "code",
+          "detail"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

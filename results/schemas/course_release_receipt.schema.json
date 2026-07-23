@@ -1,0 +1,401 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/iiyyll01lin/yy-peps/results/schemas/course_release_receipt.schema.json",
+  "title": "PEPS course release receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schema_version",
+    "release_id",
+    "generated_at_utc",
+    "status",
+    "paper_comparable_results",
+    "manifest",
+    "checklist",
+    "promoted_evidence",
+    "legacy_top_level_csvs",
+    "sdf_public_provenance",
+    "pilot_decisions",
+    "paper_exact",
+    "process_audit",
+    "validation"
+  ],
+  "properties": {
+    "schema": {
+      "const": "peps.course_release_receipt"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "release_id": {
+      "type": "string",
+      "pattern": "^peps-course-[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "generated_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "const": "course-ready-paper-exact-blocked"
+    },
+    "paper_comparable_results": {
+      "const": 0
+    },
+    "manifest": {
+      "const": "results/manifest.json"
+    },
+    "checklist": {
+      "const": "course/RELEASE_CHECKLIST.md"
+    },
+    "promoted_evidence": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "status",
+          "paper_comparable",
+          "claim_scope",
+          "files",
+          "validation"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "enum": [
+              "validated-course-smoke-not-paper-comparable",
+              "validated-inconclusive-pilot-not-paper-comparable",
+              "validated-input-provenance-not-numeric-result"
+            ]
+          },
+          "paper_comparable": {
+            "const": false
+          },
+          "claim_scope": {
+            "type": "string",
+            "minLength": 1
+          },
+          "files": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "role",
+                "path"
+              ],
+              "properties": {
+                "role": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "path": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          },
+          "validation": {
+            "type": "object",
+            "minProperties": 1
+          }
+        }
+      }
+    },
+    "legacy_top_level_csvs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "count",
+        "files"
+      ],
+      "properties": {
+        "status": {
+          "const": "legacy-unverified"
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "files": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^[^/]+\\.csv$"
+          }
+        }
+      }
+    },
+    "sdf_public_provenance": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "asset_id",
+          "status",
+          "shape",
+          "receipt",
+          "volume_sha256",
+          "known_limit"
+        ],
+        "properties": {
+          "asset_id": {
+            "enum": [
+              "lucy",
+              "thai-statue",
+              "armadillo"
+            ]
+          },
+          "status": {
+            "const": "checksum_and_provenance_verified"
+          },
+          "shape": {
+            "const": [
+              512,
+              512,
+              512
+            ]
+          },
+          "receipt": {
+            "type": "string",
+            "minLength": 1
+          },
+          "volume_sha256": {
+            "$ref": "#/$defs/sha256"
+          },
+          "known_limit": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "pilot_decisions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kodak",
+        "texture"
+      ],
+      "properties": {
+        "kodak": {
+          "$ref": "#/$defs/inconclusivePilot"
+        },
+        "texture": {
+          "$ref": "#/$defs/inconclusivePilot"
+        }
+      }
+    },
+    "paper_exact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ready",
+        "paper_comparable_results",
+        "prerequisite_report",
+        "blockers"
+      ],
+      "properties": {
+        "ready": {
+          "const": false
+        },
+        "paper_comparable_results": {
+          "const": 0
+        },
+        "prerequisite_report": {
+          "const": "results/paper_exact_prerequisites.json"
+        },
+        "blockers": {
+          "type": "array",
+          "minItems": 7,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "code",
+              "scope",
+              "status",
+              "detail",
+              "evidence"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "minLength": 1
+              },
+              "scope": {
+                "type": "string",
+                "minLength": 1
+              },
+              "status": {
+                "enum": [
+                  "not_reported",
+                  "protocol_conflict",
+                  "authorization_required",
+                  "incomplete",
+                  "not_bit_exact"
+                ]
+              },
+              "detail": {
+                "type": "string",
+                "minLength": 1
+              },
+              "evidence": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "process_audit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "checked_at_utc",
+        "active_recovery_or_full_training_processes",
+        "method"
+      ],
+      "properties": {
+        "checked_at_utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "active_recovery_or_full_training_processes": {
+          "const": 0
+        },
+        "method": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "commands",
+        "marp",
+        "hardware_smoke"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "passed",
+            "passed-with-explicit-blocker"
+          ]
+        },
+        "commands": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "command",
+              "status",
+              "detail"
+            ],
+            "properties": {
+              "command": {
+                "type": "string",
+                "minLength": 1
+              },
+              "status": {
+                "enum": [
+                  "passed",
+                  "blocked"
+                ]
+              },
+              "detail": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "marp": {
+          "$ref": "#/$defs/gate"
+        },
+        "hardware_smoke": {
+          "$ref": "#/$defs/gate"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "inconclusivePilot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "recommended_budget_steps",
+        "paper_comparable",
+        "full_run_authorized",
+        "receipt"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "inconclusive",
+            "inconclusive_bounded_pilot"
+          ]
+        },
+        "recommended_budget_steps": {
+          "type": "null"
+        },
+        "paper_comparable": {
+          "const": false
+        },
+        "full_run_authorized": {
+          "const": false
+        },
+        "receipt": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "detail"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "passed",
+            "blocked",
+            "skipped-unsafe"
+          ]
+        },
+        "detail": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

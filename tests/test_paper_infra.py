@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import io
 import math
 from pathlib import Path
@@ -199,6 +200,14 @@ def test_minibatch_stream_and_training_resume_are_deterministic():
     resumed = MinibatchStream(20, 5, seed=7)
     resumed.load_state_dict(state)
     assert torch.equal(resumed.next(), expected_next)
+    if torch.cuda.is_available():
+        gpu_loaded_state = {
+            **state,
+            "generator_state": state["generator_state"].to("cuda"),
+        }
+        gpu_resumed = MinibatchStream(20, 5, seed=7)
+        gpu_resumed.load_state_dict(gpu_loaded_state)
+        assert torch.equal(gpu_resumed.next(), expected_next)
 
     coords = torch.linspace(0, 1, 16).unsqueeze(1)
     targets = coords.square()
@@ -271,12 +280,18 @@ def test_optional_paper_metrics_identity_and_version_record():
 def test_all_paper_configs_are_valid_and_frozen():
     paths = sorted((ROOT / "configs" / "paper").glob("*.toml"))
     assert {path.name for path in paths} == {
+        "image_appendix_smoke.toml",
+        "image_core_ablations_full.toml",
         "image_full.toml",
+        "image_recipe_ablations_full.toml",
+        "image_repro_smoke.toml",
         "image_smoke.toml",
+        "image_table5_full.toml",
         "sdf_full.toml",
         "sdf_smoke.toml",
         "texture_full.toml",
         "texture_smoke.toml",
+        "texture_sweep_full.toml",
     }
     configs = [load_experiment_config(path) for path in paths]
     assert all(config.paper.endswith("2604.24167v1") for config in configs)
@@ -331,6 +346,23 @@ def test_runner_sharding_atomic_results_and_resume(tmp_path):
     assert len(records) == 3
     assert len(list((tmp_path / "raw").glob("**/*.json"))) == 3
     assert len(runner.run([instance])) == 3
+    _, checkpoint_path = runner._paths(jobs[0])
+    checkpoint = torch.load(
+        checkpoint_path,
+        map_location="cpu",
+        weights_only=False,
+    )
+    assert checkpoint["job"] == {
+        "experiment": config.name,
+        "profile": config.profile,
+        "instance": instance.name,
+        "method": jobs[0].method.name,
+        "seed": jobs[0].seed,
+        "total_steps": 2,
+        "config_sha256": hashlib.sha256(
+            config.source.read_bytes()
+        ).hexdigest(),
+    }
 
     paired = [
         {
@@ -350,3 +382,20 @@ def test_runner_sharding_atomic_results_and_resume(tmp_path):
     )
     assert delta["count"] == 2
     assert delta["mean"] == pytest.approx(1.5)
+
+
+def test_runner_refuses_corrupt_existing_result(tmp_path):
+    config = load_experiment_config(ROOT / "configs/paper/image_smoke.toml")
+    instance = _synthetic_image_instance()
+    runner = ExperimentRunner(
+        config,
+        tmp_path,
+        device=torch.device("cpu"),
+    )
+    job = enumerate_jobs(config, [instance])[0]
+    result_path, _ = runner._paths(job)
+    result_path.parent.mkdir(parents=True)
+    result_path.write_text('{"schema_version":', encoding="utf-8")
+
+    with pytest.raises(ValueError, match="incomplete or corrupt"):
+        runner.run_one(job)

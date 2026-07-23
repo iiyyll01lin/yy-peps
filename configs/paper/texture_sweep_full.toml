@@ -1,0 +1,93 @@
+schema_version = 1
+name = "texture-frequency-sweep-full"
+paper = "PEPS Extended arXiv:2604.24167v1"
+task = "texture"
+profile = "full"
+dataset = "paper-textures-18-4k"
+canonical = false
+seeds = [0, 1, 2]
+
+[training]
+task = "texture"
+loss = "l1"
+epochs = 3000
+batches_per_epoch = 40
+batch_size = 60000
+model_lr = 0.001
+encoder_lr = 0.1
+cosine = true
+log_every = 200
+checkpoint_every = 1000
+
+[runner]
+metrics = ["psnr", "ssim"]
+render_chunk = 262144
+output_dir = "results/paper"
+parallelism_mode = "job_shard"
+world_size = 4
+target_sampling = "random_pixel_locations"
+target_filter = "bilinear_at_pixel_locations"
+measure_latency = true
+latency_instance_ids = ["paving-stones-070"]
+latency_seed = 0
+latency_queries = 1048576
+latency_chunk = 65536
+latency_warmup = 3
+latency_repeats = 7
+completed_checkpoint_retention = "none"
+
+[[methods]]
+name = "Grid-PEPS3F"
+factory = "apps.texture.build:build_paper_texture"
+kwargs = { method = "grid_peps3f" }
+role = "frequency_sweep"
+expected_encoder_params = 17825792
+
+[[methods]]
+name = "Grid-PEPS4F"
+factory = "apps.texture.build:build_paper_texture"
+kwargs = { method = "grid_peps4f" }
+role = "frequency_sweep"
+expected_encoder_params = 17825792
+
+[[methods]]
+name = "Grid-PinkPEPS3F"
+factory = "apps.texture.build:build_paper_texture"
+kwargs = { method = "grid_pinkpeps3f" }
+role = "frequency_sweep"
+expected_encoder_params = 17825792
+
+[[methods]]
+name = "Grid-PinkPEPS4F"
+factory = "apps.texture.build:build_paper_texture"
+kwargs = { method = "grid_pinkpeps4f" }
+role = "frequency_sweep"
+expected_encoder_params = 17825792
+
+[[methods]]
+name = "NTC_PEPS3F"
+factory = "apps.texture.build:build_paper_texture"
+kwargs = { method = "ntc_peps3f" }
+role = "frequency_sweep"
+expected_encoder_params = 17825792
+
+[[methods]]
+name = "NTC_PEPS4F"
+factory = "apps.texture.build:build_paper_texture"
+kwargs = { method = "ntc_peps4f" }
+role = "frequency_sweep"
+expected_encoder_params = 17825792
+
+[[methods]]
+name = "NTC_PinkPEPS3F"
+factory = "apps.texture.build:build_paper_texture"
+kwargs = { method = "ntc_pinkpeps3f" }
+role = "frequency_sweep"
+expected_encoder_params = 17825792
+
+[[methods]]
+name = "NTC_PinkPEPS4F"
+factory = "apps.texture.build:build_paper_texture"
+kwargs = { method = "ntc_pinkpeps4f" }
+role = "frequency_sweep"
+expected_encoder_params = 17825792

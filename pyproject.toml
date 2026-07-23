@@ -51,6 +51,8 @@ sdf = [
 [project.scripts]
 peps-experiment = "experiments.run:main"
 peps-reproduce = "experiments.reproduce:main"
+peps-ddp = "experiments.ddp:main"
+peps-multigpu = "experiments.multigpu:main"
 
 [project.urls]
 Repository = "https://github.com/iiyyll01lin/yy-peps"

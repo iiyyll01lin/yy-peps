@@ -4,7 +4,10 @@
 from __future__ import annotations
 
 import argparse
+import csv
+import hashlib
 import json
+import math
 from pathlib import Path
 import re
 import sys
@@ -14,6 +17,47 @@ from typing import Any, Iterable
 ROOT = Path(__file__).resolve().parents[1]
 WEEK_IDS = tuple(f"W{week:02d}" for week in range(1, 15))
 CHECKSUM_LENGTHS = {"md5": 32, "sha256": 64}
+RELEASE_EVIDENCE_STATUSES = {
+    "course-fast-image-smoke": "validated-course-smoke-not-paper-comparable",
+    "course-fast-texture-smoke": "validated-course-smoke-not-paper-comparable",
+    "course-fast-sdf-smoke": "validated-course-smoke-not-paper-comparable",
+    "kodak-convergence-pilot": (
+        "validated-inconclusive-pilot-not-paper-comparable"
+    ),
+    "texture-convergence-pilot": (
+        "validated-inconclusive-pilot-not-paper-comparable"
+    ),
+    "sdf-public-512-provenance": (
+        "validated-input-provenance-not-numeric-result"
+    ),
+}
+COURSE_SMOKE_RUNS = {
+    "course-fast-image-smoke": (
+        "20260721T175053994434Z-smoke-image-course_fast-s0-3cfadfa6",
+        "smoke-image",
+        9,
+    ),
+    "course-fast-texture-smoke": (
+        "20260721T175141764666Z-smoke-texture-course_fast-s0-737949da",
+        "smoke-texture",
+        15,
+    ),
+    "course-fast-sdf-smoke": (
+        "20260721T175154356740Z-smoke-sdf-course_fast-s0-d66561b7",
+        "smoke-sdf",
+        5,
+    ),
+}
+REQUIRED_PAPER_BLOCKERS = {
+    "fig5_dataset_not_reported",
+    "fig5_training_budget_not_reported",
+    "image_training_steps_not_reported",
+    "table1_loss_recipe_conflict",
+    "optimizer_and_seed_not_reported",
+    "unreleased_sdf_converter",
+    "pitted_stonefish_authorization_required",
+    "table1_incomplete",
+}
 
 
 class Validator:
@@ -37,6 +81,111 @@ class Validator:
 def _source(cell: dict[str, Any]) -> str:
     value = cell.get("source", "")
     return "".join(value) if isinstance(value, list) else str(value)
+
+
+def _sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _release_file(
+    validator: Validator,
+    value: Any,
+    context: str,
+) -> Path | None:
+    valid = (
+        isinstance(value, str)
+        and bool(value)
+        and not Path(value).is_absolute()
+        and ".." not in Path(value).parts
+    )
+    validator.check(valid, f"{context}: unsafe or missing path")
+    if not valid:
+        return None
+    path = ROOT / value
+    validator.check(path.is_file(), f"{context}: file does not exist: {value}")
+    return path if path.is_file() else None
+
+
+def validate_course_smoke(
+    validator: Validator,
+    evidence_id: str,
+    run_id: str,
+    artifact: str,
+    expected_rows: int,
+) -> None:
+    run_dir = ROOT / "results" / "runs" / run_id
+    manifest = validator.load_json(run_dir / "manifest.json")
+    if not isinstance(manifest, dict):
+        return
+    validator.check(
+        manifest.get("schema") == "peps.run_manifest"
+        and manifest.get("schema_version") == 1,
+        f"{evidence_id}: unsupported run manifest",
+    )
+    validator.check(
+        manifest.get("run_id") == run_id,
+        f"{evidence_id}: run_id mismatch",
+    )
+    validator.check(
+        manifest.get("profile") == "course_fast",
+        f"{evidence_id}: profile must be course_fast",
+    )
+    metadata = manifest.get("metadata")
+    validator.check(
+        isinstance(metadata, dict)
+        and metadata.get("verification_status")
+        == "course_fast_smoke_not_paper_comparable",
+        f"{evidence_id}: missing non-paper-comparable verification status",
+    )
+    descriptor = manifest.get("instances")
+    validator.check(
+        isinstance(descriptor, dict)
+        and descriptor.get("row_count") == expected_rows,
+        f"{evidence_id}: manifest row count mismatch",
+    )
+    instances_path = run_dir / "instances.csv"
+    if not instances_path.is_file():
+        validator.errors.append(f"{evidence_id}: missing instances.csv")
+        return
+    try:
+        with instances_path.open(newline="", encoding="utf-8") as handle:
+            rows = list(csv.DictReader(handle))
+    except (OSError, csv.Error) as exc:
+        validator.errors.append(f"{evidence_id}: invalid instances.csv: {exc}")
+        return
+    validator.check(
+        len(rows) == expected_rows,
+        f"{evidence_id}: instances.csv row count mismatch",
+    )
+    for index, row in enumerate(rows):
+        prefix = f"{evidence_id}: row {index}"
+        validator.check(row.get("run_id") == run_id, f"{prefix}: run_id mismatch")
+        validator.check(
+            row.get("profile") == "course_fast",
+            f"{prefix}: profile mismatch",
+        )
+        validator.check(row.get("status") == "ok", f"{prefix}: status is not ok")
+        try:
+            finite = math.isfinite(float(row.get("value", "")))
+        except (TypeError, ValueError):
+            finite = False
+        validator.check(finite, f"{prefix}: value is not finite")
+
+    summary = validator.load_json(run_dir / "summary.json")
+    validator.check(
+        isinstance(summary, dict)
+        and summary.get("schema") == "peps.paper_artifact_summary"
+        and summary.get("schema_version") == 1
+        and summary.get("run_id") == run_id
+        and summary.get("artifact") == artifact
+        and isinstance(summary.get("rows"), list)
+        and bool(summary["rows"]),
+        f"{evidence_id}: summary contract mismatch",
+    )
 
 
 def validate_notebook(validator: Validator, path: Path) -> None:
@@ -211,16 +360,344 @@ def validate_results(validator: Validator) -> None:
     if not isinstance(artifacts, dict):
         return
     csv_files = {item.name for item in (ROOT / "results").glob("*.csv")}
+    manifested_csvs = {
+        name for name in artifacts if Path(name).suffix.lower() == ".csv"
+    }
     validator.check(
-        set(artifacts) == csv_files,
+        manifested_csvs == csv_files,
         "results/manifest.json must list every top-level results CSV exactly once",
     )
     for name, metadata in artifacts.items():
+        validator.check(
+            Path(name).name == name and (ROOT / "results" / name).is_file(),
+            f"results/manifest.json: {name} is not a top-level result file",
+        )
         status = metadata.get("status") if isinstance(metadata, dict) else None
         validator.check(
-            status in {"legacy-unverified", "verified"},
+            status in {"legacy-unverified", "verified", "blocked-performance"},
             f"results/manifest.json: {name} has invalid status",
         )
+        if name in csv_files:
+            validator.check(
+                status == "legacy-unverified",
+                f"results/manifest.json: top-level CSV {name} must remain legacy-unverified",
+            )
+    validate_course_release(validator, document, sorted(csv_files))
+
+
+def validate_course_release(
+    validator: Validator,
+    results_manifest: dict[str, Any],
+    top_level_csvs: list[str],
+) -> None:
+    indexed = results_manifest.get("release_evidence")
+    validator.check(
+        isinstance(indexed, dict),
+        "results/manifest.json: release_evidence must be an object",
+    )
+    if not isinstance(indexed, dict):
+        return
+    validator.check(
+        set(indexed) == set(RELEASE_EVIDENCE_STATUSES),
+        "results/manifest.json: release evidence IDs do not match the course bundle",
+    )
+    for evidence_id, expected_status in RELEASE_EVIDENCE_STATUSES.items():
+        metadata = indexed.get(evidence_id)
+        validator.check(
+            isinstance(metadata, dict),
+            f"release evidence {evidence_id}: metadata must be an object",
+        )
+        if not isinstance(metadata, dict):
+            continue
+        validator.check(
+            metadata.get("status") == expected_status,
+            f"release evidence {evidence_id}: status mismatch",
+        )
+        validator.check(
+            metadata.get("paper_comparable") is False,
+            f"release evidence {evidence_id}: must not be paper-comparable",
+        )
+        validator.check(
+            isinstance(metadata.get("claim_scope"), str)
+            and bool(metadata["claim_scope"].strip()),
+            f"release evidence {evidence_id}: claim_scope is required",
+        )
+        for key in ("receipt", "raw_rows", "summary", "recovery_receipt"):
+            if key in metadata:
+                _release_file(
+                    validator,
+                    metadata[key],
+                    f"release evidence {evidence_id}.{key}",
+                )
+        provenance = metadata.get("provenance", [])
+        validator.check(
+            isinstance(provenance, list),
+            f"release evidence {evidence_id}: provenance must be an array",
+        )
+        if isinstance(provenance, list):
+            for index, value in enumerate(provenance):
+                _release_file(
+                    validator,
+                    value,
+                    f"release evidence {evidence_id}.provenance[{index}]",
+                )
+
+    release = results_manifest.get("course_release")
+    validator.check(
+        isinstance(release, dict),
+        "results/manifest.json: course_release must be an object",
+    )
+    if not isinstance(release, dict):
+        return
+    validator.check(
+        release.get("status") == "course-ready-paper-exact-blocked"
+        and release.get("paper_exact_ready") is False
+        and release.get("paper_comparable_results") == 0,
+        "results/manifest.json: course release status is unsafe",
+    )
+    for key in ("receipt", "schema", "checklist"):
+        _release_file(
+            validator,
+            release.get(key),
+            f"results/manifest.json course_release.{key}",
+        )
+    receipt_path = _release_file(
+        validator,
+        release.get("receipt"),
+        "course release receipt",
+    )
+    if receipt_path is None:
+        return
+    receipt = validator.load_json(receipt_path)
+    if not isinstance(receipt, dict):
+        return
+    validator.check(
+        receipt.get("schema") == "peps.course_release_receipt"
+        and receipt.get("schema_version") == 1,
+        "course release receipt: unsupported schema",
+    )
+    validator.check(
+        receipt.get("status") == "course-ready-paper-exact-blocked"
+        and receipt.get("paper_comparable_results") == 0,
+        "course release receipt: unsafe release status",
+    )
+
+    promoted = receipt.get("promoted_evidence")
+    validator.check(
+        isinstance(promoted, list),
+        "course release receipt: promoted_evidence must be an array",
+    )
+    promoted_by_id: dict[str, dict[str, Any]] = {}
+    if isinstance(promoted, list):
+        for item in promoted:
+            if not isinstance(item, dict) or not isinstance(item.get("id"), str):
+                validator.errors.append(
+                    "course release receipt: malformed promoted evidence item"
+                )
+                continue
+            evidence_id = item["id"]
+            validator.check(
+                evidence_id not in promoted_by_id,
+                f"course release receipt: duplicate evidence ID {evidence_id}",
+            )
+            promoted_by_id[evidence_id] = item
+            validator.check(
+                item.get("status") == RELEASE_EVIDENCE_STATUSES.get(evidence_id),
+                f"course release receipt: status mismatch for {evidence_id}",
+            )
+            validator.check(
+                item.get("paper_comparable") is False,
+                f"course release receipt: {evidence_id} must not be paper-comparable",
+            )
+            files = item.get("files")
+            validator.check(
+                isinstance(files, list) and bool(files),
+                f"course release receipt: {evidence_id} needs evidence files",
+            )
+            if isinstance(files, list):
+                for index, file_spec in enumerate(files):
+                    path_value = (
+                        file_spec.get("path")
+                        if isinstance(file_spec, dict)
+                        else None
+                    )
+                    _release_file(
+                        validator,
+                        path_value,
+                        f"course release receipt {evidence_id}.files[{index}]",
+                    )
+    validator.check(
+        set(promoted_by_id) == set(RELEASE_EVIDENCE_STATUSES),
+        "course release receipt: promoted IDs differ from results manifest",
+    )
+
+    legacy = receipt.get("legacy_top_level_csvs")
+    validator.check(
+        isinstance(legacy, dict)
+        and legacy.get("status") == "legacy-unverified"
+        and legacy.get("files") == top_level_csvs
+        and legacy.get("count") == len(top_level_csvs),
+        "course release receipt: legacy top-level CSV inventory mismatch",
+    )
+
+    for evidence_id, values in COURSE_SMOKE_RUNS.items():
+        validate_course_smoke(validator, evidence_id, *values)
+
+    image_pilot = validator.load_json(
+        ROOT / "results" / "image_convergence" / "receipt.json"
+    )
+    if isinstance(image_pilot, dict):
+        analysis = image_pilot.get("analysis", {})
+        coverage = image_pilot.get("coverage", {})
+        integrity = image_pilot.get("integrity", {})
+        validator.check(
+            isinstance(analysis, dict)
+            and analysis.get("outcome") == "inconclusive"
+            and analysis.get("recommended_budget_steps") is None,
+            "Kodak convergence pilot must remain inconclusive",
+        )
+        validator.check(
+            isinstance(coverage, dict)
+            and coverage.get("complete") is True
+            and isinstance(integrity, dict)
+            and integrity.get("valid") is True
+            and integrity.get("active_workers") == 0
+            and image_pilot.get("paper_exact") is False
+            and image_pilot.get("verified_table1") is False,
+            "Kodak convergence pilot coverage/integrity status is invalid",
+        )
+
+    texture_pilot = validator.load_json(
+        ROOT / "results" / "texture_repro" / "convergence_pilot.json"
+    )
+    texture_progress = validator.load_json(
+        ROOT / "results" / "texture_repro" / "convergence_pilot_progress.json"
+    )
+    texture_recovery = validator.load_json(
+        ROOT / "results" / "texture_repro" / "convergence_pilot_recovery.json"
+    )
+    if isinstance(texture_pilot, dict):
+        decision = texture_pilot.get("decision", {})
+        validator.check(
+            isinstance(decision, dict)
+            and decision.get("status") == "inconclusive_bounded_pilot"
+            and decision.get("recommended_table2_steps") is None
+            and decision.get("full_71m_step_run_authorized") is False,
+            "texture convergence pilot must remain inconclusive and unauthorized",
+        )
+    validator.check(
+        isinstance(texture_progress, dict)
+        and texture_progress.get("complete") is True
+        and texture_progress.get("active_workers") == 0
+        and texture_progress.get("observations") == 90
+        and isinstance(texture_recovery, dict)
+        and texture_recovery.get("process_reconciliation", {}).get(
+            "active_related_processes"
+        )
+        == 0
+        and texture_recovery.get("safety", {}).get("full_table2_run_launched")
+        is False,
+        "texture pilot progress/recovery receipt is invalid",
+    )
+
+    sdf_validation = validator.load_json(
+        ROOT / "results" / "sdf_repro" / "volume_validation.json"
+    )
+    release_sdf = receipt.get("sdf_public_provenance")
+    if isinstance(sdf_validation, dict) and isinstance(release_sdf, list):
+        source_rows = {
+            item.get("asset_id"): item
+            for item in sdf_validation.get("volumes", [])
+            if isinstance(item, dict)
+        }
+        release_rows = {
+            item.get("asset_id"): item
+            for item in release_sdf
+            if isinstance(item, dict)
+        }
+        expected_assets = {"lucy", "thai-statue", "armadillo"}
+        validator.check(
+            sdf_validation.get("status") == "passed"
+            and sdf_validation.get("checksums_verified") is True
+            and set(source_rows) == set(release_rows) == expected_assets,
+            "course release receipt: public SDF inventory mismatch",
+        )
+        validator.check(
+            sdf_validation.get("stonefish")
+            == {
+                "asset_id": "pitted-stonefish",
+                "checked": False,
+                "status": "deferred_auth_required",
+                "substitution_used": False,
+            },
+            "course release receipt: Stonefish blocker was weakened",
+        )
+        for asset_id in expected_assets:
+            source = source_rows.get(asset_id, {})
+            released = release_rows.get(asset_id, {})
+            provenance_path = _release_file(
+                validator,
+                released.get("receipt"),
+                f"course release SDF provenance {asset_id}",
+            )
+            if provenance_path is not None:
+                validator.check(
+                    _sha256(provenance_path)
+                    == source.get("tracked_provenance_sha256"),
+                    f"course release SDF provenance {asset_id}: checksum mismatch",
+                )
+            validator.check(
+                released.get("status") == "checksum_and_provenance_verified"
+                and released.get("shape") == [512, 512, 512]
+                and released.get("volume_sha256") == source.get("volume_sha256")
+                and released.get("known_limit")
+                == source.get("preprocessor_known_limit"),
+                f"course release SDF provenance {asset_id}: receipt mismatch",
+            )
+
+    pilot_decisions = receipt.get("pilot_decisions")
+    validator.check(
+        isinstance(pilot_decisions, dict)
+        and pilot_decisions.get("kodak", {}).get("status") == "inconclusive"
+        and pilot_decisions.get("kodak", {}).get("recommended_budget_steps")
+        is None
+        and pilot_decisions.get("kodak", {}).get("full_run_authorized") is False
+        and pilot_decisions.get("texture", {}).get("status")
+        == "inconclusive_bounded_pilot"
+        and pilot_decisions.get("texture", {}).get(
+            "recommended_budget_steps"
+        )
+        is None
+        and pilot_decisions.get("texture", {}).get("full_run_authorized") is False,
+        "course release receipt: pilot decisions were promoted unsafely",
+    )
+
+    paper_exact = receipt.get("paper_exact")
+    blocker_codes = {
+        item.get("code")
+        for item in paper_exact.get("blockers", [])
+        if isinstance(item, dict)
+    } if isinstance(paper_exact, dict) else set()
+    validator.check(
+        isinstance(paper_exact, dict)
+        and paper_exact.get("ready") is False
+        and paper_exact.get("paper_comparable_results") == 0
+        and REQUIRED_PAPER_BLOCKERS.issubset(blocker_codes),
+        "course release receipt: paper_exact blockers are incomplete",
+    )
+    process_audit = receipt.get("process_audit")
+    validator.check(
+        isinstance(process_audit, dict)
+        and process_audit.get("active_recovery_or_full_training_processes") == 0,
+        "course release receipt: active long-running process audit is not clean",
+    )
+    validation = receipt.get("validation")
+    validator.check(
+        isinstance(validation, dict)
+        and validation.get("status")
+        in {"passed", "passed-with-explicit-blocker"},
+        "course release receipt: final validation status is not passed",
+    )
 
 
 def validate_slides(validator: Validator) -> None:
@@ -246,8 +723,12 @@ def validate_release_files(validator: Validator) -> None:
         "references.bib",
         "README.md",
         "env/constraints.txt",
+        "course/RELEASE_CHECKLIST.md",
         "docs/07_readings_and_labs.md",
         "docs/08_midterm.md",
+        "results/course_release/README.md",
+        "results/course_release/receipt.json",
+        "results/schemas/course_release_receipt.schema.json",
         ".github/workflows/ci.yml",
         ".github/workflows/amd-gpu.yml",
     )

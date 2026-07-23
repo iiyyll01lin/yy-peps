@@ -17,6 +17,7 @@ results/**/*.pt
 results/**/*.npz
 results/work/
 results/smoke-inputs/
+results/multigpu/
 *.ckpt
 slides/build/
 slides/*.pdf

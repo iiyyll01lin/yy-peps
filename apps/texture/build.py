@@ -275,8 +275,14 @@ def build_paper_texture(
         "grid_pink_peps": "grid_pinkpeps4f",
         "grid_peps_25": "grid_peps4f_25",
         "grid_pink_peps_25": "grid_pinkpeps4f_25",
+        "grid_pink_peps3f": "grid_pinkpeps3f",
+        "grid_pink_peps4f": "grid_pinkpeps4f",
         "ntc_pink_peps": "ntc_pinkpeps",
         "ntc_pink_peps_25": "ntc_pinkpeps_25",
+        "ntc_peps4f": "ntc_peps",
+        "ntc_pinkpeps4f": "ntc_pinkpeps",
+        "ntc_pink_peps3f": "ntc_pinkpeps3f",
+        "ntc_pink_peps4f": "ntc_pinkpeps",
         "grid_pinkpeps": "grid_pinkpeps4f",
     }
     name = aliases.get(name, name)
@@ -293,23 +299,32 @@ def build_paper_texture(
         kwargs.update(overrides)
         return build_ntc_baseline(**kwargs)
     if name in {
+        "grid_peps3f",
+        "grid_pinkpeps3f",
         "grid_peps4f",
         "grid_pinkpeps4f",
+        "grid_peps3f_25",
+        "grid_pinkpeps3f_25",
         "grid_peps4f_25",
         "grid_pinkpeps4f_25",
     }:
+        reduced = name.endswith("_25")
         kwargs = {
             **common,
             "resolution": 1024,
-            "feature_dim": 13 if name.endswith("_25") else 17,
-            "num_frequencies": 4,
+            "feature_dim": 13 if reduced else 17,
+            "num_frequencies": 3 if "3f" in name else 4,
             "aggregator": "pink" if "pink" in name else "concat",
         }
         kwargs.update(overrides)
         return build_grid_peps_texture(**kwargs)
     if name in {
+        "ntc_peps3f",
+        "ntc_pinkpeps3f",
         "ntc_peps",
         "ntc_pinkpeps",
+        "ntc_peps3f_25",
+        "ntc_pinkpeps3f_25",
         "ntc_peps_25",
         "ntc_pinkpeps_25",
     }:
@@ -319,7 +334,7 @@ def build_paper_texture(
             "signal_resolution": signal_resolution,
             "g0_feature_dim": 9 if reduced else 12,
             "g1_feature_dim": 15 if reduced else 20,
-            "num_frequencies": 4,
+            "num_frequencies": 3 if "3f" in name else 4,
             "aggregator": "pink" if "pink" in name else "concat",
         }
         kwargs.update(overrides)

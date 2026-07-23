@@ -1,0 +1,90 @@
+schema_version = 1
+name = "texture-table2-convergence-pilot"
+paper = "PEPS Extended arXiv:2604.24167v1"
+task = "texture"
+profile = "full"
+dataset = "paper-textures-18-4k"
+canonical = false
+seeds = [0, 1, 2]
+
+[training]
+task = "texture"
+loss = "l1"
+epochs = 3000
+batches_per_epoch = 40
+batch_size = 60000
+model_lr = 0.001
+encoder_lr = 0.1
+cosine = true
+log_every = 10
+checkpoint_every = 0
+
+[runner]
+metrics = ["psnr", "ssim"]
+render_chunk = 262144
+dataset_manifest = "data/manifests/textures.json"
+dataset_verification_receipt = "results/texture_repro/dataset_verification.json"
+instance_ids = ["rails-001", "roof-09"]
+step_budgets = [10, 50, 200, 1000, 2000, 5000]
+evaluation_side = 256
+evaluation_sampling = "deterministic_native_pixel_lattice"
+target_sampling = "random_native_pixel_locations"
+full_schedule_steps = 120000
+world_size = 4
+physical_devices = [0, 1]
+maximum_concurrent_workers = 2
+assignment = "asset_method_pair_index_mod_world_size"
+require_gpu = true
+preferred_architecture = "gfx1201"
+max_trajectories = 30
+max_total_optimizer_steps = 150000
+max_wall_seconds_per_rank = 7200
+minimum_free_disk_bytes = 10737418240
+minimum_vram_bytes = 8589934592
+completed_checkpoint_retention = "all"
+checkpoint_every = 100
+
+[runner.resume_from]
+manifest = "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/manifest.json"
+manifest_sha256 = "4e65b0fe8d3105c4387f6856613c2eba240a9d3469235fff8eb1c082390a8f9c"
+config_sha256 = "0d8f2ff0951d250407606c0b5dcb9539310b08693830b92d9ccd0518fa19dcff"
+code_digest = "a3ddbc1bace0280b06038ff9ee5b719572e3cf42e8dd2b1d59355c2e56b3d170"
+maximum_budget = 200
+step_budgets = [10, 50, 200]
+full_schedule_steps = 120000
+evaluation_side = 256
+
+[[methods]]
+name = "LPE"
+factory = "apps.texture.build:build_paper_texture"
+kwargs = { method = "lpe" }
+role = "pilot_local_encoding_baseline"
+expected_encoder_params = 16777216
+
+[[methods]]
+name = "BI-Grid"
+factory = "apps.texture.build:build_paper_texture"
+kwargs = { method = "bi_grid" }
+role = "pilot_direct_grid_baseline"
+expected_encoder_params = 17825792
+
+[[methods]]
+name = "Grid-PinkPEPS4F"
+factory = "apps.texture.build:build_paper_texture"
+kwargs = { method = "grid_pinkpeps4f" }
+role = "pilot_grid_peps"
+expected_encoder_params = 17825792
+
+[[methods]]
+name = "NTC_N"
+factory = "apps.texture.build:build_paper_texture"
+kwargs = { method = "ntc_n" }
+role = "pilot_multiresolution_baseline"
+expected_encoder_params = 17825792
+
+[[methods]]
+name = "NTC_PinkPEPS"
+factory = "apps.texture.build:build_paper_texture"
+kwargs = { method = "ntc_pinkpeps" }
+role = "pilot_multiresolution_peps"
+expected_encoder_params = 17825792

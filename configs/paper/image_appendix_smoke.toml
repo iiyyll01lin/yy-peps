@@ -1,0 +1,126 @@
+schema_version = 1
+name = "image-appendix-full-resolution-smoke"
+paper = "PEPS Extended arXiv:2604.24167v1"
+task = "image"
+profile = "smoke"
+dataset = "kodim01-original-full-resolution"
+canonical = false
+seeds = [0]
+
+[training]
+task = "image"
+loss = "l1"
+steps = 1
+batch_size = 512
+model_lr = 0.01
+encoder_lr = 0.01
+cosine = false
+log_every = 1
+checkpoint_every = 1
+
+[runner]
+metrics = ["psnr", "ssim"]
+render_chunk = 262144
+output_dir = "results/paper-smoke"
+parallelism_mode = "job_shard"
+world_size = 4
+instance_ids = ["kodim01"]
+protocol_note = "Pipeline smoke only: one optimizer step on original-size kodim01. It exercises Table 5, core aggregation/no-sharing/remove-x, activation/LR, and WIRE sensitivity paths. Values are not paper-comparable."
+
+[[methods]]
+name = "Grid-L1"
+factory = "apps.image.build:build_paper_image"
+kwargs = { method = "grid", activation = "leaky_relu", output_activation = "none" }
+expected_encoder_params = 426496
+expected_total_params = 436163
+
+[[methods]]
+name = "G-P-PEPS-L1"
+factory = "apps.image.build:build_paper_image"
+kwargs = { method = "g_p_peps", activation = "leaky_relu", output_activation = "none" }
+expected_encoder_params = 426496
+expected_total_params = 437955
+
+[[methods]]
+name = "NTC_N-L1"
+factory = "apps.image.build:build_paper_image"
+kwargs = { method = "ntc_n", activation = "leaky_relu", output_activation = "none" }
+expected_encoder_params = 417792
+expected_total_params = 431491
+
+[[methods]]
+name = "G-PEPS-no-sharing"
+factory = "experiments.image_models:build_paper_image_ablation"
+kwargs = { variant = "no_sharing", activation = "gelu", output_activation = "none", no_sharing_resolution = [74, 48] }
+training = { loss = "l2", model_lr = 0.001, encoder_lr = 0.1, cosine = true }
+expected_encoder_params = 422688
+expected_total_params = 438883
+
+[[methods]]
+name = "G-PEPS-no-original-point"
+factory = "experiments.image_models:build_paper_image_ablation"
+kwargs = { variant = "no_original_point", activation = "gelu", output_activation = "none" }
+training = { loss = "l2", model_lr = 0.001, encoder_lr = 0.1, cosine = true }
+expected_encoder_params = 426496
+expected_total_params = 441603
+
+[[methods]]
+name = "G-PEPS-full-sum"
+factory = "experiments.image_models:build_paper_image_ablation"
+kwargs = { variant = "full_sum", activation = "gelu", output_activation = "none" }
+training = { loss = "l2", model_lr = 0.001, encoder_lr = 0.1, cosine = true }
+expected_encoder_params = 426496
+expected_total_params = 436163
+
+[[methods]]
+name = "G-PEPS-frequency-pair-sum"
+factory = "experiments.image_models:build_paper_image_ablation"
+kwargs = { variant = "frequency_pair_sum", activation = "gelu", output_activation = "none" }
+training = { loss = "l2", model_lr = 0.001, encoder_lr = 0.1, cosine = true }
+expected_encoder_params = 426496
+expected_total_params = 439427
+
+[[methods]]
+name = "G-Brownian-PEPS"
+factory = "experiments.image_models:build_paper_image_ablation"
+kwargs = { variant = "brownian", activation = "gelu", output_activation = "none" }
+training = { loss = "l2", model_lr = 0.001, encoder_lr = 0.1, cosine = true }
+expected_encoder_params = 426496
+expected_total_params = 436931
+
+[[methods]]
+name = "G-P-PEPS-L2-fixed-LeakyReLU"
+factory = "apps.image.build:build_paper_image"
+kwargs = { method = "g_p_peps", activation = "leaky_relu", output_activation = "none" }
+training = { loss = "l2" }
+expected_encoder_params = 426496
+expected_total_params = 437955
+
+[[methods]]
+name = "G-P-PEPS-L1-fixed-GELU"
+factory = "apps.image.build:build_paper_image"
+kwargs = { method = "g_p_peps", activation = "gelu", output_activation = "none" }
+expected_encoder_params = 426496
+expected_total_params = 437955
+
+[[methods]]
+name = "G-P-PEPS-L1-fixed-SiLU"
+factory = "apps.image.build:build_paper_image"
+kwargs = { method = "g_p_peps", activation = "silu", output_activation = "none" }
+expected_encoder_params = 426496
+expected_total_params = 437955
+
+[[methods]]
+name = "G-P-PEPS-L1-dual-cosine-LeakyReLU"
+factory = "apps.image.build:build_paper_image"
+kwargs = { method = "g_p_peps", activation = "leaky_relu", output_activation = "none" }
+training = { model_lr = 0.001, encoder_lr = 0.1, cosine = true }
+expected_encoder_params = 426496
+expected_total_params = 437955
+
+[[methods]]
+name = "G-PEPS-WIRE-sensitivity"
+factory = "experiments.image_models:build_paper_image_ablation"
+kwargs = { variant = "wire", output_activation = "none", wire_omega = 20.0, wire_scale = 10.0 }
+expected_encoder_params = 426496
+expected_total_params = 442691

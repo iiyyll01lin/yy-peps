@@ -1,0 +1,190 @@
+{
+  "schema": "peps.image_convergence_pilot",
+  "schema_version": 1,
+  "name": "kodak-image-budget-calibration-v1",
+  "paper": "PEPS Extended arXiv:2604.24167v1",
+  "verification_status": "bounded_protocol_assumption_calibration_not_table1",
+  "dataset": {
+    "manifest": "data/manifests/kodak.json",
+    "id": "kodak-pcd0992",
+    "selection_statistic": {
+      "name": "mean_adjacent_luma_absolute_difference",
+      "equation": "0.5*(mean(abs(diff_y(luma)))+mean(abs(diff_x(luma))))",
+      "luma_coefficients": [
+        0.2126,
+        0.7152,
+        0.0722
+      ],
+      "population_median": 0.02643349952995777
+    },
+    "subset": [
+      {
+        "id": "kodim23",
+        "selection_role": "lowest_spatial_gradient_landscape",
+        "orientation": "landscape",
+        "statistic_value": 0.014820490963757038
+      },
+      {
+        "id": "kodim17",
+        "selection_role": "portrait_near_population_median",
+        "orientation": "portrait",
+        "statistic_value": 0.022467510774731636
+      },
+      {
+        "id": "kodim13",
+        "selection_role": "highest_spatial_gradient_landscape",
+        "orientation": "landscape",
+        "statistic_value": 0.06692288815975189
+      }
+    ],
+    "sampling_note": "A deterministic coverage subset, not a statistically representative estimate of all 24 Kodak images: it spans the observed low/high spatial-gradient extremes and includes a portrait image near the population median."
+  },
+  "methods": [
+    {
+      "name": "Grid",
+      "category": "baseline",
+      "factory": "apps.image.build:build_paper_image",
+      "kwargs": {
+        "method": "grid",
+        "activation": "gelu",
+        "output_activation": "none"
+      },
+      "expected_encoder_params": 426496,
+      "expected_total_params": 436163
+    },
+    {
+      "name": "G-PEPS",
+      "category": "peps",
+      "factory": "apps.image.build:build_paper_image",
+      "kwargs": {
+        "method": "g_peps",
+        "activation": "gelu",
+        "output_activation": "none"
+      },
+      "expected_encoder_params": 426496,
+      "expected_total_params": 442691
+    },
+    {
+      "name": "G-P-PEPS",
+      "category": "pink",
+      "factory": "apps.image.build:build_paper_image",
+      "kwargs": {
+        "method": "g_p_peps",
+        "activation": "gelu",
+        "output_activation": "none"
+      },
+      "expected_encoder_params": 426496,
+      "expected_total_params": 437955
+    }
+  ],
+  "seeds": [
+    0,
+    1
+  ],
+  "training": {
+    "task": "image",
+    "loss": "l2",
+    "batch_size": 60000,
+    "model_lr": 0.001,
+    "encoder_lr": 0.1,
+    "cosine": true,
+    "max_steps": 120000,
+    "evaluation_budgets": [
+      1000,
+      3000,
+      10000,
+      20000,
+      30000,
+      60000,
+      90000,
+      120000
+    ],
+    "checkpoint_every": 500,
+    "deadline_poll_every": 100,
+    "render_chunk": 262144
+  },
+  "resume_from": {
+    "run_manifest": "results/work/image-convergence/d6b7c9ab41a5-3f50453216d9/run-manifest.json",
+    "run_manifest_sha256": "431b196ce6da4090404aee1d3f7cf8a67b870b7404502b3a8b92a4201f9c815e",
+    "receipt": "results/image_convergence/receipt.json",
+    "receipt_sha256": "77b2cf51571924abdbd8d5ad97b72ecff103aad3ad0c620da8f9c1c98dd4871c",
+    "run_id": "d6b7c9ab41a5-3f50453216d9",
+    "completed_step": 30000,
+    "evaluation_budgets": [
+      1000,
+      3000,
+      10000,
+      20000,
+      30000
+    ],
+    "pilot_manifest_sha256": "d6b7c9ab41a5d03bf0bcf4f488f1438356e6d0cd6d4b58ea80e2e85c02106616",
+    "code_bundle_sha256": "3f50453216d963331a00e03d6b11a51c31f154702b066e46a65ee3f84fbc1813",
+    "scheduler_transition": {
+      "kind": "global_cosine_rehorizon_at_resume",
+      "source_t_max": 30000,
+      "target_t_max": 120000,
+      "detail": "The 30k model, Adam moments, and minibatch stream are retained. Because the source cosine reached zero at 30k, the continuation explicitly re-horizons the learning rates to the 120k global cosine value at step 30k; this discontinuity is a local protocol assumption, not a paper-exact schedule."
+    }
+  },
+  "metrics": [
+    "psnr",
+    "ssim",
+    "lsd",
+    "mae"
+  ],
+  "parallelism": {
+    "mode": "independent_job_shards",
+    "world_size": 4,
+    "physical_devices": [
+      0,
+      1
+    ],
+    "maximum_concurrent_workers": 2,
+    "required_architecture": "gfx1201",
+    "same_model_distributed": false
+  },
+  "bounds": {
+    "expected_jobs": 18,
+    "expected_optimizer_steps": 2160000,
+    "expected_additional_optimizer_steps": 1620000,
+    "expected_curve_points": 144,
+    "max_wall_clock_seconds": 14400,
+    "shutdown_grace_seconds": 60,
+    "minimum_free_device_memory_bytes": 25769803776
+  },
+  "decision_rule": {
+    "candidate": "maximum_evaluated_budget_only",
+    "required_trailing_rank_intervals": 2,
+    "maximum_absolute_mean_psnr_gain_db": 0.15,
+    "ranking_tie_tolerance_db": 0.01,
+    "require_all_jobs_and_points": true,
+    "note": "Recommend the maximum tested budget only when aggregate method ordering is unchanged over the final two intervals and every method changes by at most 0.15 dB over the final interval. Otherwise report inconclusive; this pilot does not infer an untested budget."
+  },
+  "protocol_assumptions": [
+    {
+      "code": "image_training_budget_not_reported",
+      "status": "unresolved",
+      "detail": "The paper does not disclose Kodak optimizer steps or batch size."
+    },
+    {
+      "code": "optimizer_seed_output_not_reported",
+      "status": "local_assumption",
+      "detail": "Adam, seeds 0/1, a linear RGB output, and the listed L2 dual-learning-rate cosine recipe are local calibration assumptions."
+    },
+    {
+      "code": "checkpoint_cosine_rehorizon",
+      "status": "local_assumption",
+      "detail": "Continuation retains the 30k model, Adam moments, and minibatch stream, then explicitly moves the already-zero learning rates to the 120k global-cosine value at step 30k. The resulting curve is a checkpoint-continuation sensitivity test, not a single uninterrupted 120k schedule."
+    },
+    {
+      "code": "table1_recipe_text_conflict",
+      "status": "unresolved",
+      "detail": "Published Table 1 values align with the Appendix L2/GELU/dual-cosine row while the main image text describes L1/LeakyReLU/fixed LR."
+    },
+    {
+      "code": "subset_generalization",
+      "status": "pilot_only",
+      "detail": "Three deterministically selected images and two seeds can test local convergence and ranking stability, but cannot verify the 24-image, three-seed Table 1 matrix."
+    }
+  ]
+}

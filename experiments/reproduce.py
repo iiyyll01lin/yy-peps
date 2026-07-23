@@ -48,6 +48,9 @@ from data.manifest import (
     verify_file,
 )
 from experiments.config import ExperimentConfig, MethodConfig, load_experiment_config
+from experiments.full_run_authorization import (
+    validate_image_table1_authorization,
+)
 from experiments.runner import (
     ExperimentRunner,
     TensorInstance,
@@ -238,6 +241,7 @@ def _check_sdf(
     verify_checksums: bool,
 ) -> tuple[list[dict], dict[str, object]]:
     checked = []
+    blockers = []
     required_assets = (
         ("pitted-stonefish",)
         if artifact == "sdf-table4"
@@ -255,21 +259,30 @@ def _check_sdf(
                 )
             checked.append(asset_id)
         except (DataIntegrityError, MissingDataError, FileNotFoundError, ManifestError) as exc:
-            return [
-                _blocker(
-                    artifact,
-                    "paper_sdf_unavailable",
-                    (
-                        "provenance-validated Pitted Stonefish 512^3 volume"
-                        if artifact == "sdf-table4"
-                        else "four provenance-validated 512^3 SDF volumes"
-                    ),
-                    str(exc),
-                    "python data/download.py fetch sdf && "
-                    f"python data/preprocess_sdf.py {asset_id}",
+            if asset_id == "pitted-stonefish":
+                blockers.append(
+                    _blocker(
+                        artifact,
+                        "pitted_stonefish_authorization_required",
+                        "authorized canonical Pitted Stonefish 512^3 volume",
+                        str(exc),
+                        "Acquire the canonical Sketchfab asset with an authorized "
+                        "academic account, then preprocess it; do not substitute "
+                        "another mesh.",
+                    )
                 )
-            ], {"verified_volumes": checked}
-    return [], {"verified_volumes": checked}
+            else:
+                blockers.append(
+                    _blocker(
+                        artifact,
+                        "paper_sdf_unavailable",
+                        f"provenance-validated {asset_id} 512^3 volume",
+                        str(exc),
+                        "python data/download.py fetch sdf && "
+                        f"python data/preprocess_sdf.py {asset_id}",
+                    )
+                )
+    return blockers, {"verified_volumes": checked}
 
 
 def check_prerequisites(
@@ -730,8 +743,14 @@ def run_image_table1(
     instance_ids: Sequence[str] | None = None,
     methods: Sequence[str] | None = None,
     force: bool = False,
+    authorization_receipt: Path | None = None,
 ) -> dict[str, object]:
-    config = load_experiment_config(ROOT / "configs/paper/image_full.toml")
+    config_path = ROOT / "configs/paper/image_full.toml"
+    validate_image_table1_authorization(
+        authorization_receipt,
+        config_path=config_path,
+    )
+    config = load_experiment_config(config_path)
     config = _filter_methods(config, methods)
     loaded = load_paper_kodak(instance_ids=instance_ids)
     instances = []
@@ -1398,6 +1417,7 @@ def _parser() -> argparse.ArgumentParser:
     run.add_argument("--assumed-steps", type=int)
     run.add_argument("--assumed-batch-size", type=int, default=60_000)
     run.add_argument("--allow-protocol-assumptions", action="store_true")
+    run.add_argument("--authorization-receipt", type=Path)
 
     smoke = subparsers.add_parser("smoke")
     smoke.add_argument("--task", choices=("image", "texture", "sdf", "all"), default="all")
@@ -1457,7 +1477,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         "force": arguments.force,
     }
     if artifact == "image-table1":
-        output = run_image_table1(**common)
+        output = run_image_table1(
+            authorization_receipt=arguments.authorization_receipt,
+            **common,
+        )
     elif artifact == "image-fig5":
         if arguments.fig5_manifest is None or arguments.assumed_steps is None:
             raise SystemExit(

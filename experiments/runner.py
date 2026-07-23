@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import importlib
 import inspect
 import json
@@ -432,7 +433,32 @@ class ExperimentRunner:
     def run_one(self, spec: RunSpec) -> dict:
         result_path, checkpoint_path = self._paths(spec)
         if result_path.exists() and not self.force:
-            return json.loads(result_path.read_text(encoding="utf-8"))
+            try:
+                existing = json.loads(result_path.read_text(encoding="utf-8"))
+                identity = (
+                    existing["experiment"],
+                    existing["instance"],
+                    existing["method"],
+                    int(existing["seed"]),
+                    int(existing["job_index"]),
+                )
+            except (KeyError, OSError, TypeError, ValueError, json.JSONDecodeError) as exc:
+                raise ValueError(
+                    f"existing result is incomplete or corrupt: {result_path}"
+                ) from exc
+            expected_identity = (
+                self.config.name,
+                spec.instance.name,
+                spec.method.name,
+                spec.seed,
+                spec.index,
+            )
+            if identity != expected_identity:
+                raise ValueError(
+                    "existing result belongs to a different job: "
+                    f"{result_path}"
+                )
+            return existing
 
         _set_initialization_seed(spec.seed)
         model, _ = _build_model(self.config, spec.method, spec.instance)
@@ -448,6 +474,17 @@ class ExperimentRunner:
             paper_recipe_from_mapping(training_values),
             device=self.device,
         )
+        checkpoint_job = {
+            "experiment": self.config.name,
+            "profile": self.config.profile,
+            "instance": spec.instance.name,
+            "method": spec.method.name,
+            "seed": spec.seed,
+            "total_steps": recipe.total_steps,
+            "config_sha256": hashlib.sha256(
+                self.config.source.read_bytes()
+            ).hexdigest(),
+        }
         resume_state = None
         if checkpoint_path.exists() and not self.force:
             resume_state = torch.load(
@@ -455,9 +492,37 @@ class ExperimentRunner:
                 map_location=self.device,
                 weights_only=False,
             )
+            saved_job = resume_state.get("job")
+            if saved_job is not None:
+                identity_fields = (
+                    "experiment",
+                    "profile",
+                    "instance",
+                    "method",
+                    "seed",
+                    "total_steps",
+                )
+                if (
+                    not isinstance(saved_job, Mapping)
+                    or any(
+                        saved_job.get(name) != checkpoint_job[name]
+                        for name in identity_fields
+                    )
+                    or (
+                        saved_job.get("config_sha256") is not None
+                        and saved_job["config_sha256"]
+                        != checkpoint_job["config_sha256"]
+                    )
+                ):
+                    raise ValueError(
+                        "checkpoint belongs to a different job: "
+                        f"{checkpoint_path}"
+                    )
 
         def checkpoint_callback(step: int, state: Mapping) -> None:
-            atomic_torch_save(checkpoint_path, state)
+            payload = dict(state)
+            payload["job"] = checkpoint_job
+            atomic_torch_save(checkpoint_path, payload)
 
         started = time.perf_counter()
         model = fit_paper(
@@ -493,8 +558,17 @@ class ExperimentRunner:
             "role": spec.method.role,
             "seed": spec.seed,
             "job_index": spec.index,
+            # Legacy rank/world_size fields are retained for artifact
+            # compatibility.  The explicit mode prevents these job-sharding
+            # ranks from being mistaken for DDP ranks of one model.
             "rank": self.rank,
             "world_size": self.world_size,
+            "parallelism": {
+                "mode": "job_shard",
+                "job_shard_rank": self.rank,
+                "job_shard_world_size": self.world_size,
+                "same_model_distributed": False,
+            },
             "parameters": counts,
             "compression_factor": compression,
             "training": {

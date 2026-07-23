@@ -34,3 +34,12 @@ jobs:
             tests/test_hip_parity.py::test_hip_integrated_modes_match_pytorch \
             tests/test_hip_parity.py::test_hip_wmma_fp16_matches_pytorch \
             tests/test_hip_parity.py::test_hip_wmma_int8_matches_pytorch
+      - name: Run optional four-GPU DDP smoke
+        run: |
+          if .venv/bin/python -c \
+            "import torch; raise SystemExit(0 if torch.cuda.device_count() >= 4 else 1)"; then
+            PEPS_RUN_4GPU_TESTS=1 .venv/bin/python -m pytest -q \
+              tests/test_distributed.py
+          else
+            echo "Fewer than four visible GPUs; skipping DDP smoke."
+          fi

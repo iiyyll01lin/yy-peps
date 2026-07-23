@@ -1,0 +1,67 @@
+schema_version = 1
+name = "image-core-ablations-full"
+paper = "PEPS Extended arXiv:2604.24167v1"
+task = "image"
+profile = "full"
+dataset = "kodak-24-original"
+canonical = false
+seeds = [0, 1, 2]
+
+[training]
+task = "image"
+loss = "l2"
+steps = 120000
+batch_size = 60000
+model_lr = 0.001
+encoder_lr = 0.1
+cosine = true
+log_every = 500
+checkpoint_every = 500
+
+[runner]
+metrics = ["psnr", "ssim", "lpsd"]
+render_chunk = 262144
+output_dir = "results/paper"
+parallelism_mode = "job_shard"
+world_size = 4
+protocol_note = "Controlled Appendix interpretations. Published text gives directions but no numeric settings/results. No-sharing uses seven 74x48x17 grids (422688 encoder parameters, within 0.9% of the shared 196x128x17 grid). Frequency-pair sum retains x and concatenates S_i+C_i. Shared concat and Pink references are reused from image_full.toml."
+
+[[methods]]
+name = "G-PEPS-no-sharing"
+factory = "experiments.image_models:build_paper_image_ablation"
+kwargs = { variant = "no_sharing", activation = "gelu", output_activation = "none", no_sharing_resolution = [74, 48] }
+role = "appendix_protocol_assumption"
+expected_encoder_params = 422688
+expected_total_params = 438883
+
+[[methods]]
+name = "G-PEPS-no-original-point"
+factory = "experiments.image_models:build_paper_image_ablation"
+kwargs = { variant = "no_original_point", activation = "gelu", output_activation = "none" }
+role = "appendix_protocol_assumption"
+expected_encoder_params = 426496
+expected_total_params = 441603
+
+[[methods]]
+name = "G-PEPS-full-sum"
+factory = "experiments.image_models:build_paper_image_ablation"
+kwargs = { variant = "full_sum", activation = "gelu", output_activation = "none" }
+role = "appendix_protocol_assumption"
+expected_encoder_params = 426496
+expected_total_params = 436163
+
+[[methods]]
+name = "G-PEPS-frequency-pair-sum"
+factory = "experiments.image_models:build_paper_image_ablation"
+kwargs = { variant = "frequency_pair_sum", activation = "gelu", output_activation = "none" }
+role = "appendix_protocol_assumption"
+expected_encoder_params = 426496
+expected_total_params = 439427
+
+[[methods]]
+name = "G-Brownian-PEPS"
+factory = "experiments.image_models:build_paper_image_ablation"
+kwargs = { variant = "brownian", activation = "gelu", output_activation = "none" }
+role = "appendix_protocol_assumption"
+expected_encoder_params = 426496
+expected_total_params = 436931

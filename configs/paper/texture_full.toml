@@ -23,7 +23,14 @@ checkpoint_every = 1000
 metrics = ["psnr", "ssim"]
 render_chunk = 262144
 output_dir = "results/paper"
+parallelism_mode = "job_shard"
 world_size = 4
+dataset_manifest = "data/manifests/textures.json"
+target_sampling = "random_pixel_locations"
+target_filter = "native_texel_equals_bilinear_at_pixel_location"
+figure8_instance = "paving-stones-070"
+figure8_crop_size = 100
+completed_checkpoint_retention = "figure8_seed0"
 
 [[methods]]
 name = "LPE"

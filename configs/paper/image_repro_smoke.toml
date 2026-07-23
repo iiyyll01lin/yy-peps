@@ -1,30 +1,30 @@
 schema_version = 1
-name = "image-table1-full"
+name = "image-reproduction-full-resolution-smoke"
 paper = "PEPS Extended arXiv:2604.24167v1"
 task = "image"
-profile = "full"
-dataset = "kodak-24-original"
-canonical = true
-seeds = [0, 1, 2]
+profile = "smoke"
+dataset = "kodak-24-original-full-resolution"
+canonical = false
+seeds = [0]
 
 [training]
 task = "image"
 loss = "l2"
-steps = 120000
-batch_size = 60000
+steps = 1
+batch_size = 512
 model_lr = 0.001
 encoder_lr = 0.1
 cosine = true
-log_every = 500
-checkpoint_every = 500
+log_every = 1
+checkpoint_every = 1
 
 [runner]
 metrics = ["psnr", "flip", "lpips", "lsd", "ssim"]
 render_chunk = 262144
-output_dir = "results/paper"
+output_dir = "results/paper-smoke"
 parallelism_mode = "job_shard"
 world_size = 4
-protocol_note = "Published Table 1 values equal the appendix L2/GELU/dual-LR row despite the main-text L1 narrative. Image steps, batch size, optimizer, output activation, and seeds are undisclosed; 120000/60000/Adam/linear output/three paired seeds are recorded protocol assumptions."
+protocol_note = "Pipeline smoke only: all 24 checksum-verified original-size Kodak images and all nine Table 1 architectures, but one 512-sample optimizer step. Values are intentionally not paper-comparable."
 
 [[methods]]
 name = "PE"

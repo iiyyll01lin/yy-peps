@@ -18,7 +18,11 @@ from apps.texture.data import (
     texture_map_metric_rows,
 )
 from data.manifest import LoadedMap, LoadedTextureSet
-from experiments.reproduce import check_prerequisites, run_course_smoke
+from experiments.reproduce import (
+    check_prerequisites,
+    run_course_smoke,
+    run_image_table1,
+)
 from peps.train import SDFTrainConfig, fit_sdf, split_encoder_decoder_parameters
 
 
@@ -189,3 +193,11 @@ def test_course_smoke_writes_numeric_rows_only_beside_manifest(tmp_path):
     assert rows
     assert all(row["value"] for row in rows)
     assert (run_dir / "summary.csv").is_file()
+
+
+def test_legacy_table1_entrypoint_requires_independent_authorization(tmp_path):
+    with pytest.raises(ValueError, match="launch and recovery are disabled"):
+        run_image_table1(
+            output_root=tmp_path,
+            device=torch.device("cuda:0"),
+        )

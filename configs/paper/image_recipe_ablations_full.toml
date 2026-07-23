@@ -1,0 +1,69 @@
+schema_version = 1
+name = "image-recipe-ablations-full"
+paper = "PEPS Extended arXiv:2604.24167v1"
+task = "image"
+profile = "full"
+dataset = "kodak-24-original"
+canonical = false
+seeds = [0, 1, 2]
+
+[training]
+task = "image"
+loss = "l1"
+steps = 120000
+batch_size = 60000
+model_lr = 0.01
+encoder_lr = 0.01
+cosine = false
+log_every = 500
+checkpoint_every = 500
+
+[runner]
+metrics = ["psnr", "ssim"]
+render_chunk = 262144
+output_dir = "results/paper"
+parallelism_mode = "job_shard"
+world_size = 4
+protocol_note = "Controlled one-factor G-P-PEPS recipe ablations. The L1/Leaky/fixed reference is reused from image_table5_full.toml and the L2/GELU/dual-cosine reference from image_full.toml. The separate concat G-PEPS WIRE row is a real-valued Gabor sensitivity (omega=20, scale=10), not an exact paper row: the paper discloses neither WIRE hyperparameters nor numeric results."
+
+[[methods]]
+name = "G-P-PEPS-L2-fixed-LeakyReLU"
+factory = "apps.image.build:build_paper_image"
+kwargs = { method = "g_p_peps", activation = "leaky_relu", output_activation = "none" }
+training = { loss = "l2" }
+role = "appendix_protocol_assumption"
+expected_encoder_params = 426496
+expected_total_params = 437955
+
+[[methods]]
+name = "G-P-PEPS-L1-fixed-GELU"
+factory = "apps.image.build:build_paper_image"
+kwargs = { method = "g_p_peps", activation = "gelu", output_activation = "none" }
+role = "appendix_protocol_assumption"
+expected_encoder_params = 426496
+expected_total_params = 437955
+
+[[methods]]
+name = "G-P-PEPS-L1-fixed-SiLU"
+factory = "apps.image.build:build_paper_image"
+kwargs = { method = "g_p_peps", activation = "silu", output_activation = "none" }
+role = "appendix_protocol_assumption"
+expected_encoder_params = 426496
+expected_total_params = 437955
+
+[[methods]]
+name = "G-P-PEPS-L1-dual-cosine-LeakyReLU"
+factory = "apps.image.build:build_paper_image"
+kwargs = { method = "g_p_peps", activation = "leaky_relu", output_activation = "none" }
+training = { model_lr = 0.001, encoder_lr = 0.1, cosine = true }
+role = "appendix_protocol_assumption"
+expected_encoder_params = 426496
+expected_total_params = 437955
+
+[[methods]]
+name = "G-PEPS-WIRE-sensitivity"
+factory = "experiments.image_models:build_paper_image_ablation"
+kwargs = { variant = "wire", output_activation = "none", wire_omega = 20.0, wire_scale = 10.0 }
+role = "noncanonical_wire_sensitivity"
+expected_encoder_params = 426496
+expected_total_params = 442691

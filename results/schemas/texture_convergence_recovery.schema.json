@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/iiyyll01lin/yy-peps/results/schemas/texture_convergence_recovery.schema.json",
+  "title": "PEPS texture convergence pilot recovery receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schema_version",
+    "checked_at_utc",
+    "boot_id",
+    "process_identity_fields",
+    "process_reconciliation",
+    "attempts",
+    "final_validation",
+    "safety"
+  ],
+  "properties": {
+    "schema": {
+      "const": "peps.texture_convergence_pilot_recovery"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "checked_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "boot_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f-]{36}$"
+    },
+    "process_identity_fields": {
+      "const": [
+        "boot_id",
+        "start_time_ticks",
+        "command_sha256"
+      ]
+    },
+    "process_reconciliation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "active_related_processes",
+        "active_workers",
+        "completed_workers",
+        "interrupted_shards_resumed",
+        "cause_of_unreceipted_stops"
+      ],
+      "properties": {
+        "active_related_processes": {
+          "const": 0
+        },
+        "active_workers": {
+          "const": 0
+        },
+        "completed_workers": {
+          "const": 4
+        },
+        "interrupted_shards_resumed": {
+          "const": [
+            0,
+            1
+          ]
+        },
+        "cause_of_unreceipted_stops": {
+          "const": "undetermined_no_python_exception_or_kernel_log_access"
+        }
+      }
+    },
+    "attempts": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "required": [
+          "output_dir",
+          "code_digest_prefix",
+          "status",
+          "raw_records",
+          "checkpoints",
+          "checkpoint_bytes",
+          "preserved"
+        ]
+      }
+    },
+    "final_validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "trajectories",
+        "observations",
+        "optimizer_steps",
+        "result_errors",
+        "checkpoint_errors",
+        "report",
+        "progress",
+        "observations_csv"
+      ],
+      "properties": {
+        "trajectories": {
+          "const": "30/30"
+        },
+        "observations": {
+          "const": "90/90"
+        },
+        "optimizer_steps": {
+          "const": "6000/6000"
+        },
+        "result_errors": {
+          "const": 0
+        },
+        "checkpoint_errors": {
+          "const": 0
+        },
+        "report": {
+          "$ref": "#/$defs/artifact"
+        },
+        "progress": {
+          "$ref": "#/$defs/artifact"
+        },
+        "observations_csv": {
+          "$ref": "#/$defs/artifact"
+        }
+      }
+    },
+    "safety": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "full_table2_run_launched",
+        "full_table2_optimizer_steps",
+        "verified_pilot_optimizer_steps",
+        "unreceipted_work_possible",
+        "recommendation_promoted"
+      ],
+      "properties": {
+        "full_table2_run_launched": {
+          "const": false
+        },
+        "full_table2_optimizer_steps": {
+          "const": 71280000
+        },
+        "verified_pilot_optimizer_steps": {
+          "const": 6000
+        },
+        "unreceipted_work_possible": {
+          "const": true
+        },
+        "recommendation_promoted": {
+          "const": false
+        }
+      }
+    }
+  },
+  "$defs": {
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "bytes",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    }
+  }
+}

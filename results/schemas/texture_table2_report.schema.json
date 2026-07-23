@@ -1,0 +1,274 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/iiyyll01lin/yy-peps/results/schemas/texture_table2_report.schema.json",
+  "title": "PEPS texture Table 2 report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schema_version",
+    "generated_at_utc",
+    "paper",
+    "artifact",
+    "profile",
+    "aggregation",
+    "dataset",
+    "progress",
+    "rows",
+    "complete",
+    "verification_status",
+    "limitations"
+  ],
+  "properties": {
+    "schema": {
+      "const": "peps.texture_table2_report"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "generated_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "paper": {
+      "const": "PEPS Extended arXiv:2604.24167v1"
+    },
+    "artifact": {
+      "const": "texture-table2"
+    },
+    "profile": {
+      "const": "full"
+    },
+    "aggregation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "unit",
+        "global_weighting",
+        "semantic_weighting"
+      ],
+      "properties": {
+        "unit": {
+          "type": "string"
+        },
+        "global_weighting": {
+          "const": "map_weighted"
+        },
+        "semantic_weighting": {
+          "const": "map_weighted_within_category"
+        }
+      }
+    },
+    "dataset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "set_count",
+        "map_count",
+        "semantics",
+        "manifest_sha256"
+      ],
+      "properties": {
+        "set_count": {
+          "const": 18
+        },
+        "map_count": {
+          "const": 78
+        },
+        "semantics": {
+          "const": [
+            "AO",
+            "ARM",
+            "DIFF",
+            "Displacement",
+            "metal",
+            "normal",
+            "rough",
+            "specular"
+          ]
+        },
+        "manifest_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "progress": {
+      "type": "object"
+    },
+    "rows": {
+      "type": "array",
+      "maxItems": 11,
+      "items": {
+        "$ref": "#/$defs/row"
+      }
+    },
+    "complete": {
+      "type": "boolean"
+    },
+    "verification_status": {
+      "enum": [
+        "complete_protocol_assumption",
+        "partial_do_not_interpret"
+      ]
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "detail"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "nullableNumber": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "nullableInteger": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "row": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method",
+        "profile",
+        "complete",
+        "job_count",
+        "expected_job_count",
+        "map_observation_count",
+        "expected_map_observation_count",
+        "psnr",
+        "ssim",
+        "AO",
+        "ARM",
+        "DIFF",
+        "Displacement",
+        "metal",
+        "normal",
+        "rough",
+        "specular",
+        "paper_psnr",
+        "paper_ssim",
+        "delta_psnr",
+        "delta_ssim",
+        "encoder_params",
+        "decoder_params_min",
+        "decoder_params_max",
+        "total_params_min",
+        "total_params_max",
+        "compression_factor_mean",
+        "verification_status"
+      ],
+      "properties": {
+        "method": {
+          "type": "string"
+        },
+        "profile": {
+          "const": "full"
+        },
+        "complete": {
+          "type": "boolean"
+        },
+        "job_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "expected_job_count": {
+          "const": 54
+        },
+        "map_observation_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "expected_map_observation_count": {
+          "const": 234
+        },
+        "psnr": {
+          "$ref": "#/$defs/nullableNumber"
+        },
+        "ssim": {
+          "$ref": "#/$defs/nullableNumber"
+        },
+        "AO": {
+          "$ref": "#/$defs/nullableNumber"
+        },
+        "ARM": {
+          "$ref": "#/$defs/nullableNumber"
+        },
+        "DIFF": {
+          "$ref": "#/$defs/nullableNumber"
+        },
+        "Displacement": {
+          "$ref": "#/$defs/nullableNumber"
+        },
+        "metal": {
+          "$ref": "#/$defs/nullableNumber"
+        },
+        "normal": {
+          "$ref": "#/$defs/nullableNumber"
+        },
+        "rough": {
+          "$ref": "#/$defs/nullableNumber"
+        },
+        "specular": {
+          "$ref": "#/$defs/nullableNumber"
+        },
+        "paper_psnr": {
+          "type": "number"
+        },
+        "paper_ssim": {
+          "type": "number"
+        },
+        "delta_psnr": {
+          "$ref": "#/$defs/nullableNumber"
+        },
+        "delta_ssim": {
+          "$ref": "#/$defs/nullableNumber"
+        },
+        "encoder_params": {
+          "$ref": "#/$defs/nullableInteger"
+        },
+        "decoder_params_min": {
+          "$ref": "#/$defs/nullableInteger"
+        },
+        "decoder_params_max": {
+          "$ref": "#/$defs/nullableInteger"
+        },
+        "total_params_min": {
+          "$ref": "#/$defs/nullableInteger"
+        },
+        "total_params_max": {
+          "$ref": "#/$defs/nullableInteger"
+        },
+        "compression_factor_mean": {
+          "$ref": "#/$defs/nullableNumber"
+        },
+        "verification_status": {
+          "enum": [
+            "complete_protocol_assumption",
+            "partial_do_not_interpret"
+          ]
+        }
+      }
+    }
+  }
+}

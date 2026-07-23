@@ -22,6 +22,7 @@ checkpoint_every = 1
 metrics = ["psnr", "lsd", "lpsd"]
 render_chunk = 1024
 output_dir = "results/paper-smoke"
+parallelism_mode = "job_shard"
 world_size = 1
 
 [[methods]]

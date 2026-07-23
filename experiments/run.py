@@ -46,7 +46,12 @@ def load_tensor_instances(path) -> tuple[TensorInstance, ...]:
 
 
 def _parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        description=(
+            "Shard independent experiment jobs across processes. This is not "
+            "DDP; use experiments.ddp for one job on multiple GPUs."
+        )
+    )
     parser.add_argument("--config", required=True)
     parser.add_argument("--input")
     parser.add_argument("--output")
@@ -77,6 +82,10 @@ def main(argv=None) -> int:
         payload = {
             "experiment": config.name,
             "profile": config.profile,
+            "parallelism": {
+                "mode": "job_shard",
+                "same_model_distributed": False,
+            },
             "rank": rank,
             "world_size": world_size,
             "methods": [method.name for method in config.methods],
