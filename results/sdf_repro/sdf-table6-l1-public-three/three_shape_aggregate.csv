@@ -1,0 +1,10 @@
+schema,schema_version,artifact,paper_table,scope,shape_count,method,mean_iou,paper_three_shape_mean_iou,delta_iou,paper_global_comparable,omitted_shape,omitted_status
+peps.sdf_repro_three_shape_aggregate,1,sdf-table6-l1-public-three,Table 6,3-of-4 public subset,3,TI-Grid,0.9623153553701901,0.9296666666666668,0.03264868870352333,False,pitted-stonefish,deferred_auth_required
+peps.sdf_repro_three_shape_aggregate,1,sdf-table6-l1-public-three,Table 6,3-of-4 public subset,3,Hash,0.6054887797005798,0.7623333333333333,-0.15684455363275351,False,pitted-stonefish,deferred_auth_required
+peps.sdf_repro_three_shape_aggregate,1,sdf-table6-l1-public-three,Table 6,3-of-4 public subset,3,LPE,0.9488157905579371,0.9283333333333333,0.020482457224603734,False,pitted-stonefish,deferred_auth_required
+peps.sdf_repro_three_shape_aggregate,1,sdf-table6-l1-public-three,Table 6,3-of-4 public subset,3,Grid-PEPS,0.9557081707955488,0.932,0.023708170795548766,False,pitted-stonefish,deferred_auth_required
+peps.sdf_repro_three_shape_aggregate,1,sdf-table6-l1-public-three,Table 6,3-of-4 public subset,3,PE,0.8763648758002344,0.9056666666666667,-0.029301790866432365,False,pitted-stonefish,deferred_auth_required
+peps.sdf_repro_three_shape_aggregate,1,sdf-table6-l1-public-three,Table 6,3-of-4 public subset,3,M-PEPS,0.959147615669254,0.932,0.027147615669253944,False,pitted-stonefish,deferred_auth_required
+peps.sdf_repro_three_shape_aggregate,1,sdf-table6-l1-public-three,Table 6,3-of-4 public subset,3,M-Grid,0.9499346830640613,0.9303333333333333,0.019601349730727913,False,pitted-stonefish,deferred_auth_required
+peps.sdf_repro_three_shape_aggregate,1,sdf-table6-l1-public-three,Table 6,3-of-4 public subset,3,M-Hash,0.9445478904886825,0.932,0.012547890488682434,False,pitted-stonefish,deferred_auth_required
+peps.sdf_repro_three_shape_aggregate,1,sdf-table6-l1-public-three,Table 6,3-of-4 public subset,3,M-HashPEPS,0.9627002571817799,0.932,0.030700257181779822,False,pitted-stonefish,deferred_auth_required

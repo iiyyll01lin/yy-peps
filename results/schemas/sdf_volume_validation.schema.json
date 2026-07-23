@@ -1,0 +1,220 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/iiyyll01lin/yy-peps/results/schemas/sdf_volume_validation.schema.json",
+  "title": "PEPS public SDF volume validation receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schema_version",
+    "checked_at_utc",
+    "paper",
+    "scope",
+    "status",
+    "checksums_verified",
+    "recovery",
+    "stonefish",
+    "volumes"
+  ],
+  "properties": {
+    "schema": {
+      "const": "peps.sdf_volume_validation"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "checked_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "paper": {
+      "const": "PEPS Extended arXiv:2604.24167v1"
+    },
+    "scope": {
+      "const": "public_three_shape_subset"
+    },
+    "status": {
+      "const": "passed"
+    },
+    "checksums_verified": {
+      "const": true
+    },
+    "recovery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "boot_id",
+        "active_related_processes",
+        "partial_files_found",
+        "source_archives_and_meshes",
+        "volumes_and_provenance",
+        "action"
+      ],
+      "properties": {
+        "boot_id": {
+          "type": "string",
+          "pattern": "^[0-9a-f-]{36}$"
+        },
+        "active_related_processes": {
+          "const": 0
+        },
+        "partial_files_found": {
+          "const": 0
+        },
+        "source_archives_and_meshes": {
+          "const": "checksum_verified"
+        },
+        "volumes_and_provenance": {
+          "const": "checksum_and_schema_verified"
+        },
+        "action": {
+          "const": "accepted_existing_complete_outputs_without_rerun"
+        }
+      }
+    },
+    "stonefish": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "asset_id",
+        "checked",
+        "status",
+        "substitution_used"
+      ],
+      "properties": {
+        "asset_id": {
+          "const": "pitted-stonefish"
+        },
+        "checked": {
+          "const": false
+        },
+        "status": {
+          "const": "deferred_auth_required"
+        },
+        "substitution_used": {
+          "const": false
+        }
+      }
+    },
+    "volumes": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "asset_id",
+          "axis_order",
+          "canonical_paper_protocol",
+          "checksum_verified",
+          "distance_units",
+          "dtype",
+          "local_provenance_path",
+          "local_provenance_sha256",
+          "max_neighbor_delta_over_spacing",
+          "maximum",
+          "minimum",
+          "negative_fraction",
+          "preprocessor_known_limit",
+          "query_component_order",
+          "shape",
+          "sign_convention",
+          "status",
+          "tracked_provenance_path",
+          "tracked_provenance_sha256",
+          "volume_bytes",
+          "volume_path",
+          "volume_sha256"
+        ],
+        "properties": {
+          "asset_id": {
+            "enum": [
+              "lucy",
+              "thai-statue",
+              "armadillo"
+            ]
+          },
+          "axis_order": {
+            "const": "zyx"
+          },
+          "canonical_paper_protocol": {
+            "const": true
+          },
+          "checksum_verified": {
+            "const": true
+          },
+          "distance_units": {
+            "const": "normalized [-1,1] coordinate units"
+          },
+          "dtype": {
+            "const": "float32"
+          },
+          "local_provenance_path": {
+            "type": "string"
+          },
+          "local_provenance_sha256": {
+            "$ref": "#/$defs/sha256"
+          },
+          "max_neighbor_delta_over_spacing": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1.5
+          },
+          "maximum": {
+            "type": "number"
+          },
+          "minimum": {
+            "type": "number"
+          },
+          "negative_fraction": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "exclusiveMaximum": 1
+          },
+          "preprocessor_known_limit": {
+            "type": "string",
+            "minLength": 1
+          },
+          "query_component_order": {
+            "const": "xyz"
+          },
+          "shape": {
+            "const": [
+              512,
+              512,
+              512
+            ]
+          },
+          "sign_convention": {
+            "const": "negative_inside"
+          },
+          "status": {
+            "const": "checksum_and_provenance_verified"
+          },
+          "tracked_provenance_path": {
+            "type": "string"
+          },
+          "tracked_provenance_sha256": {
+            "$ref": "#/$defs/sha256"
+          },
+          "volume_bytes": {
+            "const": 536871040
+          },
+          "volume_path": {
+            "type": "string"
+          },
+          "volume_sha256": {
+            "$ref": "#/$defs/sha256"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

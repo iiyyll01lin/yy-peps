@@ -1,0 +1,302 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/iiyyll01lin/yy-peps/results/schemas/sdf_volume_provenance.schema.json",
+  "title": "PEPS canonical 512-cubed SDF provenance",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "asset_id",
+    "paper_name",
+    "canonical_paper_protocol",
+    "started_at_utc",
+    "finished_at_utc",
+    "input",
+    "normalization",
+    "grid",
+    "algorithm",
+    "output",
+    "software",
+    "paper_protocol",
+    "known_limit",
+    "raw_volume_git_ignored",
+    "tracked_provenance_copy"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "asset_id": {
+      "enum": [
+        "lucy",
+        "thai-statue",
+        "armadillo"
+      ]
+    },
+    "paper_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "canonical_paper_protocol": {
+      "const": true
+    },
+    "started_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "finished_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "input": {
+      "type": "object",
+      "required": [
+        "path",
+        "bytes",
+        "checksum",
+        "checksum_source",
+        "mesh"
+      ],
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "checksum": {
+          "$ref": "#/$defs/checksum"
+        },
+        "checksum_source": {
+          "const": "checked-in manifest"
+        },
+        "mesh": {
+          "type": "object",
+          "required": [
+            "vertices",
+            "faces",
+            "topology_check"
+          ]
+        }
+      }
+    },
+    "normalization": {
+      "type": "object",
+      "required": [
+        "method",
+        "original_bounds",
+        "original_extents",
+        "center_subtracted",
+        "isotropic_scale",
+        "normalized_domain",
+        "formula"
+      ],
+      "properties": {
+        "method": {
+          "const": "axis_aligned_bounding_box"
+        },
+        "isotropic_scale": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "normalized_domain": {
+          "const": [
+            -1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    "grid": {
+      "type": "object",
+      "required": [
+        "shape",
+        "axis_order",
+        "query_component_order",
+        "sample_locations",
+        "coordinate_mapping",
+        "distance_units",
+        "dtype",
+        "sign_convention"
+      ],
+      "properties": {
+        "shape": {
+          "const": [
+            512,
+            512,
+            512
+          ]
+        },
+        "axis_order": {
+          "const": "zyx"
+        },
+        "query_component_order": {
+          "const": "xyz"
+        },
+        "dtype": {
+          "const": "float32"
+        },
+        "sign_convention": {
+          "const": "negative_inside"
+        }
+      }
+    },
+    "algorithm": {
+      "type": "object",
+      "required": [
+        "implementation",
+        "resolution",
+        "surface_point_method",
+        "sign_method",
+        "ray_nsamples",
+        "automatic_fallback",
+        "max_query_points"
+      ],
+      "properties": {
+        "implementation": {
+          "const": "Open3D RaycastingScene exact triangle distance"
+        },
+        "resolution": {
+          "const": 512
+        },
+        "surface_point_method": {
+          "const": "open3d"
+        },
+        "sign_method": {
+          "const": "ray_parity"
+        },
+        "ray_nsamples": {
+          "const": 11
+        },
+        "automatic_fallback": {
+          "const": false
+        },
+        "max_query_points": {
+          "type": "integer",
+          "minimum": 262144
+        }
+      }
+    },
+    "output": {
+      "type": "object",
+      "required": [
+        "path",
+        "bytes",
+        "checksum",
+        "minimum",
+        "maximum",
+        "negative_fraction",
+        "positive_fraction",
+        "grid_spacing",
+        "max_neighbor_delta",
+        "max_neighbor_delta_over_spacing",
+        "continuity_limit_over_spacing"
+      ],
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "bytes": {
+          "const": 536871040
+        },
+        "checksum": {
+          "$ref": "#/$defs/checksum"
+        },
+        "negative_fraction": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "exclusiveMaximum": 1
+        },
+        "positive_fraction": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "exclusiveMaximum": 1
+        },
+        "max_neighbor_delta_over_spacing": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1.5
+        },
+        "continuity_limit_over_spacing": {
+          "const": 1.5
+        }
+      }
+    },
+    "software": {
+      "type": "object",
+      "required": [
+        "python",
+        "numpy",
+        "scipy",
+        "trimesh",
+        "mesh-to-sdf",
+        "open3d"
+      ],
+      "properties": {
+        "open3d": {
+          "const": "0.19.0"
+        }
+      }
+    },
+    "paper_protocol": {
+      "type": "object",
+      "required": [
+        "resolution",
+        "axis_order",
+        "surface_point_method",
+        "sign_method",
+        "ray_nsamples",
+        "automatic_fallback"
+      ],
+      "properties": {
+        "resolution": {
+          "const": 512
+        },
+        "axis_order": {
+          "const": "zyx"
+        },
+        "surface_point_method": {
+          "const": "open3d"
+        },
+        "sign_method": {
+          "const": "ray_parity"
+        },
+        "ray_nsamples": {
+          "const": 11
+        },
+        "automatic_fallback": {
+          "const": false
+        }
+      }
+    },
+    "known_limit": {
+      "type": "string",
+      "minLength": 1
+    },
+    "raw_volume_git_ignored": {
+      "const": true
+    },
+    "tracked_provenance_copy": {
+      "const": true
+    }
+  },
+  "$defs": {
+    "checksum": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "algorithm",
+        "value"
+      ],
+      "properties": {
+        "algorithm": {
+          "const": "sha256"
+        },
+        "value": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    }
+  }
+}

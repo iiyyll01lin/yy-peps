@@ -1,12 +1,12 @@
-"""Reproduce the public three-shape PEPS SDF benchmark.
+"""Reproduce the PEPS SDF ``3-of-4 public subset``.
 
 This entry point is deliberately independent from the image/texture runner.
 It implements:
 
 * Table 3's ten MAPE-trained methods on Lucy, Thai Statue, and Armadillo;
 * Table 6's published nine-method L1 subset on those same public shapes;
-* exact streamed 512^3 occupancy IoU and a three-shape-only aggregate;
-* deterministic checkpoint/resume and independent four-GPU job sharding;
+* exact streamed 512^3 occupancy IoU and a public-subset-only aggregate;
+* deterministic checkpoint/resume and independent job sharding;
 * a fixed, explicitly non-paper-exact Armadillo render/FLIP protocol; and
 * a parameter-only ``deferred_auth_required`` receipt for Stonefish/Table 4.
 
@@ -75,6 +75,7 @@ DEFAULT_OUTPUT_ROOT = ROOT / "results" / "sdf_repro"
 
 PUBLIC_ASSETS = ("lucy", "thai-statue", "armadillo")
 STONEFISH_ASSET = "pitted-stonefish"
+PUBLIC_SUBSET_LABEL = "3-of-4 public subset"
 PAPER = "PEPS Extended arXiv:2604.24167v1"
 TABLE3_METHODS = (
     ("PE", "pe"),
@@ -570,12 +571,13 @@ def _validate_config_invariants(config: SDFReproConfig) -> None:
         raise ValueError("paper SDF PEPS methods require three frequencies")
     if int(evaluation["resolution"]) != 512:
         raise ValueError("full SDF evaluation must cover the complete 512^3 volume")
-    if int(sharding["world_size"]) != 4:
-        raise ValueError("full SDF configs must describe four-GPU job sharding")
-
     if config.paper_table in {"Table 3", "Table 6"}:
         if config.status != "runnable":
             raise ValueError("public-shape table configs must be runnable")
+        if int(sharding["world_size"]) != 2:
+            raise ValueError(
+                "the public SDF subset is reserved for two independent workers"
+            )
         if config.assets != PUBLIC_ASSETS:
             raise ValueError("runnable configs must contain only the three public shapes")
         if STONEFISH_ASSET in config.assets:
@@ -596,8 +598,14 @@ def _validate_config_invariants(config: SDFReproConfig) -> None:
             or float(training["encoder_lr"]) != expected_lr
         ):
             raise ValueError(f"{config.paper_table} has the wrong learning rate")
-        if reporting["aggregate_label"] != "three_shape_aggregate":
-            raise ValueError("public tables must use three_shape_aggregate")
+        if config.scope != PUBLIC_SUBSET_LABEL:
+            raise ValueError(
+                f"public SDF results must be labelled {PUBLIC_SUBSET_LABEL!r}"
+            )
+        if reporting["aggregate_label"] != PUBLIC_SUBSET_LABEL:
+            raise ValueError(
+                f"public SDF aggregates must be labelled {PUBLIC_SUBSET_LABEL!r}"
+            )
         for method in config.methods:
             if set(method.paper_iou) != set(PUBLIC_ASSETS):
                 raise ValueError(
@@ -617,6 +625,8 @@ def _validate_config_invariants(config: SDFReproConfig) -> None:
         raise ValueError(f"unsupported full paper table {config.paper_table!r}")
     if config.status != "deferred_auth_required":
         raise ValueError("Table 4 must be deferred_auth_required")
+    if int(sharding["world_size"]) != 4:
+        raise ValueError("deferred Table 4 must retain its four-shard job plan")
     if config.assets != (STONEFISH_ASSET,):
         raise ValueError("Table 4 may name only canonical Pitted Stonefish")
     if method_pairs != TABLE4_METHODS:
@@ -1030,9 +1040,15 @@ def _seed_process(seed: int, device: torch.device) -> None:
         torch.cuda.manual_seed_all(seed)
 
 
+def _synchronize(device: torch.device) -> None:
+    if device.type == "cuda":
+        torch.cuda.synchronize(device)
+
+
 def _checkpoint_payload(
     *,
     job: SDFJob,
+    run_id: str | None,
     step: int,
     model: nn.Module,
     optimizer: torch.optim.Optimizer,
@@ -1043,6 +1059,7 @@ def _checkpoint_payload(
     return {
         "schema": "peps.sdf_repro_checkpoint",
         "schema_version": 1,
+        "run_id": run_id,
         "job": job.identity,
         "step": step,
         "model": model.state_dict(),
@@ -1058,6 +1075,7 @@ def _load_checkpoint(
     path: Path,
     *,
     job: SDFJob,
+    run_id: str | None,
     model: nn.Module,
     optimizer: torch.optim.Optimizer,
     generator: torch.Generator,
@@ -1071,9 +1089,11 @@ def _load_checkpoint(
         raise ValueError(f"{path}: unsupported SDF checkpoint schema")
     if dict(state.get("job", {})) != job.identity:
         raise ValueError(f"{path}: checkpoint belongs to a different SDF job")
+    if state.get("run_id") != run_id:
+        raise ValueError(f"{path}: checkpoint belongs to a different run manifest")
     model.load_state_dict(state["model"])
     optimizer.load_state_dict(state["optimizer"])
-    generator.set_state(state["coordinate_generator"])
+    generator.set_state(state["coordinate_generator"].cpu())
     torch.set_rng_state(state["torch_rng_state"].cpu())
     step = int(state["step"])
     if not 0 <= step <= job.config.total_steps:
@@ -1247,6 +1267,8 @@ def run_sdf_job(
     render_root: Path,
     rank: int,
     world_size: int,
+    run_id: str | None = None,
+    physical_gpu_id: int | None = None,
     stop_after_steps: int | None = None,
     git_state: Mapping[str, object] | None = None,
 ) -> dict[str, object]:
@@ -1264,7 +1286,11 @@ def run_sdf_job(
             "loss": existing.get("training", {}).get("loss"),
             "seed": existing.get("seed"),
         }
-        if existing.get("status") != "complete" or existing_identity != job.identity:
+        if (
+            existing.get("status") != "complete"
+            or existing_identity != job.identity
+            or existing.get("run_id") != run_id
+        ):
             raise ValueError(
                 f"{result_path}: result belongs to a different or incomplete job"
             )
@@ -1284,6 +1310,7 @@ def run_sdf_job(
         start_step, losses, previous_elapsed = _load_checkpoint(
             checkpoint_path,
             job=job,
+            run_id=run_id,
             model=model,
             optimizer=optimizer,
             generator=generator,
@@ -1303,6 +1330,7 @@ def run_sdf_job(
             checkpoint_path,
             _checkpoint_payload(
                 job=job,
+                run_id=run_id,
                 step=step,
                 model=model,
                 optimizer=optimizer,
@@ -1345,9 +1373,12 @@ def run_sdf_job(
         save_checkpoint(completed)
         raise
 
+    _synchronize(device)
+    training_elapsed = previous_elapsed + (time.perf_counter() - started)
     if completed < recipe.total_steps:
         return {
             "status": "checkpointed",
+            "run_id": run_id,
             "job": job.identity,
             "step": completed,
             "total_steps": recipe.total_steps,
@@ -1357,6 +1388,7 @@ def run_sdf_job(
     render_protocol = None
     if bool(job.config.render["enabled"]) and job.asset == job.config.render["asset"]:
         render_protocol = OrthographicRenderProtocol.from_mapping(job.config.render)
+    evaluation_started = time.perf_counter()
     metrics, images = evaluate_sdf_chunked(
         model,
         loaded.values,
@@ -1365,7 +1397,10 @@ def run_sdf_job(
         mape_epsilon=recipe.mape_epsilon,
         render_protocol=render_protocol,
     )
+    _synchronize(device)
+    inference_elapsed = time.perf_counter() - evaluation_started
     render_record = None
+    render_started = time.perf_counter()
     if images is not None:
         assert render_protocol is not None
         render_record = _write_render_artifacts(
@@ -1375,12 +1410,14 @@ def run_sdf_job(
             render_root=render_root,
         )
         metrics["flip"] = float(render_record["flip_mean"])
+    render_elapsed = time.perf_counter() - render_started
 
-    total_elapsed = previous_elapsed + (time.perf_counter() - started)
+    total_elapsed = training_elapsed + inference_elapsed + render_elapsed
     record = {
         "schema": "peps.sdf_repro_job",
         "schema_version": 1,
         "status": "complete",
+        "run_id": run_id,
         "paper": PAPER,
         "paper_table": job.config.paper_table,
         "artifact": job.config.artifact,
@@ -1401,6 +1438,7 @@ def run_sdf_job(
             "rank": rank,
             "world_size": world_size,
             "same_model_distributed": False,
+            "physical_gpu_id": physical_gpu_id,
         },
         "parameters": counts,
         "compression": {
@@ -1425,15 +1463,26 @@ def run_sdf_job(
             "resumed_from_step": start_step,
             "coordinate_stream": "CPU torch.Generator, paired by seed",
             "eikonal": False,
-            "elapsed_seconds": total_elapsed,
+            "elapsed_seconds": training_elapsed,
             "loss_log": losses,
         },
         "evaluation": {
             **_plain(job.config.evaluation),
             "metrics": metrics,
             "chunked_full_volume": True,
+            "full_coordinate_grid_materialized": False,
+            "maximum_query_buffer_points": int(
+                job.config.evaluation["chunk_size"]
+            ),
+            "elapsed_seconds": inference_elapsed,
         },
         "render": render_record,
+        "runtime": {
+            "training_seconds": training_elapsed,
+            "streamed_evaluation_seconds": inference_elapsed,
+            "render_and_flip_seconds": render_elapsed,
+            "total_gpu_occupied_seconds": total_elapsed,
+        },
         "volume": _plain(loaded.metadata),
         "metric_versions": metric_versions(),
         "checkpoint": str(checkpoint_path),
@@ -1442,6 +1491,9 @@ def run_sdf_job(
             "torch_version": torch.__version__,
             "rocm_version": torch.version.hip,
             "device": str(device),
+            "physical_gpu_id": physical_gpu_id,
+            "hip_visible_devices": os.environ.get("HIP_VISIBLE_DEVICES"),
+            "rocr_visible_devices": os.environ.get("ROCR_VISIBLE_DEVICES"),
         },
         "completed_at_utc": _utc_now(),
     }
@@ -1463,6 +1515,8 @@ def run_shard(
     instances: Sequence[str] | None = None,
     methods: Sequence[str] | None = None,
     allow_full_cpu: bool = False,
+    run_id: str | None = None,
+    physical_gpu_id: int | None = None,
 ) -> dict[str, object]:
     """Run one modulo shard while retaining at most one volume on the device."""
 
@@ -1537,6 +1591,8 @@ def run_shard(
                 render_root=render_root,
                 rank=rank,
                 world_size=world_size,
+                run_id=run_id,
+                physical_gpu_id=physical_gpu_id,
                 stop_after_steps=stop_after_steps,
                 git_state=git_state,
             )
@@ -1544,8 +1600,10 @@ def run_shard(
     summary = {
         "schema": "peps.sdf_repro_shard",
         "schema_version": 1,
+        "run_id": run_id,
         "rank": rank,
         "world_size": world_size,
+        "physical_gpu_id": physical_gpu_id,
         "parallelism_mode": "independent_job_modulo",
         "selected_jobs": len(selected),
         "complete_jobs": sum(record.get("status") == "complete" for record in records),
@@ -1657,7 +1715,7 @@ def aggregate_config(
                     "schema_version": 1,
                     "artifact": config.artifact,
                     "paper_table": config.paper_table,
-                    "scope": "three_shape_subset",
+                    "scope": config.scope,
                     "training_loss": config.training["loss"],
                     "shape": asset,
                     "method": method.name,
@@ -1706,8 +1764,8 @@ def aggregate_config(
             }
         )
     if config.profile == "full":
-        if any(row["scope"] != "three_shape_aggregate" for row in aggregate_rows):
-            raise AssertionError("full aggregate lost its three-shape label")
+        if any(row["scope"] != PUBLIC_SUBSET_LABEL for row in aggregate_rows):
+            raise AssertionError("full aggregate lost its public-subset label")
         if any(int(row["shape_count"]) != 3 for row in aggregate_rows):
             raise AssertionError("full aggregate is not based on exactly three shapes")
 
@@ -1740,7 +1798,7 @@ def aggregate_config(
         "paper": PAPER,
         "paper_table": config.paper_table,
         "artifact": config.artifact,
-        "scope": "three_shape_subset",
+        "scope": config.scope,
         "aggregate_label": config.reporting["aggregate_label"],
         "canonical_four_shape": False,
         "paper_global_comparable": False,
@@ -1855,7 +1913,10 @@ def estimate_cost(configs: Sequence[SDFReproConfig]) -> dict[str, object]:
     evaluated_queries = sum(
         int(job.config.evaluation["resolution"]) ** 3 for job in jobs
     )
-    world_size = 4 if any(config.profile == "full" for config in runnable) else 1
+    world_sizes = {int(config.sharding["world_size"]) for config in runnable}
+    if len(world_sizes) > 1:
+        raise ValueError("runnable SDF configs disagree on sharding world size")
+    world_size = next(iter(world_sizes), 1)
     shard_counts = [
         len(shard_sdf_jobs(jobs, rank=rank, world_size=world_size))
         for rank in range(world_size)
@@ -1930,6 +1991,8 @@ def _parser() -> argparse.ArgumentParser:
     run.add_argument("--rank", type=int, default=0)
     run.add_argument("--world-size", type=int, default=1)
     run.add_argument("--device", default="auto")
+    run.add_argument("--run-id")
+    run.add_argument("--physical-gpu-id", type=int)
     run.add_argument("--work-root", type=Path, default=DEFAULT_WORK_ROOT)
     run.add_argument(
         "--render-root",
@@ -2022,6 +2085,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             instances=arguments.instance,
             methods=arguments.method,
             allow_full_cpu=arguments.allow_full_cpu,
+            run_id=arguments.run_id,
+            physical_gpu_id=arguments.physical_gpu_id,
         )
         print(json.dumps(_plain(payload), indent=2, sort_keys=True))
         return 0

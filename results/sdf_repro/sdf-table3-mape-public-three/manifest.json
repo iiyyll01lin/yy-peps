@@ -1,0 +1,436 @@
+{
+  "aggregate_label": "3-of-4 public subset",
+  "artifact": "sdf-table3-mape-public-three",
+  "assets": [
+    "lucy",
+    "thai-statue",
+    "armadillo"
+  ],
+  "canonical_four_shape": false,
+  "completed_at_utc": "2026-07-22T20:49:22.668616+00:00",
+  "config": {
+    "sha256": "c6333d00d075979e1cf8a31e001ea1d7ea33310f32a3f14dc0f66bd19bac9cbd",
+    "source": "configs/paper/sdf/table3_mape.toml"
+  },
+  "methods": [
+    "PE",
+    "LPE",
+    "TI-Grid",
+    "Grid-PEPS",
+    "Hash",
+    "Hash-PEPS",
+    "M-Grid",
+    "M-PEPS",
+    "M-Hash",
+    "M-HashPEPS"
+  ],
+  "outputs": {
+    "per_shape": "/home/aup/yy/workspace/peps/results/sdf_repro/sdf-table3-mape-public-three/per_shape.csv",
+    "three_shape_aggregate": "/home/aup/yy/workspace/peps/results/sdf_repro/sdf-table3-mape-public-three/three_shape_aggregate.csv"
+  },
+  "paper": "PEPS Extended arXiv:2604.24167v1",
+  "paper_global_comparable": false,
+  "paper_table": "Table 3",
+  "records": [
+    {
+      "job": {
+        "artifact": "sdf-table3-mape-public-three",
+        "asset": "lucy",
+        "config_sha256": "c6333d00d075979e1cf8a31e001ea1d7ea33310f32a3f14dc0f66bd19bac9cbd",
+        "loss": "mape",
+        "method": "PE",
+        "method_key": "pe",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table3-mape-public-three/c6333d00d075979e/raw/lucy/PE/seed-0.json",
+      "sha256": "5cb4a66e5175f06bffa5328637cf9459f7ce4fab185d8016938af1830a000e67"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table3-mape-public-three",
+        "asset": "lucy",
+        "config_sha256": "c6333d00d075979e1cf8a31e001ea1d7ea33310f32a3f14dc0f66bd19bac9cbd",
+        "loss": "mape",
+        "method": "LPE",
+        "method_key": "lpe",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table3-mape-public-three/c6333d00d075979e/raw/lucy/LPE/seed-0.json",
+      "sha256": "0c78a2e792e8d231894974a2119396d99c96f82db94b17bd1a63def5410bfc32"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table3-mape-public-three",
+        "asset": "lucy",
+        "config_sha256": "c6333d00d075979e1cf8a31e001ea1d7ea33310f32a3f14dc0f66bd19bac9cbd",
+        "loss": "mape",
+        "method": "TI-Grid",
+        "method_key": "grid",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table3-mape-public-three/c6333d00d075979e/raw/lucy/TI-Grid/seed-0.json",
+      "sha256": "c561e4a0e4495597f304bc95474f8f068c679ad3eae4da5c9a3596d411529e92"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table3-mape-public-three",
+        "asset": "lucy",
+        "config_sha256": "c6333d00d075979e1cf8a31e001ea1d7ea33310f32a3f14dc0f66bd19bac9cbd",
+        "loss": "mape",
+        "method": "Grid-PEPS",
+        "method_key": "grid_peps",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table3-mape-public-three/c6333d00d075979e/raw/lucy/Grid-PEPS/seed-0.json",
+      "sha256": "a04e47e5609668ead9dc7e41516d14293f08625c54333f4bf1685164f229fc4f"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table3-mape-public-three",
+        "asset": "lucy",
+        "config_sha256": "c6333d00d075979e1cf8a31e001ea1d7ea33310f32a3f14dc0f66bd19bac9cbd",
+        "loss": "mape",
+        "method": "Hash",
+        "method_key": "hash",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table3-mape-public-three/c6333d00d075979e/raw/lucy/Hash/seed-0.json",
+      "sha256": "30860f9e8b642266ea60c68c104488d6c4a8d5d50f48c0750f893a36d6e32604"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table3-mape-public-three",
+        "asset": "lucy",
+        "config_sha256": "c6333d00d075979e1cf8a31e001ea1d7ea33310f32a3f14dc0f66bd19bac9cbd",
+        "loss": "mape",
+        "method": "Hash-PEPS",
+        "method_key": "hash_peps",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table3-mape-public-three/c6333d00d075979e/raw/lucy/Hash-PEPS/seed-0.json",
+      "sha256": "0a71a95a509130bcd87b0a8b97b3a21ef70622058c98c422941ab4dc5d91c34e"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table3-mape-public-three",
+        "asset": "lucy",
+        "config_sha256": "c6333d00d075979e1cf8a31e001ea1d7ea33310f32a3f14dc0f66bd19bac9cbd",
+        "loss": "mape",
+        "method": "M-Grid",
+        "method_key": "m_grid",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table3-mape-public-three/c6333d00d075979e/raw/lucy/M-Grid/seed-0.json",
+      "sha256": "8b683f10fdd9c8498b54c6b1f206b2447b6150a6b0115739f456f415f79bd2e6"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table3-mape-public-three",
+        "asset": "lucy",
+        "config_sha256": "c6333d00d075979e1cf8a31e001ea1d7ea33310f32a3f14dc0f66bd19bac9cbd",
+        "loss": "mape",
+        "method": "M-PEPS",
+        "method_key": "m_peps",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table3-mape-public-three/c6333d00d075979e/raw/lucy/M-PEPS/seed-0.json",
+      "sha256": "41c85c1e5844f533ad52efbfffb30145291c514d0dca02e9d89c19bb5c068a2f"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table3-mape-public-three",
+        "asset": "lucy",
+        "config_sha256": "c6333d00d075979e1cf8a31e001ea1d7ea33310f32a3f14dc0f66bd19bac9cbd",
+        "loss": "mape",
+        "method": "M-Hash",
+        "method_key": "m_hash",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table3-mape-public-three/c6333d00d075979e/raw/lucy/M-Hash/seed-0.json",
+      "sha256": "c2a1b494bfe177028f2237c1bdaf8298d8d77acd43820c899eea17ffc7bf8f2b"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table3-mape-public-three",
+        "asset": "lucy",
+        "config_sha256": "c6333d00d075979e1cf8a31e001ea1d7ea33310f32a3f14dc0f66bd19bac9cbd",
+        "loss": "mape",
+        "method": "M-HashPEPS",
+        "method_key": "m_hashpeps",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table3-mape-public-three/c6333d00d075979e/raw/lucy/M-HashPEPS/seed-0.json",
+      "sha256": "5583f6c4783da701e7216d76acd2b0685c4f7d65228b5404fed758fe71dbc843"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table3-mape-public-three",
+        "asset": "thai-statue",
+        "config_sha256": "c6333d00d075979e1cf8a31e001ea1d7ea33310f32a3f14dc0f66bd19bac9cbd",
+        "loss": "mape",
+        "method": "PE",
+        "method_key": "pe",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table3-mape-public-three/c6333d00d075979e/raw/thai-statue/PE/seed-0.json",
+      "sha256": "b29c2c43802e384c28916a92043a164ee9111a6b358fce664d3b36c4943bf294"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table3-mape-public-three",
+        "asset": "thai-statue",
+        "config_sha256": "c6333d00d075979e1cf8a31e001ea1d7ea33310f32a3f14dc0f66bd19bac9cbd",
+        "loss": "mape",
+        "method": "LPE",
+        "method_key": "lpe",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table3-mape-public-three/c6333d00d075979e/raw/thai-statue/LPE/seed-0.json",
+      "sha256": "15e80787e520ec7e5bd2a47e79ca984d57adfe65b306f4fd496f4dfd2335f15f"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table3-mape-public-three",
+        "asset": "thai-statue",
+        "config_sha256": "c6333d00d075979e1cf8a31e001ea1d7ea33310f32a3f14dc0f66bd19bac9cbd",
+        "loss": "mape",
+        "method": "TI-Grid",
+        "method_key": "grid",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table3-mape-public-three/c6333d00d075979e/raw/thai-statue/TI-Grid/seed-0.json",
+      "sha256": "e98f761b782fab9816daf367818fe9732f94a0706eea6534bb925e86f6e29545"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table3-mape-public-three",
+        "asset": "thai-statue",
+        "config_sha256": "c6333d00d075979e1cf8a31e001ea1d7ea33310f32a3f14dc0f66bd19bac9cbd",
+        "loss": "mape",
+        "method": "Grid-PEPS",
+        "method_key": "grid_peps",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table3-mape-public-three/c6333d00d075979e/raw/thai-statue/Grid-PEPS/seed-0.json",
+      "sha256": "c506b1919208edab59eaf5cdb4409b44e85a7782ceafd05fec2bc81ef138c1b3"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table3-mape-public-three",
+        "asset": "thai-statue",
+        "config_sha256": "c6333d00d075979e1cf8a31e001ea1d7ea33310f32a3f14dc0f66bd19bac9cbd",
+        "loss": "mape",
+        "method": "Hash",
+        "method_key": "hash",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table3-mape-public-three/c6333d00d075979e/raw/thai-statue/Hash/seed-0.json",
+      "sha256": "223ac85f2796440242f0177d59f0f156ffff4422949ee4572b1077255be5d460"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table3-mape-public-three",
+        "asset": "thai-statue",
+        "config_sha256": "c6333d00d075979e1cf8a31e001ea1d7ea33310f32a3f14dc0f66bd19bac9cbd",
+        "loss": "mape",
+        "method": "Hash-PEPS",
+        "method_key": "hash_peps",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table3-mape-public-three/c6333d00d075979e/raw/thai-statue/Hash-PEPS/seed-0.json",
+      "sha256": "68828a67de0d597769c0a65fba625100eaac068b99023a7c08d9ac2d9473ca03"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table3-mape-public-three",
+        "asset": "thai-statue",
+        "config_sha256": "c6333d00d075979e1cf8a31e001ea1d7ea33310f32a3f14dc0f66bd19bac9cbd",
+        "loss": "mape",
+        "method": "M-Grid",
+        "method_key": "m_grid",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table3-mape-public-three/c6333d00d075979e/raw/thai-statue/M-Grid/seed-0.json",
+      "sha256": "af6a06fd4845b416a76dc4eba871c4a8cc607b67fc586be81f7d47182be01005"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table3-mape-public-three",
+        "asset": "thai-statue",
+        "config_sha256": "c6333d00d075979e1cf8a31e001ea1d7ea33310f32a3f14dc0f66bd19bac9cbd",
+        "loss": "mape",
+        "method": "M-PEPS",
+        "method_key": "m_peps",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table3-mape-public-three/c6333d00d075979e/raw/thai-statue/M-PEPS/seed-0.json",
+      "sha256": "1a67181e475f4ea0dc60d5d138bb789fc168d83d79bef9f21bddcc854513fd71"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table3-mape-public-three",
+        "asset": "thai-statue",
+        "config_sha256": "c6333d00d075979e1cf8a31e001ea1d7ea33310f32a3f14dc0f66bd19bac9cbd",
+        "loss": "mape",
+        "method": "M-Hash",
+        "method_key": "m_hash",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table3-mape-public-three/c6333d00d075979e/raw/thai-statue/M-Hash/seed-0.json",
+      "sha256": "2a7b8dd99c061e7864dcb45dd24a632332ea0c2dfb4c07a67c73d485b580b4ec"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table3-mape-public-three",
+        "asset": "thai-statue",
+        "config_sha256": "c6333d00d075979e1cf8a31e001ea1d7ea33310f32a3f14dc0f66bd19bac9cbd",
+        "loss": "mape",
+        "method": "M-HashPEPS",
+        "method_key": "m_hashpeps",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table3-mape-public-three/c6333d00d075979e/raw/thai-statue/M-HashPEPS/seed-0.json",
+      "sha256": "7ba05be03ec6861f918d378d71221bd5b90ca00703560f59fd57b659a5ab9126"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table3-mape-public-three",
+        "asset": "armadillo",
+        "config_sha256": "c6333d00d075979e1cf8a31e001ea1d7ea33310f32a3f14dc0f66bd19bac9cbd",
+        "loss": "mape",
+        "method": "PE",
+        "method_key": "pe",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table3-mape-public-three/c6333d00d075979e/raw/armadillo/PE/seed-0.json",
+      "sha256": "9721f7d548a94bcd3f48f900db8fe2c139024a3e60b5da23f9eb100555b80427"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table3-mape-public-three",
+        "asset": "armadillo",
+        "config_sha256": "c6333d00d075979e1cf8a31e001ea1d7ea33310f32a3f14dc0f66bd19bac9cbd",
+        "loss": "mape",
+        "method": "LPE",
+        "method_key": "lpe",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table3-mape-public-three/c6333d00d075979e/raw/armadillo/LPE/seed-0.json",
+      "sha256": "00bb964dc531eb963f858e2a341f35a2e9e6667ff1b32ef20e3e8d67ff5ef221"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table3-mape-public-three",
+        "asset": "armadillo",
+        "config_sha256": "c6333d00d075979e1cf8a31e001ea1d7ea33310f32a3f14dc0f66bd19bac9cbd",
+        "loss": "mape",
+        "method": "TI-Grid",
+        "method_key": "grid",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table3-mape-public-three/c6333d00d075979e/raw/armadillo/TI-Grid/seed-0.json",
+      "sha256": "4d0b40ed48f384ae30c8821598046c4e5fa5b5a2d6fb3c604fef951dc55ae656"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table3-mape-public-three",
+        "asset": "armadillo",
+        "config_sha256": "c6333d00d075979e1cf8a31e001ea1d7ea33310f32a3f14dc0f66bd19bac9cbd",
+        "loss": "mape",
+        "method": "Grid-PEPS",
+        "method_key": "grid_peps",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table3-mape-public-three/c6333d00d075979e/raw/armadillo/Grid-PEPS/seed-0.json",
+      "sha256": "57bab8fd1b51a4ad786225f39ae2f8c9f78549c7a6bffbfa5da811b8640f87f9"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table3-mape-public-three",
+        "asset": "armadillo",
+        "config_sha256": "c6333d00d075979e1cf8a31e001ea1d7ea33310f32a3f14dc0f66bd19bac9cbd",
+        "loss": "mape",
+        "method": "Hash",
+        "method_key": "hash",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table3-mape-public-three/c6333d00d075979e/raw/armadillo/Hash/seed-0.json",
+      "sha256": "0941ade750a5a64684d649308beece785bf47b6ed31ccaec298c1c2265fe83f6"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table3-mape-public-three",
+        "asset": "armadillo",
+        "config_sha256": "c6333d00d075979e1cf8a31e001ea1d7ea33310f32a3f14dc0f66bd19bac9cbd",
+        "loss": "mape",
+        "method": "Hash-PEPS",
+        "method_key": "hash_peps",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table3-mape-public-three/c6333d00d075979e/raw/armadillo/Hash-PEPS/seed-0.json",
+      "sha256": "a12b05a3fa7b5268381916345356d113fde49698f43c932c5d55bac1c6cba53e"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table3-mape-public-three",
+        "asset": "armadillo",
+        "config_sha256": "c6333d00d075979e1cf8a31e001ea1d7ea33310f32a3f14dc0f66bd19bac9cbd",
+        "loss": "mape",
+        "method": "M-Grid",
+        "method_key": "m_grid",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table3-mape-public-three/c6333d00d075979e/raw/armadillo/M-Grid/seed-0.json",
+      "sha256": "a377defff92fa0d14177c6349cbdc5953e97932fcf9bcf31928312a5a3931f8a"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table3-mape-public-three",
+        "asset": "armadillo",
+        "config_sha256": "c6333d00d075979e1cf8a31e001ea1d7ea33310f32a3f14dc0f66bd19bac9cbd",
+        "loss": "mape",
+        "method": "M-PEPS",
+        "method_key": "m_peps",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table3-mape-public-three/c6333d00d075979e/raw/armadillo/M-PEPS/seed-0.json",
+      "sha256": "5f8845385fc6f39e8fbb0906232ab714101d0b7f1713a6a030687747fe32000e"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table3-mape-public-three",
+        "asset": "armadillo",
+        "config_sha256": "c6333d00d075979e1cf8a31e001ea1d7ea33310f32a3f14dc0f66bd19bac9cbd",
+        "loss": "mape",
+        "method": "M-Hash",
+        "method_key": "m_hash",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table3-mape-public-three/c6333d00d075979e/raw/armadillo/M-Hash/seed-0.json",
+      "sha256": "5096066858d300ed9c3875198421c8262d11c543fdba9545e37e136b019ee752"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table3-mape-public-three",
+        "asset": "armadillo",
+        "config_sha256": "c6333d00d075979e1cf8a31e001ea1d7ea33310f32a3f14dc0f66bd19bac9cbd",
+        "loss": "mape",
+        "method": "M-HashPEPS",
+        "method_key": "m_hashpeps",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table3-mape-public-three/c6333d00d075979e/raw/armadillo/M-HashPEPS/seed-0.json",
+      "sha256": "7978ad191bda63ed7c899f1605b51d2958384b0b00288d883dfc3e7cf6ceda19"
+    }
+  ],
+  "schema": "peps.sdf_repro_aggregate",
+  "schema_version": 1,
+  "scope": "3-of-4 public subset",
+  "status": "complete",
+  "stonefish": {
+    "asset_id": "pitted-stonefish",
+    "status": "deferred_auth_required",
+    "substitution_used": false
+  },
+  "training_loss": "mape"
+}

@@ -1,0 +1,396 @@
+{
+  "aggregate_label": "3-of-4 public subset",
+  "artifact": "sdf-table6-l1-public-three",
+  "assets": [
+    "lucy",
+    "thai-statue",
+    "armadillo"
+  ],
+  "canonical_four_shape": false,
+  "completed_at_utc": "2026-07-22T20:49:22.687230+00:00",
+  "config": {
+    "sha256": "4b03d74f0470cf4c74eae29fc93887143431aba5ffda6b60c20b7c9f05d559f6",
+    "source": "configs/paper/sdf/table6_l1.toml"
+  },
+  "methods": [
+    "TI-Grid",
+    "Hash",
+    "LPE",
+    "Grid-PEPS",
+    "PE",
+    "M-PEPS",
+    "M-Grid",
+    "M-Hash",
+    "M-HashPEPS"
+  ],
+  "outputs": {
+    "per_shape": "/home/aup/yy/workspace/peps/results/sdf_repro/sdf-table6-l1-public-three/per_shape.csv",
+    "three_shape_aggregate": "/home/aup/yy/workspace/peps/results/sdf_repro/sdf-table6-l1-public-three/three_shape_aggregate.csv"
+  },
+  "paper": "PEPS Extended arXiv:2604.24167v1",
+  "paper_global_comparable": false,
+  "paper_table": "Table 6",
+  "records": [
+    {
+      "job": {
+        "artifact": "sdf-table6-l1-public-three",
+        "asset": "lucy",
+        "config_sha256": "4b03d74f0470cf4c74eae29fc93887143431aba5ffda6b60c20b7c9f05d559f6",
+        "loss": "l1",
+        "method": "TI-Grid",
+        "method_key": "grid",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table6-l1-public-three/4b03d74f0470cf4c/raw/lucy/TI-Grid/seed-0.json",
+      "sha256": "c3fc8be918f3b555685be78cf3893a9a34e20240c67417aee256b89d47b63226"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table6-l1-public-three",
+        "asset": "lucy",
+        "config_sha256": "4b03d74f0470cf4c74eae29fc93887143431aba5ffda6b60c20b7c9f05d559f6",
+        "loss": "l1",
+        "method": "Hash",
+        "method_key": "hash",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table6-l1-public-three/4b03d74f0470cf4c/raw/lucy/Hash/seed-0.json",
+      "sha256": "7467778e9eb9bbf25944199c2cc9e154c5712247e1e41b411dfc0acc1b479610"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table6-l1-public-three",
+        "asset": "lucy",
+        "config_sha256": "4b03d74f0470cf4c74eae29fc93887143431aba5ffda6b60c20b7c9f05d559f6",
+        "loss": "l1",
+        "method": "LPE",
+        "method_key": "lpe",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table6-l1-public-three/4b03d74f0470cf4c/raw/lucy/LPE/seed-0.json",
+      "sha256": "55c259fc0126d627a137fddbc1a31a5abfd3635dd5f6135c724e0235cb363ebe"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table6-l1-public-three",
+        "asset": "lucy",
+        "config_sha256": "4b03d74f0470cf4c74eae29fc93887143431aba5ffda6b60c20b7c9f05d559f6",
+        "loss": "l1",
+        "method": "Grid-PEPS",
+        "method_key": "grid_peps",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table6-l1-public-three/4b03d74f0470cf4c/raw/lucy/Grid-PEPS/seed-0.json",
+      "sha256": "00f515a748f75584c04d401ce6216db49f19042949c13cebb3493854b144d4e3"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table6-l1-public-three",
+        "asset": "lucy",
+        "config_sha256": "4b03d74f0470cf4c74eae29fc93887143431aba5ffda6b60c20b7c9f05d559f6",
+        "loss": "l1",
+        "method": "PE",
+        "method_key": "pe",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table6-l1-public-three/4b03d74f0470cf4c/raw/lucy/PE/seed-0.json",
+      "sha256": "deade3456209b5902b7ba89c19b998db7a6fc6dcb857a380a6f25543df96de79"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table6-l1-public-three",
+        "asset": "lucy",
+        "config_sha256": "4b03d74f0470cf4c74eae29fc93887143431aba5ffda6b60c20b7c9f05d559f6",
+        "loss": "l1",
+        "method": "M-PEPS",
+        "method_key": "m_peps",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table6-l1-public-three/4b03d74f0470cf4c/raw/lucy/M-PEPS/seed-0.json",
+      "sha256": "1d1fdb6f79aeffb86852ebeb126c17f199135ee40c5ab845e15b3b3cc91dbe9d"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table6-l1-public-three",
+        "asset": "lucy",
+        "config_sha256": "4b03d74f0470cf4c74eae29fc93887143431aba5ffda6b60c20b7c9f05d559f6",
+        "loss": "l1",
+        "method": "M-Grid",
+        "method_key": "m_grid",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table6-l1-public-three/4b03d74f0470cf4c/raw/lucy/M-Grid/seed-0.json",
+      "sha256": "18d111a39f8e4b95e221f3d68d12ac1e63612e0876ff4dbd1844037d59f6ebc6"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table6-l1-public-three",
+        "asset": "lucy",
+        "config_sha256": "4b03d74f0470cf4c74eae29fc93887143431aba5ffda6b60c20b7c9f05d559f6",
+        "loss": "l1",
+        "method": "M-Hash",
+        "method_key": "m_hash",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table6-l1-public-three/4b03d74f0470cf4c/raw/lucy/M-Hash/seed-0.json",
+      "sha256": "128da39393821e51c3bf5a317399c52462d18ca69e2530c359dbc1adfbbc1f65"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table6-l1-public-three",
+        "asset": "lucy",
+        "config_sha256": "4b03d74f0470cf4c74eae29fc93887143431aba5ffda6b60c20b7c9f05d559f6",
+        "loss": "l1",
+        "method": "M-HashPEPS",
+        "method_key": "m_hashpeps",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table6-l1-public-three/4b03d74f0470cf4c/raw/lucy/M-HashPEPS/seed-0.json",
+      "sha256": "89b023115e61064dce7ccb332bb155ee769a355cb91ada8eabe382ff7a135c14"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table6-l1-public-three",
+        "asset": "thai-statue",
+        "config_sha256": "4b03d74f0470cf4c74eae29fc93887143431aba5ffda6b60c20b7c9f05d559f6",
+        "loss": "l1",
+        "method": "TI-Grid",
+        "method_key": "grid",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table6-l1-public-three/4b03d74f0470cf4c/raw/thai-statue/TI-Grid/seed-0.json",
+      "sha256": "25b7a30e249aea2bba712fe69c16f42c702a4df1ab29999f2d719db71c35cd1a"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table6-l1-public-three",
+        "asset": "thai-statue",
+        "config_sha256": "4b03d74f0470cf4c74eae29fc93887143431aba5ffda6b60c20b7c9f05d559f6",
+        "loss": "l1",
+        "method": "Hash",
+        "method_key": "hash",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table6-l1-public-three/4b03d74f0470cf4c/raw/thai-statue/Hash/seed-0.json",
+      "sha256": "644f5feb4ef38642d5ea8e9868f175d06b1b687c1c4b7d2055c39a3dbc0d67ed"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table6-l1-public-three",
+        "asset": "thai-statue",
+        "config_sha256": "4b03d74f0470cf4c74eae29fc93887143431aba5ffda6b60c20b7c9f05d559f6",
+        "loss": "l1",
+        "method": "LPE",
+        "method_key": "lpe",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table6-l1-public-three/4b03d74f0470cf4c/raw/thai-statue/LPE/seed-0.json",
+      "sha256": "0e1ddc90645d8b44bd02f26794e8e371a10169a71e75efdc45b7bad23f7dc18c"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table6-l1-public-three",
+        "asset": "thai-statue",
+        "config_sha256": "4b03d74f0470cf4c74eae29fc93887143431aba5ffda6b60c20b7c9f05d559f6",
+        "loss": "l1",
+        "method": "Grid-PEPS",
+        "method_key": "grid_peps",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table6-l1-public-three/4b03d74f0470cf4c/raw/thai-statue/Grid-PEPS/seed-0.json",
+      "sha256": "7233c539deb24c713dc18ec9a19c091f5aa0a02ca5eccbfbf0251a552830bd96"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table6-l1-public-three",
+        "asset": "thai-statue",
+        "config_sha256": "4b03d74f0470cf4c74eae29fc93887143431aba5ffda6b60c20b7c9f05d559f6",
+        "loss": "l1",
+        "method": "PE",
+        "method_key": "pe",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table6-l1-public-three/4b03d74f0470cf4c/raw/thai-statue/PE/seed-0.json",
+      "sha256": "b854d6267ae8cd8f47bcce86bf1aa206858ace5daabbf4d1628d168a62be5b15"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table6-l1-public-three",
+        "asset": "thai-statue",
+        "config_sha256": "4b03d74f0470cf4c74eae29fc93887143431aba5ffda6b60c20b7c9f05d559f6",
+        "loss": "l1",
+        "method": "M-PEPS",
+        "method_key": "m_peps",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table6-l1-public-three/4b03d74f0470cf4c/raw/thai-statue/M-PEPS/seed-0.json",
+      "sha256": "4ea469e941d225ca09e741611dd3902e8d2de6100638c420e9fbd763ecd63ebd"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table6-l1-public-three",
+        "asset": "thai-statue",
+        "config_sha256": "4b03d74f0470cf4c74eae29fc93887143431aba5ffda6b60c20b7c9f05d559f6",
+        "loss": "l1",
+        "method": "M-Grid",
+        "method_key": "m_grid",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table6-l1-public-three/4b03d74f0470cf4c/raw/thai-statue/M-Grid/seed-0.json",
+      "sha256": "bd610faa9cf502695446392bf896e4366f0a0e7b6921bb01cf619e2a2e7d2353"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table6-l1-public-three",
+        "asset": "thai-statue",
+        "config_sha256": "4b03d74f0470cf4c74eae29fc93887143431aba5ffda6b60c20b7c9f05d559f6",
+        "loss": "l1",
+        "method": "M-Hash",
+        "method_key": "m_hash",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table6-l1-public-three/4b03d74f0470cf4c/raw/thai-statue/M-Hash/seed-0.json",
+      "sha256": "7942f7c6fa7f02fc61b203967bd66d0f055d322e5aad12cbf975e3664d5e0f90"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table6-l1-public-three",
+        "asset": "thai-statue",
+        "config_sha256": "4b03d74f0470cf4c74eae29fc93887143431aba5ffda6b60c20b7c9f05d559f6",
+        "loss": "l1",
+        "method": "M-HashPEPS",
+        "method_key": "m_hashpeps",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table6-l1-public-three/4b03d74f0470cf4c/raw/thai-statue/M-HashPEPS/seed-0.json",
+      "sha256": "cc6ed3fdd5fdaf57878f7a3d991d693b306ef5243493d8743f8a97301415ec8a"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table6-l1-public-three",
+        "asset": "armadillo",
+        "config_sha256": "4b03d74f0470cf4c74eae29fc93887143431aba5ffda6b60c20b7c9f05d559f6",
+        "loss": "l1",
+        "method": "TI-Grid",
+        "method_key": "grid",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table6-l1-public-three/4b03d74f0470cf4c/raw/armadillo/TI-Grid/seed-0.json",
+      "sha256": "ef4926cad252b20a73b316c1516c74c992ddf365789d7c70c0e0385e46bec425"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table6-l1-public-three",
+        "asset": "armadillo",
+        "config_sha256": "4b03d74f0470cf4c74eae29fc93887143431aba5ffda6b60c20b7c9f05d559f6",
+        "loss": "l1",
+        "method": "Hash",
+        "method_key": "hash",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table6-l1-public-three/4b03d74f0470cf4c/raw/armadillo/Hash/seed-0.json",
+      "sha256": "968fadc76686b5e8474ebe023b58a5f259ab80284d49b508796bff64427af9ea"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table6-l1-public-three",
+        "asset": "armadillo",
+        "config_sha256": "4b03d74f0470cf4c74eae29fc93887143431aba5ffda6b60c20b7c9f05d559f6",
+        "loss": "l1",
+        "method": "LPE",
+        "method_key": "lpe",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table6-l1-public-three/4b03d74f0470cf4c/raw/armadillo/LPE/seed-0.json",
+      "sha256": "9e02fb47b67dfaa35374a5b7774e6b5998af7ed8f44f3ee90aaefefe760aa0f4"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table6-l1-public-three",
+        "asset": "armadillo",
+        "config_sha256": "4b03d74f0470cf4c74eae29fc93887143431aba5ffda6b60c20b7c9f05d559f6",
+        "loss": "l1",
+        "method": "Grid-PEPS",
+        "method_key": "grid_peps",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table6-l1-public-three/4b03d74f0470cf4c/raw/armadillo/Grid-PEPS/seed-0.json",
+      "sha256": "d70467a9e7010a0d37a9fd57ade0d09a98b3687b11a50982b9201cbf9a5d2d42"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table6-l1-public-three",
+        "asset": "armadillo",
+        "config_sha256": "4b03d74f0470cf4c74eae29fc93887143431aba5ffda6b60c20b7c9f05d559f6",
+        "loss": "l1",
+        "method": "PE",
+        "method_key": "pe",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table6-l1-public-three/4b03d74f0470cf4c/raw/armadillo/PE/seed-0.json",
+      "sha256": "b819c95f3f478cd15f8086e030b0893c5db651200b50f9c069f4c2507ee8bc4c"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table6-l1-public-three",
+        "asset": "armadillo",
+        "config_sha256": "4b03d74f0470cf4c74eae29fc93887143431aba5ffda6b60c20b7c9f05d559f6",
+        "loss": "l1",
+        "method": "M-PEPS",
+        "method_key": "m_peps",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table6-l1-public-three/4b03d74f0470cf4c/raw/armadillo/M-PEPS/seed-0.json",
+      "sha256": "e1bb1e217b614d4346b05063f378c7efb776e130318f8a6a93ad7aaa2a7f5843"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table6-l1-public-three",
+        "asset": "armadillo",
+        "config_sha256": "4b03d74f0470cf4c74eae29fc93887143431aba5ffda6b60c20b7c9f05d559f6",
+        "loss": "l1",
+        "method": "M-Grid",
+        "method_key": "m_grid",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table6-l1-public-three/4b03d74f0470cf4c/raw/armadillo/M-Grid/seed-0.json",
+      "sha256": "acfad20e0b5b4309000fca814d8251bf82db9bcb04261eed9e8ddba01f9155ee"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table6-l1-public-three",
+        "asset": "armadillo",
+        "config_sha256": "4b03d74f0470cf4c74eae29fc93887143431aba5ffda6b60c20b7c9f05d559f6",
+        "loss": "l1",
+        "method": "M-Hash",
+        "method_key": "m_hash",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table6-l1-public-three/4b03d74f0470cf4c/raw/armadillo/M-Hash/seed-0.json",
+      "sha256": "99954d79d43b5a42e1e170ef2af49d625f42ac3a1740b53fdbc5f3d10259b23a"
+    },
+    {
+      "job": {
+        "artifact": "sdf-table6-l1-public-three",
+        "asset": "armadillo",
+        "config_sha256": "4b03d74f0470cf4c74eae29fc93887143431aba5ffda6b60c20b7c9f05d559f6",
+        "loss": "l1",
+        "method": "M-HashPEPS",
+        "method_key": "m_hashpeps",
+        "seed": 0
+      },
+      "path": "/home/aup/yy/workspace/peps/results/work/sdf-repro/670335310fb1319fa825385b/sdf-table6-l1-public-three/4b03d74f0470cf4c/raw/armadillo/M-HashPEPS/seed-0.json",
+      "sha256": "16e02422b88710f3086fe36ac5c2b19603249329d0debe387ad76b375556b705"
+    }
+  ],
+  "schema": "peps.sdf_repro_aggregate",
+  "schema_version": 1,
+  "scope": "3-of-4 public subset",
+  "status": "complete",
+  "stonefish": {
+    "asset_id": "pitted-stonefish",
+    "status": "deferred_auth_required",
+    "substitution_used": false
+  },
+  "training_loss": "l1"
+}

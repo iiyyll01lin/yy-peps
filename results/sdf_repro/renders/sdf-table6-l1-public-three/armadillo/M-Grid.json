@@ -1,0 +1,57 @@
+{
+  "asset": "armadillo",
+  "config_sha256": "4b03d74f0470cf4c74eae29fc93887143431aba5ffda6b60c20b7c9f05d559f6",
+  "files": {
+    "flip_map": "/home/aup/yy/workspace/peps/results/sdf_repro/renders/sdf-table6-l1-public-three/armadillo/M-Grid-flip.png",
+    "prediction": "/home/aup/yy/workspace/peps/results/sdf_repro/renders/sdf-table6-l1-public-three/armadillo/M-Grid.png",
+    "reference": "/home/aup/yy/workspace/peps/results/sdf_repro/renders/sdf-table6-l1-public-three/armadillo/reference.png"
+  },
+  "flip": {
+    "mean": 0.05146048963069916,
+    "mode": "LDR",
+    "parameters": {
+      "numExposures": -1,
+      "package_version": "1.7",
+      "ppd": 67.0,
+      "startExposure": Infinity,
+      "stopExposure": Infinity,
+      "tonemapper": "aces"
+    }
+  },
+  "loss": "l1",
+  "method": "M-Grid",
+  "paper_camera_available": false,
+  "render_protocol": {
+    "albedo": [
+      0.64,
+      0.69,
+      0.76
+    ],
+    "ambient": 0.25,
+    "background": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "camera": "orthographic_z_min_to_z_max",
+    "diffuse": 0.75,
+    "flip_mode": "LDR",
+    "flip_ppd": 67.0,
+    "image_axes": [
+      "x",
+      "y"
+    ],
+    "light_direction": [
+      0.4,
+      -0.5,
+      0.7681145748
+    ],
+    "normal_estimator": "screen_space_depth_central_difference",
+    "paper_camera_available": false,
+    "surface_rule": "first_negative_voxel",
+    "verification_status": "render_protocol_assumption"
+  },
+  "schema": "peps.sdf_render_validation",
+  "schema_version": 1,
+  "verification_status": "render_protocol_assumption"
+}

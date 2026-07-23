@@ -4,7 +4,7 @@ paper = "PEPS Extended arXiv:2604.24167v1"
 paper_table = "Table 3"
 profile = "full"
 status = "runnable"
-scope = "three_shape_subset"
+scope = "3-of-4 public subset"
 canonical_four_shape = false
 paper_global_comparable = false
 assets = ["lucy", "thai-statue", "armadillo"]
@@ -44,14 +44,14 @@ query_component_order = "xyz"
 
 [sharding]
 mode = "independent_job_modulo"
-world_size = 4
+world_size = 2
 same_model_distributed = false
 
 [render]
 enabled = false
 
 [reporting]
-aggregate_label = "three_shape_aggregate"
+aggregate_label = "3-of-4 public subset"
 forbidden_aggregate_labels = ["Global", "global", "four_shape_global"]
 deferred_asset = "pitted-stonefish"
 deferred_status = "deferred_auth_required"

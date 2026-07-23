@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/iiyyll01lin/yy-peps/results/schemas/full_run_authorization.schema.json",
+  "title": "PEPS full image Table 1 launch authorization",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schema_version",
+    "artifact",
+    "authorization_scope",
+    "authorized",
+    "authorization_basis",
+    "bounded_pilot_authorizes_full_run",
+    "config_sha256",
+    "expected_jobs",
+    "expected_optimizer_steps",
+    "boot_id",
+    "issued_at_utc",
+    "expires_at_utc",
+    "approved_by",
+    "reason",
+    "approval_id"
+  ],
+  "properties": {
+    "schema": {
+      "const": "peps.full_run_authorization"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "artifact": {
+      "const": "image-table1"
+    },
+    "authorization_scope": {
+      "const": "launch-or-resume-full-matrix"
+    },
+    "authorized": {
+      "const": true
+    },
+    "authorization_basis": {
+      "const": "independent-explicit-approval-after-full-reproduction-gate"
+    },
+    "bounded_pilot_authorizes_full_run": {
+      "const": false
+    },
+    "config_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "expected_jobs": {
+      "const": 648
+    },
+    "expected_optimizer_steps": {
+      "const": 77760000
+    },
+    "boot_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+    },
+    "issued_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expires_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "approved_by": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1
+    },
+    "approval_id": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

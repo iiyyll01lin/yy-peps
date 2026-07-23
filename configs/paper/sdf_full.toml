@@ -24,6 +24,7 @@ mape_epsilon = 1e-6
 metrics = ["iou"]
 render_chunk = 262144
 output_dir = "results/paper"
+parallelism_mode = "job_shard"
 world_size = 4
 protocol_note = "Paper MAPE does not state zero-distance epsilon; 1e-6 is frozen and recorded."
 

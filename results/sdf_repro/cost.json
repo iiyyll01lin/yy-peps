@@ -21,13 +21,11 @@
   "schema_version": 1,
   "sharding": {
     "jobs_per_rank": [
-      15,
-      14,
-      14,
-      14
+      29,
+      28
     ],
     "mode": "independent_job_modulo",
     "same_model_distributed": false,
-    "world_size": 4
+    "world_size": 2
   }
 }

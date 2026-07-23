@@ -21,6 +21,7 @@ from experiments.sdf_repro import (
     CONFIG_ROOT,
     DEFAULT_TABLE4_CONFIG,
     PUBLIC_ASSETS,
+    PUBLIC_SUBSET_LABEL,
     TABLE3_METHODS,
     TABLE4_METHODS,
     TABLE6_METHODS,
@@ -71,9 +72,10 @@ def test_sdf_configs_freeze_exact_public_subsets_and_paper_protocols() -> None:
     assert table3.total_steps == table6.total_steps == 120_000
     assert table3.training["batch_size"] == table6.training["batch_size"] == 60_000
     assert table3.evaluation["resolution"] == table6.evaluation["resolution"] == 512
-    assert table3.sharding["world_size"] == table6.sharding["world_size"] == 4
-    assert table3.reporting["aggregate_label"] == "three_shape_aggregate"
-    assert table6.reporting["aggregate_label"] == "three_shape_aggregate"
+    assert table3.sharding["world_size"] == table6.sharding["world_size"] == 2
+    assert table3.scope == table6.scope == PUBLIC_SUBSET_LABEL
+    assert table3.reporting["aggregate_label"] == PUBLIC_SUBSET_LABEL
+    assert table6.reporting["aggregate_label"] == PUBLIC_SUBSET_LABEL
     assert table4.status == "deferred_auth_required"
     assert table4.assets == ("pitted-stonefish",)
     assert smoke.profile == "smoke"
@@ -179,16 +181,16 @@ def test_full_matrix_shards_are_disjoint_complete_and_costed() -> None:
     table6 = load_sdf_repro_config(CONFIG_ROOT / "table6_l1.toml")
     jobs = enumerate_sdf_jobs((table3, table6))
     shards = [
-        shard_sdf_jobs(jobs, rank=rank, world_size=4)
-        for rank in range(4)
+        shard_sdf_jobs(jobs, rank=rank, world_size=2)
+        for rank in range(2)
     ]
     assert len(jobs) == 57
-    assert [len(shard) for shard in shards] == [15, 14, 14, 14]
+    assert [len(shard) for shard in shards] == [29, 28]
     assert {
         job.index for shard in shards for job in shard
     } == set(range(57))
-    for left in range(4):
-        for right in range(left + 1, 4):
+    for left in range(2):
+        for right in range(left + 1, 2):
             assert {job.index for job in shards[left]}.isdisjoint(
                 {job.index for job in shards[right]}
             )
@@ -337,13 +339,13 @@ def test_aggregate_is_explicitly_three_shape_not_paper_global(
         work_root=work_root,
         output_root=output_root,
     )
-    assert manifest["aggregate_label"] == "three_shape_aggregate"
+    assert manifest["aggregate_label"] == PUBLIC_SUBSET_LABEL
     assert manifest["canonical_four_shape"] is False
     assert manifest["paper_global_comparable"] is False
     aggregate_path = Path(manifest["outputs"]["three_shape_aggregate"])
     with aggregate_path.open(newline="", encoding="utf-8") as handle:
         rows = list(csv.DictReader(handle))
     assert len(rows) == 10
-    assert {row["scope"] for row in rows} == {"three_shape_aggregate"}
+    assert {row["scope"] for row in rows} == {PUBLIC_SUBSET_LABEL}
     assert {row["shape_count"] for row in rows} == {"3"}
     assert all(row["omitted_shape"] == "pitted-stonefish" for row in rows)

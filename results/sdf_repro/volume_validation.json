@@ -1,7 +1,15 @@
 {
-  "checked_at_utc": "2026-07-22T00:43:12.541125+00:00",
+  "checked_at_utc": "2026-07-22T01:06:32.473792+00:00",
   "checksums_verified": true,
   "paper": "PEPS Extended arXiv:2604.24167v1",
+  "recovery": {
+    "action": "accepted_existing_complete_outputs_without_rerun",
+    "active_related_processes": 0,
+    "boot_id": "0ca11c34-38ca-4d2c-aa05-091065da66c3",
+    "partial_files_found": 0,
+    "source_archives_and_meshes": "checksum_verified",
+    "volumes_and_provenance": "checksum_and_schema_verified"
+  },
   "schema": "peps.sdf_volume_validation",
   "schema_version": 1,
   "scope": "public_three_shape_subset",

@@ -1,0 +1,422 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/iiyyll01lin/yy-peps/results/schemas/sdf_public_subset_receipt.schema.json",
+  "title": "PEPS SDF 3-of-4 public subset receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schema_version",
+    "generated_at_utc",
+    "status",
+    "scope",
+    "paper",
+    "run_id",
+    "run_manifest",
+    "claims",
+    "coverage",
+    "results",
+    "gpu_runtime",
+    "workers",
+    "checkpoints",
+    "validation",
+    "stonefish",
+    "table4",
+    "limitations",
+    "blocked"
+  ],
+  "properties": {
+    "schema": {
+      "const": "peps.sdf_public_subset_receipt"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "generated_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "enum": [
+        "complete",
+        "blocked"
+      ]
+    },
+    "scope": {
+      "const": "3-of-4 public subset"
+    },
+    "paper": {
+      "const": "PEPS Extended arXiv:2604.24167v1"
+    },
+    "run_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "run_manifest": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "claims": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "full_table3",
+        "paper_global_comparable",
+        "canonical_four_shape",
+        "public_subset_complete"
+      ],
+      "properties": {
+        "full_table3": {
+          "const": false
+        },
+        "paper_global_comparable": {
+          "const": false
+        },
+        "canonical_four_shape": {
+          "const": false
+        },
+        "public_subset_complete": {
+          "type": "boolean"
+        }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "expected_jobs",
+        "completed_jobs",
+        "expected_optimizer_steps",
+        "checkpointed_optimizer_steps",
+        "complete",
+        "losses",
+        "assets"
+      ],
+      "properties": {
+        "expected_jobs": {
+          "const": 57
+        },
+        "completed_jobs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 57
+        },
+        "expected_optimizer_steps": {
+          "const": 6840000
+        },
+        "checkpointed_optimizer_steps": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 6840000
+        },
+        "complete": {
+          "type": "boolean"
+        },
+        "losses": {
+          "const": [
+            "mape",
+            "l1"
+          ]
+        },
+        "assets": {
+          "const": [
+            "lucy",
+            "thai-statue",
+            "armadillo"
+          ]
+        }
+      }
+    },
+    "results": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256",
+        "rows",
+        "per_instance_method_loss",
+        "aggregate_manifests"
+      ],
+      "properties": {
+        "path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rows": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 57
+        },
+        "per_instance_method_loss": {
+          "type": "array",
+          "maxItems": 57,
+          "items": {
+            "type": "object"
+          }
+        },
+        "aggregate_manifests": {
+          "type": "array",
+          "maxItems": 2,
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "gpu_runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cumulative_job_gpu_seconds",
+        "cumulative_job_gpu_hours",
+        "job_gpu_hours_by_physical_gpu",
+        "launch_wall_seconds",
+        "allocated_two_gpu_hours"
+      ],
+      "properties": {
+        "cumulative_job_gpu_seconds": {
+          "type": "number",
+          "minimum": 0
+        },
+        "cumulative_job_gpu_hours": {
+          "type": "number",
+          "minimum": 0
+        },
+        "job_gpu_hours_by_physical_gpu": {
+          "type": "object",
+          "propertyNames": {
+            "enum": [
+              "2",
+              "3"
+            ]
+          },
+          "additionalProperties": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "launch_wall_seconds": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "allocated_two_gpu_hours": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        }
+      }
+    },
+    "workers": {
+      "type": "array",
+      "maxItems": 2,
+      "items": {
+        "type": "object"
+      }
+    },
+    "checkpoints": {
+      "type": "array",
+      "maxItems": 57,
+      "items": {
+        "type": "object"
+      }
+    },
+    "validation": {
+      "type": "object"
+    },
+    "stonefish": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "asset_id",
+        "status",
+        "authorization_checked",
+        "data_access_attempted",
+        "substitution_allowed",
+        "substitution_used",
+        "numeric_results_generated"
+      ],
+      "properties": {
+        "asset_id": {
+          "const": "pitted-stonefish"
+        },
+        "status": {
+          "const": "deferred_auth_required"
+        },
+        "authorization_checked": {
+          "const": false
+        },
+        "data_access_attempted": {
+          "const": false
+        },
+        "substitution_allowed": {
+          "const": false
+        },
+        "substitution_used": {
+          "const": false
+        },
+        "numeric_results_generated": {
+          "const": false
+        }
+      }
+    },
+    "table4": {
+      "const": {
+        "executed": false,
+        "consolidated": false
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "code",
+          "detail"
+        ]
+      }
+    },
+    "blocked": {
+      "type": [
+        "object",
+        "null"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "complete"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "run_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "run_manifest": {
+            "type": "string",
+            "minLength": 1
+          },
+          "blocked": {
+            "type": "null"
+          },
+          "claims": {
+            "properties": {
+              "public_subset_complete": {
+                "const": true
+              }
+            }
+          },
+          "coverage": {
+            "properties": {
+              "completed_jobs": {
+                "const": 57
+              },
+              "checkpointed_optimizer_steps": {
+                "const": 6840000
+              },
+              "complete": {
+                "const": true
+              }
+            }
+          },
+          "results": {
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "$ref": "#/$defs/sha256"
+              },
+              "rows": {
+                "const": 57
+              },
+              "per_instance_method_loss": {
+                "minItems": 57,
+                "maxItems": 57
+              },
+              "aggregate_manifests": {
+                "minItems": 2,
+                "maxItems": 2
+              }
+            }
+          },
+          "checkpoints": {
+            "minItems": 57,
+            "maxItems": 57
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "blocked": {
+            "type": "object",
+            "required": [
+              "reason",
+              "exact_settings_preserved",
+              "settings_reduced",
+              "completed_checkpoints_preserved"
+            ],
+            "properties": {
+              "exact_settings_preserved": {
+                "const": true
+              },
+              "settings_reduced": {
+                "const": false
+              },
+              "completed_checkpoints_preserved": {
+                "const": true
+              }
+            }
+          },
+          "claims": {
+            "properties": {
+              "public_subset_complete": {
+                "const": false
+              }
+            }
+          },
+          "coverage": {
+            "properties": {
+              "complete": {
+                "const": false
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}
