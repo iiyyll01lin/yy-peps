@@ -3,699 +3,699 @@
   "canonical": false,
   "curves": [
     {
-      "aggregate_steps_per_second": 15.951866862452697,
+      "aggregate_steps_per_second": 39.96037172560277,
       "budget_steps": 10,
-      "complete": false,
+      "complete": true,
       "expected_trajectory_count": 6,
-      "interval_train_seconds": 0.6268858739999814,
+      "interval_train_seconds": 1.5014875340000344,
       "method": "LPE",
-      "psnr_mean": 5.362696950098143,
-      "psnr_stddev": 0.0,
+      "psnr_mean": 7.633577116068519,
+      "psnr_stddev": 2.5770053740701573,
       "semantic_psnr_mean": {
-        "AO": 1.5346810948013414,
-        "ARM": null,
-        "DIFF": 6.204878200278249,
-        "Displacement": 3.4572055298503774,
-        "metal": 10.092749727946638,
-        "normal": 4.306284372927252,
-        "rough": 6.580382774784999,
-        "specular": null
+        "AO": 1.3738012791207466,
+        "ARM": 6.648704715742126,
+        "DIFF": 6.907077913093808,
+        "Displacement": 4.576671551034821,
+        "metal": 10.034720533471845,
+        "normal": 4.155610705126491,
+        "rough": 6.7315310599523706,
+        "specular": 25.56006659294103
       },
-      "ssim_mean": 0.10598166721562545,
-      "ssim_stddev": 0.0,
-      "trajectory_count": 1
+      "ssim_mean": 0.1331813266246172,
+      "ssim_stddev": 0.022387632545798373,
+      "trajectory_count": 6
     },
     {
-      "aggregate_steps_per_second": 25.609760719816837,
+      "aggregate_steps_per_second": 60.95403469145612,
       "budget_steps": 10,
-      "complete": false,
+      "complete": true,
       "expected_trajectory_count": 6,
-      "interval_train_seconds": 0.39047611999990295,
+      "interval_train_seconds": 0.9843482930000391,
       "method": "BI-Grid",
-      "psnr_mean": 5.329004602917835,
-      "psnr_stddev": 0.0,
+      "psnr_mean": 7.7325920868229945,
+      "psnr_stddev": 2.706864143665191,
       "semantic_psnr_mean": {
-        "AO": 0.9517178471959402,
-        "ARM": null,
-        "DIFF": 6.3293815401451745,
-        "Displacement": 3.433333844290334,
-        "metal": 10.171931394797726,
-        "normal": 4.607893476371795,
-        "rough": 6.47976951470604,
-        "specular": null
+        "AO": 1.1834218523273259,
+        "ARM": 6.580338836151334,
+        "DIFF": 7.290467251727808,
+        "Displacement": 4.622935057347926,
+        "metal": 10.118633970437749,
+        "normal": 4.375001321813278,
+        "rough": 6.636108342601843,
+        "specular": 25.49568889275477
       },
-      "ssim_mean": 0.10667468855778377,
-      "ssim_stddev": 0.0,
-      "trajectory_count": 1
+      "ssim_mean": 0.1703298974924514,
+      "ssim_stddev": 0.06527023473306245,
+      "trajectory_count": 6
     },
     {
-      "aggregate_steps_per_second": null,
+      "aggregate_steps_per_second": 29.748040227368577,
       "budget_steps": 10,
-      "complete": false,
+      "complete": true,
       "expected_trajectory_count": 6,
-      "interval_train_seconds": 0,
+      "interval_train_seconds": 2.0169395880001275,
       "method": "Grid-PinkPEPS4F",
-      "psnr_mean": null,
-      "psnr_stddev": null,
+      "psnr_mean": 7.751037970950423,
+      "psnr_stddev": 2.669592372564881,
       "semantic_psnr_mean": {
-        "AO": null,
-        "ARM": null,
-        "DIFF": null,
-        "Displacement": null,
-        "metal": null,
-        "normal": null,
-        "rough": null,
-        "specular": null
+        "AO": 1.3415706520207944,
+        "ARM": 6.352638768768479,
+        "DIFF": 7.7458934555137136,
+        "Displacement": 4.398996627503106,
+        "metal": 10.055178419372636,
+        "normal": 4.368996912220687,
+        "rough": 7.13039913863494,
+        "specular": 24.928690277818784
       },
-      "ssim_mean": null,
-      "ssim_stddev": null,
-      "trajectory_count": 0
+      "ssim_mean": 0.14817818267943544,
+      "ssim_stddev": 0.03347896496118421,
+      "trajectory_count": 6
     },
     {
-      "aggregate_steps_per_second": null,
+      "aggregate_steps_per_second": 46.56775190306629,
       "budget_steps": 10,
-      "complete": false,
+      "complete": true,
       "expected_trajectory_count": 6,
-      "interval_train_seconds": 0,
+      "interval_train_seconds": 1.2884452769997097,
       "method": "NTC_N",
-      "psnr_mean": null,
-      "psnr_stddev": null,
+      "psnr_mean": 7.6076294188802045,
+      "psnr_stddev": 2.648685025958391,
       "semantic_psnr_mean": {
-        "AO": null,
-        "ARM": null,
-        "DIFF": null,
-        "Displacement": null,
-        "metal": null,
-        "normal": null,
-        "rough": null,
-        "specular": null
+        "AO": 1.3432651011343448,
+        "ARM": 6.226013004958996,
+        "DIFF": 7.075206883644967,
+        "Displacement": 4.535635915540973,
+        "metal": 10.002086419684076,
+        "normal": 4.281944707847093,
+        "rough": 6.369441389868938,
+        "specular": 25.542634704926666
       },
-      "ssim_mean": null,
-      "ssim_stddev": null,
-      "trajectory_count": 0
+      "ssim_mean": 0.16398139554221416,
+      "ssim_stddev": 0.04285785860615681,
+      "trajectory_count": 6
     },
     {
-      "aggregate_steps_per_second": null,
+      "aggregate_steps_per_second": 19.40595342133323,
       "budget_steps": 10,
-      "complete": false,
+      "complete": true,
       "expected_trajectory_count": 6,
-      "interval_train_seconds": 0,
+      "interval_train_seconds": 3.091834690999576,
       "method": "NTC_PinkPEPS",
-      "psnr_mean": null,
-      "psnr_stddev": null,
+      "psnr_mean": 7.8163353273461675,
+      "psnr_stddev": 2.5551151248251274,
       "semantic_psnr_mean": {
-        "AO": null,
-        "ARM": null,
-        "DIFF": null,
-        "Displacement": null,
-        "metal": null,
-        "normal": null,
-        "rough": null,
-        "specular": null
+        "AO": 1.5558767949679522,
+        "ARM": 6.224877492424845,
+        "DIFF": 8.06410991174222,
+        "Displacement": 4.745913306226451,
+        "metal": 9.965370535054015,
+        "normal": 4.511704988382404,
+        "rough": 7.005171941496368,
+        "specular": 24.288354350751998
       },
-      "ssim_mean": null,
-      "ssim_stddev": null,
-      "trajectory_count": 0
+      "ssim_mean": 0.17790807251197596,
+      "ssim_stddev": 0.04058639105709799,
+      "trajectory_count": 6
     },
     {
-      "aggregate_steps_per_second": 23.18227591954224,
+      "aggregate_steps_per_second": 39.187297836981415,
       "budget_steps": 50,
-      "complete": false,
+      "complete": true,
       "expected_trajectory_count": 6,
-      "interval_train_seconds": 1.7254561260001537,
+      "interval_train_seconds": 6.12443350900071,
       "method": "LPE",
-      "psnr_mean": 16.107236396374706,
-      "psnr_stddev": 0.0,
+      "psnr_mean": 17.71746703119782,
+      "psnr_stddev": 1.5714059600158075,
       "semantic_psnr_mean": {
-        "AO": 18.76746327016645,
-        "ARM": null,
-        "DIFF": 17.21701358702713,
-        "Displacement": 15.85458176107913,
-        "metal": 9.971847523374244,
-        "normal": 15.693447114669954,
-        "rough": 19.13906512193134,
-        "specular": null
+        "AO": 19.64103504516486,
+        "ARM": 19.253989792580295,
+        "DIFF": 18.52526621189773,
+        "Displacement": 15.48812494033492,
+        "metal": 9.984243245663672,
+        "normal": 16.177326799988474,
+        "rough": 18.611106284574504,
+        "specular": 25.60432693012901
       },
-      "ssim_mean": 0.2917317698399226,
-      "ssim_stddev": 0.0,
-      "trajectory_count": 1
+      "ssim_mean": 0.3382544489370452,
+      "ssim_stddev": 0.08388072549390424,
+      "trajectory_count": 6
     },
     {
-      "aggregate_steps_per_second": 30.26376421531315,
+      "aggregate_steps_per_second": 37.59988407441547,
       "budget_steps": 50,
-      "complete": false,
+      "complete": true,
       "expected_trajectory_count": 6,
-      "interval_train_seconds": 1.3217126500001086,
+      "interval_train_seconds": 6.382998403000556,
       "method": "BI-Grid",
-      "psnr_mean": 16.29972208780195,
-      "psnr_stddev": 0.0,
+      "psnr_mean": 17.903054282151825,
+      "psnr_stddev": 1.6115802232368919,
       "semantic_psnr_mean": {
-        "AO": 19.519852177271225,
-        "ARM": null,
-        "DIFF": 16.786495685549113,
-        "Displacement": 14.682538594448403,
-        "metal": 10.118193219244112,
-        "normal": 17.572349473149217,
-        "rough": 19.11890337714962,
-        "specular": null
+        "AO": 20.01416878095818,
+        "ARM": 19.456381877509767,
+        "DIFF": 18.798887499931055,
+        "Displacement": 15.245750017188321,
+        "metal": 10.056990183263782,
+        "normal": 16.682595641822378,
+        "rough": 18.542130233284528,
+        "specular": 25.94041623461411
       },
-      "ssim_mean": 0.23773800333340964,
-      "ssim_stddev": 0.0,
-      "trajectory_count": 1
+      "ssim_mean": 0.32815955169498917,
+      "ssim_stddev": 0.0975563219295629,
+      "trajectory_count": 6
     },
     {
-      "aggregate_steps_per_second": null,
+      "aggregate_steps_per_second": 29.849295507505836,
       "budget_steps": 50,
-      "complete": false,
+      "complete": true,
       "expected_trajectory_count": 6,
-      "interval_train_seconds": 0,
+      "interval_train_seconds": 8.040390766999849,
       "method": "Grid-PinkPEPS4F",
-      "psnr_mean": null,
-      "psnr_stddev": null,
+      "psnr_mean": 18.300757287190553,
+      "psnr_stddev": 1.4404030977395037,
       "semantic_psnr_mean": {
-        "AO": null,
-        "ARM": null,
-        "DIFF": null,
-        "Displacement": null,
-        "metal": null,
-        "normal": null,
-        "rough": null,
-        "specular": null
+        "AO": 21.52552987384703,
+        "ARM": 19.767574335624598,
+        "DIFF": 18.758294241458866,
+        "Displacement": 15.507582739257915,
+        "metal": 10.02907449913985,
+        "normal": 17.421552280156714,
+        "rough": 19.214183267385422,
+        "specular": 26.0866418761029
       },
-      "ssim_mean": null,
-      "ssim_stddev": null,
-      "trajectory_count": 0
+      "ssim_mean": 0.3631701731847392,
+      "ssim_stddev": 0.06119054593990672,
+      "trajectory_count": 6
     },
     {
-      "aggregate_steps_per_second": null,
+      "aggregate_steps_per_second": 32.57188373233161,
       "budget_steps": 50,
-      "complete": false,
+      "complete": true,
       "expected_trajectory_count": 6,
-      "interval_train_seconds": 0,
+      "interval_train_seconds": 7.368318085999135,
       "method": "NTC_N",
-      "psnr_mean": null,
-      "psnr_stddev": null,
+      "psnr_mean": 18.0600135242286,
+      "psnr_stddev": 1.54286528001615,
       "semantic_psnr_mean": {
-        "AO": null,
-        "ARM": null,
-        "DIFF": null,
-        "Displacement": null,
-        "metal": null,
-        "normal": null,
-        "rough": null,
-        "specular": null
+        "AO": 20.118451342924594,
+        "ARM": 19.86417393565563,
+        "DIFF": 18.708163639924667,
+        "Displacement": 15.743979969760323,
+        "metal": 10.031492100417921,
+        "normal": 16.976513776679823,
+        "rough": 18.584728950302587,
+        "specular": 25.80049253634319
       },
-      "ssim_mean": null,
-      "ssim_stddev": null,
-      "trajectory_count": 0
+      "ssim_mean": 0.33005044621725876,
+      "ssim_stddev": 0.0936787814006466,
+      "trajectory_count": 6
     },
     {
-      "aggregate_steps_per_second": null,
+      "aggregate_steps_per_second": 17.65642358807173,
       "budget_steps": 50,
-      "complete": false,
+      "complete": true,
       "expected_trajectory_count": 6,
-      "interval_train_seconds": 0,
+      "interval_train_seconds": 13.59278671599941,
       "method": "NTC_PinkPEPS",
-      "psnr_mean": null,
-      "psnr_stddev": null,
+      "psnr_mean": 18.823354702555516,
+      "psnr_stddev": 1.287366775502871,
       "semantic_psnr_mean": {
-        "AO": null,
-        "ARM": null,
-        "DIFF": null,
-        "Displacement": null,
-        "metal": null,
-        "normal": null,
-        "rough": null,
-        "specular": null
+        "AO": 22.305844903444818,
+        "ARM": 20.717046872628146,
+        "DIFF": 19.187616224937045,
+        "Displacement": 16.413189068576198,
+        "metal": 10.183326585411473,
+        "normal": 17.780245821328275,
+        "rough": 19.80630053162344,
+        "specular": 26.10759381435517
       },
-      "ssim_mean": null,
-      "ssim_stddev": null,
-      "trajectory_count": 0
+      "ssim_mean": 0.38758555725216864,
+      "ssim_stddev": 0.08280717927519653,
+      "trajectory_count": 6
     },
     {
-      "aggregate_steps_per_second": 44.148363217609564,
+      "aggregate_steps_per_second": 64.85340807446254,
       "budget_steps": 200,
-      "complete": false,
+      "complete": true,
       "expected_trajectory_count": 6,
-      "interval_train_seconds": 3.3976344549998885,
+      "interval_train_seconds": 13.877451112000927,
       "method": "LPE",
-      "psnr_mean": 20.65916472065805,
-      "psnr_stddev": 0.0,
+      "psnr_mean": 23.549672273432876,
+      "psnr_stddev": 3.052795897094851,
       "semantic_psnr_mean": {
-        "AO": 25.864470601543843,
-        "ARM": null,
-        "DIFF": 18.101098995610712,
-        "Displacement": 29.313525065478117,
-        "metal": 9.961936883545997,
-        "normal": 19.166922797109315,
-        "rough": 21.547033980660323,
-        "specular": null
+        "AO": 25.711828310043217,
+        "ARM": 27.50728952894279,
+        "DIFF": 22.999421061738385,
+        "Displacement": 28.49422285801028,
+        "metal": 10.0548713079011,
+        "normal": 18.509116614626638,
+        "rough": 23.989651972620454,
+        "specular": 29.035993294396224
       },
-      "ssim_mean": 0.5595904191335043,
-      "ssim_stddev": 0.0,
-      "trajectory_count": 1
+      "ssim_mean": 0.6777211942606503,
+      "ssim_stddev": 0.12767333168740938,
+      "trajectory_count": 6
     },
     {
-      "aggregate_steps_per_second": 78.45178322127835,
+      "aggregate_steps_per_second": 72.5547190489637,
       "budget_steps": 200,
-      "complete": false,
+      "complete": true,
       "expected_trajectory_count": 6,
-      "interval_train_seconds": 1.9120024279998233,
+      "interval_train_seconds": 12.404430914998557,
       "method": "BI-Grid",
-      "psnr_mean": 22.642251638230064,
-      "psnr_stddev": 0.0,
+      "psnr_mean": 26.16935830142583,
+      "psnr_stddev": 2.588166210981353,
       "semantic_psnr_mean": {
-        "AO": 26.52172965638945,
-        "ARM": null,
-        "DIFF": 23.248723449561982,
-        "Displacement": 26.865794769367245,
-        "metal": 12.081588737322049,
-        "normal": 19.129468694105366,
-        "rough": 28.006204522634302,
-        "specular": null
+        "AO": 26.84984549089589,
+        "ARM": 28.203701188481208,
+        "DIFF": 25.385847474363,
+        "Displacement": 29.872979536780818,
+        "metal": 18.181914302167105,
+        "normal": 20.185608783746034,
+        "rough": 28.931712586724434,
+        "specular": 32.65146509749865
       },
-      "ssim_mean": 0.6202291200558344,
-      "ssim_stddev": 0.0,
-      "trajectory_count": 1
+      "ssim_mean": 0.7455042978127797,
+      "ssim_stddev": 0.1274445567324746,
+      "trajectory_count": 6
     },
     {
-      "aggregate_steps_per_second": null,
+      "aggregate_steps_per_second": 35.92338125742257,
       "budget_steps": 200,
-      "complete": false,
+      "complete": true,
       "expected_trajectory_count": 6,
-      "interval_train_seconds": 0,
+      "interval_train_seconds": 25.053320943001154,
       "method": "Grid-PinkPEPS4F",
-      "psnr_mean": null,
-      "psnr_stddev": null,
+      "psnr_mean": 26.267966919227845,
+      "psnr_stddev": 1.7023537589297084,
       "semantic_psnr_mean": {
-        "AO": null,
-        "ARM": null,
-        "DIFF": null,
-        "Displacement": null,
-        "metal": null,
-        "normal": null,
-        "rough": null,
-        "specular": null
+        "AO": 26.57655100364919,
+        "ARM": 27.674215109833558,
+        "DIFF": 25.13170703313736,
+        "Displacement": 30.58475082784881,
+        "metal": 22.42062063979034,
+        "normal": 20.142896207551107,
+        "rough": 29.343936693373802,
+        "specular": 30.0594593423636
       },
-      "ssim_mean": null,
-      "ssim_stddev": null,
-      "trajectory_count": 0
+      "ssim_mean": 0.7347268591324488,
+      "ssim_stddev": 0.09605899816080687,
+      "trajectory_count": 6
     },
     {
-      "aggregate_steps_per_second": null,
+      "aggregate_steps_per_second": 59.27884459529286,
       "budget_steps": 200,
-      "complete": false,
+      "complete": true,
       "expected_trajectory_count": 6,
-      "interval_train_seconds": 0,
+      "interval_train_seconds": 15.182482151001068,
       "method": "NTC_N",
-      "psnr_mean": null,
-      "psnr_stddev": null,
+      "psnr_mean": 28.75453381996633,
+      "psnr_stddev": 1.9075134602890242,
       "semantic_psnr_mean": {
-        "AO": null,
-        "ARM": null,
-        "DIFF": null,
-        "Displacement": null,
-        "metal": null,
-        "normal": null,
-        "rough": null,
-        "specular": null
+        "AO": 27.371513210080945,
+        "ARM": 28.067800608480955,
+        "DIFF": 25.6173848944071,
+        "Displacement": 33.993612558815606,
+        "metal": 29.599844721198888,
+        "normal": 24.32526827942384,
+        "rough": 30.836796667102806,
+        "specular": 30.959261981264046
       },
-      "ssim_mean": null,
-      "ssim_stddev": null,
-      "trajectory_count": 0
+      "ssim_mean": 0.8003575073348151,
+      "ssim_stddev": 0.10066998289682047,
+      "trajectory_count": 6
     },
     {
-      "aggregate_steps_per_second": null,
+      "aggregate_steps_per_second": 19.116446703400676,
       "budget_steps": 200,
-      "complete": false,
+      "complete": true,
       "expected_trajectory_count": 6,
-      "interval_train_seconds": 0,
+      "interval_train_seconds": 47.07987911999862,
       "method": "NTC_PinkPEPS",
-      "psnr_mean": null,
-      "psnr_stddev": null,
+      "psnr_mean": 28.467665384047475,
+      "psnr_stddev": 2.1947866278703545,
       "semantic_psnr_mean": {
-        "AO": null,
-        "ARM": null,
-        "DIFF": null,
-        "Displacement": null,
-        "metal": null,
-        "normal": null,
-        "rough": null,
-        "specular": null
+        "AO": 26.639567107836285,
+        "ARM": 28.356993942331645,
+        "DIFF": 25.91138226944534,
+        "Displacement": 34.361182010581935,
+        "metal": 27.22334991674104,
+        "normal": 23.35403518675349,
+        "rough": 30.836138802781537,
+        "specular": 31.242554315631697
       },
-      "ssim_mean": null,
-      "ssim_stddev": null,
-      "trajectory_count": 0
+      "ssim_mean": 0.7960877292686038,
+      "ssim_stddev": 0.09785253996831685,
+      "trajectory_count": 6
     },
     {
-      "aggregate_steps_per_second": 71.88033976829279,
+      "aggregate_steps_per_second": 72.24020715593458,
       "budget_steps": 1000,
-      "complete": false,
+      "complete": true,
       "expected_trajectory_count": 6,
-      "interval_train_seconds": 11.129607937007677,
+      "interval_train_seconds": 66.44499218612327,
       "method": "LPE",
-      "psnr_mean": 32.173904704337566,
-      "psnr_stddev": 0.0,
+      "psnr_mean": 33.88950125712623,
+      "psnr_stddev": 2.276802670908631,
       "semantic_psnr_mean": {
-        "AO": 31.36980094740968,
-        "ARM": null,
-        "DIFF": 27.13985069988134,
-        "Displacement": 39.72561999295011,
-        "metal": 38.30231063820627,
-        "normal": 21.352095362721638,
-        "rough": 35.15375058485634,
-        "specular": null
+        "AO": 31.354860798933327,
+        "ARM": 32.670334266495566,
+        "DIFF": 30.211306269664465,
+        "Displacement": 39.31553743740513,
+        "metal": 37.186587583339964,
+        "normal": 29.35534373240681,
+        "rough": 35.08259407121372,
+        "specular": 36.67883722150663
       },
-      "ssim_mean": 0.8726764221986135,
-      "ssim_stddev": 0.0,
-      "trajectory_count": 1
+      "ssim_mean": 0.9206002758608923,
+      "ssim_stddev": 0.04956590473681692,
+      "trajectory_count": 6
     },
     {
-      "aggregate_steps_per_second": 72.09559808035016,
+      "aggregate_steps_per_second": 70.78079154494893,
       "budget_steps": 1000,
-      "complete": false,
+      "complete": true,
       "expected_trajectory_count": 6,
-      "interval_train_seconds": 11.096377882993693,
+      "interval_train_seconds": 67.8150087789254,
       "method": "BI-Grid",
-      "psnr_mean": 32.648499367881655,
-      "psnr_stddev": 0.0,
+      "psnr_mean": 33.93419403951416,
+      "psnr_stddev": 1.372255515381286,
       "semantic_psnr_mean": {
-        "AO": 32.093457306565014,
-        "ARM": null,
-        "DIFF": 25.78711437724359,
-        "Displacement": 39.61470557258389,
-        "metal": 40.44479463013005,
-        "normal": 22.37925076397076,
-        "rough": 35.57167355679664,
-        "specular": null
+        "AO": 32.02663679068917,
+        "ARM": 30.96843159660519,
+        "DIFF": 28.856164487203866,
+        "Displacement": 39.851673651247694,
+        "metal": 40.73302215717743,
+        "normal": 30.313109649598605,
+        "rough": 35.59679357969329,
+        "specular": 34.65727241195517
       },
-      "ssim_mean": 0.8926076491673788,
-      "ssim_stddev": 0.0,
-      "trajectory_count": 1
+      "ssim_mean": 0.9252831508715947,
+      "ssim_stddev": 0.03361477404901307,
+      "trajectory_count": 6
     },
     {
-      "aggregate_steps_per_second": null,
+      "aggregate_steps_per_second": 34.99856268178317,
       "budget_steps": 1000,
-      "complete": false,
+      "complete": true,
       "expected_trajectory_count": 6,
-      "interval_train_seconds": 0,
+      "interval_train_seconds": 137.14848931491724,
       "method": "Grid-PinkPEPS4F",
-      "psnr_mean": null,
-      "psnr_stddev": null,
+      "psnr_mean": 34.06232785220593,
+      "psnr_stddev": 1.7864180943076098,
       "semantic_psnr_mean": {
-        "AO": null,
-        "ARM": null,
-        "DIFF": null,
-        "Displacement": null,
-        "metal": null,
-        "normal": null,
-        "rough": null,
-        "specular": null
+        "AO": 31.45987587628815,
+        "ARM": 31.856348733422113,
+        "DIFF": 29.548659106406333,
+        "Displacement": 39.7617274075055,
+        "metal": 39.22722560374882,
+        "normal": 29.943134877205125,
+        "rough": 36.05850511938085,
+        "specular": 35.94664642459039
       },
-      "ssim_mean": null,
-      "ssim_stddev": null,
-      "trajectory_count": 0
+      "ssim_mean": 0.9252794467740588,
+      "ssim_stddev": 0.041189299219194495,
+      "trajectory_count": 6
     },
     {
-      "aggregate_steps_per_second": null,
+      "aggregate_steps_per_second": 62.25537948839694,
       "budget_steps": 1000,
-      "complete": false,
+      "complete": true,
       "expected_trajectory_count": 6,
-      "interval_train_seconds": 0,
+      "interval_train_seconds": 77.10177079387358,
       "method": "NTC_N",
-      "psnr_mean": null,
-      "psnr_stddev": null,
+      "psnr_mean": 33.62210939663351,
+      "psnr_stddev": 1.3599223856542701,
       "semantic_psnr_mean": {
-        "AO": null,
-        "ARM": null,
-        "DIFF": null,
-        "Displacement": null,
-        "metal": null,
-        "normal": null,
-        "rough": null,
-        "specular": null
+        "AO": 30.62883059301802,
+        "ARM": 29.796743415868992,
+        "DIFF": 27.521907742047446,
+        "Displacement": 41.81225763653095,
+        "metal": 41.73565338515195,
+        "normal": 30.210958262506832,
+        "rough": 34.16695363785229,
+        "specular": 33.18416933145294
       },
-      "ssim_mean": null,
-      "ssim_stddev": null,
-      "trajectory_count": 0
+      "ssim_mean": 0.9076739317841,
+      "ssim_stddev": 0.041698163438294196,
+      "trajectory_count": 6
     },
     {
-      "aggregate_steps_per_second": null,
+      "aggregate_steps_per_second": 20.784878635088972,
       "budget_steps": 1000,
-      "complete": false,
+      "complete": true,
       "expected_trajectory_count": 6,
-      "interval_train_seconds": 0,
+      "interval_train_seconds": 230.93711944493407,
       "method": "NTC_PinkPEPS",
-      "psnr_mean": null,
-      "psnr_stddev": null,
+      "psnr_mean": 34.19853822087344,
+      "psnr_stddev": 1.4037544574669074,
       "semantic_psnr_mean": {
-        "AO": null,
-        "ARM": null,
-        "DIFF": null,
-        "Displacement": null,
-        "metal": null,
-        "normal": null,
-        "rough": null,
-        "specular": null
+        "AO": 30.866180902305647,
+        "ARM": 30.86366209794789,
+        "DIFF": 28.565932585891314,
+        "Displacement": 41.22503290577311,
+        "metal": 43.227324398847706,
+        "normal": 30.339035031735197,
+        "rough": 34.88439243137205,
+        "specular": 34.80743016972507
       },
-      "ssim_mean": null,
-      "ssim_stddev": null,
-      "trajectory_count": 0
+      "ssim_mean": 0.9190426038371192,
+      "ssim_stddev": 0.04169787315285926,
+      "trajectory_count": 6
     },
     {
-      "aggregate_steps_per_second": 67.72781439077158,
+      "aggregate_steps_per_second": 70.7961187685261,
       "budget_steps": 2000,
-      "complete": false,
+      "complete": true,
       "expected_trajectory_count": 6,
-      "interval_train_seconds": 14.764982585002144,
+      "interval_train_seconds": 84.75040869991062,
       "method": "LPE",
-      "psnr_mean": 33.591833875395714,
-      "psnr_stddev": 0.0,
+      "psnr_mean": 35.50283141868064,
+      "psnr_stddev": 2.4021194346347112,
       "semantic_psnr_mean": {
-        "AO": 32.03803126207293,
-        "ARM": null,
-        "DIFF": 28.25852302667299,
-        "Displacement": 41.69969558424418,
-        "metal": 40.822080707296536,
-        "normal": 22.85027872474537,
-        "rough": 35.88239394734227,
-        "specular": null
+        "AO": 31.972701071111885,
+        "ARM": 34.3120307792071,
+        "DIFF": 31.61793974224176,
+        "Displacement": 41.4662288879027,
+        "metal": 40.11445821336527,
+        "normal": 30.785904397044217,
+        "rough": 35.84827212270914,
+        "specular": 38.36732579312726
       },
-      "ssim_mean": 0.9064902563889822,
-      "ssim_stddev": 0.0,
-      "trajectory_count": 1
+      "ssim_mean": 0.9421224216620128,
+      "ssim_stddev": 0.03795228116680446,
+      "trajectory_count": 6
     },
     {
-      "aggregate_steps_per_second": 67.68406769894082,
+      "aggregate_steps_per_second": 71.91446396304093,
       "budget_steps": 2000,
-      "complete": false,
+      "complete": true,
       "expected_trajectory_count": 6,
-      "interval_train_seconds": 14.774525734002964,
+      "interval_train_seconds": 83.43245112810109,
       "method": "BI-Grid",
-      "psnr_mean": 34.03784234104003,
-      "psnr_stddev": 0.0,
+      "psnr_mean": 35.25459911418741,
+      "psnr_stddev": 1.3743233672717936,
       "semantic_psnr_mean": {
-        "AO": 33.33891191507458,
-        "ARM": null,
-        "DIFF": 26.699528604791574,
-        "Displacement": 42.055222397149294,
-        "metal": 42.41398232238346,
-        "normal": 22.7822591222302,
-        "rough": 36.93714968461109,
-        "specular": null
+        "AO": 33.26544989718325,
+        "ARM": 32.13143240947527,
+        "DIFF": 29.891964065438756,
+        "Displacement": 42.44282478471051,
+        "metal": 42.32195812939428,
+        "normal": 31.133022081496453,
+        "rough": 36.81139035158962,
+        "specular": 35.08095459292003
       },
-      "ssim_mean": 0.9131909410158793,
-      "ssim_stddev": 0.0,
-      "trajectory_count": 1
+      "ssim_mean": 0.9391509390539593,
+      "ssim_stddev": 0.02789905540648727,
+      "trajectory_count": 6
     },
     {
-      "aggregate_steps_per_second": null,
+      "aggregate_steps_per_second": 34.71323802903528,
       "budget_steps": 2000,
-      "complete": false,
+      "complete": true,
       "expected_trajectory_count": 6,
-      "interval_train_seconds": 0,
+      "interval_train_seconds": 172.84472266693774,
       "method": "Grid-PinkPEPS4F",
-      "psnr_mean": null,
-      "psnr_stddev": null,
+      "psnr_mean": 35.78451131927381,
+      "psnr_stddev": 1.9204638864438843,
       "semantic_psnr_mean": {
-        "AO": null,
-        "ARM": null,
-        "DIFF": null,
-        "Displacement": null,
-        "metal": null,
-        "normal": null,
-        "rough": null,
-        "specular": null
+        "AO": 33.33801059907932,
+        "ARM": 33.606581170694376,
+        "DIFF": 31.033773179370304,
+        "Displacement": 42.23599623832156,
+        "metal": 40.76659840833981,
+        "normal": 31.286911848320774,
+        "rough": 37.36792971266727,
+        "specular": 37.68616981818354
       },
-      "ssim_mean": null,
-      "ssim_stddev": null,
-      "trajectory_count": 0
+      "ssim_mean": 0.9473227408197191,
+      "ssim_stddev": 0.030068206703679715,
+      "trajectory_count": 6
     },
     {
-      "aggregate_steps_per_second": null,
+      "aggregate_steps_per_second": 61.206245723518585,
       "budget_steps": 2000,
-      "complete": false,
+      "complete": true,
       "expected_trajectory_count": 6,
-      "interval_train_seconds": 0,
+      "interval_train_seconds": 98.02921138315287,
       "method": "NTC_N",
-      "psnr_mean": null,
-      "psnr_stddev": null,
+      "psnr_mean": 34.65595661990727,
+      "psnr_stddev": 1.5227951837535987,
       "semantic_psnr_mean": {
-        "AO": null,
-        "ARM": null,
-        "DIFF": null,
-        "Displacement": null,
-        "metal": null,
-        "normal": null,
-        "rough": null,
-        "specular": null
+        "AO": 31.326575858930457,
+        "ARM": 30.87486276375932,
+        "DIFF": 28.26709670913941,
+        "Displacement": 43.652206571338475,
+        "metal": 43.32208415385662,
+        "normal": 30.791040060019217,
+        "rough": 34.782739304333006,
+        "specular": 34.112672861558785
       },
-      "ssim_mean": null,
-      "ssim_stddev": null,
-      "trajectory_count": 0
+      "ssim_mean": 0.9202098018593258,
+      "ssim_stddev": 0.04024623679119503,
+      "trajectory_count": 6
     },
     {
-      "aggregate_steps_per_second": null,
+      "aggregate_steps_per_second": 20.751606252285303,
       "budget_steps": 2000,
-      "complete": false,
+      "complete": true,
       "expected_trajectory_count": 6,
-      "interval_train_seconds": 0,
+      "interval_train_seconds": 289.13424469680467,
       "method": "NTC_PinkPEPS",
-      "psnr_mean": null,
-      "psnr_stddev": null,
+      "psnr_mean": 35.603926072194994,
+      "psnr_stddev": 1.536989488582183,
       "semantic_psnr_mean": {
-        "AO": null,
-        "ARM": null,
-        "DIFF": null,
-        "Displacement": null,
-        "metal": null,
-        "normal": null,
-        "rough": null,
-        "specular": null
+        "AO": 32.431735114847264,
+        "ARM": 32.2962541718281,
+        "DIFF": 29.753610923608473,
+        "Displacement": 43.16410941991699,
+        "metal": 45.07190533936625,
+        "normal": 31.164017582077253,
+        "rough": 35.82312015980388,
+        "specular": 36.45559313157721
       },
-      "ssim_mean": null,
-      "ssim_stddev": null,
-      "trajectory_count": 0
+      "ssim_mean": 0.9354633327987458,
+      "ssim_stddev": 0.03645043796229753,
+      "trajectory_count": 6
     },
     {
-      "aggregate_steps_per_second": null,
+      "aggregate_steps_per_second": 70.8918758599988,
       "budget_steps": 5000,
-      "complete": false,
+      "complete": true,
       "expected_trajectory_count": 6,
-      "interval_train_seconds": 0,
+      "interval_train_seconds": 253.90779665003356,
       "method": "LPE",
-      "psnr_mean": null,
-      "psnr_stddev": null,
+      "psnr_mean": 37.25772031928019,
+      "psnr_stddev": 2.393048969367579,
       "semantic_psnr_mean": {
-        "AO": null,
-        "ARM": null,
-        "DIFF": null,
-        "Displacement": null,
-        "metal": null,
-        "normal": null,
-        "rough": null,
-        "specular": null
+        "AO": 32.78961779345099,
+        "ARM": 35.81160143706142,
+        "DIFF": 32.941776834040304,
+        "Displacement": 44.21825455078175,
+        "metal": 43.903860499622,
+        "normal": 31.927251972192227,
+        "rough": 36.81516071127907,
+        "specular": 40.161915708407314
       },
-      "ssim_mean": null,
-      "ssim_stddev": null,
-      "trajectory_count": 0
+      "ssim_mean": 0.9566476302014456,
+      "ssim_stddev": 0.02994920947130228,
+      "trajectory_count": 6
     },
     {
-      "aggregate_steps_per_second": null,
+      "aggregate_steps_per_second": 71.70018876129608,
       "budget_steps": 5000,
-      "complete": false,
+      "complete": true,
       "expected_trajectory_count": 6,
-      "interval_train_seconds": 0,
+      "interval_train_seconds": 251.04536418900534,
       "method": "BI-Grid",
-      "psnr_mean": null,
-      "psnr_stddev": null,
+      "psnr_mean": 37.57293634725617,
+      "psnr_stddev": 1.4833882765196384,
       "semantic_psnr_mean": {
-        "AO": null,
-        "ARM": null,
-        "DIFF": null,
-        "Displacement": null,
-        "metal": null,
-        "normal": null,
-        "rough": null,
-        "specular": null
+        "AO": 35.35797234409636,
+        "ARM": 34.75079350952192,
+        "DIFF": 32.278229583016774,
+        "Displacement": 45.42357587044008,
+        "metal": 45.14290900435268,
+        "normal": 32.27780808998153,
+        "rough": 39.374259951623124,
+        "specular": 37.370132309295535
       },
-      "ssim_mean": null,
-      "ssim_stddev": null,
-      "trajectory_count": 0
+      "ssim_mean": 0.9589037951495912,
+      "ssim_stddev": 0.022037229151108863,
+      "trajectory_count": 6
     },
     {
-      "aggregate_steps_per_second": null,
+      "aggregate_steps_per_second": 34.80271721598918,
       "budget_steps": 5000,
-      "complete": false,
+      "complete": true,
       "expected_trajectory_count": 6,
-      "interval_train_seconds": 0,
+      "interval_train_seconds": 517.2009957811679,
       "method": "Grid-PinkPEPS4F",
-      "psnr_mean": null,
-      "psnr_stddev": null,
+      "psnr_mean": 38.08109422758687,
+      "psnr_stddev": 2.2143805318900367,
       "semantic_psnr_mean": {
-        "AO": null,
-        "ARM": null,
-        "DIFF": null,
-        "Displacement": null,
-        "metal": null,
-        "normal": null,
-        "rough": null,
-        "specular": null
+        "AO": 35.47998445612745,
+        "ARM": 36.380778847272495,
+        "DIFF": 33.442502537759005,
+        "Displacement": 45.40853675590976,
+        "metal": 43.203513917696,
+        "normal": 32.39290193626814,
+        "rough": 39.06292933144676,
+        "specular": 40.26209717906303
       },
-      "ssim_mean": null,
-      "ssim_stddev": null,
-      "trajectory_count": 0
+      "ssim_mean": 0.9629508750306236,
+      "ssim_stddev": 0.02432037093962812,
+      "trajectory_count": 6
     },
     {
-      "aggregate_steps_per_second": null,
+      "aggregate_steps_per_second": 61.46905395317212,
       "budget_steps": 5000,
-      "complete": false,
+      "complete": true,
       "expected_trajectory_count": 6,
-      "interval_train_seconds": 0,
+      "interval_train_seconds": 292.83027543766366,
       "method": "NTC_N",
-      "psnr_mean": null,
-      "psnr_stddev": null,
+      "psnr_mean": 36.99587118096819,
+      "psnr_stddev": 1.8237757196906588,
       "semantic_psnr_mean": {
-        "AO": null,
-        "ARM": null,
-        "DIFF": null,
-        "Displacement": null,
-        "metal": null,
-        "normal": null,
-        "rough": null,
-        "specular": null
+        "AO": 33.29184875757888,
+        "ARM": 33.816859304139456,
+        "DIFF": 30.940202305295674,
+        "Displacement": 46.16250270398401,
+        "metal": 45.9312860392208,
+        "normal": 31.876913652653865,
+        "rough": 36.94629561895625,
+        "specular": 37.374184076689346
       },
-      "ssim_mean": null,
-      "ssim_stddev": null,
-      "trajectory_count": 0
+      "ssim_mean": 0.948958248231146,
+      "ssim_stddev": 0.031125840603139287,
+      "trajectory_count": 6
     },
     {
-      "aggregate_steps_per_second": null,
+      "aggregate_steps_per_second": 20.791749245817634,
       "budget_steps": 5000,
-      "complete": false,
+      "complete": true,
       "expected_trajectory_count": 6,
-      "interval_train_seconds": 0,
+      "interval_train_seconds": 865.7280244768626,
       "method": "NTC_PinkPEPS",
-      "psnr_mean": null,
-      "psnr_stddev": null,
+      "psnr_mean": 37.661116048414804,
+      "psnr_stddev": 1.879416143354401,
       "semantic_psnr_mean": {
-        "AO": null,
-        "ARM": null,
-        "DIFF": null,
-        "Displacement": null,
-        "metal": null,
-        "normal": null,
-        "rough": null,
-        "specular": null
+        "AO": 34.26095458497242,
+        "ARM": 35.00099136780895,
+        "DIFF": 32.06468414898025,
+        "Displacement": 45.81157361124226,
+        "metal": 46.98316065283848,
+        "normal": 32.09146842493406,
+        "rough": 37.31941271786166,
+        "specular": 39.06186207604468
       },
-      "ssim_mean": null,
-      "ssim_stddev": null,
-      "trajectory_count": 0
+      "ssim_mean": 0.9550233453512192,
+      "ssim_stddev": 0.029122995128528947,
+      "trajectory_count": 6
     }
   ],
   "decision": {
     "full_71m_step_run_authorized": false,
-    "last_interval_max_abs_psnr_gain_db": null,
+    "last_interval_max_abs_psnr_gain_db": 2.3399145610609153,
     "minimum_recommendation_steps": 5000,
     "next_pilot_budgets": [
       25000,
@@ -703,10 +703,8 @@
       119999
     ],
     "plateau_threshold_db": 0.1,
-    "ranking_stable": false,
+    "ranking_stable": true,
     "reasons": [
-      "not every planned trajectory and checkpoint is complete",
-      "method ordering is not yet stable across the last budgets",
       "at least one method still changes by more than 0.1 dB"
     ],
     "recommendation_scope": "none_inconclusive",
@@ -716,32 +714,312 @@
   "evidence": {
     "checkpoints": [
       {
-        "bytes": 201479224,
+        "bytes": 201480376,
         "instance": "rails-001",
         "job_index": 0,
         "method": "LPE",
-        "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-ca6664fc7b36/checkpoints/raw/rails-001/LPE/seed-0.pt",
+        "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390/checkpoints/raw/rails-001/LPE/seed-0.pt",
         "seed": 0,
-        "sha256": "464643e91c05dfa13a515f50336cbca278c1a72631989cb55d588acfd8b407ca",
-        "step": 4466
+        "sha256": "f1a4889a2d40b33bdc3a7eb156a5fcd7f97cdac6d3337487adb7fc3884f0332b",
+        "step": 5000
       },
       {
-        "bytes": 214062968,
+        "bytes": 201480376,
+        "instance": "rails-001",
+        "job_index": 1,
+        "method": "LPE",
+        "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390/checkpoints/raw/rails-001/LPE/seed-1.pt",
+        "seed": 1,
+        "sha256": "ae9f81855c6bc04f540066b579c06fe3f86f4e5277494fabbb592d95ad19ed07",
+        "step": 5000
+      },
+      {
+        "bytes": 201480376,
+        "instance": "rails-001",
+        "job_index": 2,
+        "method": "LPE",
+        "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390/checkpoints/raw/rails-001/LPE/seed-2.pt",
+        "seed": 2,
+        "sha256": "f793aacd9daaff3c8e7341851885b8e844506de19ac5de8827a93feb66166123",
+        "step": 5000
+      },
+      {
+        "bytes": 214064120,
         "instance": "rails-001",
         "job_index": 3,
         "method": "BI-Grid",
-        "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-ca6664fc7b36/checkpoints/raw/rails-001/BI-Grid/seed-0.pt",
+        "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390/checkpoints/raw/rails-001/BI-Grid/seed-0.pt",
         "seed": 0,
-        "sha256": "d38e841dbc567549995e229ceb601df68e000388d867b10183f9ee1f1572140c",
-        "step": 4465
+        "sha256": "c0c990d7b99bbe9e812f53c42ce260b87e37272590868fd6483e246699b6145a",
+        "step": 5000
+      },
+      {
+        "bytes": 214064120,
+        "instance": "rails-001",
+        "job_index": 4,
+        "method": "BI-Grid",
+        "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390/checkpoints/raw/rails-001/BI-Grid/seed-1.pt",
+        "seed": 1,
+        "sha256": "d639e4ca047c83709252a87b3b12d9d9857e7b68a3f6daeba3ff391b0559680d",
+        "step": 5000
+      },
+      {
+        "bytes": 214064120,
+        "instance": "rails-001",
+        "job_index": 5,
+        "method": "BI-Grid",
+        "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390/checkpoints/raw/rails-001/BI-Grid/seed-2.pt",
+        "seed": 2,
+        "sha256": "400bcedb47700d864fe89406d99aa4d6dcebd1a6fcf8edec8911ed360b1c9f11",
+        "step": 5000
+      },
+      {
+        "bytes": 214087352,
+        "instance": "rails-001",
+        "job_index": 6,
+        "method": "Grid-PinkPEPS4F",
+        "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390/checkpoints/raw/rails-001/Grid-PinkPEPS4F/seed-0.pt",
+        "seed": 0,
+        "sha256": "cfcd8e20b914e7a92d9a5436a26caa4ee607a073399aacd4c099f17a1d36f00a",
+        "step": 5000
+      },
+      {
+        "bytes": 214087352,
+        "instance": "rails-001",
+        "job_index": 7,
+        "method": "Grid-PinkPEPS4F",
+        "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390/checkpoints/raw/rails-001/Grid-PinkPEPS4F/seed-1.pt",
+        "seed": 1,
+        "sha256": "923cfdbf89813c4af364cfe1babdf405b7cddf93253a8e4d9ca7184e3980d29d",
+        "step": 5000
+      },
+      {
+        "bytes": 214087352,
+        "instance": "rails-001",
+        "job_index": 8,
+        "method": "Grid-PinkPEPS4F",
+        "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390/checkpoints/raw/rails-001/Grid-PinkPEPS4F/seed-2.pt",
+        "seed": 2,
+        "sha256": "cff222a479a371c1e334df6b0428f3cc2338704736e4364d02e840767bc8b68e",
+        "step": 5000
+      },
+      {
+        "bytes": 214113820,
+        "instance": "rails-001",
+        "job_index": 9,
+        "method": "NTC_N",
+        "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390/checkpoints/raw/rails-001/NTC_N/seed-0.pt",
+        "seed": 0,
+        "sha256": "224f2497e65cd48955f5b141564d2f81c53d015a5bf946a3b119962c50d1eb70",
+        "step": 5000
+      },
+      {
+        "bytes": 214113820,
+        "instance": "rails-001",
+        "job_index": 10,
+        "method": "NTC_N",
+        "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390/checkpoints/raw/rails-001/NTC_N/seed-1.pt",
+        "seed": 1,
+        "sha256": "e977c9ebdd89969334753c8e92fe1de87879a99917b97f57c6e9735fda12f6c5",
+        "step": 5000
+      },
+      {
+        "bytes": 214113820,
+        "instance": "rails-001",
+        "job_index": 11,
+        "method": "NTC_N",
+        "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390/checkpoints/raw/rails-001/NTC_N/seed-2.pt",
+        "seed": 2,
+        "sha256": "6ca593fe05521e8ef3efabe9ebd112cfa22f53a9a95b3425ab4cf142019ec580",
+        "step": 5000
+      },
+      {
+        "bytes": 214210652,
+        "instance": "rails-001",
+        "job_index": 12,
+        "method": "NTC_PinkPEPS",
+        "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390/checkpoints/raw/rails-001/NTC_PinkPEPS/seed-0.pt",
+        "seed": 0,
+        "sha256": "cfdd9159e45872cab60d47887289e107a469c0c5a64f516c0ed0107936b7c6dd",
+        "step": 5000
+      },
+      {
+        "bytes": 214210652,
+        "instance": "rails-001",
+        "job_index": 13,
+        "method": "NTC_PinkPEPS",
+        "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390/checkpoints/raw/rails-001/NTC_PinkPEPS/seed-1.pt",
+        "seed": 1,
+        "sha256": "276192d9ef659edff55fe73a75ef49689fee9cb113f1e130b5900cea65720b5a",
+        "step": 5000
+      },
+      {
+        "bytes": 214210844,
+        "instance": "rails-001",
+        "job_index": 14,
+        "method": "NTC_PinkPEPS",
+        "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390/checkpoints/raw/rails-001/NTC_PinkPEPS/seed-2.pt",
+        "seed": 2,
+        "sha256": "db1f0b502060695c6b35fa2a26c8079f0be70ad926e735cb101c0831ac1a3250",
+        "step": 5000
+      },
+      {
+        "bytes": 201477048,
+        "instance": "roof-09",
+        "job_index": 15,
+        "method": "LPE",
+        "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390/checkpoints/raw/roof-09/LPE/seed-0.pt",
+        "seed": 0,
+        "sha256": "ea575ebe627dd164d8153bf83c081ff16fa8a25e85516225746ccdf032b17419",
+        "step": 5000
+      },
+      {
+        "bytes": 201477048,
+        "instance": "roof-09",
+        "job_index": 16,
+        "method": "LPE",
+        "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390/checkpoints/raw/roof-09/LPE/seed-1.pt",
+        "seed": 1,
+        "sha256": "25bf044d9cd5e1c92bbfe38eaed39adad96c93abe1721211669d55ff9f9f0040",
+        "step": 5000
+      },
+      {
+        "bytes": 201477048,
+        "instance": "roof-09",
+        "job_index": 17,
+        "method": "LPE",
+        "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390/checkpoints/raw/roof-09/LPE/seed-2.pt",
+        "seed": 2,
+        "sha256": "9e735e08436ed2b5eeb7d61ed8620d383dbed90af8f0d4810cd396b89d6ca2bb",
+        "step": 5000
+      },
+      {
+        "bytes": 214060728,
+        "instance": "roof-09",
+        "job_index": 18,
+        "method": "BI-Grid",
+        "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390/checkpoints/raw/roof-09/BI-Grid/seed-0.pt",
+        "seed": 0,
+        "sha256": "7b50e90951f45402fffc3a6dad21e9d97fa55a1b7e0be6fbc56fc4a0b3e4d928",
+        "step": 5000
+      },
+      {
+        "bytes": 214060728,
+        "instance": "roof-09",
+        "job_index": 19,
+        "method": "BI-Grid",
+        "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390/checkpoints/raw/roof-09/BI-Grid/seed-1.pt",
+        "seed": 1,
+        "sha256": "d4776f09411f5dd88fe628184a95706a29612db4f948efc90d12e76d6e955d90",
+        "step": 5000
+      },
+      {
+        "bytes": 214060728,
+        "instance": "roof-09",
+        "job_index": 20,
+        "method": "BI-Grid",
+        "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390/checkpoints/raw/roof-09/BI-Grid/seed-2.pt",
+        "seed": 2,
+        "sha256": "04913a2f9d39c345e312d56dcaca8548e8e57dc5b2ca833f9d3c34b3021c6e1a",
+        "step": 5000
+      },
+      {
+        "bytes": 214083960,
+        "instance": "roof-09",
+        "job_index": 21,
+        "method": "Grid-PinkPEPS4F",
+        "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390/checkpoints/raw/roof-09/Grid-PinkPEPS4F/seed-0.pt",
+        "seed": 0,
+        "sha256": "148ac158c3506980dae6253fdec51d329d3fcbabd10efff716777f3694de4288",
+        "step": 5000
+      },
+      {
+        "bytes": 214083960,
+        "instance": "roof-09",
+        "job_index": 22,
+        "method": "Grid-PinkPEPS4F",
+        "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390/checkpoints/raw/roof-09/Grid-PinkPEPS4F/seed-1.pt",
+        "seed": 1,
+        "sha256": "ef5c47df190db74d7b78a011387b598c5f1748c19ed241e9c440eaf2002638ca",
+        "step": 5000
+      },
+      {
+        "bytes": 214083960,
+        "instance": "roof-09",
+        "job_index": 23,
+        "method": "Grid-PinkPEPS4F",
+        "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390/checkpoints/raw/roof-09/Grid-PinkPEPS4F/seed-2.pt",
+        "seed": 2,
+        "sha256": "2614d2ccbb9de82b7435ea79fe473f3cd31bbd8558709c74e63e7267c020fcdf",
+        "step": 5000
+      },
+      {
+        "bytes": 214110428,
+        "instance": "roof-09",
+        "job_index": 24,
+        "method": "NTC_N",
+        "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390/checkpoints/raw/roof-09/NTC_N/seed-0.pt",
+        "seed": 0,
+        "sha256": "57927ada49c56793e8e08dc14f6425820a2fdf556ef8757e81e36f5c9a5ac5b5",
+        "step": 5000
+      },
+      {
+        "bytes": 214110428,
+        "instance": "roof-09",
+        "job_index": 25,
+        "method": "NTC_N",
+        "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390/checkpoints/raw/roof-09/NTC_N/seed-1.pt",
+        "seed": 1,
+        "sha256": "bbdf4a0ab3f616798f9a5bfb536296ee5f7d1a553cc3dc87e44d0fe9a7ae4723",
+        "step": 5000
+      },
+      {
+        "bytes": 214110428,
+        "instance": "roof-09",
+        "job_index": 26,
+        "method": "NTC_N",
+        "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390/checkpoints/raw/roof-09/NTC_N/seed-2.pt",
+        "seed": 2,
+        "sha256": "77a63b85e641c72f99223cc45ac7a52312945e466520cd522b5ea7e5345a27ec",
+        "step": 5000
+      },
+      {
+        "bytes": 214207260,
+        "instance": "roof-09",
+        "job_index": 27,
+        "method": "NTC_PinkPEPS",
+        "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390/checkpoints/raw/roof-09/NTC_PinkPEPS/seed-0.pt",
+        "seed": 0,
+        "sha256": "535c8c880a6d689f74e59827321ff2991eb393a88c0df698b2d173f9d9600424",
+        "step": 5000
+      },
+      {
+        "bytes": 214207452,
+        "instance": "roof-09",
+        "job_index": 28,
+        "method": "NTC_PinkPEPS",
+        "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390/checkpoints/raw/roof-09/NTC_PinkPEPS/seed-1.pt",
+        "seed": 1,
+        "sha256": "186c8e53aa0e62a10ec75dd8bc97621b032073e622be4da4ddf2ec7bdce32d66",
+        "step": 5000
+      },
+      {
+        "bytes": 214207452,
+        "instance": "roof-09",
+        "job_index": 29,
+        "method": "NTC_PinkPEPS",
+        "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390/checkpoints/raw/roof-09/NTC_PinkPEPS/seed-2.pt",
+        "seed": 2,
+        "sha256": "c7b0bb78c2fcb1baf382327b268058ae6db9fd81c9da4aea111dc28675087297",
+        "step": 5000
       }
     ],
-    "code_digest": "ca6664fc7b362f2ca7ec2a5f8befcab672c16a57f3a7f8f96f899df4cfd94c9f",
+    "code_digest": "7e5a5c8c339087956f5097e20f041aa43ca24d4c60d662fc425cf1edc9723364",
     "code_receipts": [
       {
-        "bytes": 172053,
+        "bytes": 172776,
         "path": "experiments/texture_repro.py",
-        "sha256": "3f55a6d7d35869fc606587dbe2437820649540a0995d5207a3044b3d19b4a45f"
+        "sha256": "fe279158232b874c239ff25928e0fdaeb936b07b3eb5ed15aca57a3f7f6a0a32"
       },
       {
         "bytes": 22690,
@@ -810,15 +1088,15 @@
     },
     "pilot_manifest": {
       "current": true,
-      "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-ca6664fc7b36/manifest.json",
+      "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390/manifest.json",
       "present": true,
-      "sha256": "352d4de3f7f680a34f76c426cd6fef1a57f83672b598b5fce9ecf664beb5c4c3"
+      "sha256": "de5610417386ae2fd4fe4d849ddf97dda19efa6d284839d5ef3498d99af2b917"
     },
     "raw_csv": {
-      "bytes": 4198,
+      "bytes": 66282,
       "path": "results/texture_repro/convergence_pilot_observations.csv",
-      "rows": 10,
-      "sha256": "07dafd7855c1f7cbf0c4eaa6ce874f9208eb1797a7f80ada11ccb9481fa1e7f8"
+      "rows": 180,
+      "sha256": "002be553c2a30fbebc11f8c652568137d7795641421aa5e5e411a4476655c2a7"
     },
     "resume_lineage": {
       "active_workers": 0,
@@ -1384,13 +1662,13 @@
     }
   },
   "final_interval_psnr_gains": {
-    "BI-Grid": null,
-    "Grid-PinkPEPS4F": null,
-    "LPE": null,
-    "NTC_N": null,
-    "NTC_PinkPEPS": null
+    "BI-Grid": 2.3183372330687604,
+    "Grid-PinkPEPS4F": 2.296582908313056,
+    "LPE": 1.7548889005995463,
+    "NTC_N": 2.3399145610609153,
+    "NTC_PinkPEPS": 2.05718997621981
   },
-  "generated_at_utc": "2026-07-22T03:38:27.907567+00:00",
+  "generated_at_utc": "2026-07-23T11:09:51.202479+00:00",
   "limitations": [
     {
       "code": "bounded_early_schedule_observation",
@@ -1408,53 +1686,53 @@
   "paper": "PEPS Extended arXiv:2604.24167v1",
   "profile": "bounded_convergence_pilot",
   "progress": {
-    "accounted_additional_optimizer_steps": 2931,
-    "accounted_optimizer_steps": 8931,
+    "accounted_additional_optimizer_steps": 144000,
+    "accounted_optimizer_steps": 150000,
     "active_workers": 0,
     "artifact": "texture-table2-convergence-pilot",
     "boot_id": "0ca11c34-38ca-4d2c-aa05-091065da66c3",
     "checkpoint_errors": [],
-    "checkpointed_trajectories": 2,
-    "code_digest": "ca6664fc7b362f2ca7ec2a5f8befcab672c16a57f3a7f8f96f899df4cfd94c9f",
-    "complete": false,
-    "completed_trajectories": 0,
+    "checkpointed_trajectories": 30,
+    "code_digest": "7e5a5c8c339087956f5097e20f041aa43ca24d4c60d662fc425cf1edc9723364",
+    "complete": true,
+    "completed_trajectories": 30,
     "config": "configs/paper/texture/convergence_pilot.toml",
     "config_sha256": "09d602a3fd6d3f5961362ff040729f27c7c742d2346ca079b711550ae08f193c",
     "expected_additional_optimizer_steps": 144000,
     "expected_observations": 180,
     "expected_optimizer_steps": 150000,
     "expected_trajectories": 30,
-    "generated_at_utc": "2026-07-22T03:38:27.647059+00:00",
+    "generated_at_utc": "2026-07-23T11:09:47.317864+00:00",
     "manifest": {
       "current": true,
-      "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-ca6664fc7b36/manifest.json",
+      "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390/manifest.json",
       "present": true,
-      "sha256": "352d4de3f7f680a34f76c426cd6fef1a57f83672b598b5fce9ecf664beb5c4c3"
+      "sha256": "de5610417386ae2fd4fe4d849ddf97dda19efa6d284839d5ef3498d99af2b917"
     },
     "maximum_concurrent_workers": 2,
-    "observations": 10,
-    "optimizer_step_completion_fraction": 0.05954,
-    "output_dir": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-ca6664fc7b36",
+    "observations": 180,
+    "optimizer_step_completion_fraction": 1.0,
+    "output_dir": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390",
     "per_rank": {
       "0": {
-        "completed_trajectories": 0,
+        "completed_trajectories": 9,
         "expected_trajectories": 9,
-        "optimizer_steps": 4466
+        "optimizer_steps": 45000
       },
       "1": {
-        "completed_trajectories": 0,
+        "completed_trajectories": 9,
         "expected_trajectories": 9,
-        "optimizer_steps": 4465
+        "optimizer_steps": 45000
       },
       "2": {
-        "completed_trajectories": 0,
+        "completed_trajectories": 6,
         "expected_trajectories": 6,
-        "optimizer_steps": 0
+        "optimizer_steps": 30000
       },
       "3": {
-        "completed_trajectories": 0,
+        "completed_trajectories": 6,
         "expected_trajectories": 6,
-        "optimizer_steps": 0
+        "optimizer_steps": 30000
       }
     },
     "physical_devices": [
@@ -1476,20 +1754,20 @@
     "texture_manifest_sha256": "63e6597b835b6b3f25dca64ea1f0832e42ae49869010795ef8e02117d56070e1",
     "workers": [
       {
-        "attempted_trajectories": 1,
-        "completed_trajectories": 0,
+        "attempted_trajectories": 9,
+        "completed_trajectories": 9,
         "device": "cuda:0",
-        "effective_state": "interrupted",
-        "elapsed_wall_seconds": 68.18571110099947,
-        "finished_at_utc": "2026-07-22T03:34:06.217345+00:00",
+        "effective_state": "complete",
+        "elapsed_wall_seconds": 1153.5267160539952,
+        "finished_at_utc": "2026-07-23T10:59:17.650894+00:00",
         "liveness_evidence": {
           "reason": "pid_not_present_or_unreadable",
           "status": "not_alive"
         },
         "max_wall_seconds": 7200,
-        "output_dir": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-ca6664fc7b36",
-        "physical_device_index": 0,
-        "pid": 215115,
+        "output_dir": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390",
+        "physical_device_index": 2,
+        "pid": 1371263,
         "preflight": {
           "bounded_plan": {
             "full_table2_optimizer_steps": 71280000,
@@ -1513,27 +1791,28 @@
             "total_memory_bytes": 34208743424
           },
           "disk": {
-            "free_bytes": 834578411520,
+            "free_bytes": 832555909120,
             "path": "results",
             "required_free_bytes": 10737418240
           },
           "errors": [],
           "full_table2_active_workers": 0,
           "full_table2_launch_authorization": {
-            "blocks_pilot": false,
+            "authorization_id": "explicit-user-request-20260722T1118+0800-gpu01-world2-table2-only",
+            "blocks_pilot": true,
             "path": "results/texture_repro/table2_launch_authorization.json",
-            "present": false
+            "present": true
           },
-          "generated_at_utc": "2026-07-22T03:32:58.085627+00:00",
-          "physical_device_index": 0,
+          "generated_at_utc": "2026-07-23T10:40:04.177359+00:00",
+          "physical_device_index": 2,
           "rank": 0,
           "schema": "peps.texture_convergence_pilot_preflight",
           "schema_version": 1,
           "status": "passed",
           "texture_manifest_sha256": "63e6597b835b6b3f25dca64ea1f0832e42ae49869010795ef8e02117d56070e1",
           "visibility": {
-            "CUDA_VISIBLE_DEVICES": "0",
-            "HIP_VISIBLE_DEVICES": "0",
+            "CUDA_VISIBLE_DEVICES": "2",
+            "HIP_VISIBLE_DEVICES": "2",
             "ROCR_VISIBLE_DEVICES": null
           },
           "wall_clock": {
@@ -1545,38 +1824,38 @@
         "process_alive": false,
         "process_identity": {
           "boot_id": "0ca11c34-38ca-4d2c-aa05-091065da66c3",
-          "command_sha256": "9808df93296da35bf99fc8b1aeb4785eaf5fed343c3432d3cf8af43bb34d0ed6",
-          "start_time_ticks": 965619
+          "command_sha256": "bd58f9dcc20e207388deeee52bb83aa2054754280c4781088501587c445317ff",
+          "start_time_ticks": 12168229
         },
         "rank": 0,
         "schema": "peps.texture_convergence_pilot_worker",
         "schema_version": 1,
         "selected_trajectories": 9,
-        "started_at_utc": "2026-07-22T03:33:02.070339+00:00",
-        "state": "interrupted",
+        "started_at_utc": "2026-07-23T10:40:08.033704+00:00",
+        "state": "complete",
         "visibility": {
-          "CUDA_VISIBLE_DEVICES": "0",
-          "HIP_VISIBLE_DEVICES": "0",
+          "CUDA_VISIBLE_DEVICES": "2",
+          "HIP_VISIBLE_DEVICES": "2",
           "ROCR_VISIBLE_DEVICES": null
         },
-        "wall_clock_limited_trajectories": 1,
+        "wall_clock_limited_trajectories": 0,
         "world_size": 4
       },
       {
-        "attempted_trajectories": 1,
-        "completed_trajectories": 0,
+        "attempted_trajectories": 9,
+        "completed_trajectories": 9,
         "device": "cuda:0",
-        "effective_state": "interrupted",
-        "elapsed_wall_seconds": 68.21512651500052,
-        "finished_at_utc": "2026-07-22T03:34:06.250233+00:00",
+        "effective_state": "complete",
+        "elapsed_wall_seconds": 1108.2011709200015,
+        "finished_at_utc": "2026-07-23T10:58:32.307253+00:00",
         "liveness_evidence": {
           "reason": "pid_not_present_or_unreadable",
           "status": "not_alive"
         },
         "max_wall_seconds": 7200,
-        "output_dir": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-ca6664fc7b36",
-        "physical_device_index": 1,
-        "pid": 215116,
+        "output_dir": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390",
+        "physical_device_index": 3,
+        "pid": 1371264,
         "preflight": {
           "bounded_plan": {
             "full_table2_optimizer_steps": 71280000,
@@ -1600,27 +1879,28 @@
             "total_memory_bytes": 34208743424
           },
           "disk": {
-            "free_bytes": 834578411520,
+            "free_bytes": 832555909120,
             "path": "results",
             "required_free_bytes": 10737418240
           },
           "errors": [],
           "full_table2_active_workers": 0,
           "full_table2_launch_authorization": {
-            "blocks_pilot": false,
+            "authorization_id": "explicit-user-request-20260722T1118+0800-gpu01-world2-table2-only",
+            "blocks_pilot": true,
             "path": "results/texture_repro/table2_launch_authorization.json",
-            "present": false
+            "present": true
           },
-          "generated_at_utc": "2026-07-22T03:32:58.085642+00:00",
-          "physical_device_index": 1,
+          "generated_at_utc": "2026-07-23T10:40:04.158943+00:00",
+          "physical_device_index": 3,
           "rank": 1,
           "schema": "peps.texture_convergence_pilot_preflight",
           "schema_version": 1,
           "status": "passed",
           "texture_manifest_sha256": "63e6597b835b6b3f25dca64ea1f0832e42ae49869010795ef8e02117d56070e1",
           "visibility": {
-            "CUDA_VISIBLE_DEVICES": "1",
-            "HIP_VISIBLE_DEVICES": "1",
+            "CUDA_VISIBLE_DEVICES": "3",
+            "HIP_VISIBLE_DEVICES": "3",
             "ROCR_VISIBLE_DEVICES": null
           },
           "wall_clock": {
@@ -1632,21 +1912,197 @@
         "process_alive": false,
         "process_identity": {
           "boot_id": "0ca11c34-38ca-4d2c-aa05-091065da66c3",
-          "command_sha256": "9877e9b9214d083d78b15e0cde9cad9a2e15e8dc2f1bd2e4dc9cfdac1ee164ba",
-          "start_time_ticks": 965619
+          "command_sha256": "83d704099872f0bf9f679ceba8df0ab9d5aa8c148a15dc5edfb54b1f0d2a737f",
+          "start_time_ticks": 12168229
         },
         "rank": 1,
         "schema": "peps.texture_convergence_pilot_worker",
         "schema_version": 1,
         "selected_trajectories": 9,
-        "started_at_utc": "2026-07-22T03:33:02.071117+00:00",
-        "state": "interrupted",
+        "started_at_utc": "2026-07-23T10:40:08.033275+00:00",
+        "state": "complete",
         "visibility": {
-          "CUDA_VISIBLE_DEVICES": "1",
-          "HIP_VISIBLE_DEVICES": "1",
+          "CUDA_VISIBLE_DEVICES": "3",
+          "HIP_VISIBLE_DEVICES": "3",
           "ROCR_VISIBLE_DEVICES": null
         },
-        "wall_clock_limited_trajectories": 1,
+        "wall_clock_limited_trajectories": 0,
+        "world_size": 4
+      },
+      {
+        "attempted_trajectories": 6,
+        "completed_trajectories": 6,
+        "device": "cuda:0",
+        "effective_state": "complete",
+        "elapsed_wall_seconds": 623.4412756629899,
+        "finished_at_utc": "2026-07-23T11:09:42.516838+00:00",
+        "liveness_evidence": {
+          "reason": "pid_not_present_or_unreadable",
+          "status": "not_alive"
+        },
+        "max_wall_seconds": 7200,
+        "output_dir": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390",
+        "physical_device_index": 2,
+        "pid": 1381884,
+        "preflight": {
+          "bounded_plan": {
+            "full_table2_optimizer_steps": 71280000,
+            "launches_full_table2": false,
+            "optimizer_steps": 150000,
+            "trajectories": 30
+          },
+          "config_sha256": "09d602a3fd6d3f5961362ff040729f27c7c742d2346ca079b711550ae08f193c",
+          "dataset_verification": {
+            "current": true,
+            "path": "results/texture_repro/dataset_verification.json",
+            "sha256": "bbce2ecd6cac8e313669866e0e542ce88d43415ee6f8395e1d31672d95196b66"
+          },
+          "device": {
+            "architecture": "gfx1201",
+            "index": 0,
+            "name": "AMD Radeon Graphics",
+            "preferred_architecture": "gfx1201",
+            "preferred_architecture_match": true,
+            "requested": "cuda:0",
+            "total_memory_bytes": 34208743424
+          },
+          "disk": {
+            "free_bytes": 828569112576,
+            "path": "results",
+            "required_free_bytes": 10737418240
+          },
+          "errors": [],
+          "full_table2_active_workers": 0,
+          "full_table2_launch_authorization": {
+            "authorization_id": "explicit-user-request-20260722T1118+0800-gpu01-world2-table2-only",
+            "blocks_pilot": true,
+            "path": "results/texture_repro/table2_launch_authorization.json",
+            "present": true
+          },
+          "generated_at_utc": "2026-07-23T10:59:19.133805+00:00",
+          "physical_device_index": 2,
+          "rank": 2,
+          "schema": "peps.texture_convergence_pilot_preflight",
+          "schema_version": 1,
+          "status": "passed",
+          "texture_manifest_sha256": "63e6597b835b6b3f25dca64ea1f0832e42ae49869010795ef8e02117d56070e1",
+          "visibility": {
+            "CUDA_VISIBLE_DEVICES": "2",
+            "HIP_VISIBLE_DEVICES": "2",
+            "ROCR_VISIBLE_DEVICES": null
+          },
+          "wall_clock": {
+            "hard_cap_seconds": 7200,
+            "requested_seconds": 7200
+          },
+          "world_size": 4
+        },
+        "process_alive": false,
+        "process_identity": {
+          "boot_id": "0ca11c34-38ca-4d2c-aa05-091065da66c3",
+          "command_sha256": "90e2b7b34e07a82f62eec048b02d751b56a0a4e175975146fa6f09088ff92c55",
+          "start_time_ticks": 12283728
+        },
+        "rank": 2,
+        "schema": "peps.texture_convergence_pilot_worker",
+        "schema_version": 1,
+        "selected_trajectories": 6,
+        "started_at_utc": "2026-07-23T10:59:19.150024+00:00",
+        "state": "complete",
+        "visibility": {
+          "CUDA_VISIBLE_DEVICES": "2",
+          "HIP_VISIBLE_DEVICES": "2",
+          "ROCR_VISIBLE_DEVICES": null
+        },
+        "wall_clock_limited_trajectories": 0,
+        "world_size": 4
+      },
+      {
+        "attempted_trajectories": 6,
+        "completed_trajectories": 6,
+        "device": "cuda:0",
+        "effective_state": "complete",
+        "elapsed_wall_seconds": 655.2511750260019,
+        "finished_at_utc": "2026-07-23T11:09:29.092863+00:00",
+        "liveness_evidence": {
+          "reason": "pid_not_present_or_unreadable",
+          "status": "not_alive"
+        },
+        "max_wall_seconds": 7200,
+        "output_dir": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-7e5a5c8c3390",
+        "physical_device_index": 3,
+        "pid": 1381358,
+        "preflight": {
+          "bounded_plan": {
+            "full_table2_optimizer_steps": 71280000,
+            "launches_full_table2": false,
+            "optimizer_steps": 150000,
+            "trajectories": 30
+          },
+          "config_sha256": "09d602a3fd6d3f5961362ff040729f27c7c742d2346ca079b711550ae08f193c",
+          "dataset_verification": {
+            "current": true,
+            "path": "results/texture_repro/dataset_verification.json",
+            "sha256": "bbce2ecd6cac8e313669866e0e542ce88d43415ee6f8395e1d31672d95196b66"
+          },
+          "device": {
+            "architecture": "gfx1201",
+            "index": 0,
+            "name": "AMD Radeon Graphics",
+            "preferred_architecture": "gfx1201",
+            "preferred_architecture_match": true,
+            "requested": "cuda:0",
+            "total_memory_bytes": 34208743424
+          },
+          "disk": {
+            "free_bytes": 828783288320,
+            "path": "results",
+            "required_free_bytes": 10737418240
+          },
+          "errors": [],
+          "full_table2_active_workers": 0,
+          "full_table2_launch_authorization": {
+            "authorization_id": "explicit-user-request-20260722T1118+0800-gpu01-world2-table2-only",
+            "blocks_pilot": true,
+            "path": "results/texture_repro/table2_launch_authorization.json",
+            "present": true
+          },
+          "generated_at_utc": "2026-07-23T10:58:33.901956+00:00",
+          "physical_device_index": 3,
+          "rank": 3,
+          "schema": "peps.texture_convergence_pilot_preflight",
+          "schema_version": 1,
+          "status": "passed",
+          "texture_manifest_sha256": "63e6597b835b6b3f25dca64ea1f0832e42ae49869010795ef8e02117d56070e1",
+          "visibility": {
+            "CUDA_VISIBLE_DEVICES": "3",
+            "HIP_VISIBLE_DEVICES": "3",
+            "ROCR_VISIBLE_DEVICES": null
+          },
+          "wall_clock": {
+            "hard_cap_seconds": 7200,
+            "requested_seconds": 7200
+          },
+          "world_size": 4
+        },
+        "process_alive": false,
+        "process_identity": {
+          "boot_id": "0ca11c34-38ca-4d2c-aa05-091065da66c3",
+          "command_sha256": "a1f756b93685c7ecdbe2b48408f63b20843d28e68148276f1815af8050c4d70e",
+          "start_time_ticks": 12279191
+        },
+        "rank": 3,
+        "schema": "peps.texture_convergence_pilot_worker",
+        "schema_version": 1,
+        "selected_trajectories": 6,
+        "started_at_utc": "2026-07-23T10:58:33.918825+00:00",
+        "state": "complete",
+        "visibility": {
+          "CUDA_VISIBLE_DEVICES": "3",
+          "HIP_VISIBLE_DEVICES": "3",
+          "ROCR_VISIBLE_DEVICES": null
+        },
+        "wall_clock_limited_trajectories": 0,
         "world_size": 4
       }
     ],
@@ -1705,27 +2161,27 @@
   "ranking_agreements": [
     {
       "from_budget": 10,
-      "pairwise_agreement": 0.0,
+      "pairwise_agreement": 0.8,
       "to_budget": 50
     },
     {
       "from_budget": 50,
-      "pairwise_agreement": 1.0,
+      "pairwise_agreement": 0.8,
       "to_budget": 200
     },
     {
       "from_budget": 200,
-      "pairwise_agreement": 1.0,
+      "pairwise_agreement": 0.6,
       "to_budget": 1000
     },
     {
       "from_budget": 1000,
-      "pairwise_agreement": 1.0,
+      "pairwise_agreement": 0.8,
       "to_budget": 2000
     },
     {
       "from_budget": 2000,
-      "pairwise_agreement": null,
+      "pairwise_agreement": 0.9,
       "to_budget": 5000
     }
   ],
@@ -1733,13 +2189,19 @@
     {
       "budget_steps": 10,
       "methods": [
+        "NTC_PinkPEPS",
+        "Grid-PinkPEPS4F",
+        "BI-Grid",
         "LPE",
-        "BI-Grid"
+        "NTC_N"
       ]
     },
     {
       "budget_steps": 50,
       "methods": [
+        "NTC_PinkPEPS",
+        "Grid-PinkPEPS4F",
+        "NTC_N",
         "BI-Grid",
         "LPE"
       ]
@@ -1747,6 +2209,9 @@
     {
       "budget_steps": 200,
       "methods": [
+        "NTC_N",
+        "NTC_PinkPEPS",
+        "Grid-PinkPEPS4F",
         "BI-Grid",
         "LPE"
       ]
@@ -1754,43 +2219,55 @@
     {
       "budget_steps": 1000,
       "methods": [
+        "NTC_PinkPEPS",
+        "Grid-PinkPEPS4F",
         "BI-Grid",
-        "LPE"
+        "LPE",
+        "NTC_N"
       ]
     },
     {
       "budget_steps": 2000,
       "methods": [
+        "Grid-PinkPEPS4F",
+        "NTC_PinkPEPS",
+        "LPE",
         "BI-Grid",
-        "LPE"
+        "NTC_N"
       ]
     },
     {
       "budget_steps": 5000,
-      "methods": []
+      "methods": [
+        "Grid-PinkPEPS4F",
+        "NTC_PinkPEPS",
+        "BI-Grid",
+        "LPE",
+        "NTC_N"
+      ]
     }
   ],
   "runtime": {
-    "extension_gpu_hours": 0.033696628721671305,
-    "extension_gpu_seconds_per_optimizer_step": 0.033696628721671305,
-    "extension_gpu_train_seconds": 121.3078633980167,
-    "extension_optimizer_steps": 3600,
+    "extension_gpu_hours": 0.968986354341226,
+    "extension_gpu_seconds_per_optimizer_step": 0.02422465885853065,
+    "extension_gpu_train_seconds": 3488.3508756284136,
+    "extension_optimizer_steps": 144000,
     "full_projection_warning": "Representative early-step throughput only; method mix, output width, evaluation, I/O, and long-run effects make this non-binding.",
-    "maximum_worker_elapsed_seconds": 68.21512651500052,
-    "mean_gpu_seconds_per_optimizer_step": 0.015284915448001583,
-    "measured_optimizer_steps": 4000,
-    "observed_parallel_wall_seconds": 64.179894,
+    "maximum_worker_elapsed_seconds": 1153.5267160539952,
+    "mean_gpu_seconds_per_optimizer_step": 0.02434893615155609,
+    "measured_optimizer_steps": 150000,
+    "observed_parallel_wall_seconds": 1774.483563,
     "physical_devices": [
       0,
       1
     ],
     "physical_gpu_count": 2,
-    "rough_full_table2_four_gpu_seconds": 272377.1932833882,
-    "source_gpu_hours": 0.0026039354591666274,
-    "source_gpu_train_seconds": 9.374167652999859,
-    "source_optimizer_steps": 400,
-    "summed_gpu_hours": 0.016983239386668427,
-    "summed_gpu_train_seconds": 61.139661792006336
+    "rough_full_table2_four_gpu_seconds": 433898.0422207295,
+    "source_gpu_hours": 0.04555265197361096,
+    "source_gpu_train_seconds": 163.98954710499947,
+    "source_optimizer_steps": 6000,
+    "summed_gpu_hours": 1.014539006314837,
+    "summed_gpu_train_seconds": 3652.340422733413
   },
   "schema": "peps.texture_convergence_pilot_report",
   "schema_version": 1
