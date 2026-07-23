@@ -1,0 +1,288 @@
+{
+  "artifact": "texture-frequency-sweep",
+  "complete": false,
+  "generated_at_utc": "2026-07-22T00:50:43.643028+00:00",
+  "latency_scope": "PyTorch checkpoint inference on Paving Stones 070 seed 0, 1048576 queries; not fused-HIP comparable",
+  "limitations": [
+    {
+      "code": "texture_file_selection_not_published",
+      "detail": "The paper names 18 sets and eight map categories but not exact source files. data/manifests/textures.json freezes a non-duplicating 78-map selection."
+    },
+    {
+      "code": "optimizer_and_seed_not_published",
+      "detail": "Adam and seeds 0/1/2 are explicit reproduction choices. The paper publishes the dual learning rates, cosine schedule, batch size, epochs, and batches per epoch, but not optimizer or seeds."
+    },
+    {
+      "code": "sampling_text_is_ambiguous",
+      "detail": "The main text says bilinear-filtered targets while the appendix says random pixel locations. The runner samples random native pixel locations; at those locations the bilinear target is exactly the stored texel."
+    },
+    {
+      "code": "pytorch_latency_not_fused_paper_latency",
+      "detail": "The 3F/4F sweep times checkpoint inference in PyTorch. It records real local latency but is not comparable to the paper's fused HIP/WMMA three-channel decoder."
+    },
+    {
+      "code": "figure8_crop_not_published",
+      "detail": "The paper states a 100-pixel Paving Stones sample but does not publish crop coordinates. The generator defaults to a centered 100x100 crop and records the exact rectangle."
+    }
+  ],
+  "paired_deltas": [
+    {
+      "count": 0,
+      "four_frequency_method": "Grid-PEPS4F",
+      "mean_delta_4f_minus_3f": null,
+      "metric": "psnr",
+      "three_frequency_method": "Grid-PEPS3F"
+    },
+    {
+      "count": 0,
+      "four_frequency_method": "Grid-PEPS4F",
+      "mean_delta_4f_minus_3f": null,
+      "metric": "ssim",
+      "three_frequency_method": "Grid-PEPS3F"
+    },
+    {
+      "count": 0,
+      "four_frequency_method": "Grid-PinkPEPS4F",
+      "mean_delta_4f_minus_3f": null,
+      "metric": "psnr",
+      "three_frequency_method": "Grid-PinkPEPS3F"
+    },
+    {
+      "count": 0,
+      "four_frequency_method": "Grid-PinkPEPS4F",
+      "mean_delta_4f_minus_3f": null,
+      "metric": "ssim",
+      "three_frequency_method": "Grid-PinkPEPS3F"
+    },
+    {
+      "count": 0,
+      "four_frequency_method": "NTC_PEPS4F",
+      "mean_delta_4f_minus_3f": null,
+      "metric": "psnr",
+      "three_frequency_method": "NTC_PEPS3F"
+    },
+    {
+      "count": 0,
+      "four_frequency_method": "NTC_PEPS4F",
+      "mean_delta_4f_minus_3f": null,
+      "metric": "ssim",
+      "three_frequency_method": "NTC_PEPS3F"
+    },
+    {
+      "count": 0,
+      "four_frequency_method": "NTC_PinkPEPS4F",
+      "mean_delta_4f_minus_3f": null,
+      "metric": "psnr",
+      "three_frequency_method": "NTC_PinkPEPS3F"
+    },
+    {
+      "count": 0,
+      "four_frequency_method": "NTC_PinkPEPS4F",
+      "mean_delta_4f_minus_3f": null,
+      "metric": "ssim",
+      "three_frequency_method": "NTC_PinkPEPS3F"
+    }
+  ],
+  "paper": "PEPS Extended arXiv:2604.24167v1",
+  "profile": "full",
+  "progress": {
+    "accounted_optimizer_steps": 0,
+    "active_workers": 0,
+    "artifact": "sweep",
+    "canonical": false,
+    "checkpoint_errors": [],
+    "checkpointed_incomplete_jobs": 0,
+    "complete": false,
+    "completed_jobs": 0,
+    "config": "configs/paper/texture_sweep_full.toml",
+    "config_sha256": "5dce37bec48b1c8b15fa5ccbe44725ec89538c2d97ae243da185e87557c8b7b1",
+    "expected_jobs": 432,
+    "expected_optimizer_steps": 51840000,
+    "job_completion_fraction": 0.0,
+    "optimizer_step_completion_fraction": 0.0,
+    "output_dir": "results/work/texture-repro/sweep/5dce37bec48b-63e6597b835b-6c40de345103",
+    "per_rank": {
+      "0": {
+        "completed_jobs": 0,
+        "expected_jobs": 108,
+        "optimizer_steps": 0
+      },
+      "1": {
+        "completed_jobs": 0,
+        "expected_jobs": 108,
+        "optimizer_steps": 0
+      },
+      "2": {
+        "completed_jobs": 0,
+        "expected_jobs": 108,
+        "optimizer_steps": 0
+      },
+      "3": {
+        "completed_jobs": 0,
+        "expected_jobs": 108,
+        "optimizer_steps": 0
+      }
+    },
+    "profile": "full",
+    "result_errors": [],
+    "throughput_observation": null,
+    "workers": [],
+    "world_size": 4
+  },
+  "rows": [
+    {
+      "aggregation": "concat",
+      "complete": false,
+      "decoder_input_dim": 119,
+      "encoder_params": 17825792,
+      "expected_job_count": 54,
+      "expected_map_observation_count": 234,
+      "frequencies": 3,
+      "job_count": 0,
+      "latency_comparable_to_paper": false,
+      "latency_median_ms": null,
+      "latency_million_queries_per_second": null,
+      "latency_observation_count": 0,
+      "latency_p95_ms": null,
+      "map_observation_count": 0,
+      "method": "Grid-PEPS3F",
+      "psnr": null,
+      "ssim": null
+    },
+    {
+      "aggregation": "concat",
+      "complete": false,
+      "decoder_input_dim": 153,
+      "encoder_params": 17825792,
+      "expected_job_count": 54,
+      "expected_map_observation_count": 234,
+      "frequencies": 4,
+      "job_count": 0,
+      "latency_comparable_to_paper": false,
+      "latency_median_ms": null,
+      "latency_million_queries_per_second": null,
+      "latency_observation_count": 0,
+      "latency_p95_ms": null,
+      "map_observation_count": 0,
+      "method": "Grid-PEPS4F",
+      "psnr": null,
+      "ssim": null
+    },
+    {
+      "aggregation": "pink",
+      "complete": false,
+      "decoder_input_dim": 45,
+      "encoder_params": 17825792,
+      "expected_job_count": 54,
+      "expected_map_observation_count": 234,
+      "frequencies": 3,
+      "job_count": 0,
+      "latency_comparable_to_paper": false,
+      "latency_median_ms": null,
+      "latency_million_queries_per_second": null,
+      "latency_observation_count": 0,
+      "latency_p95_ms": null,
+      "map_observation_count": 0,
+      "method": "Grid-PinkPEPS3F",
+      "psnr": null,
+      "ssim": null
+    },
+    {
+      "aggregation": "pink",
+      "complete": false,
+      "decoder_input_dim": 47,
+      "encoder_params": 17825792,
+      "expected_job_count": 54,
+      "expected_map_observation_count": 234,
+      "frequencies": 4,
+      "job_count": 0,
+      "latency_comparable_to_paper": false,
+      "latency_median_ms": null,
+      "latency_million_queries_per_second": null,
+      "latency_observation_count": 0,
+      "latency_p95_ms": null,
+      "map_observation_count": 0,
+      "method": "Grid-PinkPEPS4F",
+      "psnr": null,
+      "ssim": null
+    },
+    {
+      "aggregation": "concat",
+      "complete": false,
+      "decoder_input_dim": 488,
+      "encoder_params": 17825792,
+      "expected_job_count": 54,
+      "expected_map_observation_count": 234,
+      "frequencies": 3,
+      "job_count": 0,
+      "latency_comparable_to_paper": false,
+      "latency_median_ms": null,
+      "latency_million_queries_per_second": null,
+      "latency_observation_count": 0,
+      "latency_p95_ms": null,
+      "map_observation_count": 0,
+      "method": "NTC_PEPS3F",
+      "psnr": null,
+      "ssim": null
+    },
+    {
+      "aggregation": "concat",
+      "complete": false,
+      "decoder_input_dim": 624,
+      "encoder_params": 17825792,
+      "expected_job_count": 54,
+      "expected_map_observation_count": 234,
+      "frequencies": 4,
+      "job_count": 0,
+      "latency_comparable_to_paper": false,
+      "latency_median_ms": null,
+      "latency_million_queries_per_second": null,
+      "latency_observation_count": 0,
+      "latency_p95_ms": null,
+      "map_observation_count": 0,
+      "method": "NTC_PEPS4F",
+      "psnr": null,
+      "ssim": null
+    },
+    {
+      "aggregation": "pink",
+      "complete": false,
+      "decoder_input_dim": 198,
+      "encoder_params": 17825792,
+      "expected_job_count": 54,
+      "expected_map_observation_count": 234,
+      "frequencies": 3,
+      "job_count": 0,
+      "latency_comparable_to_paper": false,
+      "latency_median_ms": null,
+      "latency_million_queries_per_second": null,
+      "latency_observation_count": 0,
+      "latency_p95_ms": null,
+      "map_observation_count": 0,
+      "method": "NTC_PinkPEPS3F",
+      "psnr": null,
+      "ssim": null
+    },
+    {
+      "aggregation": "pink",
+      "complete": false,
+      "decoder_input_dim": 206,
+      "encoder_params": 17825792,
+      "expected_job_count": 54,
+      "expected_map_observation_count": 234,
+      "frequencies": 4,
+      "job_count": 0,
+      "latency_comparable_to_paper": false,
+      "latency_median_ms": null,
+      "latency_million_queries_per_second": null,
+      "latency_observation_count": 0,
+      "latency_p95_ms": null,
+      "map_observation_count": 0,
+      "method": "NTC_PinkPEPS4F",
+      "psnr": null,
+      "ssim": null
+    }
+  ],
+  "schema": "peps.texture_frequency_sweep_report",
+  "schema_version": 1
+}

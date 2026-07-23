@@ -1,0 +1,1162 @@
+{
+  "artifacts": {
+    "appendix-smoke": {
+      "accounted_optimizer_steps": 13,
+      "active_workers": 0,
+      "artifact": "appendix-smoke",
+      "canonical": false,
+      "checkpoint_errors": [],
+      "checkpoint_warnings": [],
+      "checkpointed_incomplete_jobs": 0,
+      "complete": true,
+      "completed_jobs": 13,
+      "config": "configs/paper/image_appendix_smoke.toml",
+      "config_sha256": "5ce462950656ad2851ced98d3cc8ba399cb860c95c66a0ceeec21207ff8b8dae",
+      "expected_jobs": 13,
+      "expected_optimizer_steps": 13,
+      "incomplete_temporary_outputs": [],
+      "job_completion_fraction": 1.0,
+      "optimizer_step_completion_fraction": 1.0,
+      "output_dir": "/home/aup/yy/workspace/peps/results/work/image-repro/appendix-smoke/5ce462950656ad28",
+      "output_integrity_ok": true,
+      "per_rank": {
+        "0": {
+          "checkpointed_incomplete_jobs": 0,
+          "completed_jobs": 4,
+          "expected_jobs": 4,
+          "optimizer_steps": 4
+        },
+        "1": {
+          "checkpointed_incomplete_jobs": 0,
+          "completed_jobs": 3,
+          "expected_jobs": 3,
+          "optimizer_steps": 3
+        },
+        "2": {
+          "checkpointed_incomplete_jobs": 0,
+          "completed_jobs": 3,
+          "expected_jobs": 3,
+          "optimizer_steps": 3
+        },
+        "3": {
+          "checkpointed_incomplete_jobs": 0,
+          "completed_jobs": 3,
+          "expected_jobs": 3,
+          "optimizer_steps": 3
+        }
+      },
+      "profile": "smoke",
+      "result_errors": [],
+      "throughput_observation": {
+        "aggregate_checkpointed_steps_per_second": 3.186536149414229,
+        "launch_elapsed_seconds": 4.079665,
+        "naive_remaining_seconds_at_current_job_mix": 0.0,
+        "observation_end_evidence": "latest_valid_result_or_checkpoint_mtime",
+        "observation_ended_at_utc": "2026-07-21T18:52:22.148118+00:00",
+        "warning": "Not an ETA: method costs differ and progress is visible only at checkpoint boundaries."
+      },
+      "unexpected_checkpoint_files": [],
+      "unexpected_result_files": [],
+      "worker_status_errors": [],
+      "workers": [
+        {
+          "artifact": "appendix-smoke",
+          "device": "cuda:0",
+          "effective_state": "complete",
+          "expected_selected_shard_jobs": 4,
+          "finished_at_utc": "2026-07-21T18:52:22.149275+00:00",
+          "liveness_evidence": {
+            "reason": "pid_not_present_or_unreadable",
+            "status": "not_alive"
+          },
+          "output_dir": "results/work/image-repro/appendix-smoke/5ce462950656ad28",
+          "pid": 3342507,
+          "process_alive": false,
+          "progress_evidence": {
+            "checkpointed_incomplete_jobs": 0,
+            "completed_jobs": 4,
+            "expected_jobs": 4,
+            "optimizer_steps": 4
+          },
+          "rank": 0,
+          "recorded_state": "complete",
+          "records": 4,
+          "schema": "peps.image_worker_status",
+          "schema_version": 1,
+          "selected_dataset_receipt_count": 1,
+          "selected_instances": [
+            "kodim01"
+          ],
+          "selected_methods": [
+            "G-Brownian-PEPS",
+            "G-P-PEPS-L1",
+            "G-P-PEPS-L1-dual-cosine-LeakyReLU",
+            "G-P-PEPS-L1-fixed-GELU",
+            "G-P-PEPS-L1-fixed-SiLU",
+            "G-P-PEPS-L2-fixed-LeakyReLU",
+            "G-PEPS-WIRE-sensitivity",
+            "G-PEPS-frequency-pair-sum",
+            "G-PEPS-full-sum",
+            "G-PEPS-no-original-point",
+            "G-PEPS-no-sharing",
+            "Grid-L1",
+            "NTC_N-L1"
+          ],
+          "started_at_utc": "2026-07-21T18:52:18.068453+00:00",
+          "state": "complete",
+          "world_size": 4
+        },
+        {
+          "artifact": "appendix-smoke",
+          "device": "cuda:0",
+          "effective_state": "complete",
+          "expected_selected_shard_jobs": 3,
+          "finished_at_utc": "2026-07-21T18:52:21.510790+00:00",
+          "liveness_evidence": {
+            "reason": "pid_not_present_or_unreadable",
+            "status": "not_alive"
+          },
+          "output_dir": "results/work/image-repro/appendix-smoke/5ce462950656ad28",
+          "pid": 3342508,
+          "process_alive": false,
+          "progress_evidence": {
+            "checkpointed_incomplete_jobs": 0,
+            "completed_jobs": 3,
+            "expected_jobs": 3,
+            "optimizer_steps": 3
+          },
+          "rank": 1,
+          "recorded_state": "complete",
+          "records": 3,
+          "schema": "peps.image_worker_status",
+          "schema_version": 1,
+          "selected_dataset_receipt_count": 1,
+          "selected_instances": [
+            "kodim01"
+          ],
+          "selected_methods": [
+            "G-Brownian-PEPS",
+            "G-P-PEPS-L1",
+            "G-P-PEPS-L1-dual-cosine-LeakyReLU",
+            "G-P-PEPS-L1-fixed-GELU",
+            "G-P-PEPS-L1-fixed-SiLU",
+            "G-P-PEPS-L2-fixed-LeakyReLU",
+            "G-PEPS-WIRE-sensitivity",
+            "G-PEPS-frequency-pair-sum",
+            "G-PEPS-full-sum",
+            "G-PEPS-no-original-point",
+            "G-PEPS-no-sharing",
+            "Grid-L1",
+            "NTC_N-L1"
+          ],
+          "started_at_utc": "2026-07-21T18:52:18.088233+00:00",
+          "state": "complete",
+          "world_size": 4
+        },
+        {
+          "artifact": "appendix-smoke",
+          "device": "cuda:0",
+          "effective_state": "complete",
+          "expected_selected_shard_jobs": 3,
+          "finished_at_utc": "2026-07-21T18:52:22.055520+00:00",
+          "liveness_evidence": {
+            "reason": "pid_not_present_or_unreadable",
+            "status": "not_alive"
+          },
+          "output_dir": "results/work/image-repro/appendix-smoke/5ce462950656ad28",
+          "pid": 3342509,
+          "process_alive": false,
+          "progress_evidence": {
+            "checkpointed_incomplete_jobs": 0,
+            "completed_jobs": 3,
+            "expected_jobs": 3,
+            "optimizer_steps": 3
+          },
+          "rank": 2,
+          "recorded_state": "complete",
+          "records": 3,
+          "schema": "peps.image_worker_status",
+          "schema_version": 1,
+          "selected_dataset_receipt_count": 1,
+          "selected_instances": [
+            "kodim01"
+          ],
+          "selected_methods": [
+            "G-Brownian-PEPS",
+            "G-P-PEPS-L1",
+            "G-P-PEPS-L1-dual-cosine-LeakyReLU",
+            "G-P-PEPS-L1-fixed-GELU",
+            "G-P-PEPS-L1-fixed-SiLU",
+            "G-P-PEPS-L2-fixed-LeakyReLU",
+            "G-PEPS-WIRE-sensitivity",
+            "G-PEPS-frequency-pair-sum",
+            "G-PEPS-full-sum",
+            "G-PEPS-no-original-point",
+            "G-PEPS-no-sharing",
+            "Grid-L1",
+            "NTC_N-L1"
+          ],
+          "started_at_utc": "2026-07-21T18:52:18.101892+00:00",
+          "state": "complete",
+          "world_size": 4
+        },
+        {
+          "artifact": "appendix-smoke",
+          "device": "cuda:0",
+          "effective_state": "complete",
+          "expected_selected_shard_jobs": 3,
+          "finished_at_utc": "2026-07-21T18:52:21.877095+00:00",
+          "liveness_evidence": {
+            "reason": "pid_not_present_or_unreadable",
+            "status": "not_alive"
+          },
+          "output_dir": "results/work/image-repro/appendix-smoke/5ce462950656ad28",
+          "pid": 3342510,
+          "process_alive": false,
+          "progress_evidence": {
+            "checkpointed_incomplete_jobs": 0,
+            "completed_jobs": 3,
+            "expected_jobs": 3,
+            "optimizer_steps": 3
+          },
+          "rank": 3,
+          "recorded_state": "complete",
+          "records": 3,
+          "schema": "peps.image_worker_status",
+          "schema_version": 1,
+          "selected_dataset_receipt_count": 1,
+          "selected_instances": [
+            "kodim01"
+          ],
+          "selected_methods": [
+            "G-Brownian-PEPS",
+            "G-P-PEPS-L1",
+            "G-P-PEPS-L1-dual-cosine-LeakyReLU",
+            "G-P-PEPS-L1-fixed-GELU",
+            "G-P-PEPS-L1-fixed-SiLU",
+            "G-P-PEPS-L2-fixed-LeakyReLU",
+            "G-PEPS-WIRE-sensitivity",
+            "G-PEPS-frequency-pair-sum",
+            "G-PEPS-full-sum",
+            "G-PEPS-no-original-point",
+            "G-PEPS-no-sharing",
+            "Grid-L1",
+            "NTC_N-L1"
+          ],
+          "started_at_utc": "2026-07-21T18:52:18.095271+00:00",
+          "state": "complete",
+          "world_size": 4
+        }
+      ]
+    },
+    "core-ablations": {
+      "accounted_optimizer_steps": 0,
+      "active_workers": 0,
+      "artifact": "core-ablations",
+      "canonical": false,
+      "checkpoint_errors": [],
+      "checkpoint_warnings": [],
+      "checkpointed_incomplete_jobs": 0,
+      "complete": false,
+      "completed_jobs": 0,
+      "config": "configs/paper/image_core_ablations_full.toml",
+      "config_sha256": "e78c96bc1d8631e5f2b7e949fd3b4c313a7c20f85b1b836f8c9b5f71017769bb",
+      "expected_jobs": 360,
+      "expected_optimizer_steps": 43200000,
+      "incomplete_temporary_outputs": [],
+      "job_completion_fraction": 0.0,
+      "optimizer_step_completion_fraction": 0.0,
+      "output_dir": "/home/aup/yy/workspace/peps/results/work/image-repro/core-ablations/e78c96bc1d8631e5",
+      "output_integrity_ok": true,
+      "per_rank": {
+        "0": {
+          "checkpointed_incomplete_jobs": 0,
+          "completed_jobs": 0,
+          "expected_jobs": 90,
+          "optimizer_steps": 0
+        },
+        "1": {
+          "checkpointed_incomplete_jobs": 0,
+          "completed_jobs": 0,
+          "expected_jobs": 90,
+          "optimizer_steps": 0
+        },
+        "2": {
+          "checkpointed_incomplete_jobs": 0,
+          "completed_jobs": 0,
+          "expected_jobs": 90,
+          "optimizer_steps": 0
+        },
+        "3": {
+          "checkpointed_incomplete_jobs": 0,
+          "completed_jobs": 0,
+          "expected_jobs": 90,
+          "optimizer_steps": 0
+        }
+      },
+      "profile": "full",
+      "result_errors": [],
+      "throughput_observation": null,
+      "unexpected_checkpoint_files": [],
+      "unexpected_result_files": [],
+      "worker_status_errors": [],
+      "workers": []
+    },
+    "recipe-ablations": {
+      "accounted_optimizer_steps": 0,
+      "active_workers": 0,
+      "artifact": "recipe-ablations",
+      "canonical": false,
+      "checkpoint_errors": [],
+      "checkpoint_warnings": [],
+      "checkpointed_incomplete_jobs": 0,
+      "complete": false,
+      "completed_jobs": 0,
+      "config": "configs/paper/image_recipe_ablations_full.toml",
+      "config_sha256": "ee9338c640ff254a44df3a6a261344db5141d2a5ee07ed6cc62589c5f00200a8",
+      "expected_jobs": 360,
+      "expected_optimizer_steps": 43200000,
+      "incomplete_temporary_outputs": [],
+      "job_completion_fraction": 0.0,
+      "optimizer_step_completion_fraction": 0.0,
+      "output_dir": "/home/aup/yy/workspace/peps/results/work/image-repro/recipe-ablations/ee9338c640ff254a",
+      "output_integrity_ok": true,
+      "per_rank": {
+        "0": {
+          "checkpointed_incomplete_jobs": 0,
+          "completed_jobs": 0,
+          "expected_jobs": 90,
+          "optimizer_steps": 0
+        },
+        "1": {
+          "checkpointed_incomplete_jobs": 0,
+          "completed_jobs": 0,
+          "expected_jobs": 90,
+          "optimizer_steps": 0
+        },
+        "2": {
+          "checkpointed_incomplete_jobs": 0,
+          "completed_jobs": 0,
+          "expected_jobs": 90,
+          "optimizer_steps": 0
+        },
+        "3": {
+          "checkpointed_incomplete_jobs": 0,
+          "completed_jobs": 0,
+          "expected_jobs": 90,
+          "optimizer_steps": 0
+        }
+      },
+      "profile": "full",
+      "result_errors": [],
+      "throughput_observation": null,
+      "unexpected_checkpoint_files": [],
+      "unexpected_result_files": [],
+      "worker_status_errors": [],
+      "workers": []
+    },
+    "smoke": {
+      "accounted_optimizer_steps": 216,
+      "active_workers": 0,
+      "artifact": "smoke",
+      "canonical": false,
+      "checkpoint_errors": [],
+      "checkpoint_warnings": [],
+      "checkpointed_incomplete_jobs": 0,
+      "complete": true,
+      "completed_jobs": 216,
+      "config": "configs/paper/image_repro_smoke.toml",
+      "config_sha256": "e3fad4ccf43866b42e57ed135621a20c662a44456f012a8b4199537e03d60e2f",
+      "expected_jobs": 216,
+      "expected_optimizer_steps": 216,
+      "incomplete_temporary_outputs": [],
+      "job_completion_fraction": 1.0,
+      "optimizer_step_completion_fraction": 1.0,
+      "output_dir": "/home/aup/yy/workspace/peps/results/work/image-repro/smoke/e3fad4ccf43866b4",
+      "output_integrity_ok": true,
+      "per_rank": {
+        "0": {
+          "checkpointed_incomplete_jobs": 0,
+          "completed_jobs": 54,
+          "expected_jobs": 54,
+          "optimizer_steps": 54
+        },
+        "1": {
+          "checkpointed_incomplete_jobs": 0,
+          "completed_jobs": 54,
+          "expected_jobs": 54,
+          "optimizer_steps": 54
+        },
+        "2": {
+          "checkpointed_incomplete_jobs": 0,
+          "completed_jobs": 54,
+          "expected_jobs": 54,
+          "optimizer_steps": 54
+        },
+        "3": {
+          "checkpointed_incomplete_jobs": 0,
+          "completed_jobs": 54,
+          "expected_jobs": 54,
+          "optimizer_steps": 54
+        }
+      },
+      "profile": "smoke",
+      "result_errors": [],
+      "throughput_observation": {
+        "aggregate_checkpointed_steps_per_second": 1.0419769331874018,
+        "launch_elapsed_seconds": 207.298255,
+        "naive_remaining_seconds_at_current_job_mix": 0.0,
+        "observation_end_evidence": "latest_valid_result_or_checkpoint_mtime",
+        "observation_ended_at_utc": "2026-07-21T18:50:09.219111+00:00",
+        "warning": "Not an ETA: method costs differ and progress is visible only at checkpoint boundaries."
+      },
+      "unexpected_checkpoint_files": [],
+      "unexpected_result_files": [],
+      "worker_status_errors": [],
+      "workers": [
+        {
+          "artifact": "smoke",
+          "device": "cuda:0",
+          "effective_state": "complete",
+          "expected_selected_shard_jobs": 54,
+          "finished_at_utc": "2026-07-21T18:50:08.965946+00:00",
+          "liveness_evidence": {
+            "reason": "pid_not_present_or_unreadable",
+            "status": "not_alive"
+          },
+          "output_dir": "results/work/image-repro/smoke/e3fad4ccf43866b4",
+          "pid": 3334154,
+          "process_alive": false,
+          "progress_evidence": {
+            "checkpointed_incomplete_jobs": 0,
+            "completed_jobs": 54,
+            "expected_jobs": 54,
+            "optimizer_steps": 54
+          },
+          "rank": 0,
+          "recorded_state": "complete",
+          "records": 54,
+          "schema": "peps.image_worker_status",
+          "schema_version": 1,
+          "selected_dataset_receipt_count": 24,
+          "selected_instances": [
+            "kodim01",
+            "kodim02",
+            "kodim03",
+            "kodim04",
+            "kodim05",
+            "kodim06",
+            "kodim07",
+            "kodim08",
+            "kodim09",
+            "kodim10",
+            "kodim11",
+            "kodim12",
+            "kodim13",
+            "kodim14",
+            "kodim15",
+            "kodim16",
+            "kodim17",
+            "kodim18",
+            "kodim19",
+            "kodim20",
+            "kodim21",
+            "kodim22",
+            "kodim23",
+            "kodim24"
+          ],
+          "selected_methods": [
+            "G-P-PEPS",
+            "G-P-PEPS-25",
+            "G-PEPS",
+            "Grid",
+            "LPE",
+            "NTC_N",
+            "NTC_PEPS",
+            "NTC_PinkPEPS",
+            "PE"
+          ],
+          "started_at_utc": "2026-07-21T18:46:41.920856+00:00",
+          "state": "complete",
+          "world_size": 4
+        },
+        {
+          "artifact": "smoke",
+          "device": "cuda:0",
+          "effective_state": "complete",
+          "expected_selected_shard_jobs": 54,
+          "finished_at_utc": "2026-07-21T18:50:08.952465+00:00",
+          "liveness_evidence": {
+            "reason": "pid_not_present_or_unreadable",
+            "status": "not_alive"
+          },
+          "output_dir": "results/work/image-repro/smoke/e3fad4ccf43866b4",
+          "pid": 3334155,
+          "process_alive": false,
+          "progress_evidence": {
+            "checkpointed_incomplete_jobs": 0,
+            "completed_jobs": 54,
+            "expected_jobs": 54,
+            "optimizer_steps": 54
+          },
+          "rank": 1,
+          "recorded_state": "complete",
+          "records": 54,
+          "schema": "peps.image_worker_status",
+          "schema_version": 1,
+          "selected_dataset_receipt_count": 24,
+          "selected_instances": [
+            "kodim01",
+            "kodim02",
+            "kodim03",
+            "kodim04",
+            "kodim05",
+            "kodim06",
+            "kodim07",
+            "kodim08",
+            "kodim09",
+            "kodim10",
+            "kodim11",
+            "kodim12",
+            "kodim13",
+            "kodim14",
+            "kodim15",
+            "kodim16",
+            "kodim17",
+            "kodim18",
+            "kodim19",
+            "kodim20",
+            "kodim21",
+            "kodim22",
+            "kodim23",
+            "kodim24"
+          ],
+          "selected_methods": [
+            "G-P-PEPS",
+            "G-P-PEPS-25",
+            "G-PEPS",
+            "Grid",
+            "LPE",
+            "NTC_N",
+            "NTC_PEPS",
+            "NTC_PinkPEPS",
+            "PE"
+          ],
+          "started_at_utc": "2026-07-21T18:46:42.286657+00:00",
+          "state": "complete",
+          "world_size": 4
+        },
+        {
+          "artifact": "smoke",
+          "device": "cuda:0",
+          "effective_state": "complete",
+          "expected_selected_shard_jobs": 54,
+          "finished_at_utc": "2026-07-21T18:50:03.329284+00:00",
+          "liveness_evidence": {
+            "reason": "pid_not_present_or_unreadable",
+            "status": "not_alive"
+          },
+          "output_dir": "results/work/image-repro/smoke/e3fad4ccf43866b4",
+          "pid": 3334156,
+          "process_alive": false,
+          "progress_evidence": {
+            "checkpointed_incomplete_jobs": 0,
+            "completed_jobs": 54,
+            "expected_jobs": 54,
+            "optimizer_steps": 54
+          },
+          "rank": 2,
+          "recorded_state": "complete",
+          "records": 54,
+          "schema": "peps.image_worker_status",
+          "schema_version": 1,
+          "selected_dataset_receipt_count": 24,
+          "selected_instances": [
+            "kodim01",
+            "kodim02",
+            "kodim03",
+            "kodim04",
+            "kodim05",
+            "kodim06",
+            "kodim07",
+            "kodim08",
+            "kodim09",
+            "kodim10",
+            "kodim11",
+            "kodim12",
+            "kodim13",
+            "kodim14",
+            "kodim15",
+            "kodim16",
+            "kodim17",
+            "kodim18",
+            "kodim19",
+            "kodim20",
+            "kodim21",
+            "kodim22",
+            "kodim23",
+            "kodim24"
+          ],
+          "selected_methods": [
+            "G-P-PEPS",
+            "G-P-PEPS-25",
+            "G-PEPS",
+            "Grid",
+            "LPE",
+            "NTC_N",
+            "NTC_PEPS",
+            "NTC_PinkPEPS",
+            "PE"
+          ],
+          "started_at_utc": "2026-07-21T18:46:42.240657+00:00",
+          "state": "complete",
+          "world_size": 4
+        },
+        {
+          "artifact": "smoke",
+          "device": "cuda:0",
+          "effective_state": "complete",
+          "expected_selected_shard_jobs": 54,
+          "finished_at_utc": "2026-07-21T18:50:09.220745+00:00",
+          "liveness_evidence": {
+            "reason": "pid_not_present_or_unreadable",
+            "status": "not_alive"
+          },
+          "output_dir": "results/work/image-repro/smoke/e3fad4ccf43866b4",
+          "pid": 3334157,
+          "process_alive": false,
+          "progress_evidence": {
+            "checkpointed_incomplete_jobs": 0,
+            "completed_jobs": 54,
+            "expected_jobs": 54,
+            "optimizer_steps": 54
+          },
+          "rank": 3,
+          "recorded_state": "complete",
+          "records": 54,
+          "schema": "peps.image_worker_status",
+          "schema_version": 1,
+          "selected_dataset_receipt_count": 24,
+          "selected_instances": [
+            "kodim01",
+            "kodim02",
+            "kodim03",
+            "kodim04",
+            "kodim05",
+            "kodim06",
+            "kodim07",
+            "kodim08",
+            "kodim09",
+            "kodim10",
+            "kodim11",
+            "kodim12",
+            "kodim13",
+            "kodim14",
+            "kodim15",
+            "kodim16",
+            "kodim17",
+            "kodim18",
+            "kodim19",
+            "kodim20",
+            "kodim21",
+            "kodim22",
+            "kodim23",
+            "kodim24"
+          ],
+          "selected_methods": [
+            "G-P-PEPS",
+            "G-P-PEPS-25",
+            "G-PEPS",
+            "Grid",
+            "LPE",
+            "NTC_N",
+            "NTC_PEPS",
+            "NTC_PinkPEPS",
+            "PE"
+          ],
+          "started_at_utc": "2026-07-21T18:46:42.116151+00:00",
+          "state": "complete",
+          "world_size": 4
+        }
+      ]
+    },
+    "table1": {
+      "accounted_optimizer_steps": 416500,
+      "active_workers": 0,
+      "artifact": "table1",
+      "canonical": true,
+      "checkpoint_errors": [],
+      "checkpoint_warnings": [],
+      "checkpointed_incomplete_jobs": 4,
+      "complete": false,
+      "completed_jobs": 1,
+      "config": "configs/paper/image_full.toml",
+      "config_sha256": "a30fe21f086d154ec16f8a62b487890c54ed4c3d42e8e7e7e3560b0320b0684f",
+      "expected_jobs": 648,
+      "expected_optimizer_steps": 77760000,
+      "incomplete_temporary_outputs": [],
+      "job_completion_fraction": 0.0015432098765432098,
+      "optimizer_step_completion_fraction": 0.005356224279835391,
+      "output_dir": "/home/aup/yy/workspace/peps/results/work/image-repro/table1/a30fe21f086d154e",
+      "output_integrity_ok": true,
+      "per_rank": {
+        "0": {
+          "checkpointed_incomplete_jobs": 1,
+          "completed_jobs": 0,
+          "expected_jobs": 162,
+          "optimizer_steps": 60000
+        },
+        "1": {
+          "checkpointed_incomplete_jobs": 1,
+          "completed_jobs": 0,
+          "expected_jobs": 162,
+          "optimizer_steps": 59500
+        },
+        "2": {
+          "checkpointed_incomplete_jobs": 1,
+          "completed_jobs": 0,
+          "expected_jobs": 162,
+          "optimizer_steps": 59500
+        },
+        "3": {
+          "checkpointed_incomplete_jobs": 1,
+          "completed_jobs": 1,
+          "expected_jobs": 162,
+          "optimizer_steps": 237500
+        }
+      },
+      "profile": "full",
+      "result_errors": [],
+      "throughput_observation": {
+        "aggregate_checkpointed_steps_per_second": 6833.62747191092,
+        "launch_elapsed_seconds": 60.948596,
+        "naive_remaining_seconds_at_current_job_mix": 11318.073792859544,
+        "observation_end_evidence": "latest_valid_result_or_checkpoint_mtime",
+        "observation_ended_at_utc": "2026-07-22T02:52:54.628918+00:00",
+        "warning": "Not an ETA: method costs differ and progress is visible only at checkpoint boundaries."
+      },
+      "unexpected_checkpoint_files": [],
+      "unexpected_result_files": [],
+      "worker_status_errors": [],
+      "workers": [
+        {
+          "artifact": "table1",
+          "device": "cuda:0",
+          "effective_state": "stopped_checkpointed",
+          "expected_selected_shard_jobs": 162,
+          "full_run_authorization": {
+            "approval_id": "cursor-20260722-managed-table1-resume",
+            "approved_by": "Jason YY, Lin <iiyyll01lin@gmail.com>",
+            "boot_id": "0ca11c34-38ca-4d2c-aa05-091065da66c3",
+            "expires_at_utc": "2026-07-22T03:46:03.063824+00:00",
+            "issued_at_utc": "2026-07-22T02:51:03.063824+00:00",
+            "receipt": "/home/aup/yy/workspace/peps/results/work/image-repro/table1/a30fe21f086d154e/full-run-authorization-managed.json",
+            "receipt_sha256": "39aa7f737ae6341fccd933e9b0d4500632c3c3eb548a99a2b7ce3cb331db388f",
+            "schema": "peps.full_run_authorization",
+            "schema_version": 1
+          },
+          "liveness_evidence": {
+            "reason": "pid_not_present_or_unreadable",
+            "status": "not_alive"
+          },
+          "output_dir": "/home/aup/yy/workspace/peps/results/work/image-repro/table1/a30fe21f086d154e",
+          "pid": 148878,
+          "process_alive": false,
+          "process_identity": {
+            "boot_id": "0ca11c34-38ca-4d2c-aa05-091065da66c3",
+            "command_sha256": "3eeb29f0689d180097d5dc9240e53d1ad26fab54132d7ea842ba35e7c2bf961e",
+            "start_time_ticks": 719167
+          },
+          "progress_evidence": {
+            "checkpointed_incomplete_jobs": 1,
+            "completed_jobs": 0,
+            "expected_jobs": 162,
+            "optimizer_steps": 60000
+          },
+          "rank": 0,
+          "recorded_state": "running",
+          "schema": "peps.image_worker_status",
+          "schema_version": 1,
+          "selected_dataset_receipt_count": 24,
+          "selected_instances": [
+            "kodim01",
+            "kodim02",
+            "kodim03",
+            "kodim04",
+            "kodim05",
+            "kodim06",
+            "kodim07",
+            "kodim08",
+            "kodim09",
+            "kodim10",
+            "kodim11",
+            "kodim12",
+            "kodim13",
+            "kodim14",
+            "kodim15",
+            "kodim16",
+            "kodim17",
+            "kodim18",
+            "kodim19",
+            "kodim20",
+            "kodim21",
+            "kodim22",
+            "kodim23",
+            "kodim24"
+          ],
+          "selected_methods": [
+            "G-P-PEPS",
+            "G-P-PEPS-25",
+            "G-PEPS",
+            "Grid",
+            "LPE",
+            "NTC_N",
+            "NTC_PEPS",
+            "NTC_PinkPEPS",
+            "PE"
+          ],
+          "started_at_utc": "2026-07-22T02:51:53.788963+00:00",
+          "state": "stopped_checkpointed",
+          "world_size": 4
+        },
+        {
+          "artifact": "table1",
+          "device": "cuda:0",
+          "effective_state": "stopped_checkpointed",
+          "expected_selected_shard_jobs": 162,
+          "full_run_authorization": {
+            "approval_id": "cursor-20260722-managed-table1-resume",
+            "approved_by": "Jason YY, Lin <iiyyll01lin@gmail.com>",
+            "boot_id": "0ca11c34-38ca-4d2c-aa05-091065da66c3",
+            "expires_at_utc": "2026-07-22T03:46:03.063824+00:00",
+            "issued_at_utc": "2026-07-22T02:51:03.063824+00:00",
+            "receipt": "/home/aup/yy/workspace/peps/results/work/image-repro/table1/a30fe21f086d154e/full-run-authorization-managed.json",
+            "receipt_sha256": "39aa7f737ae6341fccd933e9b0d4500632c3c3eb548a99a2b7ce3cb331db388f",
+            "schema": "peps.full_run_authorization",
+            "schema_version": 1
+          },
+          "liveness_evidence": {
+            "reason": "pid_not_present_or_unreadable",
+            "status": "not_alive"
+          },
+          "output_dir": "/home/aup/yy/workspace/peps/results/work/image-repro/table1/a30fe21f086d154e",
+          "pid": 148879,
+          "process_alive": false,
+          "process_identity": {
+            "boot_id": "0ca11c34-38ca-4d2c-aa05-091065da66c3",
+            "command_sha256": "c848ed34c67e5c2140fbb0dfa3bccd2ec855d652e2b9f9a8f8f50dec6e1f1157",
+            "start_time_ticks": 719167
+          },
+          "progress_evidence": {
+            "checkpointed_incomplete_jobs": 1,
+            "completed_jobs": 0,
+            "expected_jobs": 162,
+            "optimizer_steps": 59500
+          },
+          "rank": 1,
+          "recorded_state": "running",
+          "schema": "peps.image_worker_status",
+          "schema_version": 1,
+          "selected_dataset_receipt_count": 24,
+          "selected_instances": [
+            "kodim01",
+            "kodim02",
+            "kodim03",
+            "kodim04",
+            "kodim05",
+            "kodim06",
+            "kodim07",
+            "kodim08",
+            "kodim09",
+            "kodim10",
+            "kodim11",
+            "kodim12",
+            "kodim13",
+            "kodim14",
+            "kodim15",
+            "kodim16",
+            "kodim17",
+            "kodim18",
+            "kodim19",
+            "kodim20",
+            "kodim21",
+            "kodim22",
+            "kodim23",
+            "kodim24"
+          ],
+          "selected_methods": [
+            "G-P-PEPS",
+            "G-P-PEPS-25",
+            "G-PEPS",
+            "Grid",
+            "LPE",
+            "NTC_N",
+            "NTC_PEPS",
+            "NTC_PinkPEPS",
+            "PE"
+          ],
+          "started_at_utc": "2026-07-22T02:51:53.773961+00:00",
+          "state": "stopped_checkpointed",
+          "world_size": 4
+        },
+        {
+          "artifact": "table1",
+          "device": "cuda:0",
+          "effective_state": "stopped_checkpointed",
+          "expected_selected_shard_jobs": 162,
+          "full_run_authorization": {
+            "approval_id": "cursor-20260722-managed-table1-resume",
+            "approved_by": "Jason YY, Lin <iiyyll01lin@gmail.com>",
+            "boot_id": "0ca11c34-38ca-4d2c-aa05-091065da66c3",
+            "expires_at_utc": "2026-07-22T03:46:03.063824+00:00",
+            "issued_at_utc": "2026-07-22T02:51:03.063824+00:00",
+            "receipt": "/home/aup/yy/workspace/peps/results/work/image-repro/table1/a30fe21f086d154e/full-run-authorization-managed.json",
+            "receipt_sha256": "39aa7f737ae6341fccd933e9b0d4500632c3c3eb548a99a2b7ce3cb331db388f",
+            "schema": "peps.full_run_authorization",
+            "schema_version": 1
+          },
+          "liveness_evidence": {
+            "reason": "pid_not_present_or_unreadable",
+            "status": "not_alive"
+          },
+          "output_dir": "/home/aup/yy/workspace/peps/results/work/image-repro/table1/a30fe21f086d154e",
+          "pid": 148880,
+          "process_alive": false,
+          "process_identity": {
+            "boot_id": "0ca11c34-38ca-4d2c-aa05-091065da66c3",
+            "command_sha256": "24fe79c274c35b84386267f970932161d41667fd85202a0c42e41284e8e88afd",
+            "start_time_ticks": 719167
+          },
+          "progress_evidence": {
+            "checkpointed_incomplete_jobs": 1,
+            "completed_jobs": 0,
+            "expected_jobs": 162,
+            "optimizer_steps": 59500
+          },
+          "rank": 2,
+          "recorded_state": "running",
+          "schema": "peps.image_worker_status",
+          "schema_version": 1,
+          "selected_dataset_receipt_count": 24,
+          "selected_instances": [
+            "kodim01",
+            "kodim02",
+            "kodim03",
+            "kodim04",
+            "kodim05",
+            "kodim06",
+            "kodim07",
+            "kodim08",
+            "kodim09",
+            "kodim10",
+            "kodim11",
+            "kodim12",
+            "kodim13",
+            "kodim14",
+            "kodim15",
+            "kodim16",
+            "kodim17",
+            "kodim18",
+            "kodim19",
+            "kodim20",
+            "kodim21",
+            "kodim22",
+            "kodim23",
+            "kodim24"
+          ],
+          "selected_methods": [
+            "G-P-PEPS",
+            "G-P-PEPS-25",
+            "G-PEPS",
+            "Grid",
+            "LPE",
+            "NTC_N",
+            "NTC_PEPS",
+            "NTC_PinkPEPS",
+            "PE"
+          ],
+          "started_at_utc": "2026-07-22T02:51:53.753120+00:00",
+          "state": "stopped_checkpointed",
+          "world_size": 4
+        },
+        {
+          "artifact": "table1",
+          "device": "cuda:0",
+          "effective_state": "stopped_checkpointed",
+          "expected_selected_shard_jobs": 162,
+          "full_run_authorization": {
+            "approval_id": "cursor-20260722-managed-table1-resume",
+            "approved_by": "Jason YY, Lin <iiyyll01lin@gmail.com>",
+            "boot_id": "0ca11c34-38ca-4d2c-aa05-091065da66c3",
+            "expires_at_utc": "2026-07-22T03:46:03.063824+00:00",
+            "issued_at_utc": "2026-07-22T02:51:03.063824+00:00",
+            "receipt": "/home/aup/yy/workspace/peps/results/work/image-repro/table1/a30fe21f086d154e/full-run-authorization-managed.json",
+            "receipt_sha256": "39aa7f737ae6341fccd933e9b0d4500632c3c3eb548a99a2b7ce3cb331db388f",
+            "schema": "peps.full_run_authorization",
+            "schema_version": 1
+          },
+          "liveness_evidence": {
+            "reason": "pid_not_present_or_unreadable",
+            "status": "not_alive"
+          },
+          "output_dir": "/home/aup/yy/workspace/peps/results/work/image-repro/table1/a30fe21f086d154e",
+          "pid": 148881,
+          "process_alive": false,
+          "process_identity": {
+            "boot_id": "0ca11c34-38ca-4d2c-aa05-091065da66c3",
+            "command_sha256": "9ebe0668cf80530caa8601063d08b2c54a63a1bbadacf6853076194216894d2d",
+            "start_time_ticks": 719167
+          },
+          "progress_evidence": {
+            "checkpointed_incomplete_jobs": 1,
+            "completed_jobs": 1,
+            "expected_jobs": 162,
+            "optimizer_steps": 237500
+          },
+          "rank": 3,
+          "recorded_state": "running",
+          "schema": "peps.image_worker_status",
+          "schema_version": 1,
+          "selected_dataset_receipt_count": 24,
+          "selected_instances": [
+            "kodim01",
+            "kodim02",
+            "kodim03",
+            "kodim04",
+            "kodim05",
+            "kodim06",
+            "kodim07",
+            "kodim08",
+            "kodim09",
+            "kodim10",
+            "kodim11",
+            "kodim12",
+            "kodim13",
+            "kodim14",
+            "kodim15",
+            "kodim16",
+            "kodim17",
+            "kodim18",
+            "kodim19",
+            "kodim20",
+            "kodim21",
+            "kodim22",
+            "kodim23",
+            "kodim24"
+          ],
+          "selected_methods": [
+            "G-P-PEPS",
+            "G-P-PEPS-25",
+            "G-PEPS",
+            "Grid",
+            "LPE",
+            "NTC_N",
+            "NTC_PEPS",
+            "NTC_PinkPEPS",
+            "PE"
+          ],
+          "started_at_utc": "2026-07-22T02:51:53.680322+00:00",
+          "state": "stopped_checkpointed",
+          "world_size": 4
+        }
+      ]
+    },
+    "table5": {
+      "accounted_optimizer_steps": 0,
+      "active_workers": 0,
+      "artifact": "table5",
+      "canonical": true,
+      "checkpoint_errors": [],
+      "checkpoint_warnings": [],
+      "checkpointed_incomplete_jobs": 0,
+      "complete": false,
+      "completed_jobs": 0,
+      "config": "configs/paper/image_table5_full.toml",
+      "config_sha256": "10fcb105c537ab12ffd1e93f9cbf94e179940dcb9ab9eeafa0f5858f5a567300",
+      "expected_jobs": 216,
+      "expected_optimizer_steps": 25920000,
+      "incomplete_temporary_outputs": [],
+      "job_completion_fraction": 0.0,
+      "optimizer_step_completion_fraction": 0.0,
+      "output_dir": "/home/aup/yy/workspace/peps/results/work/image-repro/table5/10fcb105c537ab12",
+      "output_integrity_ok": true,
+      "per_rank": {
+        "0": {
+          "checkpointed_incomplete_jobs": 0,
+          "completed_jobs": 0,
+          "expected_jobs": 54,
+          "optimizer_steps": 0
+        },
+        "1": {
+          "checkpointed_incomplete_jobs": 0,
+          "completed_jobs": 0,
+          "expected_jobs": 54,
+          "optimizer_steps": 0
+        },
+        "2": {
+          "checkpointed_incomplete_jobs": 0,
+          "completed_jobs": 0,
+          "expected_jobs": 54,
+          "optimizer_steps": 0
+        },
+        "3": {
+          "checkpointed_incomplete_jobs": 0,
+          "completed_jobs": 0,
+          "expected_jobs": 54,
+          "optimizer_steps": 0
+        }
+      },
+      "profile": "full",
+      "result_errors": [],
+      "throughput_observation": null,
+      "unexpected_checkpoint_files": [],
+      "unexpected_result_files": [],
+      "worker_status_errors": [],
+      "workers": []
+    }
+  },
+  "dataset": {
+    "resolution_counts": {
+      "512x768": 6,
+      "768x512": 18
+    },
+    "verified_original_kodak_images": 24
+  },
+  "generated_at_utc": "2026-07-22T02:56:47.275486+00:00",
+  "instance_metric_rows": 1111,
+  "instances": "/home/aup/yy/workspace/peps/results/image_repro_instances.csv",
+  "limitations": [
+    {
+      "code": "image_training_budget_not_reported",
+      "detail": "The paper does not disclose Kodak optimizer steps or batch size; 120000 steps and batch 60000 are sensitivity assumptions."
+    },
+    {
+      "code": "optimizer_seed_output_not_reported",
+      "detail": "Adam, seeds 0/1/2, and a linear RGB output are explicit local assumptions because the paper does not report them."
+    },
+    {
+      "code": "table1_recipe_text_conflict",
+      "detail": "Table 1 values equal the Appendix L2/GELU/dual-cosine row, while the main image text describes L1/LeakyReLU/fixed LR."
+    },
+    {
+      "code": "fig5_dataset_and_steps_not_reported",
+      "detail": "The paper identifies neither the native-4K Figure 5 images nor the training budget, so no exact Figure 5 run can be launched."
+    },
+    {
+      "code": "lsd_normalization_not_reported",
+      "detail": "The paper names LSD but does not publish normalization; peps.metrics freezes an explicit log1p orthonormal-FFT oracle."
+    },
+    {
+      "code": "appendix_numeric_protocol_not_reported",
+      "detail": "No-sharing, remove-x, sum, WIRE, and related Appendix text has no exact settings or numeric rows; these configs are labelled sensitivity runs."
+    }
+  ],
+  "paired_complete_comparisons": 10,
+  "paired_report": "/home/aup/yy/workspace/peps/results/image_repro_paired.json",
+  "paper": "PEPS Extended arXiv:2604.24167v1",
+  "protocol": "/home/aup/yy/workspace/peps/results/image_repro_protocol.json",
+  "schema": "peps.image_reproduction_status",
+  "schema_version": 1,
+  "summary": "/home/aup/yy/workspace/peps/results/image_repro_summary.csv",
+  "summary_rows": 76
+}

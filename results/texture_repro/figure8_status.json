@@ -1,0 +1,26 @@
+{
+  "blockers": [
+    "BI-Grid: completed result is missing",
+    "Grid-PEPS4F: completed result is missing",
+    "Grid-PinkPEPS4F: completed result is missing",
+    "NTC_N: completed result is missing",
+    "NTC_PEPS: completed result is missing",
+    "NTC_PinkPEPS: completed result is missing"
+  ],
+  "generated_at_utc": "2026-07-22T00:50:44.643504+00:00",
+  "instance": "paving-stones-070",
+  "methods": [
+    "BI-Grid",
+    "Grid-PEPS4F",
+    "Grid-PinkPEPS4F",
+    "NTC_N",
+    "NTC_PEPS",
+    "NTC_PinkPEPS"
+  ],
+  "output": "/home/aup/yy/workspace/peps/results/texture_repro/figure8.png",
+  "required_artifact": "complete retained Table 2 seed checkpoint",
+  "schema": "peps.texture_figure8_status",
+  "schema_version": 1,
+  "seed": 0,
+  "status": "blocked"
+}

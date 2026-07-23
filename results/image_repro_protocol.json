@@ -1,0 +1,923 @@
+{
+  "code_receipts": [
+    {
+      "bytes": 11963,
+      "path": "apps/image/build.py",
+      "sha256": "2dbbc98298e36e3c84f6dbc1020c0745ce45119b154ee0c3a7b4e853b0db6b3f"
+    },
+    {
+      "bytes": 5633,
+      "path": "experiments/full_run_authorization.py",
+      "sha256": "92530231a84f8146ff3d9fbe7dcfb1363b1447d7bfa2149b85a5ea9aa56f3bb1"
+    },
+    {
+      "bytes": 8484,
+      "path": "experiments/image_models.py",
+      "sha256": "1a917599176036ae584ce71b82fabb034d4bab86c828c06386a81de784c534f9"
+    },
+    {
+      "bytes": 22690,
+      "path": "experiments/runner.py",
+      "sha256": "bac46170318c71a354c37be04a7b34799c36f9073b3a2c618afc9fd3b7ee89f5"
+    },
+    {
+      "bytes": 27575,
+      "path": "peps/train.py",
+      "sha256": "c1a341e5b51656bb8bb185fd6dd6d2091b6d5d712d268d1cf5f18810e5efba30"
+    }
+  ],
+  "configs": {
+    "appendix-smoke": {
+      "canonical": false,
+      "jobs": 13,
+      "methods": [
+        {
+          "expected_encoder_params": 426496,
+          "expected_total_params": 436163,
+          "name": "Grid-L1",
+          "role": "canonical"
+        },
+        {
+          "expected_encoder_params": 426496,
+          "expected_total_params": 437955,
+          "name": "G-P-PEPS-L1",
+          "role": "canonical"
+        },
+        {
+          "expected_encoder_params": 417792,
+          "expected_total_params": 431491,
+          "name": "NTC_N-L1",
+          "role": "canonical"
+        },
+        {
+          "expected_encoder_params": 422688,
+          "expected_total_params": 438883,
+          "name": "G-PEPS-no-sharing",
+          "role": "canonical"
+        },
+        {
+          "expected_encoder_params": 426496,
+          "expected_total_params": 441603,
+          "name": "G-PEPS-no-original-point",
+          "role": "canonical"
+        },
+        {
+          "expected_encoder_params": 426496,
+          "expected_total_params": 436163,
+          "name": "G-PEPS-full-sum",
+          "role": "canonical"
+        },
+        {
+          "expected_encoder_params": 426496,
+          "expected_total_params": 439427,
+          "name": "G-PEPS-frequency-pair-sum",
+          "role": "canonical"
+        },
+        {
+          "expected_encoder_params": 426496,
+          "expected_total_params": 436931,
+          "name": "G-Brownian-PEPS",
+          "role": "canonical"
+        },
+        {
+          "expected_encoder_params": 426496,
+          "expected_total_params": 437955,
+          "name": "G-P-PEPS-L2-fixed-LeakyReLU",
+          "role": "canonical"
+        },
+        {
+          "expected_encoder_params": 426496,
+          "expected_total_params": 437955,
+          "name": "G-P-PEPS-L1-fixed-GELU",
+          "role": "canonical"
+        },
+        {
+          "expected_encoder_params": 426496,
+          "expected_total_params": 437955,
+          "name": "G-P-PEPS-L1-fixed-SiLU",
+          "role": "canonical"
+        },
+        {
+          "expected_encoder_params": 426496,
+          "expected_total_params": 437955,
+          "name": "G-P-PEPS-L1-dual-cosine-LeakyReLU",
+          "role": "canonical"
+        },
+        {
+          "expected_encoder_params": 426496,
+          "expected_total_params": 442691,
+          "name": "G-PEPS-WIRE-sensitivity",
+          "role": "canonical"
+        }
+      ],
+      "optimizer_steps": 13,
+      "output_dir": "/home/aup/yy/workspace/peps/results/work/image-repro/appendix-smoke/5ce462950656ad28",
+      "path": "configs/paper/image_appendix_smoke.toml",
+      "profile": "smoke",
+      "seeds": [
+        0
+      ],
+      "sha256": "5ce462950656ad2851ced98d3cc8ba399cb860c95c66a0ceeec21207ff8b8dae"
+    },
+    "core-ablations": {
+      "canonical": false,
+      "jobs": 360,
+      "methods": [
+        {
+          "expected_encoder_params": 422688,
+          "expected_total_params": 438883,
+          "name": "G-PEPS-no-sharing",
+          "role": "appendix_protocol_assumption"
+        },
+        {
+          "expected_encoder_params": 426496,
+          "expected_total_params": 441603,
+          "name": "G-PEPS-no-original-point",
+          "role": "appendix_protocol_assumption"
+        },
+        {
+          "expected_encoder_params": 426496,
+          "expected_total_params": 436163,
+          "name": "G-PEPS-full-sum",
+          "role": "appendix_protocol_assumption"
+        },
+        {
+          "expected_encoder_params": 426496,
+          "expected_total_params": 439427,
+          "name": "G-PEPS-frequency-pair-sum",
+          "role": "appendix_protocol_assumption"
+        },
+        {
+          "expected_encoder_params": 426496,
+          "expected_total_params": 436931,
+          "name": "G-Brownian-PEPS",
+          "role": "appendix_protocol_assumption"
+        }
+      ],
+      "optimizer_steps": 43200000,
+      "output_dir": "/home/aup/yy/workspace/peps/results/work/image-repro/core-ablations/e78c96bc1d8631e5",
+      "path": "configs/paper/image_core_ablations_full.toml",
+      "profile": "full",
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "sha256": "e78c96bc1d8631e5f2b7e949fd3b4c313a7c20f85b1b836f8c9b5f71017769bb"
+    },
+    "recipe-ablations": {
+      "canonical": false,
+      "jobs": 360,
+      "methods": [
+        {
+          "expected_encoder_params": 426496,
+          "expected_total_params": 437955,
+          "name": "G-P-PEPS-L2-fixed-LeakyReLU",
+          "role": "appendix_protocol_assumption"
+        },
+        {
+          "expected_encoder_params": 426496,
+          "expected_total_params": 437955,
+          "name": "G-P-PEPS-L1-fixed-GELU",
+          "role": "appendix_protocol_assumption"
+        },
+        {
+          "expected_encoder_params": 426496,
+          "expected_total_params": 437955,
+          "name": "G-P-PEPS-L1-fixed-SiLU",
+          "role": "appendix_protocol_assumption"
+        },
+        {
+          "expected_encoder_params": 426496,
+          "expected_total_params": 437955,
+          "name": "G-P-PEPS-L1-dual-cosine-LeakyReLU",
+          "role": "appendix_protocol_assumption"
+        },
+        {
+          "expected_encoder_params": 426496,
+          "expected_total_params": 442691,
+          "name": "G-PEPS-WIRE-sensitivity",
+          "role": "noncanonical_wire_sensitivity"
+        }
+      ],
+      "optimizer_steps": 43200000,
+      "output_dir": "/home/aup/yy/workspace/peps/results/work/image-repro/recipe-ablations/ee9338c640ff254a",
+      "path": "configs/paper/image_recipe_ablations_full.toml",
+      "profile": "full",
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "sha256": "ee9338c640ff254a44df3a6a261344db5141d2a5ee07ed6cc62589c5f00200a8"
+    },
+    "smoke": {
+      "canonical": false,
+      "jobs": 216,
+      "methods": [
+        {
+          "expected_encoder_params": 0,
+          "expected_total_params": 194403,
+          "name": "PE",
+          "role": "canonical"
+        },
+        {
+          "expected_encoder_params": 401408,
+          "expected_total_params": 411011,
+          "name": "LPE",
+          "role": "canonical"
+        },
+        {
+          "expected_encoder_params": 417792,
+          "expected_total_params": 431491,
+          "name": "NTC_N",
+          "role": "canonical"
+        },
+        {
+          "expected_encoder_params": 426496,
+          "expected_total_params": 436163,
+          "name": "Grid",
+          "role": "canonical"
+        },
+        {
+          "expected_encoder_params": 426496,
+          "expected_total_params": 442691,
+          "name": "G-PEPS",
+          "role": "canonical"
+        },
+        {
+          "expected_encoder_params": 426496,
+          "expected_total_params": 437955,
+          "name": "G-P-PEPS",
+          "role": "canonical"
+        },
+        {
+          "expected_encoder_params": 417792,
+          "expected_total_params": 457603,
+          "name": "NTC_PEPS",
+          "role": "canonical"
+        },
+        {
+          "expected_encoder_params": 417792,
+          "expected_total_params": 439043,
+          "name": "NTC_PinkPEPS",
+          "role": "canonical"
+        },
+        {
+          "expected_encoder_params": 326144,
+          "expected_total_params": 336835,
+          "name": "G-P-PEPS-25",
+          "role": "canonical"
+        }
+      ],
+      "optimizer_steps": 216,
+      "output_dir": "/home/aup/yy/workspace/peps/results/work/image-repro/smoke/e3fad4ccf43866b4",
+      "path": "configs/paper/image_repro_smoke.toml",
+      "profile": "smoke",
+      "seeds": [
+        0
+      ],
+      "sha256": "e3fad4ccf43866b42e57ed135621a20c662a44456f012a8b4199537e03d60e2f"
+    },
+    "table1": {
+      "canonical": true,
+      "jobs": 648,
+      "methods": [
+        {
+          "expected_encoder_params": 0,
+          "expected_total_params": 194403,
+          "name": "PE",
+          "role": "canonical"
+        },
+        {
+          "expected_encoder_params": 401408,
+          "expected_total_params": 411011,
+          "name": "LPE",
+          "role": "canonical"
+        },
+        {
+          "expected_encoder_params": 417792,
+          "expected_total_params": 431491,
+          "name": "NTC_N",
+          "role": "canonical"
+        },
+        {
+          "expected_encoder_params": 426496,
+          "expected_total_params": 436163,
+          "name": "Grid",
+          "role": "canonical"
+        },
+        {
+          "expected_encoder_params": 426496,
+          "expected_total_params": 442691,
+          "name": "G-PEPS",
+          "role": "canonical"
+        },
+        {
+          "expected_encoder_params": 426496,
+          "expected_total_params": 437955,
+          "name": "G-P-PEPS",
+          "role": "canonical"
+        },
+        {
+          "expected_encoder_params": 417792,
+          "expected_total_params": 457603,
+          "name": "NTC_PEPS",
+          "role": "canonical"
+        },
+        {
+          "expected_encoder_params": 417792,
+          "expected_total_params": 439043,
+          "name": "NTC_PinkPEPS",
+          "role": "canonical"
+        },
+        {
+          "expected_encoder_params": 326144,
+          "expected_total_params": 336835,
+          "name": "G-P-PEPS-25",
+          "role": "canonical"
+        }
+      ],
+      "optimizer_steps": 77760000,
+      "output_dir": "/home/aup/yy/workspace/peps/results/work/image-repro/table1/a30fe21f086d154e",
+      "path": "configs/paper/image_full.toml",
+      "profile": "full",
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "sha256": "a30fe21f086d154ec16f8a62b487890c54ed4c3d42e8e7e7e3560b0320b0684f"
+    },
+    "table5": {
+      "canonical": true,
+      "jobs": 216,
+      "methods": [
+        {
+          "expected_encoder_params": 426496,
+          "expected_total_params": 436163,
+          "name": "Grid-L1",
+          "role": "table5_l1"
+        },
+        {
+          "expected_encoder_params": 426496,
+          "expected_total_params": 437955,
+          "name": "G-P-PEPS-L1",
+          "role": "table5_l1"
+        },
+        {
+          "expected_encoder_params": 417792,
+          "expected_total_params": 431491,
+          "name": "NTC_N-L1",
+          "role": "table5_l1"
+        }
+      ],
+      "optimizer_steps": 25920000,
+      "output_dir": "/home/aup/yy/workspace/peps/results/work/image-repro/table5/10fcb105c537ab12",
+      "path": "configs/paper/image_table5_full.toml",
+      "profile": "full",
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "sha256": "10fcb105c537ab12ffd1e93f9cbf94e179940dcb9ab9eeafa0f5858f5a567300"
+    }
+  },
+  "dataset": {
+    "all_original_resolution": true,
+    "id": "kodak-pcd0992",
+    "instance_count": 24,
+    "instances": [
+      {
+        "bytes": 736501,
+        "color_space": "sRGB",
+        "id": "kodim01",
+        "path": "/home/aup/yy/workspace/peps/data/raw/kodak/kodim01.png",
+        "resolution_xy": [
+          768,
+          512
+        ],
+        "sha256": "a56e27cbf5f843c048b6af1d6e090760e9c92fadba88b7dee0205918a37523bd"
+      },
+      {
+        "bytes": 617995,
+        "color_space": "sRGB",
+        "id": "kodim02",
+        "path": "/home/aup/yy/workspace/peps/data/raw/kodak/kodim02.png",
+        "resolution_xy": [
+          768,
+          512
+        ],
+        "sha256": "4f4b74a79237e311d72cad958237b5f7088d8bce1c82305ebefe1a70e3022dfd"
+      },
+      {
+        "bytes": 502888,
+        "color_space": "sRGB",
+        "id": "kodim03",
+        "path": "/home/aup/yy/workspace/peps/data/raw/kodak/kodim03.png",
+        "resolution_xy": [
+          768,
+          512
+        ],
+        "sha256": "e25ca1ff2f0c0cb5fdfd5f9b0a0bb21ac4c3de3c84a67f35b09a85d3306249db"
+      },
+      {
+        "bytes": 637432,
+        "color_space": "sRGB",
+        "id": "kodim04",
+        "path": "/home/aup/yy/workspace/peps/data/raw/kodak/kodim04.png",
+        "resolution_xy": [
+          512,
+          768
+        ],
+        "sha256": "e3b946107c5d3441c022f678d0c3caf1e224d81b1604ba840a4f88e562de61aa"
+      },
+      {
+        "bytes": 785610,
+        "color_space": "sRGB",
+        "id": "kodim05",
+        "path": "/home/aup/yy/workspace/peps/data/raw/kodak/kodim05.png",
+        "resolution_xy": [
+          768,
+          512
+        ],
+        "sha256": "10349e963c5c813d327852f82c1795fa4148d69fedffc4c589bee458e3ac3d53"
+      },
+      {
+        "bytes": 618959,
+        "color_space": "sRGB",
+        "id": "kodim06",
+        "path": "/home/aup/yy/workspace/peps/data/raw/kodak/kodim06.png",
+        "resolution_xy": [
+          768,
+          512
+        ],
+        "sha256": "363510303b715d4cbc384e1ce227e466b613a09e1b71ae985882bf8e7fbd9b18"
+      },
+      {
+        "bytes": 566322,
+        "color_space": "sRGB",
+        "id": "kodim07",
+        "path": "/home/aup/yy/workspace/peps/data/raw/kodak/kodim07.png",
+        "resolution_xy": [
+          768,
+          512
+        ],
+        "sha256": "b77d3f006f42414bb242222e0482e750c0fb9e5ee8d4bed2f6f11c5605fe54a4"
+      },
+      {
+        "bytes": 788470,
+        "color_space": "sRGB",
+        "id": "kodim08",
+        "path": "/home/aup/yy/workspace/peps/data/raw/kodak/kodim08.png",
+        "resolution_xy": [
+          768,
+          512
+        ],
+        "sha256": "ba23983c76b4832ee0e8af0592664756841a16779acd69f792e268fb6d13d6e7"
+      },
+      {
+        "bytes": 582899,
+        "color_space": "sRGB",
+        "id": "kodim09",
+        "path": "/home/aup/yy/workspace/peps/data/raw/kodak/kodim09.png",
+        "resolution_xy": [
+          512,
+          768
+        ],
+        "sha256": "6a4361c2fc194feb4edaa9f9a4a0620fb9943e460ac7fdf037fb0f6dd6607a7d"
+      },
+      {
+        "bytes": 593463,
+        "color_space": "sRGB",
+        "id": "kodim10",
+        "path": "/home/aup/yy/workspace/peps/data/raw/kodak/kodim10.png",
+        "resolution_xy": [
+          512,
+          768
+        ],
+        "sha256": "9dfb70f5867c29ff9ed6313683f19b3d867849e40fbc0c4c54a4a89df341cf23"
+      },
+      {
+        "bytes": 621023,
+        "color_space": "sRGB",
+        "id": "kodim11",
+        "path": "/home/aup/yy/workspace/peps/data/raw/kodak/kodim11.png",
+        "resolution_xy": [
+          768,
+          512
+        ],
+        "sha256": "7936814b58b5387fce2e4e2488b4ec830dadd95fa9520f358ddb30990b50f2b6"
+      },
+      {
+        "bytes": 531024,
+        "color_space": "sRGB",
+        "id": "kodim12",
+        "path": "/home/aup/yy/workspace/peps/data/raw/kodak/kodim12.png",
+        "resolution_xy": [
+          768,
+          512
+        ],
+        "sha256": "d78c37c2f04f23761ed2367dd77e2db584ddd4c3950833fecf89f199a8126980"
+      },
+      {
+        "bytes": 822712,
+        "color_space": "sRGB",
+        "id": "kodim13",
+        "path": "/home/aup/yy/workspace/peps/data/raw/kodak/kodim13.png",
+        "resolution_xy": [
+          768,
+          512
+        ],
+        "sha256": "bc34a3ce58dea09dce1704c997171602de90cb34d0c8503a988b77f473d39b08"
+      },
+      {
+        "bytes": 692201,
+        "color_space": "sRGB",
+        "id": "kodim14",
+        "path": "/home/aup/yy/workspace/peps/data/raw/kodak/kodim14.png",
+        "resolution_xy": [
+          768,
+          512
+        ],
+        "sha256": "55a94550ff18f3246c4074fd32b77b0c74447c26b6ad274d564d999c0450ba6e"
+      },
+      {
+        "bytes": 612582,
+        "color_space": "sRGB",
+        "id": "kodim15",
+        "path": "/home/aup/yy/workspace/peps/data/raw/kodak/kodim15.png",
+        "resolution_xy": [
+          768,
+          512
+        ],
+        "sha256": "7538cbb80cb9103606c48b806eae57d56c885c7f90b9b3be70a41160f9cbb683"
+      },
+      {
+        "bytes": 534247,
+        "color_space": "sRGB",
+        "id": "kodim16",
+        "path": "/home/aup/yy/workspace/peps/data/raw/kodak/kodim16.png",
+        "resolution_xy": [
+          768,
+          512
+        ],
+        "sha256": "a89c7268ccd4718ba424a99fc4643c572cf692ca6eae887185ceb4e9f11d2e54"
+      },
+      {
+        "bytes": 602078,
+        "color_space": "sRGB",
+        "id": "kodim17",
+        "path": "/home/aup/yy/workspace/peps/data/raw/kodak/kodim17.png",
+        "resolution_xy": [
+          512,
+          768
+        ],
+        "sha256": "37afcc89fbdcb76d9518e04b2fc011027e2f4cd14b3b2f83cefd721641a47c5b"
+      },
+      {
+        "bytes": 780947,
+        "color_space": "sRGB",
+        "id": "kodim18",
+        "path": "/home/aup/yy/workspace/peps/data/raw/kodak/kodim18.png",
+        "resolution_xy": [
+          512,
+          768
+        ],
+        "sha256": "1a9258c365988961d87a0598725b609139c303ad48a5aad6c503c3b1a87849aa"
+      },
+      {
+        "bytes": 671476,
+        "color_space": "sRGB",
+        "id": "kodim19",
+        "path": "/home/aup/yy/workspace/peps/data/raw/kodak/kodim19.png",
+        "resolution_xy": [
+          512,
+          768
+        ],
+        "sha256": "b7450b264b1b0a411390d8931b112c27905a992520fc90569dc4b920aa32bbdc"
+      },
+      {
+        "bytes": 492462,
+        "color_space": "sRGB",
+        "id": "kodim20",
+        "path": "/home/aup/yy/workspace/peps/data/raw/kodak/kodim20.png",
+        "resolution_xy": [
+          768,
+          512
+        ],
+        "sha256": "3b46c71e3b92a563820ba32936be8330c586c41f938efd94be938386aae4328a"
+      },
+      {
+        "bytes": 637051,
+        "color_space": "sRGB",
+        "id": "kodim21",
+        "path": "/home/aup/yy/workspace/peps/data/raw/kodak/kodim21.png",
+        "resolution_xy": [
+          768,
+          512
+        ],
+        "sha256": "ac958597c82073f6bb65129c68f72b651db5b9efd82e11547d07350214bc268b"
+      },
+      {
+        "bytes": 701970,
+        "color_space": "sRGB",
+        "id": "kodim22",
+        "path": "/home/aup/yy/workspace/peps/data/raw/kodak/kodim22.png",
+        "resolution_xy": [
+          768,
+          512
+        ],
+        "sha256": "1cee58eb1f2d9c7ebb254d208a03c783ce6cf2c4d8c2cf45e235dd23b4ce1b29"
+      },
+      {
+        "bytes": 557596,
+        "color_space": "sRGB",
+        "id": "kodim23",
+        "path": "/home/aup/yy/workspace/peps/data/raw/kodak/kodim23.png",
+        "resolution_xy": [
+          768,
+          512
+        ],
+        "sha256": "e3111a2fd4da24af15d6459ef9eacfe54106b38e27b4a21821b75c3f5d2d5baf"
+      },
+      {
+        "bytes": 706397,
+        "color_space": "sRGB",
+        "id": "kodim24",
+        "path": "/home/aup/yy/workspace/peps/data/raw/kodak/kodim24.png",
+        "resolution_xy": [
+          768,
+          512
+        ],
+        "sha256": "1071c68372cc5a01435c2c225a5cf7d4bb803846ec08bb6b3d6721b156d7cb96"
+      }
+    ],
+    "landscape_count": 18,
+    "portrait_count": 6,
+    "total_pixels": 9437184
+  },
+  "environment": {
+    "collection_errors": [],
+    "gpu": {
+      "available": true,
+      "count": 4,
+      "devices": [
+        {
+          "architecture": "gfx1201",
+          "capability": [
+            12,
+            0
+          ],
+          "index": 0,
+          "multiprocessor_count": 32,
+          "name": "AMD Radeon Graphics",
+          "total_memory_bytes": 34208743424
+        },
+        {
+          "architecture": "gfx1201",
+          "capability": [
+            12,
+            0
+          ],
+          "index": 1,
+          "multiprocessor_count": 32,
+          "name": "AMD Radeon Graphics",
+          "total_memory_bytes": 34208743424
+        },
+        {
+          "architecture": "gfx1201",
+          "capability": [
+            12,
+            0
+          ],
+          "index": 2,
+          "multiprocessor_count": 32,
+          "name": "AMD Radeon Graphics",
+          "total_memory_bytes": 34208743424
+        },
+        {
+          "architecture": "gfx1201",
+          "capability": [
+            12,
+            0
+          ],
+          "index": 3,
+          "multiprocessor_count": 32,
+          "name": "AMD Radeon Graphics",
+          "total_memory_bytes": 34208743424
+        }
+      ]
+    },
+    "packages": {
+      "Pillow": "12.2.0",
+      "flip-evaluator": "1.7",
+      "imageio": "2.37.4",
+      "lpips": "0.1.4",
+      "matplotlib": "3.11.1",
+      "mesh-to-sdf": "0.0.15",
+      "numpy": "2.4.4",
+      "peps": "0.1.0",
+      "scikit-image": "0.26.0",
+      "scipy": "1.18.0",
+      "torch": "2.10.0+rocm7.0",
+      "torchmetrics": "1.9.0",
+      "torchvision": "0.25.0+rocm7.0",
+      "tqdm": "4.69.0",
+      "trimesh": "4.12.2"
+    },
+    "platform": {
+      "machine": "x86_64",
+      "python_executable": "/home/aup/yy/workspace/peps/.venv/bin/python",
+      "python_version": "3.12.3",
+      "release": "7.0.0-28-generic",
+      "system": "Linux"
+    },
+    "pytorch": {
+      "available": true,
+      "cuda_version": null,
+      "hip_version": "7.0.51831",
+      "version": "2.10.0+rocm7.0"
+    },
+    "rocm": {
+      "rocm_home": null,
+      "runtime_version": "7.2.3",
+      "torch_hip_version": "7.0.51831"
+    }
+  },
+  "figures": {
+    "1": {
+      "kind": "analytic schematic",
+      "requires_training": false
+    },
+    "10": {
+      "kind": "analytic Lissajous curves",
+      "requires_training": false
+    },
+    "11": {
+      "kind": "analytic frequency-parameterized curves",
+      "paper_ambiguity": "the source does not define the third plotted coordinate",
+      "requires_training": false
+    },
+    "2": {
+      "kind": "analytic rotation",
+      "requires_training": false
+    },
+    "3": {
+      "dataset_assumption": "first ten paper-listed texture sets",
+      "kind": "Kodak and texture PSD",
+      "requires_training": false
+    },
+    "4": {
+      "kind": "Pink d=8 allocation",
+      "requires_training": false
+    },
+    "5": {
+      "blocked": true,
+      "kind": "native-4K parameter sweep",
+      "reason": "dataset identity/count and optimizer steps are not reported"
+    },
+    "6": {
+      "depends_on": "complete table1 checkpoints",
+      "kind": "Kodak qualitative and FLIP"
+    },
+    "7": {
+      "depends_on": "complete table1 raw metrics",
+      "kind": "24-image dual scatter"
+    }
+  },
+  "generated_at_utc": "2026-07-22T02:56:46.690285+00:00",
+  "git": {
+    "available": true,
+    "branch": "master",
+    "dirty": true,
+    "error": null,
+    "sha": "b772b1e403cb170b28475f0ef765e6b1310e7649",
+    "tracked_changes": 37,
+    "untracked_files": 47
+  },
+  "limitations": [
+    {
+      "code": "image_training_budget_not_reported",
+      "detail": "The paper does not disclose Kodak optimizer steps or batch size; 120000 steps and batch 60000 are sensitivity assumptions."
+    },
+    {
+      "code": "optimizer_seed_output_not_reported",
+      "detail": "Adam, seeds 0/1/2, and a linear RGB output are explicit local assumptions because the paper does not report them."
+    },
+    {
+      "code": "table1_recipe_text_conflict",
+      "detail": "Table 1 values equal the Appendix L2/GELU/dual-cosine row, while the main image text describes L1/LeakyReLU/fixed LR."
+    },
+    {
+      "code": "fig5_dataset_and_steps_not_reported",
+      "detail": "The paper identifies neither the native-4K Figure 5 images nor the training budget, so no exact Figure 5 run can be launched."
+    },
+    {
+      "code": "lsd_normalization_not_reported",
+      "detail": "The paper names LSD but does not publish normalization; peps.metrics freezes an explicit log1p orthonormal-FFT oracle."
+    },
+    {
+      "code": "appendix_numeric_protocol_not_reported",
+      "detail": "No-sharing, remove-x, sum, WIRE, and related Appendix text has no exact settings or numeric rows; these configs are labelled sensitivity runs."
+    }
+  ],
+  "metric_versions": {
+    "flip-evaluator": "1.7",
+    "lpips": "0.1.4",
+    "torch": "2.10.0+rocm7.0",
+    "torchmetrics": "1.9.0"
+  },
+  "paper": {
+    "reference": "PEPS Extended arXiv:2604.24167v1",
+    "source_retrieved": "https://arxiv.org/src/2604.24167",
+    "table1": {
+      "G-P-PEPS": {
+        "flip": 0.0224,
+        "lpips": 0.00105,
+        "lsd": 0.00441,
+        "psnr": 47.83,
+        "ssim": 0.993
+      },
+      "G-P-PEPS-25": {
+        "flip": 0.0281,
+        "lpips": 0.00312,
+        "lsd": 0.00845,
+        "psnr": 44.89,
+        "ssim": 0.987
+      },
+      "G-PEPS": {
+        "flip": 0.0208,
+        "lpips": 0.0013,
+        "lsd": 0.00419,
+        "psnr": 47.72,
+        "ssim": 0.993
+      },
+      "Grid": {
+        "flip": 0.0183,
+        "lpips": 0.00137,
+        "lsd": 0.0124,
+        "psnr": 45.3,
+        "ssim": 0.992
+      },
+      "LPE": {
+        "flip": 0.0184,
+        "lpips": 0.00162,
+        "lsd": 0.00749,
+        "psnr": 45.06,
+        "ssim": 0.992
+      },
+      "NTC_N": {
+        "flip": 0.0196,
+        "lpips": 0.00223,
+        "lsd": 0.00974,
+        "psnr": 44.87,
+        "ssim": 0.992
+      },
+      "NTC_PEPS": {
+        "flip": 0.0207,
+        "lpips": 0.00143,
+        "lsd": 0.00407,
+        "psnr": 48.02,
+        "ssim": 0.994
+      },
+      "NTC_PinkPEPS": {
+        "flip": 0.0214,
+        "lpips": 0.0012,
+        "lsd": 0.00422,
+        "psnr": 48.07,
+        "ssim": 0.994
+      },
+      "PE": {
+        "flip": 0.0371,
+        "lpips": 0.0147,
+        "lsd": 0.0446,
+        "psnr": 39.91,
+        "ssim": 0.96
+      }
+    },
+    "table5": {
+      "G-P-PEPS": {
+        "psnr_l1": 44.237,
+        "psnr_l2": 47.83,
+        "ssim_l1": 0.975,
+        "ssim_l2": 0.993
+      },
+      "Grid": {
+        "psnr_l1": 40.871,
+        "psnr_l2": 45.3,
+        "ssim_l1": 0.973,
+        "ssim_l2": 0.992
+      },
+      "NTC_N": {
+        "psnr_l1": 41.229,
+        "psnr_l2": 44.87,
+        "ssim_l1": 0.968,
+        "ssim_l2": 0.992
+      }
+    }
+  },
+  "schema": "peps.image_reproduction_protocol",
+  "schema_version": 1
+}

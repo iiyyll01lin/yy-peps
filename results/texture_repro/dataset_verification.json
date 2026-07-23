@@ -1,0 +1,1061 @@
+{
+  "all_native_4k": true,
+  "dataset_id": "peps-paper-4k-texture-sets",
+  "decode_size": 8,
+  "decoded_sets": 18,
+  "files": [
+    {
+      "manifest_bytes": 58391508,
+      "map_id": "arm",
+      "mtime_ns": 1784653643940056650,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/bench-vice-01/bench_vice_01_arm_4k.png",
+      "semantic": "ARM",
+      "set_id": "bench-vice-01",
+      "sha256": "3186252b49c0bc310ff06d368bbb2e64bb14e42917bf9473b4830ac1e016ec57"
+    },
+    {
+      "manifest_bytes": 54896506,
+      "map_id": "diffuse",
+      "mtime_ns": 1784653648406056539,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/bench-vice-01/bench_vice_01_diff_4k.png",
+      "semantic": "DIFF",
+      "set_id": "bench-vice-01",
+      "sha256": "04cf7c6815a7691399b8694910c0935a8adfc6e0db19709110137f635b0f86e2"
+    },
+    {
+      "manifest_bytes": 84460814,
+      "map_id": "normal",
+      "mtime_ns": 1784653654167056397,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/bench-vice-01/bench_vice_01_nor_gl_4k.png",
+      "semantic": "normal",
+      "set_id": "bench-vice-01",
+      "sha256": "223017bb73169a12de7bcd513b5e10ba37ae54dc389a44feb3b384663d19116a"
+    },
+    {
+      "manifest_bytes": 21110431,
+      "map_id": "arm",
+      "mtime_ns": 1784653658029056301,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/cardboard-box-01/cardboard_box_01_arm_4k.png",
+      "semantic": "ARM",
+      "set_id": "cardboard-box-01",
+      "sha256": "1618bdd39afb78652af71d3000d5f58c43105b24921b8b006585846587953690"
+    },
+    {
+      "manifest_bytes": 41915708,
+      "map_id": "diffuse",
+      "mtime_ns": 1784653662438056192,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/cardboard-box-01/cardboard_box_01_diff_4k.png",
+      "semantic": "DIFF",
+      "set_id": "cardboard-box-01",
+      "sha256": "efaae0408d4520b37e0cbb1a4d2cda80a0f45d97aff165637a82032f6f8bf055"
+    },
+    {
+      "manifest_bytes": 51306126,
+      "map_id": "normal",
+      "mtime_ns": 1784653666733056086,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/cardboard-box-01/cardboard_box_01_nor_gl_4k.png",
+      "semantic": "normal",
+      "set_id": "cardboard-box-01",
+      "sha256": "7d6e9a9630a35282cd028ad540008d7e4f0beb03e9574669a4419c916cdb8ef3"
+    },
+    {
+      "manifest_bytes": 59881345,
+      "map_id": "arm",
+      "mtime_ns": 1784653672273055948,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/cannon-01/cannon_01_arm_4k.png",
+      "semantic": "ARM",
+      "set_id": "cannon-01",
+      "sha256": "6eee0afdbbbf2e964e99a1bd228ad14a9b1012df753f762513c24b69d21639b5"
+    },
+    {
+      "manifest_bytes": 89701965,
+      "map_id": "diffuse",
+      "mtime_ns": 1784653678647055791,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/cannon-01/cannon_01_diff_4k.png",
+      "semantic": "DIFF",
+      "set_id": "cannon-01",
+      "sha256": "30f3c536f07d85eb407249b1480941de6c4b4374dda1876f4f6ff4a7555421d4"
+    },
+    {
+      "manifest_bytes": 85293050,
+      "map_id": "normal",
+      "mtime_ns": 1784653684477055646,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/cannon-01/cannon_01_nor_gl_4k.png",
+      "semantic": "normal",
+      "set_id": "cannon-01",
+      "sha256": "476bf48494ddea78015141a3f15468ea55720c20cf01ad26490f7008f7339595"
+    },
+    {
+      "manifest_bytes": 44881395,
+      "map_id": "arm",
+      "mtime_ns": 1784653689135055531,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/clay-roof-tiles-02/clay_roof_tiles_02_arm_4k.png",
+      "semantic": "ARM",
+      "set_id": "clay-roof-tiles-02",
+      "sha256": "90bfc5e9d76904619a0754b7ba2d2bdb79d82a2c40daa429052424303e168560"
+    },
+    {
+      "manifest_bytes": 88430121,
+      "map_id": "diffuse",
+      "mtime_ns": 1784653695057055384,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/clay-roof-tiles-02/clay_roof_tiles_02_diff_4k.png",
+      "semantic": "DIFF",
+      "set_id": "clay-roof-tiles-02",
+      "sha256": "7ecc1e285954bee288485ec64e5ba9d5ead93f565fe9924a2c37b7e3749dd5cc"
+    },
+    {
+      "manifest_bytes": 22520787,
+      "map_id": "displacement",
+      "mtime_ns": 1784653698154055308,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/clay-roof-tiles-02/clay_roof_tiles_02_disp_4k.png",
+      "semantic": "Displacement",
+      "set_id": "clay-roof-tiles-02",
+      "sha256": "115330ee85a780ed1b4bf044c389a9711279c2ed9768d69cfb9dbc28c7b76226"
+    },
+    {
+      "manifest_bytes": 84031705,
+      "map_id": "normal",
+      "mtime_ns": 1784653704090055161,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/clay-roof-tiles-02/clay_roof_tiles_02_nor_gl_4k.png",
+      "semantic": "normal",
+      "set_id": "clay-roof-tiles-02",
+      "sha256": "bb97a22ce8e91ffff717a59524897a5d638039fada15742a3862379ff015bfcd"
+    },
+    {
+      "manifest_bytes": 17376585,
+      "map_id": "arm",
+      "mtime_ns": 1784653707003055089,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/fabric-pattern-07/fabric_pattern_07_arm_4k.png",
+      "semantic": "ARM",
+      "set_id": "fabric-pattern-07",
+      "sha256": "ef2b696b4db21b7c8321a474ac15d0a7e6a40ab9d314bb18a38bae842a44a4c8"
+    },
+    {
+      "manifest_bytes": 100434390,
+      "map_id": "diffuse-col-1",
+      "mtime_ns": 1784653713916054918,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/fabric-pattern-07/fabric_pattern_07_col_1_4k.png",
+      "semantic": "DIFF",
+      "set_id": "fabric-pattern-07",
+      "sha256": "6aff5a32a6c76698c60ce48e6322ced2499a1ce6d01613c4d60dc97038022d3f"
+    },
+    {
+      "manifest_bytes": 31255992,
+      "map_id": "diffuse-col-2",
+      "mtime_ns": 1784653717393054831,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/fabric-pattern-07/fabric_pattern_07_col_2_4k.png",
+      "semantic": "DIFF",
+      "set_id": "fabric-pattern-07",
+      "sha256": "59143b8f2c7adb156a3a3d1a7ffce2b622d9ee79e53ec6d813c7b65e23033f22"
+    },
+    {
+      "manifest_bytes": 100557859,
+      "map_id": "diffuse-col-03",
+      "mtime_ns": 1784653723844054672,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/fabric-pattern-07/fabric_pattern_07_col_03_4k.png",
+      "semantic": "DIFF",
+      "set_id": "fabric-pattern-07",
+      "sha256": "65b305850287d2646d8a65aacc10cc62d5b59477786fb26513dedf4f32fb7d6e"
+    },
+    {
+      "manifest_bytes": 20018627,
+      "map_id": "normal",
+      "mtime_ns": 1784653726843054598,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/fabric-pattern-07/fabric_pattern_07_nor_gl_4k.png",
+      "semantic": "normal",
+      "set_id": "fabric-pattern-07",
+      "sha256": "51438ec29903e75884b0f728e549467fe5528c3acefc02e550e7ab6d815fef69"
+    },
+    {
+      "manifest_bytes": 8296334,
+      "map_id": "arm",
+      "mtime_ns": 1784653729433054533,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/garden-gnome/garden_gnome_arm_4k.png",
+      "semantic": "ARM",
+      "set_id": "garden-gnome",
+      "sha256": "ca81261e255b56ed7b9b780376b0ca7f6bf0d9b95d8b12799229ad2c63c54cb7"
+    },
+    {
+      "manifest_bytes": 9183757,
+      "map_id": "diffuse",
+      "mtime_ns": 1784653732338054462,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/garden-gnome/garden_gnome_diff_4k.png",
+      "semantic": "DIFF",
+      "set_id": "garden-gnome",
+      "sha256": "73ac1520f23ba812f4791fdd397fd83650e6afae4be603d44c7cf5787871dd87"
+    },
+    {
+      "manifest_bytes": 11970443,
+      "map_id": "normal",
+      "mtime_ns": 1784653734758054402,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/garden-gnome/garden_gnome_nor_gl_4k.png",
+      "semantic": "normal",
+      "set_id": "garden-gnome",
+      "sha256": "3ebb9f71e72c43969937a2298cfcc2a77fc397db38a2d251e5aa00d3c3c2c360"
+    },
+    {
+      "manifest_bytes": 16624110,
+      "map_id": "arm",
+      "mtime_ns": 1784653737662054330,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/garden-sprinkler-01/garden_sprinkler_01_arm_4k.png",
+      "semantic": "ARM",
+      "set_id": "garden-sprinkler-01",
+      "sha256": "47706007f3760a73dbe944acf67d77cd60baf817ee49b4181d6c12c674446486"
+    },
+    {
+      "manifest_bytes": 44620304,
+      "map_id": "diffuse",
+      "mtime_ns": 1784653741860054226,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/garden-sprinkler-01/garden_sprinkler_01_diff_4k.png",
+      "semantic": "DIFF",
+      "set_id": "garden-sprinkler-01",
+      "sha256": "5b5b5a5b2e9d0de5378df6281b47a557cd4d70df6b415d14db80feb86b71a1ca"
+    },
+    {
+      "manifest_bytes": 13244941,
+      "map_id": "displacement",
+      "mtime_ns": 1784653744514054160,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/garden-sprinkler-01/garden_sprinkler_01_height_4k.png",
+      "semantic": "Displacement",
+      "set_id": "garden-sprinkler-01",
+      "sha256": "6455bfe28c5f632fc4843f9abe6d75a5a3d2a84afb763bbf77891b43a451a568"
+    },
+    {
+      "manifest_bytes": 67056456,
+      "map_id": "normal",
+      "mtime_ns": 1784653750083054022,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/garden-sprinkler-01/garden_sprinkler_01_nor_gl_4k.png",
+      "semantic": "normal",
+      "set_id": "garden-sprinkler-01",
+      "sha256": "feaea08aa0031a7928cfac30c77a719ecad6e47df0752fd85d4c62a9129a8571"
+    },
+    {
+      "manifest_bytes": 40084833,
+      "map_id": "arm",
+      "mtime_ns": 1784653754275053918,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/wood-planks/wood_planks_arm_4k.png",
+      "semantic": "ARM",
+      "set_id": "wood-planks",
+      "sha256": "0fee3ac42fc8c7e199e319c858a582506e56a45c1f5dd788959cf99766e0ee04"
+    },
+    {
+      "manifest_bytes": 61545750,
+      "map_id": "diffuse",
+      "mtime_ns": 1784653759692053784,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/wood-planks/wood_planks_diff_4k.png",
+      "semantic": "DIFF",
+      "set_id": "wood-planks",
+      "sha256": "a9f0c816676c77f56662df57abf1c216377beb0e45b543897b8ca388296d8c84"
+    },
+    {
+      "manifest_bytes": 20712521,
+      "map_id": "displacement",
+      "mtime_ns": 1784653762935053704,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/wood-planks/wood_planks_disp_4k.png",
+      "semantic": "Displacement",
+      "set_id": "wood-planks",
+      "sha256": "3d1bb68fb900896512015c58d4dcdc8affd12fd5580e8c1559b26cb8f889f7dd"
+    },
+    {
+      "manifest_bytes": 96869735,
+      "map_id": "normal",
+      "mtime_ns": 1784653769339053546,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/wood-planks/wood_planks_nor_gl_4k.png",
+      "semantic": "normal",
+      "set_id": "wood-planks",
+      "sha256": "cd74e1eaa0b7f86899e302f6db124e43dd84105cf089af854f4d4f18ba1070df"
+    },
+    {
+      "manifest_bytes": 17032497,
+      "map_id": "arm",
+      "mtime_ns": 1784653772546053466,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/treasure-chest/treasure_chest_arm_4k.png",
+      "semantic": "ARM",
+      "set_id": "treasure-chest",
+      "sha256": "be9bfad6f2bd7e91d61e5a6b08528c62ad23df7fdc431beff7d2401804aaf8ab"
+    },
+    {
+      "manifest_bytes": 73923816,
+      "map_id": "diffuse",
+      "mtime_ns": 1784653778182053327,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/treasure-chest/treasure_chest_diff_4k.png",
+      "semantic": "DIFF",
+      "set_id": "treasure-chest",
+      "sha256": "5f0ffd16562275807a90c616cb7697b5808ad41520d000d01c8c54369dbb6b9c"
+    },
+    {
+      "manifest_bytes": 87232602,
+      "map_id": "normal",
+      "mtime_ns": 1784653784471053171,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/treasure-chest/treasure_chest_nor_gl_4k.png",
+      "semantic": "normal",
+      "set_id": "treasure-chest",
+      "sha256": "46d8351db7898577b08b8b2d4704f99a2c3d6f99b27f4d939336814b03cd5328"
+    },
+    {
+      "manifest_bytes": 26815426,
+      "map_id": "arm",
+      "mtime_ns": 1784653787724053090,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/red-dirt-mud-01/red_dirt_mud_01_arm_4k.png",
+      "semantic": "ARM",
+      "set_id": "red-dirt-mud-01",
+      "sha256": "c73a5882672df68e166c32ef082d59f7f1000071c22c55cac52f1c5e54e6ea31"
+    },
+    {
+      "manifest_bytes": 31187122,
+      "map_id": "diffuse",
+      "mtime_ns": 1784653791590052995,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/red-dirt-mud-01/red_dirt_mud_01_diff_4k.png",
+      "semantic": "DIFF",
+      "set_id": "red-dirt-mud-01",
+      "sha256": "abd2762ee150fd497ca8f827bb350dc47ac58248996fa26debd687b7d02b1845"
+    },
+    {
+      "manifest_bytes": 31828804,
+      "map_id": "displacement",
+      "mtime_ns": 1784653795816052890,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/red-dirt-mud-01/red_dirt_mud_01_disp_4k.png",
+      "semantic": "Displacement",
+      "set_id": "red-dirt-mud-01",
+      "sha256": "d36362a1a8edc86932c544e295a70849cf7cb22b13e933935d8842c5c5713311"
+    },
+    {
+      "manifest_bytes": 26840028,
+      "map_id": "normal",
+      "mtime_ns": 1784653798992052812,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/red-dirt-mud-01/red_dirt_mud_01_nor_gl_4k.png",
+      "semantic": "normal",
+      "set_id": "red-dirt-mud-01",
+      "sha256": "ad9d02ed07f4d8d9a95e613389dd5551e6b54b7cfba2c316e33f99e6904f1abb"
+    },
+    {
+      "manifest_bytes": 1926834,
+      "map_id": "specular",
+      "mtime_ns": 1784653800904052764,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/red-dirt-mud-01/red_dirt_mud_01_spec_4k.png",
+      "semantic": "specular",
+      "set_id": "red-dirt-mud-01",
+      "sha256": "665aeb33550fc47e390bc8a495a4489a26184822bea735e406c05c4c8d9c4ac0"
+    },
+    {
+      "manifest_bytes": 23186112,
+      "map_id": "arm",
+      "mtime_ns": 1784653803900052690,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/aerial-rocks-02/aerial_rocks_02_arm_4k.png",
+      "semantic": "ARM",
+      "set_id": "aerial-rocks-02",
+      "sha256": "5040e4b10fc0d6b105306331041345b327272866fdece55ef379fb87a45d2f54"
+    },
+    {
+      "manifest_bytes": 30701993,
+      "map_id": "diffuse",
+      "mtime_ns": 1784653807361052604,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/aerial-rocks-02/aerial_rocks_02_diff_4k.png",
+      "semantic": "DIFF",
+      "set_id": "aerial-rocks-02",
+      "sha256": "4170ef1faad95c04e7faf6a5c2d8a4c424c2da08d38f7c60c4aeeecfd0a19e5b"
+    },
+    {
+      "manifest_bytes": 22634032,
+      "map_id": "displacement",
+      "mtime_ns": 1784653810308052531,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/aerial-rocks-02/aerial_rocks_02_disp_4k.png",
+      "semantic": "Displacement",
+      "set_id": "aerial-rocks-02",
+      "sha256": "1a851a2577dce00f2a22005b00ef7d8341bd0e4cfc454ff81857c054cfd7cfe3"
+    },
+    {
+      "manifest_bytes": 32446554,
+      "map_id": "normal",
+      "mtime_ns": 1784653813632052449,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/aerial-rocks-02/aerial_rocks_02_nor_gl_4k.png",
+      "semantic": "normal",
+      "set_id": "aerial-rocks-02",
+      "sha256": "105fd3ffe55374e4a2c726b01fe3eda1672bb28b5b990c3cb774336e15bcdc53"
+    },
+    {
+      "manifest_bytes": 24953665,
+      "map_id": "arm",
+      "mtime_ns": 1784653816793052371,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/forest-sand-01/forrest_sand_01_arm_4k.png",
+      "semantic": "ARM",
+      "set_id": "forest-sand-01",
+      "sha256": "952c3f40441115fcd37548e89deb44915f4fb1e7ec5440cd6bba753822c28d48"
+    },
+    {
+      "manifest_bytes": 40065343,
+      "map_id": "diffuse",
+      "mtime_ns": 1784653821446052256,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/forest-sand-01/forrest_sand_01_diff_4k.png",
+      "semantic": "DIFF",
+      "set_id": "forest-sand-01",
+      "sha256": "70164d3e37b6fc18b1759a8add3800c9dfa2fed72812fbb7bc3e9a15afdf411c"
+    },
+    {
+      "manifest_bytes": 32558000,
+      "map_id": "displacement",
+      "mtime_ns": 1784653825544958147,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/forest-sand-01/forrest_sand_01_disp_4k.png",
+      "semantic": "Displacement",
+      "set_id": "forest-sand-01",
+      "sha256": "fac15686a129b959b7438da390e4ac6e271dc4ae332a6931b0fe7a26342bf2ea"
+    },
+    {
+      "manifest_bytes": 29891531,
+      "map_id": "normal",
+      "mtime_ns": 1784653828987052069,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/forest-sand-01/forrest_sand_01_nor_gl_4k.png",
+      "semantic": "normal",
+      "set_id": "forest-sand-01",
+      "sha256": "facadf5408a9207fc5698dc253efda00c7e692b59fdf7652cd41bf0e53d8171e"
+    },
+    {
+      "manifest_bytes": 7916512,
+      "map_id": "specular",
+      "mtime_ns": 1784653831624052004,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/forest-sand-01/forrest_sand_01_spec_4k.png",
+      "semantic": "specular",
+      "set_id": "forest-sand-01",
+      "sha256": "2cb84c94e06b88b17fd19d089f506433c572510613a34092a6d8d4920531334f"
+    },
+    {
+      "manifest_bytes": 69331249,
+      "map_id": "arm",
+      "mtime_ns": 1784653836891051873,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/roof-09/roof_09_arm_4k.png",
+      "semantic": "ARM",
+      "set_id": "roof-09",
+      "sha256": "f5d5001e74d9f8a9aed9e28485c332ede6654f98f6525e071c7e4388e2b13736"
+    },
+    {
+      "manifest_bytes": 96057881,
+      "map_id": "diffuse",
+      "mtime_ns": 1784653844411051687,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/roof-09/roof_09_diff_4k.png",
+      "semantic": "DIFF",
+      "set_id": "roof-09",
+      "sha256": "26348a19731527e0054cbfa5c313a7bd0928d00f19c0dc11b15c39853fe5c861"
+    },
+    {
+      "manifest_bytes": 17355951,
+      "map_id": "displacement",
+      "mtime_ns": 1784653847425051613,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/roof-09/roof_09_disp_4k.png",
+      "semantic": "Displacement",
+      "set_id": "roof-09",
+      "sha256": "a46ae4877bea36c49882394f8876f97515f430b7d0ace2a47260ea45eea98721"
+    },
+    {
+      "manifest_bytes": 64367024,
+      "map_id": "normal",
+      "mtime_ns": 1784653853012051474,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/roof-09/roof_09_nor_gl_4k.png",
+      "semantic": "normal",
+      "set_id": "roof-09",
+      "sha256": "f7b5cb71663c18cb3016cc54cee084c28ed7cc93f8e1971c11e4f62597434acb"
+    },
+    {
+      "manifest_bytes": 14679953,
+      "map_id": "specular",
+      "mtime_ns": 1784653855475051413,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/roof-09/roof_09_spec_4k.png",
+      "semantic": "specular",
+      "set_id": "roof-09",
+      "sha256": "ba0d8b2f41ddb3f1fa381c104bd410a2537d07e014f42f27ea21163d8ea71a44"
+    },
+    {
+      "manifest_bytes": 3754358,
+      "map_id": "ambient-occlusion",
+      "mtime_ns": 1784653855648156349,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/paving-stones-070/PavingStones070_4K-PNG_AmbientOcclusion.png",
+      "semantic": "AO",
+      "set_id": "paving-stones-070",
+      "sha256": "7c689324368252a68e6d8e1e5bb9a83b01688d400273bd947942b701eb8c8154"
+    },
+    {
+      "manifest_bytes": 40662815,
+      "map_id": "color",
+      "mtime_ns": 1784653855667327732,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/paving-stones-070/PavingStones070_4K-PNG_Color.png",
+      "semantic": "DIFF",
+      "set_id": "paving-stones-070",
+      "sha256": "9656b1998f0b0084e1f536f7eac12ae472395ae192e462e6285361143ddb0ef1"
+    },
+    {
+      "manifest_bytes": 24224069,
+      "map_id": "displacement",
+      "mtime_ns": 1784653855699719174,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/paving-stones-070/PavingStones070_4K-PNG_Displacement.png",
+      "semantic": "Displacement",
+      "set_id": "paving-stones-070",
+      "sha256": "26399a92ba63ed521da15a1796e3c2ee8427f62453167f38356b2b5b95f43e30"
+    },
+    {
+      "manifest_bytes": 92265667,
+      "map_id": "normal-gl",
+      "mtime_ns": 1784653855748849114,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/paving-stones-070/PavingStones070_4K-PNG_NormalGL.png",
+      "semantic": "normal",
+      "set_id": "paving-stones-070",
+      "sha256": "c22e7d8cd4d2a1c8b2e67cc271124aecd7f6a09edab60e18e9bc958271506eef"
+    },
+    {
+      "manifest_bytes": 10638613,
+      "map_id": "roughness",
+      "mtime_ns": 1784653855803376987,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/paving-stones-070/PavingStones070_4K-PNG_Roughness.png",
+      "semantic": "rough",
+      "set_id": "paving-stones-070",
+      "sha256": "cdafe00afd46d88b579a2647e0ac43007a624f28bce96f24757716625fd5dfc1"
+    },
+    {
+      "manifest_bytes": 7905409,
+      "map_id": "ambient-occlusion",
+      "mtime_ns": 1784653855953176793,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/rails-001/Rails001_4K-PNG_AmbientOcclusion.png",
+      "semantic": "AO",
+      "set_id": "rails-001",
+      "sha256": "49f7fa7730170455e5c46da71d0abbcefd0265f5fe26dda12c4c3ed216c8c3ee"
+    },
+    {
+      "manifest_bytes": 33594872,
+      "map_id": "color",
+      "mtime_ns": 1784653855971117839,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/rails-001/Rails001_4K-PNG_Color.png",
+      "semantic": "DIFF",
+      "set_id": "rails-001",
+      "sha256": "0a3829ab66b534eb587c9afc64d1a9a5cd8131c4bc6b974faaa0cfb4074a873b"
+    },
+    {
+      "manifest_bytes": 21835135,
+      "map_id": "displacement",
+      "mtime_ns": 1784653855997902917,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/rails-001/Rails001_4K-PNG_Displacement.png",
+      "semantic": "Displacement",
+      "set_id": "rails-001",
+      "sha256": "b32339bb3023b36d8eb03322dfc20a6b86abbbd399191be97f5181c8421e41a4"
+    },
+    {
+      "manifest_bytes": 44614,
+      "map_id": "metalness",
+      "mtime_ns": 1784653856009968068,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/rails-001/Rails001_4K-PNG_Metalness.png",
+      "semantic": "metal",
+      "set_id": "rails-001",
+      "sha256": "1ebe73c9212c0c96c3f506f61489e8611b82ab12a6463891aa8e324cc58c9431"
+    },
+    {
+      "manifest_bytes": 89788496,
+      "map_id": "normal-gl",
+      "mtime_ns": 1784653856044339532,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/rails-001/Rails001_4K-PNG_NormalGL.png",
+      "semantic": "normal",
+      "set_id": "rails-001",
+      "sha256": "7b0345feae6c1a81c9c1bacf40b47657cbaa38e97086c0493d7d5293f225ed45"
+    },
+    {
+      "manifest_bytes": 6740578,
+      "map_id": "roughness",
+      "mtime_ns": 1784653856095751036,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/rails-001/Rails001_4K-PNG_Roughness.png",
+      "semantic": "rough",
+      "set_id": "rails-001",
+      "sha256": "daabcc13773bd914b082636f2776272267c6ece15a60ff45a8e2e1d1b9317912"
+    },
+    {
+      "manifest_bytes": 7789455,
+      "map_id": "ambient-occlusion",
+      "mtime_ns": 1784653856242628454,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/bricks-090/Bricks090_4K-PNG_AmbientOcclusion.png",
+      "semantic": "AO",
+      "set_id": "bricks-090",
+      "sha256": "d7c14128ff523dc17bb7eebc2a02744fa74a83d2e4b00a3769c38f9f3569c8b5"
+    },
+    {
+      "manifest_bytes": 29405369,
+      "map_id": "color",
+      "mtime_ns": 1784653856258793100,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/bricks-090/Bricks090_4K-PNG_Color.png",
+      "semantic": "DIFF",
+      "set_id": "bricks-090",
+      "sha256": "ab7ef3f19d17e224ecf85b2da1f00a3405c9af6a092a9086c6ac49cfd0693ec6"
+    },
+    {
+      "manifest_bytes": 21756515,
+      "map_id": "displacement",
+      "mtime_ns": 1784653856283712687,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/bricks-090/Bricks090_4K-PNG_Displacement.png",
+      "semantic": "Displacement",
+      "set_id": "bricks-090",
+      "sha256": "1adb2753c2da25c1c88a38e05101de09ab7eb7d38a1eca6f99bd15650ab52694"
+    },
+    {
+      "manifest_bytes": 91461960,
+      "map_id": "normal-gl",
+      "mtime_ns": 1784653856330466593,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/bricks-090/Bricks090_4K-PNG_NormalGL.png",
+      "semantic": "normal",
+      "set_id": "bricks-090",
+      "sha256": "b6986884e95cc1747f5feda23c8275d3964f96b6d268dad78a9996d89d89dbc6"
+    },
+    {
+      "manifest_bytes": 10058126,
+      "map_id": "roughness",
+      "mtime_ns": 1784653856384186701,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/bricks-090/Bricks090_4K-PNG_Roughness.png",
+      "semantic": "rough",
+      "set_id": "bricks-090",
+      "sha256": "0950e89d1a270f6cc38ec6e1628bc0c308dc82b4c1a663d0ab937626f47b1734"
+    },
+    {
+      "manifest_bytes": 1581137,
+      "map_id": "ambient-occlusion",
+      "mtime_ns": 1784653856515051388,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/metal-plates-013/MetalPlates013_4K-PNG_AmbientOcclusion.png",
+      "semantic": "AO",
+      "set_id": "metal-plates-013",
+      "sha256": "41e1605bda0a49ecc01ef32798c466d65b093565ca2f05d6d9d76f5bf8232736"
+    },
+    {
+      "manifest_bytes": 23062369,
+      "map_id": "color",
+      "mtime_ns": 1784653856526329801,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/metal-plates-013/MetalPlates013_4K-PNG_Color.png",
+      "semantic": "DIFF",
+      "set_id": "metal-plates-013",
+      "sha256": "e7ad1b82d6e313c05ea18aca53b1e025c8363bd0bd952f3864f03874e787d96d"
+    },
+    {
+      "manifest_bytes": 22480702,
+      "map_id": "displacement",
+      "mtime_ns": 1784653856548740064,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/metal-plates-013/MetalPlates013_4K-PNG_Displacement.png",
+      "semantic": "Displacement",
+      "set_id": "metal-plates-013",
+      "sha256": "309b85995add2b3f2bac7c13df288341c10b8a2fac69edc8ee53ff0583e3ca59"
+    },
+    {
+      "manifest_bytes": 3518550,
+      "map_id": "metalness",
+      "mtime_ns": 1784653856563116509,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/metal-plates-013/MetalPlates013_4K-PNG_Metalness.png",
+      "semantic": "metal",
+      "set_id": "metal-plates-013",
+      "sha256": "1cbcde6c2625f880503e809384d6eca738f878ca741702eaeb58ae14494194c3"
+    },
+    {
+      "manifest_bytes": 82819590,
+      "map_id": "normal-gl",
+      "mtime_ns": 1784653856596690028,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/metal-plates-013/MetalPlates013_4K-PNG_NormalGL.png",
+      "semantic": "normal",
+      "set_id": "metal-plates-013",
+      "sha256": "e3014030f041eb28caec75e2e9568fe69dc7349e5c087f98e5d9731ae81aa516"
+    },
+    {
+      "manifest_bytes": 8294295,
+      "map_id": "roughness",
+      "mtime_ns": 1784653856645912809,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/metal-plates-013/MetalPlates013_4K-PNG_Roughness.png",
+      "semantic": "rough",
+      "set_id": "metal-plates-013",
+      "sha256": "cbd15c7a735b78b807803ca8782649abfe3f38836bb7fd21c27fe60dfc801b51"
+    },
+    {
+      "manifest_bytes": 7976300,
+      "map_id": "ambient-occlusion",
+      "mtime_ns": 1784653856802495094,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/wood-063/Wood063_4K-PNG_AmbientOcclusion.png",
+      "semantic": "AO",
+      "set_id": "wood-063",
+      "sha256": "dddf8eb25d8c050f509c5ceea5e3f8092e4f4aa7ae14b7cc97a30a51158dd64e"
+    },
+    {
+      "manifest_bytes": 37482584,
+      "map_id": "color",
+      "mtime_ns": 1784653856821728478,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/wood-063/Wood063_4K-PNG_Color.png",
+      "semantic": "DIFF",
+      "set_id": "wood-063",
+      "sha256": "93d9a96e5de0e104b91405e8abe7b5573f8c0119fe1dea5b6c193cecb478057d"
+    },
+    {
+      "manifest_bytes": 27346540,
+      "map_id": "displacement",
+      "mtime_ns": 1784653856853054743,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/wood-063/Wood063_4K-PNG_Displacement.png",
+      "semantic": "Displacement",
+      "set_id": "wood-063",
+      "sha256": "00443c8debb39b1b6dc9c23ae2dae32c7d403563de7eb84bb78e62fade38b70e"
+    },
+    {
+      "manifest_bytes": 94158904,
+      "map_id": "normal-gl",
+      "mtime_ns": 1784653856903638042,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/wood-063/Wood063_4K-PNG_NormalGL.png",
+      "semantic": "normal",
+      "set_id": "wood-063",
+      "sha256": "40adea9acf879900a38259026b60a8bf0615a2069679642f754d7fe9174bffb2"
+    },
+    {
+      "manifest_bytes": 9124341,
+      "map_id": "roughness",
+      "mtime_ns": 1784653856958300226,
+      "path": "/home/aup/yy/workspace/peps/data/raw/textures/wood-063/Wood063_4K-PNG_Roughness.png",
+      "semantic": "rough",
+      "set_id": "wood-063",
+      "sha256": "49d289c94c28047ca3c1ff7c7fc91f1fd33708a540537190ac3e6d0db9f3db9e"
+    }
+  ],
+  "generated_at_utc": "2026-07-22T00:44:59.505952+00:00",
+  "manifest": "data/manifests/textures.json",
+  "manifest_sha256": "63e6597b835b6b3f25dca64ea1f0832e42ae49869010795ef8e02117d56070e1",
+  "map_count": 78,
+  "schema": "peps.texture_manifest_validation",
+  "schema_version": 1,
+  "semantic_counts": {
+    "AO": 5,
+    "ARM": 13,
+    "DIFF": 20,
+    "Displacement": 12,
+    "metal": 2,
+    "normal": 18,
+    "rough": 5,
+    "specular": 3
+  },
+  "set_count": 18,
+  "sets": [
+    {
+      "decoded_shape": [
+        8,
+        8,
+        9
+      ],
+      "id": "bench-vice-01",
+      "map_count": 3,
+      "output_channels": 9,
+      "paper_name": "bench vice 01",
+      "provider": "polyhaven",
+      "semantics": [
+        "ARM",
+        "DIFF",
+        "normal"
+      ]
+    },
+    {
+      "decoded_shape": [
+        8,
+        8,
+        9
+      ],
+      "id": "cardboard-box-01",
+      "map_count": 3,
+      "output_channels": 9,
+      "paper_name": "cardboard box 01",
+      "provider": "polyhaven",
+      "semantics": [
+        "ARM",
+        "DIFF",
+        "normal"
+      ]
+    },
+    {
+      "decoded_shape": [
+        8,
+        8,
+        9
+      ],
+      "id": "cannon-01",
+      "map_count": 3,
+      "output_channels": 9,
+      "paper_name": "cannon 01",
+      "provider": "polyhaven",
+      "semantics": [
+        "ARM",
+        "DIFF",
+        "normal"
+      ]
+    },
+    {
+      "decoded_shape": [
+        8,
+        8,
+        12
+      ],
+      "id": "clay-roof-tiles-02",
+      "map_count": 4,
+      "output_channels": 12,
+      "paper_name": "clay roof tiles 02",
+      "provider": "polyhaven",
+      "semantics": [
+        "ARM",
+        "DIFF",
+        "Displacement",
+        "normal"
+      ]
+    },
+    {
+      "decoded_shape": [
+        8,
+        8,
+        15
+      ],
+      "id": "fabric-pattern-07",
+      "map_count": 5,
+      "output_channels": 15,
+      "paper_name": "fabric pattern 07",
+      "provider": "polyhaven",
+      "semantics": [
+        "ARM",
+        "DIFF",
+        "DIFF",
+        "DIFF",
+        "normal"
+      ]
+    },
+    {
+      "decoded_shape": [
+        8,
+        8,
+        9
+      ],
+      "id": "garden-gnome",
+      "map_count": 3,
+      "output_channels": 9,
+      "paper_name": "garden gnome",
+      "provider": "polyhaven",
+      "semantics": [
+        "ARM",
+        "DIFF",
+        "normal"
+      ]
+    },
+    {
+      "decoded_shape": [
+        8,
+        8,
+        12
+      ],
+      "id": "garden-sprinkler-01",
+      "map_count": 4,
+      "output_channels": 12,
+      "paper_name": "garden sprinkler 01",
+      "provider": "polyhaven",
+      "semantics": [
+        "ARM",
+        "DIFF",
+        "Displacement",
+        "normal"
+      ]
+    },
+    {
+      "decoded_shape": [
+        8,
+        8,
+        12
+      ],
+      "id": "wood-planks",
+      "map_count": 4,
+      "output_channels": 12,
+      "paper_name": "wood planks",
+      "provider": "polyhaven",
+      "semantics": [
+        "ARM",
+        "DIFF",
+        "Displacement",
+        "normal"
+      ]
+    },
+    {
+      "decoded_shape": [
+        8,
+        8,
+        9
+      ],
+      "id": "treasure-chest",
+      "map_count": 3,
+      "output_channels": 9,
+      "paper_name": "treasure chest",
+      "provider": "polyhaven",
+      "semantics": [
+        "ARM",
+        "DIFF",
+        "normal"
+      ]
+    },
+    {
+      "decoded_shape": [
+        8,
+        8,
+        15
+      ],
+      "id": "red-dirt-mud-01",
+      "map_count": 5,
+      "output_channels": 15,
+      "paper_name": "red dirt mud 01",
+      "provider": "polyhaven",
+      "semantics": [
+        "ARM",
+        "DIFF",
+        "Displacement",
+        "normal",
+        "specular"
+      ]
+    },
+    {
+      "decoded_shape": [
+        8,
+        8,
+        12
+      ],
+      "id": "aerial-rocks-02",
+      "map_count": 4,
+      "output_channels": 12,
+      "paper_name": "Aerial Rocks 02",
+      "provider": "polyhaven",
+      "semantics": [
+        "ARM",
+        "DIFF",
+        "Displacement",
+        "normal"
+      ]
+    },
+    {
+      "decoded_shape": [
+        8,
+        8,
+        15
+      ],
+      "id": "forest-sand-01",
+      "map_count": 5,
+      "output_channels": 15,
+      "paper_name": "forest sand 01",
+      "provider": "polyhaven",
+      "semantics": [
+        "ARM",
+        "DIFF",
+        "Displacement",
+        "normal",
+        "specular"
+      ]
+    },
+    {
+      "decoded_shape": [
+        8,
+        8,
+        15
+      ],
+      "id": "roof-09",
+      "map_count": 5,
+      "output_channels": 15,
+      "paper_name": "roof 09",
+      "provider": "polyhaven",
+      "semantics": [
+        "ARM",
+        "DIFF",
+        "Displacement",
+        "normal",
+        "specular"
+      ]
+    },
+    {
+      "decoded_shape": [
+        8,
+        8,
+        15
+      ],
+      "id": "paving-stones-070",
+      "map_count": 5,
+      "output_channels": 15,
+      "paper_name": "Paving Stones 070",
+      "provider": "ambientcg",
+      "semantics": [
+        "AO",
+        "DIFF",
+        "Displacement",
+        "normal",
+        "rough"
+      ]
+    },
+    {
+      "decoded_shape": [
+        8,
+        8,
+        18
+      ],
+      "id": "rails-001",
+      "map_count": 6,
+      "output_channels": 18,
+      "paper_name": "Rails 001",
+      "provider": "ambientcg",
+      "semantics": [
+        "AO",
+        "DIFF",
+        "Displacement",
+        "metal",
+        "normal",
+        "rough"
+      ]
+    },
+    {
+      "decoded_shape": [
+        8,
+        8,
+        15
+      ],
+      "id": "bricks-090",
+      "map_count": 5,
+      "output_channels": 15,
+      "paper_name": "Bricks 090",
+      "provider": "ambientcg",
+      "semantics": [
+        "AO",
+        "DIFF",
+        "Displacement",
+        "normal",
+        "rough"
+      ]
+    },
+    {
+      "decoded_shape": [
+        8,
+        8,
+        18
+      ],
+      "id": "metal-plates-013",
+      "map_count": 6,
+      "output_channels": 18,
+      "paper_name": "Metal Plates 013",
+      "provider": "ambientcg",
+      "semantics": [
+        "AO",
+        "DIFF",
+        "Displacement",
+        "metal",
+        "normal",
+        "rough"
+      ]
+    },
+    {
+      "decoded_shape": [
+        8,
+        8,
+        15
+      ],
+      "id": "wood-063",
+      "map_count": 5,
+      "output_channels": 15,
+      "paper_name": "Wood 063",
+      "provider": "ambientcg",
+      "semantics": [
+        "AO",
+        "DIFF",
+        "Displacement",
+        "normal",
+        "rough"
+      ]
+    }
+  ],
+  "total_output_channels_across_sets": 234,
+  "verified_files": 78
+}

@@ -1,0 +1,1063 @@
+{
+  "device": "cpu",
+  "figures": {
+    "1": {
+      "coordinate": [
+        0.20000000298023224,
+        0.3499999940395355
+      ],
+      "frequencies": [
+        2,
+        4,
+        8
+      ],
+      "path": "/home/aup/yy/workspace/peps/results/image_repro/figures/figure01_workflow.png",
+      "status": "generated",
+      "verification": "analytic_schematic"
+    },
+    "10": {
+      "continuous_phi_interval": [
+        0.0,
+        125.66370614359172
+      ],
+      "data": "/home/aup/yy/workspace/peps/results/image_repro/figure_data/figure10_lissajous.csv",
+      "path": "/home/aup/yy/workspace/peps/results/image_repro/figures/figure10_lissajous.png",
+      "status": "generated",
+      "verification": "analytic_from_appendix_points"
+    },
+    "11": {
+      "continuous_phi_interval": [
+        0.0,
+        62.83185307179586
+      ],
+      "data": "/home/aup/yy/workspace/peps/results/image_repro/figure_data/figure11_unique_curves.csv",
+      "paper_ambiguity": "The Appendix source names a 3D figure but does not define its third coordinate; normalized phi is frozen here.",
+      "path": "/home/aup/yy/workspace/peps/results/image_repro/figures/figure11_unique_curves.png",
+      "status": "generated",
+      "verification": "analytic_with_explicit_third_coordinate_assumption"
+    },
+    "2": {
+      "frequency_indices": [
+        1,
+        2,
+        3
+      ],
+      "line_definition": "(t, 0.25 + 0.5t), t in [0.05,0.95]",
+      "path": "/home/aup/yy/workspace/peps/results/image_repro/figures/figure02_rotation.png",
+      "status": "generated",
+      "verification": "analytic_from_phi_i_equals_2_pow_i_pi"
+    },
+    "3": {
+      "data": "/home/aup/yy/workspace/peps/results/image_repro/figure_data/figure03_psd.csv",
+      "kodak_images": 24,
+      "kodak_original_resolution": true,
+      "path": "/home/aup/yy/workspace/peps/results/image_repro/figures/figure03_psd.png",
+      "protocol_assumption": "The paper says 10 textures but does not identify them or PSD normalization; the first ten paper-listed sets, per-signal bin-1 normalization, and the isotropic min(H,W)/2 Nyquist disk are frozen here.",
+      "status": "generated",
+      "texture_error": null,
+      "texture_map_signals": 37,
+      "texture_receipts": [
+        {
+          "map_id": "arm",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/bench-vice-01/bench_vice_01_arm_4k.png",
+          "semantic": "ARM",
+          "set_id": "bench-vice-01",
+          "sha256": "3186252b49c0bc310ff06d368bbb2e64bb14e42917bf9473b4830ac1e016ec57"
+        },
+        {
+          "map_id": "diffuse",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/bench-vice-01/bench_vice_01_diff_4k.png",
+          "semantic": "DIFF",
+          "set_id": "bench-vice-01",
+          "sha256": "04cf7c6815a7691399b8694910c0935a8adfc6e0db19709110137f635b0f86e2"
+        },
+        {
+          "map_id": "normal",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/bench-vice-01/bench_vice_01_nor_gl_4k.png",
+          "semantic": "normal",
+          "set_id": "bench-vice-01",
+          "sha256": "223017bb73169a12de7bcd513b5e10ba37ae54dc389a44feb3b384663d19116a"
+        },
+        {
+          "map_id": "arm",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/cardboard-box-01/cardboard_box_01_arm_4k.png",
+          "semantic": "ARM",
+          "set_id": "cardboard-box-01",
+          "sha256": "1618bdd39afb78652af71d3000d5f58c43105b24921b8b006585846587953690"
+        },
+        {
+          "map_id": "diffuse",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/cardboard-box-01/cardboard_box_01_diff_4k.png",
+          "semantic": "DIFF",
+          "set_id": "cardboard-box-01",
+          "sha256": "efaae0408d4520b37e0cbb1a4d2cda80a0f45d97aff165637a82032f6f8bf055"
+        },
+        {
+          "map_id": "normal",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/cardboard-box-01/cardboard_box_01_nor_gl_4k.png",
+          "semantic": "normal",
+          "set_id": "cardboard-box-01",
+          "sha256": "7d6e9a9630a35282cd028ad540008d7e4f0beb03e9574669a4419c916cdb8ef3"
+        },
+        {
+          "map_id": "arm",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/cannon-01/cannon_01_arm_4k.png",
+          "semantic": "ARM",
+          "set_id": "cannon-01",
+          "sha256": "6eee0afdbbbf2e964e99a1bd228ad14a9b1012df753f762513c24b69d21639b5"
+        },
+        {
+          "map_id": "diffuse",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/cannon-01/cannon_01_diff_4k.png",
+          "semantic": "DIFF",
+          "set_id": "cannon-01",
+          "sha256": "30f3c536f07d85eb407249b1480941de6c4b4374dda1876f4f6ff4a7555421d4"
+        },
+        {
+          "map_id": "normal",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/cannon-01/cannon_01_nor_gl_4k.png",
+          "semantic": "normal",
+          "set_id": "cannon-01",
+          "sha256": "476bf48494ddea78015141a3f15468ea55720c20cf01ad26490f7008f7339595"
+        },
+        {
+          "map_id": "arm",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/clay-roof-tiles-02/clay_roof_tiles_02_arm_4k.png",
+          "semantic": "ARM",
+          "set_id": "clay-roof-tiles-02",
+          "sha256": "90bfc5e9d76904619a0754b7ba2d2bdb79d82a2c40daa429052424303e168560"
+        },
+        {
+          "map_id": "diffuse",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/clay-roof-tiles-02/clay_roof_tiles_02_diff_4k.png",
+          "semantic": "DIFF",
+          "set_id": "clay-roof-tiles-02",
+          "sha256": "7ecc1e285954bee288485ec64e5ba9d5ead93f565fe9924a2c37b7e3749dd5cc"
+        },
+        {
+          "map_id": "displacement",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/clay-roof-tiles-02/clay_roof_tiles_02_disp_4k.png",
+          "semantic": "Displacement",
+          "set_id": "clay-roof-tiles-02",
+          "sha256": "115330ee85a780ed1b4bf044c389a9711279c2ed9768d69cfb9dbc28c7b76226"
+        },
+        {
+          "map_id": "normal",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/clay-roof-tiles-02/clay_roof_tiles_02_nor_gl_4k.png",
+          "semantic": "normal",
+          "set_id": "clay-roof-tiles-02",
+          "sha256": "bb97a22ce8e91ffff717a59524897a5d638039fada15742a3862379ff015bfcd"
+        },
+        {
+          "map_id": "arm",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/fabric-pattern-07/fabric_pattern_07_arm_4k.png",
+          "semantic": "ARM",
+          "set_id": "fabric-pattern-07",
+          "sha256": "ef2b696b4db21b7c8321a474ac15d0a7e6a40ab9d314bb18a38bae842a44a4c8"
+        },
+        {
+          "map_id": "diffuse-col-1",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/fabric-pattern-07/fabric_pattern_07_col_1_4k.png",
+          "semantic": "DIFF",
+          "set_id": "fabric-pattern-07",
+          "sha256": "6aff5a32a6c76698c60ce48e6322ced2499a1ce6d01613c4d60dc97038022d3f"
+        },
+        {
+          "map_id": "diffuse-col-2",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/fabric-pattern-07/fabric_pattern_07_col_2_4k.png",
+          "semantic": "DIFF",
+          "set_id": "fabric-pattern-07",
+          "sha256": "59143b8f2c7adb156a3a3d1a7ffce2b622d9ee79e53ec6d813c7b65e23033f22"
+        },
+        {
+          "map_id": "diffuse-col-03",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/fabric-pattern-07/fabric_pattern_07_col_03_4k.png",
+          "semantic": "DIFF",
+          "set_id": "fabric-pattern-07",
+          "sha256": "65b305850287d2646d8a65aacc10cc62d5b59477786fb26513dedf4f32fb7d6e"
+        },
+        {
+          "map_id": "normal",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/fabric-pattern-07/fabric_pattern_07_nor_gl_4k.png",
+          "semantic": "normal",
+          "set_id": "fabric-pattern-07",
+          "sha256": "51438ec29903e75884b0f728e549467fe5528c3acefc02e550e7ab6d815fef69"
+        },
+        {
+          "map_id": "arm",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/garden-gnome/garden_gnome_arm_4k.png",
+          "semantic": "ARM",
+          "set_id": "garden-gnome",
+          "sha256": "ca81261e255b56ed7b9b780376b0ca7f6bf0d9b95d8b12799229ad2c63c54cb7"
+        },
+        {
+          "map_id": "diffuse",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/garden-gnome/garden_gnome_diff_4k.png",
+          "semantic": "DIFF",
+          "set_id": "garden-gnome",
+          "sha256": "73ac1520f23ba812f4791fdd397fd83650e6afae4be603d44c7cf5787871dd87"
+        },
+        {
+          "map_id": "normal",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/garden-gnome/garden_gnome_nor_gl_4k.png",
+          "semantic": "normal",
+          "set_id": "garden-gnome",
+          "sha256": "3ebb9f71e72c43969937a2298cfcc2a77fc397db38a2d251e5aa00d3c3c2c360"
+        },
+        {
+          "map_id": "arm",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/garden-sprinkler-01/garden_sprinkler_01_arm_4k.png",
+          "semantic": "ARM",
+          "set_id": "garden-sprinkler-01",
+          "sha256": "47706007f3760a73dbe944acf67d77cd60baf817ee49b4181d6c12c674446486"
+        },
+        {
+          "map_id": "diffuse",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/garden-sprinkler-01/garden_sprinkler_01_diff_4k.png",
+          "semantic": "DIFF",
+          "set_id": "garden-sprinkler-01",
+          "sha256": "5b5b5a5b2e9d0de5378df6281b47a557cd4d70df6b415d14db80feb86b71a1ca"
+        },
+        {
+          "map_id": "displacement",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/garden-sprinkler-01/garden_sprinkler_01_height_4k.png",
+          "semantic": "Displacement",
+          "set_id": "garden-sprinkler-01",
+          "sha256": "6455bfe28c5f632fc4843f9abe6d75a5a3d2a84afb763bbf77891b43a451a568"
+        },
+        {
+          "map_id": "normal",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/garden-sprinkler-01/garden_sprinkler_01_nor_gl_4k.png",
+          "semantic": "normal",
+          "set_id": "garden-sprinkler-01",
+          "sha256": "feaea08aa0031a7928cfac30c77a719ecad6e47df0752fd85d4c62a9129a8571"
+        },
+        {
+          "map_id": "arm",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/wood-planks/wood_planks_arm_4k.png",
+          "semantic": "ARM",
+          "set_id": "wood-planks",
+          "sha256": "0fee3ac42fc8c7e199e319c858a582506e56a45c1f5dd788959cf99766e0ee04"
+        },
+        {
+          "map_id": "diffuse",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/wood-planks/wood_planks_diff_4k.png",
+          "semantic": "DIFF",
+          "set_id": "wood-planks",
+          "sha256": "a9f0c816676c77f56662df57abf1c216377beb0e45b543897b8ca388296d8c84"
+        },
+        {
+          "map_id": "displacement",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/wood-planks/wood_planks_disp_4k.png",
+          "semantic": "Displacement",
+          "set_id": "wood-planks",
+          "sha256": "3d1bb68fb900896512015c58d4dcdc8affd12fd5580e8c1559b26cb8f889f7dd"
+        },
+        {
+          "map_id": "normal",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/wood-planks/wood_planks_nor_gl_4k.png",
+          "semantic": "normal",
+          "set_id": "wood-planks",
+          "sha256": "cd74e1eaa0b7f86899e302f6db124e43dd84105cf089af854f4d4f18ba1070df"
+        },
+        {
+          "map_id": "arm",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/treasure-chest/treasure_chest_arm_4k.png",
+          "semantic": "ARM",
+          "set_id": "treasure-chest",
+          "sha256": "be9bfad6f2bd7e91d61e5a6b08528c62ad23df7fdc431beff7d2401804aaf8ab"
+        },
+        {
+          "map_id": "diffuse",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/treasure-chest/treasure_chest_diff_4k.png",
+          "semantic": "DIFF",
+          "set_id": "treasure-chest",
+          "sha256": "5f0ffd16562275807a90c616cb7697b5808ad41520d000d01c8c54369dbb6b9c"
+        },
+        {
+          "map_id": "normal",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/treasure-chest/treasure_chest_nor_gl_4k.png",
+          "semantic": "normal",
+          "set_id": "treasure-chest",
+          "sha256": "46d8351db7898577b08b8b2d4704f99a2c3d6f99b27f4d939336814b03cd5328"
+        },
+        {
+          "map_id": "ambient-occlusion",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/paving-stones-070/PavingStones070_4K-PNG_AmbientOcclusion.png",
+          "semantic": "AO",
+          "set_id": "paving-stones-070",
+          "sha256": "7c689324368252a68e6d8e1e5bb9a83b01688d400273bd947942b701eb8c8154"
+        },
+        {
+          "map_id": "color",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/paving-stones-070/PavingStones070_4K-PNG_Color.png",
+          "semantic": "DIFF",
+          "set_id": "paving-stones-070",
+          "sha256": "9656b1998f0b0084e1f536f7eac12ae472395ae192e462e6285361143ddb0ef1"
+        },
+        {
+          "map_id": "displacement",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/paving-stones-070/PavingStones070_4K-PNG_Displacement.png",
+          "semantic": "Displacement",
+          "set_id": "paving-stones-070",
+          "sha256": "26399a92ba63ed521da15a1796e3c2ee8427f62453167f38356b2b5b95f43e30"
+        },
+        {
+          "map_id": "normal-gl",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/paving-stones-070/PavingStones070_4K-PNG_NormalGL.png",
+          "semantic": "normal",
+          "set_id": "paving-stones-070",
+          "sha256": "c22e7d8cd4d2a1c8b2e67cc271124aecd7f6a09edab60e18e9bc958271506eef"
+        },
+        {
+          "map_id": "roughness",
+          "path": "/home/aup/yy/workspace/peps/data/raw/textures/paving-stones-070/PavingStones070_4K-PNG_Roughness.png",
+          "semantic": "rough",
+          "set_id": "paving-stones-070",
+          "sha256": "cdafe00afd46d88b579a2647e0ac43007a624f28bce96f24757716625fd5dfc1"
+        }
+      ],
+      "texture_set_ids": [
+        "bench-vice-01",
+        "cardboard-box-01",
+        "cannon-01",
+        "clay-roof-tiles-02",
+        "fabric-pattern-07",
+        "garden-gnome",
+        "garden-sprinkler-01",
+        "wood-planks",
+        "treasure-chest",
+        "paving-stones-070"
+      ]
+    },
+    "4": {
+      "concat_width": 56,
+      "cumulative_allocations": [
+        0,
+        4,
+        6,
+        7
+      ],
+      "data": "/home/aup/yy/workspace/peps/results/image_repro/figure_data/figure04_pink_allocation.csv",
+      "frequency_widths": [
+        4,
+        2,
+        1
+      ],
+      "path": "/home/aup/yy/workspace/peps/results/image_repro/figures/figure04_pink_allocation.png",
+      "pink_width": 22,
+      "status": "generated",
+      "verification": "paper_algorithm_1_exact"
+    },
+    "5": {
+      "available_runner": "python -m experiments.reproduce run --artifact image-fig5 --fig5-manifest ... --assumed-steps ... --allow-protocol-assumptions",
+      "reason": "The paper does not identify the native-4K image suite or optimizer steps. No exact Figure 5 numbers are generated.",
+      "status": "blocked"
+    },
+    "6": {
+      "reason": "Figure 6 is not emitted until Table 1 is complete; partial checkpoints must not be presented as the paper qualitative result.",
+      "status": "blocked",
+      "table1_progress": {
+        "accounted_optimizer_steps": 291500,
+        "active_workers": 0,
+        "artifact": "table1",
+        "canonical": true,
+        "checkpoint_errors": [],
+        "checkpoint_warnings": [
+          {
+            "instance": "kodim01",
+            "method": "PE",
+            "path": "/home/aup/yy/workspace/peps/results/work/image-repro/table1/a30fe21f086d154e/checkpoints/raw/kodim01/PE/seed-0.pt",
+            "seed": 0,
+            "warning": "checkpoint predates embedded job identity; path and training state are valid but identity is legacy-unverified"
+          },
+          {
+            "instance": "kodim01",
+            "method": "PE",
+            "path": "/home/aup/yy/workspace/peps/results/work/image-repro/table1/a30fe21f086d154e/checkpoints/raw/kodim01/PE/seed-1.pt",
+            "seed": 1,
+            "warning": "checkpoint predates embedded job identity; path and training state are valid but identity is legacy-unverified"
+          },
+          {
+            "instance": "kodim01",
+            "method": "PE",
+            "path": "/home/aup/yy/workspace/peps/results/work/image-repro/table1/a30fe21f086d154e/checkpoints/raw/kodim01/PE/seed-2.pt",
+            "seed": 2,
+            "warning": "checkpoint predates embedded job identity; path and training state are valid but identity is legacy-unverified"
+          },
+          {
+            "instance": "kodim01",
+            "method": "NTC_N",
+            "path": "/home/aup/yy/workspace/peps/results/work/image-repro/table1/a30fe21f086d154e/checkpoints/raw/kodim01/NTC_N/seed-1.pt",
+            "seed": 1,
+            "warning": "checkpoint predates embedded job identity; path and training state are valid but identity is legacy-unverified"
+          }
+        ],
+        "checkpointed_incomplete_jobs": 4,
+        "complete": false,
+        "completed_jobs": 1,
+        "config": "configs/paper/image_full.toml",
+        "config_sha256": "a30fe21f086d154ec16f8a62b487890c54ed4c3d42e8e7e7e3560b0320b0684f",
+        "expected_jobs": 648,
+        "expected_optimizer_steps": 77760000,
+        "incomplete_temporary_outputs": [],
+        "job_completion_fraction": 0.0015432098765432098,
+        "optimizer_step_completion_fraction": 0.0037487139917695474,
+        "output_dir": "/home/aup/yy/workspace/peps/results/work/image-repro/table1/a30fe21f086d154e",
+        "output_integrity_ok": true,
+        "per_rank": {
+          "0": {
+            "checkpointed_incomplete_jobs": 1,
+            "completed_jobs": 0,
+            "expected_jobs": 162,
+            "optimizer_steps": 41500
+          },
+          "1": {
+            "checkpointed_incomplete_jobs": 1,
+            "completed_jobs": 0,
+            "expected_jobs": 162,
+            "optimizer_steps": 41000
+          },
+          "2": {
+            "checkpointed_incomplete_jobs": 1,
+            "completed_jobs": 0,
+            "expected_jobs": 162,
+            "optimizer_steps": 41000
+          },
+          "3": {
+            "checkpointed_incomplete_jobs": 1,
+            "completed_jobs": 1,
+            "expected_jobs": 162,
+            "optimizer_steps": 168000
+          }
+        },
+        "profile": "full",
+        "result_errors": [],
+        "throughput_observation": {
+          "aggregate_checkpointed_steps_per_second": 194.63696141354555,
+          "launch_elapsed_seconds": 1497.660043,
+          "naive_remaining_seconds_at_current_job_mix": 398015.35863171704,
+          "observation_end_evidence": "latest_valid_result_or_checkpoint_mtime",
+          "observation_ended_at_utc": "2026-07-21T19:31:44.221842+00:00",
+          "warning": "Not an ETA: method costs differ and progress is visible only at checkpoint boundaries."
+        },
+        "unexpected_checkpoint_files": [],
+        "unexpected_result_files": [],
+        "worker_status_errors": [],
+        "workers": [
+          {
+            "artifact": "table1",
+            "device": "cuda:0",
+            "effective_state": "stopped_checkpointed",
+            "expected_selected_shard_jobs": 162,
+            "liveness_evidence": {
+              "reason": "pid_not_present_or_unreadable",
+              "status": "not_alive"
+            },
+            "output_dir": "results/work/image-repro/table1/a30fe21f086d154e",
+            "pid": 3356288,
+            "process_alive": false,
+            "progress_evidence": {
+              "checkpointed_incomplete_jobs": 1,
+              "completed_jobs": 0,
+              "expected_jobs": 162,
+              "optimizer_steps": 41500
+            },
+            "rank": 0,
+            "recorded_state": "running",
+            "schema": "peps.image_worker_status",
+            "schema_version": 1,
+            "selected_dataset_receipt_count": 24,
+            "selected_instances": [
+              "kodim01",
+              "kodim02",
+              "kodim03",
+              "kodim04",
+              "kodim05",
+              "kodim06",
+              "kodim07",
+              "kodim08",
+              "kodim09",
+              "kodim10",
+              "kodim11",
+              "kodim12",
+              "kodim13",
+              "kodim14",
+              "kodim15",
+              "kodim16",
+              "kodim17",
+              "kodim18",
+              "kodim19",
+              "kodim20",
+              "kodim21",
+              "kodim22",
+              "kodim23",
+              "kodim24"
+            ],
+            "selected_methods": [
+              "G-P-PEPS",
+              "G-P-PEPS-25",
+              "G-PEPS",
+              "Grid",
+              "LPE",
+              "NTC_N",
+              "NTC_PEPS",
+              "NTC_PinkPEPS",
+              "PE"
+            ],
+            "started_at_utc": "2026-07-21T19:06:46.885293+00:00",
+            "state": "stopped_checkpointed",
+            "world_size": 4
+          },
+          {
+            "artifact": "table1",
+            "device": "cuda:0",
+            "effective_state": "stopped_checkpointed",
+            "expected_selected_shard_jobs": 162,
+            "liveness_evidence": {
+              "reason": "pid_not_present_or_unreadable",
+              "status": "not_alive"
+            },
+            "output_dir": "results/work/image-repro/table1/a30fe21f086d154e",
+            "pid": 3356289,
+            "process_alive": false,
+            "progress_evidence": {
+              "checkpointed_incomplete_jobs": 1,
+              "completed_jobs": 0,
+              "expected_jobs": 162,
+              "optimizer_steps": 41000
+            },
+            "rank": 1,
+            "recorded_state": "running",
+            "schema": "peps.image_worker_status",
+            "schema_version": 1,
+            "selected_dataset_receipt_count": 24,
+            "selected_instances": [
+              "kodim01",
+              "kodim02",
+              "kodim03",
+              "kodim04",
+              "kodim05",
+              "kodim06",
+              "kodim07",
+              "kodim08",
+              "kodim09",
+              "kodim10",
+              "kodim11",
+              "kodim12",
+              "kodim13",
+              "kodim14",
+              "kodim15",
+              "kodim16",
+              "kodim17",
+              "kodim18",
+              "kodim19",
+              "kodim20",
+              "kodim21",
+              "kodim22",
+              "kodim23",
+              "kodim24"
+            ],
+            "selected_methods": [
+              "G-P-PEPS",
+              "G-P-PEPS-25",
+              "G-PEPS",
+              "Grid",
+              "LPE",
+              "NTC_N",
+              "NTC_PEPS",
+              "NTC_PinkPEPS",
+              "PE"
+            ],
+            "started_at_utc": "2026-07-21T19:06:46.561799+00:00",
+            "state": "stopped_checkpointed",
+            "world_size": 4
+          },
+          {
+            "artifact": "table1",
+            "device": "cuda:0",
+            "effective_state": "stopped_checkpointed",
+            "expected_selected_shard_jobs": 162,
+            "liveness_evidence": {
+              "reason": "pid_not_present_or_unreadable",
+              "status": "not_alive"
+            },
+            "output_dir": "results/work/image-repro/table1/a30fe21f086d154e",
+            "pid": 3356290,
+            "process_alive": false,
+            "progress_evidence": {
+              "checkpointed_incomplete_jobs": 1,
+              "completed_jobs": 0,
+              "expected_jobs": 162,
+              "optimizer_steps": 41000
+            },
+            "rank": 2,
+            "recorded_state": "running",
+            "schema": "peps.image_worker_status",
+            "schema_version": 1,
+            "selected_dataset_receipt_count": 24,
+            "selected_instances": [
+              "kodim01",
+              "kodim02",
+              "kodim03",
+              "kodim04",
+              "kodim05",
+              "kodim06",
+              "kodim07",
+              "kodim08",
+              "kodim09",
+              "kodim10",
+              "kodim11",
+              "kodim12",
+              "kodim13",
+              "kodim14",
+              "kodim15",
+              "kodim16",
+              "kodim17",
+              "kodim18",
+              "kodim19",
+              "kodim20",
+              "kodim21",
+              "kodim22",
+              "kodim23",
+              "kodim24"
+            ],
+            "selected_methods": [
+              "G-P-PEPS",
+              "G-P-PEPS-25",
+              "G-PEPS",
+              "Grid",
+              "LPE",
+              "NTC_N",
+              "NTC_PEPS",
+              "NTC_PinkPEPS",
+              "PE"
+            ],
+            "started_at_utc": "2026-07-21T19:06:46.789789+00:00",
+            "state": "stopped_checkpointed",
+            "world_size": 4
+          },
+          {
+            "artifact": "table1",
+            "device": "cuda:0",
+            "effective_state": "stopped_checkpointed",
+            "expected_selected_shard_jobs": 162,
+            "liveness_evidence": {
+              "reason": "pid_not_present_or_unreadable",
+              "status": "not_alive"
+            },
+            "output_dir": "results/work/image-repro/table1/a30fe21f086d154e",
+            "pid": 3356291,
+            "process_alive": false,
+            "progress_evidence": {
+              "checkpointed_incomplete_jobs": 1,
+              "completed_jobs": 1,
+              "expected_jobs": 162,
+              "optimizer_steps": 168000
+            },
+            "rank": 3,
+            "recorded_state": "running",
+            "schema": "peps.image_worker_status",
+            "schema_version": 1,
+            "selected_dataset_receipt_count": 24,
+            "selected_instances": [
+              "kodim01",
+              "kodim02",
+              "kodim03",
+              "kodim04",
+              "kodim05",
+              "kodim06",
+              "kodim07",
+              "kodim08",
+              "kodim09",
+              "kodim10",
+              "kodim11",
+              "kodim12",
+              "kodim13",
+              "kodim14",
+              "kodim15",
+              "kodim16",
+              "kodim17",
+              "kodim18",
+              "kodim19",
+              "kodim20",
+              "kodim21",
+              "kodim22",
+              "kodim23",
+              "kodim24"
+            ],
+            "selected_methods": [
+              "G-P-PEPS",
+              "G-P-PEPS-25",
+              "G-PEPS",
+              "Grid",
+              "LPE",
+              "NTC_N",
+              "NTC_PEPS",
+              "NTC_PinkPEPS",
+              "PE"
+            ],
+            "started_at_utc": "2026-07-21T19:06:46.859939+00:00",
+            "state": "stopped_checkpointed",
+            "world_size": 4
+          }
+        ]
+      }
+    },
+    "7": {
+      "reason": "Figure 7 requires all 648 Table 1 instance/method/seed records.",
+      "status": "blocked",
+      "table1_progress": {
+        "accounted_optimizer_steps": 291500,
+        "active_workers": 0,
+        "artifact": "table1",
+        "canonical": true,
+        "checkpoint_errors": [],
+        "checkpoint_warnings": [
+          {
+            "instance": "kodim01",
+            "method": "PE",
+            "path": "/home/aup/yy/workspace/peps/results/work/image-repro/table1/a30fe21f086d154e/checkpoints/raw/kodim01/PE/seed-0.pt",
+            "seed": 0,
+            "warning": "checkpoint predates embedded job identity; path and training state are valid but identity is legacy-unverified"
+          },
+          {
+            "instance": "kodim01",
+            "method": "PE",
+            "path": "/home/aup/yy/workspace/peps/results/work/image-repro/table1/a30fe21f086d154e/checkpoints/raw/kodim01/PE/seed-1.pt",
+            "seed": 1,
+            "warning": "checkpoint predates embedded job identity; path and training state are valid but identity is legacy-unverified"
+          },
+          {
+            "instance": "kodim01",
+            "method": "PE",
+            "path": "/home/aup/yy/workspace/peps/results/work/image-repro/table1/a30fe21f086d154e/checkpoints/raw/kodim01/PE/seed-2.pt",
+            "seed": 2,
+            "warning": "checkpoint predates embedded job identity; path and training state are valid but identity is legacy-unverified"
+          },
+          {
+            "instance": "kodim01",
+            "method": "NTC_N",
+            "path": "/home/aup/yy/workspace/peps/results/work/image-repro/table1/a30fe21f086d154e/checkpoints/raw/kodim01/NTC_N/seed-1.pt",
+            "seed": 1,
+            "warning": "checkpoint predates embedded job identity; path and training state are valid but identity is legacy-unverified"
+          }
+        ],
+        "checkpointed_incomplete_jobs": 4,
+        "complete": false,
+        "completed_jobs": 1,
+        "config": "configs/paper/image_full.toml",
+        "config_sha256": "a30fe21f086d154ec16f8a62b487890c54ed4c3d42e8e7e7e3560b0320b0684f",
+        "expected_jobs": 648,
+        "expected_optimizer_steps": 77760000,
+        "incomplete_temporary_outputs": [],
+        "job_completion_fraction": 0.0015432098765432098,
+        "optimizer_step_completion_fraction": 0.0037487139917695474,
+        "output_dir": "/home/aup/yy/workspace/peps/results/work/image-repro/table1/a30fe21f086d154e",
+        "output_integrity_ok": true,
+        "per_rank": {
+          "0": {
+            "checkpointed_incomplete_jobs": 1,
+            "completed_jobs": 0,
+            "expected_jobs": 162,
+            "optimizer_steps": 41500
+          },
+          "1": {
+            "checkpointed_incomplete_jobs": 1,
+            "completed_jobs": 0,
+            "expected_jobs": 162,
+            "optimizer_steps": 41000
+          },
+          "2": {
+            "checkpointed_incomplete_jobs": 1,
+            "completed_jobs": 0,
+            "expected_jobs": 162,
+            "optimizer_steps": 41000
+          },
+          "3": {
+            "checkpointed_incomplete_jobs": 1,
+            "completed_jobs": 1,
+            "expected_jobs": 162,
+            "optimizer_steps": 168000
+          }
+        },
+        "profile": "full",
+        "result_errors": [],
+        "throughput_observation": {
+          "aggregate_checkpointed_steps_per_second": 194.63696141354555,
+          "launch_elapsed_seconds": 1497.660043,
+          "naive_remaining_seconds_at_current_job_mix": 398015.35863171704,
+          "observation_end_evidence": "latest_valid_result_or_checkpoint_mtime",
+          "observation_ended_at_utc": "2026-07-21T19:31:44.221842+00:00",
+          "warning": "Not an ETA: method costs differ and progress is visible only at checkpoint boundaries."
+        },
+        "unexpected_checkpoint_files": [],
+        "unexpected_result_files": [],
+        "worker_status_errors": [],
+        "workers": [
+          {
+            "artifact": "table1",
+            "device": "cuda:0",
+            "effective_state": "stopped_checkpointed",
+            "expected_selected_shard_jobs": 162,
+            "liveness_evidence": {
+              "reason": "pid_not_present_or_unreadable",
+              "status": "not_alive"
+            },
+            "output_dir": "results/work/image-repro/table1/a30fe21f086d154e",
+            "pid": 3356288,
+            "process_alive": false,
+            "progress_evidence": {
+              "checkpointed_incomplete_jobs": 1,
+              "completed_jobs": 0,
+              "expected_jobs": 162,
+              "optimizer_steps": 41500
+            },
+            "rank": 0,
+            "recorded_state": "running",
+            "schema": "peps.image_worker_status",
+            "schema_version": 1,
+            "selected_dataset_receipt_count": 24,
+            "selected_instances": [
+              "kodim01",
+              "kodim02",
+              "kodim03",
+              "kodim04",
+              "kodim05",
+              "kodim06",
+              "kodim07",
+              "kodim08",
+              "kodim09",
+              "kodim10",
+              "kodim11",
+              "kodim12",
+              "kodim13",
+              "kodim14",
+              "kodim15",
+              "kodim16",
+              "kodim17",
+              "kodim18",
+              "kodim19",
+              "kodim20",
+              "kodim21",
+              "kodim22",
+              "kodim23",
+              "kodim24"
+            ],
+            "selected_methods": [
+              "G-P-PEPS",
+              "G-P-PEPS-25",
+              "G-PEPS",
+              "Grid",
+              "LPE",
+              "NTC_N",
+              "NTC_PEPS",
+              "NTC_PinkPEPS",
+              "PE"
+            ],
+            "started_at_utc": "2026-07-21T19:06:46.885293+00:00",
+            "state": "stopped_checkpointed",
+            "world_size": 4
+          },
+          {
+            "artifact": "table1",
+            "device": "cuda:0",
+            "effective_state": "stopped_checkpointed",
+            "expected_selected_shard_jobs": 162,
+            "liveness_evidence": {
+              "reason": "pid_not_present_or_unreadable",
+              "status": "not_alive"
+            },
+            "output_dir": "results/work/image-repro/table1/a30fe21f086d154e",
+            "pid": 3356289,
+            "process_alive": false,
+            "progress_evidence": {
+              "checkpointed_incomplete_jobs": 1,
+              "completed_jobs": 0,
+              "expected_jobs": 162,
+              "optimizer_steps": 41000
+            },
+            "rank": 1,
+            "recorded_state": "running",
+            "schema": "peps.image_worker_status",
+            "schema_version": 1,
+            "selected_dataset_receipt_count": 24,
+            "selected_instances": [
+              "kodim01",
+              "kodim02",
+              "kodim03",
+              "kodim04",
+              "kodim05",
+              "kodim06",
+              "kodim07",
+              "kodim08",
+              "kodim09",
+              "kodim10",
+              "kodim11",
+              "kodim12",
+              "kodim13",
+              "kodim14",
+              "kodim15",
+              "kodim16",
+              "kodim17",
+              "kodim18",
+              "kodim19",
+              "kodim20",
+              "kodim21",
+              "kodim22",
+              "kodim23",
+              "kodim24"
+            ],
+            "selected_methods": [
+              "G-P-PEPS",
+              "G-P-PEPS-25",
+              "G-PEPS",
+              "Grid",
+              "LPE",
+              "NTC_N",
+              "NTC_PEPS",
+              "NTC_PinkPEPS",
+              "PE"
+            ],
+            "started_at_utc": "2026-07-21T19:06:46.561799+00:00",
+            "state": "stopped_checkpointed",
+            "world_size": 4
+          },
+          {
+            "artifact": "table1",
+            "device": "cuda:0",
+            "effective_state": "stopped_checkpointed",
+            "expected_selected_shard_jobs": 162,
+            "liveness_evidence": {
+              "reason": "pid_not_present_or_unreadable",
+              "status": "not_alive"
+            },
+            "output_dir": "results/work/image-repro/table1/a30fe21f086d154e",
+            "pid": 3356290,
+            "process_alive": false,
+            "progress_evidence": {
+              "checkpointed_incomplete_jobs": 1,
+              "completed_jobs": 0,
+              "expected_jobs": 162,
+              "optimizer_steps": 41000
+            },
+            "rank": 2,
+            "recorded_state": "running",
+            "schema": "peps.image_worker_status",
+            "schema_version": 1,
+            "selected_dataset_receipt_count": 24,
+            "selected_instances": [
+              "kodim01",
+              "kodim02",
+              "kodim03",
+              "kodim04",
+              "kodim05",
+              "kodim06",
+              "kodim07",
+              "kodim08",
+              "kodim09",
+              "kodim10",
+              "kodim11",
+              "kodim12",
+              "kodim13",
+              "kodim14",
+              "kodim15",
+              "kodim16",
+              "kodim17",
+              "kodim18",
+              "kodim19",
+              "kodim20",
+              "kodim21",
+              "kodim22",
+              "kodim23",
+              "kodim24"
+            ],
+            "selected_methods": [
+              "G-P-PEPS",
+              "G-P-PEPS-25",
+              "G-PEPS",
+              "Grid",
+              "LPE",
+              "NTC_N",
+              "NTC_PEPS",
+              "NTC_PinkPEPS",
+              "PE"
+            ],
+            "started_at_utc": "2026-07-21T19:06:46.789789+00:00",
+            "state": "stopped_checkpointed",
+            "world_size": 4
+          },
+          {
+            "artifact": "table1",
+            "device": "cuda:0",
+            "effective_state": "stopped_checkpointed",
+            "expected_selected_shard_jobs": 162,
+            "liveness_evidence": {
+              "reason": "pid_not_present_or_unreadable",
+              "status": "not_alive"
+            },
+            "output_dir": "results/work/image-repro/table1/a30fe21f086d154e",
+            "pid": 3356291,
+            "process_alive": false,
+            "progress_evidence": {
+              "checkpointed_incomplete_jobs": 1,
+              "completed_jobs": 1,
+              "expected_jobs": 162,
+              "optimizer_steps": 168000
+            },
+            "rank": 3,
+            "recorded_state": "running",
+            "schema": "peps.image_worker_status",
+            "schema_version": 1,
+            "selected_dataset_receipt_count": 24,
+            "selected_instances": [
+              "kodim01",
+              "kodim02",
+              "kodim03",
+              "kodim04",
+              "kodim05",
+              "kodim06",
+              "kodim07",
+              "kodim08",
+              "kodim09",
+              "kodim10",
+              "kodim11",
+              "kodim12",
+              "kodim13",
+              "kodim14",
+              "kodim15",
+              "kodim16",
+              "kodim17",
+              "kodim18",
+              "kodim19",
+              "kodim20",
+              "kodim21",
+              "kodim22",
+              "kodim23",
+              "kodim24"
+            ],
+            "selected_methods": [
+              "G-P-PEPS",
+              "G-P-PEPS-25",
+              "G-PEPS",
+              "Grid",
+              "LPE",
+              "NTC_N",
+              "NTC_PEPS",
+              "NTC_PinkPEPS",
+              "PE"
+            ],
+            "started_at_utc": "2026-07-21T19:06:46.859939+00:00",
+            "state": "stopped_checkpointed",
+            "world_size": 4
+          }
+        ]
+      }
+    }
+  },
+  "generated_mode": "dependent",
+  "no_placeholder_numbers": true,
+  "paper": "PEPS Extended arXiv:2604.24167v1",
+  "schema": "peps.image_figure_status",
+  "schema_version": 1
+}

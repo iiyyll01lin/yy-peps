@@ -1,0 +1,245 @@
+{
+  "accounted_additional_optimizer_steps": 2931,
+  "accounted_optimizer_steps": 8931,
+  "active_workers": 0,
+  "artifact": "texture-table2-convergence-pilot",
+  "boot_id": "0ca11c34-38ca-4d2c-aa05-091065da66c3",
+  "checkpoint_errors": [],
+  "checkpointed_trajectories": 2,
+  "code_digest": "ca6664fc7b362f2ca7ec2a5f8befcab672c16a57f3a7f8f96f899df4cfd94c9f",
+  "complete": false,
+  "completed_trajectories": 0,
+  "config": "configs/paper/texture/convergence_pilot.toml",
+  "config_sha256": "09d602a3fd6d3f5961362ff040729f27c7c742d2346ca079b711550ae08f193c",
+  "expected_additional_optimizer_steps": 144000,
+  "expected_observations": 180,
+  "expected_optimizer_steps": 150000,
+  "expected_trajectories": 30,
+  "generated_at_utc": "2026-07-22T03:38:26.662873+00:00",
+  "manifest": {
+    "current": true,
+    "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-ca6664fc7b36/manifest.json",
+    "present": true,
+    "sha256": "352d4de3f7f680a34f76c426cd6fef1a57f83672b598b5fce9ecf664beb5c4c3"
+  },
+  "maximum_concurrent_workers": 2,
+  "observations": 10,
+  "optimizer_step_completion_fraction": 0.05954,
+  "output_dir": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-ca6664fc7b36",
+  "per_rank": {
+    "0": {
+      "completed_trajectories": 0,
+      "expected_trajectories": 9,
+      "optimizer_steps": 4466
+    },
+    "1": {
+      "completed_trajectories": 0,
+      "expected_trajectories": 9,
+      "optimizer_steps": 4465
+    },
+    "2": {
+      "completed_trajectories": 0,
+      "expected_trajectories": 6,
+      "optimizer_steps": 0
+    },
+    "3": {
+      "completed_trajectories": 0,
+      "expected_trajectories": 6,
+      "optimizer_steps": 0
+    }
+  },
+  "physical_devices": [
+    0,
+    1
+  ],
+  "result_errors": [],
+  "schema": "peps.texture_convergence_pilot_progress",
+  "schema_version": 1,
+  "source_optimizer_steps": 6000,
+  "step_budgets": [
+    10,
+    50,
+    200,
+    1000,
+    2000,
+    5000
+  ],
+  "texture_manifest_sha256": "63e6597b835b6b3f25dca64ea1f0832e42ae49869010795ef8e02117d56070e1",
+  "workers": [
+    {
+      "attempted_trajectories": 1,
+      "completed_trajectories": 0,
+      "device": "cuda:0",
+      "effective_state": "interrupted",
+      "elapsed_wall_seconds": 68.18571110099947,
+      "finished_at_utc": "2026-07-22T03:34:06.217345+00:00",
+      "liveness_evidence": {
+        "reason": "pid_not_present_or_unreadable",
+        "status": "not_alive"
+      },
+      "max_wall_seconds": 7200,
+      "output_dir": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-ca6664fc7b36",
+      "physical_device_index": 0,
+      "pid": 215115,
+      "preflight": {
+        "bounded_plan": {
+          "full_table2_optimizer_steps": 71280000,
+          "launches_full_table2": false,
+          "optimizer_steps": 150000,
+          "trajectories": 30
+        },
+        "config_sha256": "09d602a3fd6d3f5961362ff040729f27c7c742d2346ca079b711550ae08f193c",
+        "dataset_verification": {
+          "current": true,
+          "path": "results/texture_repro/dataset_verification.json",
+          "sha256": "bbce2ecd6cac8e313669866e0e542ce88d43415ee6f8395e1d31672d95196b66"
+        },
+        "device": {
+          "architecture": "gfx1201",
+          "index": 0,
+          "name": "AMD Radeon Graphics",
+          "preferred_architecture": "gfx1201",
+          "preferred_architecture_match": true,
+          "requested": "cuda:0",
+          "total_memory_bytes": 34208743424
+        },
+        "disk": {
+          "free_bytes": 834578411520,
+          "path": "results",
+          "required_free_bytes": 10737418240
+        },
+        "errors": [],
+        "full_table2_active_workers": 0,
+        "full_table2_launch_authorization": {
+          "blocks_pilot": false,
+          "path": "results/texture_repro/table2_launch_authorization.json",
+          "present": false
+        },
+        "generated_at_utc": "2026-07-22T03:32:58.085627+00:00",
+        "physical_device_index": 0,
+        "rank": 0,
+        "schema": "peps.texture_convergence_pilot_preflight",
+        "schema_version": 1,
+        "status": "passed",
+        "texture_manifest_sha256": "63e6597b835b6b3f25dca64ea1f0832e42ae49869010795ef8e02117d56070e1",
+        "visibility": {
+          "CUDA_VISIBLE_DEVICES": "0",
+          "HIP_VISIBLE_DEVICES": "0",
+          "ROCR_VISIBLE_DEVICES": null
+        },
+        "wall_clock": {
+          "hard_cap_seconds": 7200,
+          "requested_seconds": 7200
+        },
+        "world_size": 4
+      },
+      "process_alive": false,
+      "process_identity": {
+        "boot_id": "0ca11c34-38ca-4d2c-aa05-091065da66c3",
+        "command_sha256": "9808df93296da35bf99fc8b1aeb4785eaf5fed343c3432d3cf8af43bb34d0ed6",
+        "start_time_ticks": 965619
+      },
+      "rank": 0,
+      "schema": "peps.texture_convergence_pilot_worker",
+      "schema_version": 1,
+      "selected_trajectories": 9,
+      "started_at_utc": "2026-07-22T03:33:02.070339+00:00",
+      "state": "interrupted",
+      "visibility": {
+        "CUDA_VISIBLE_DEVICES": "0",
+        "HIP_VISIBLE_DEVICES": "0",
+        "ROCR_VISIBLE_DEVICES": null
+      },
+      "wall_clock_limited_trajectories": 1,
+      "world_size": 4
+    },
+    {
+      "attempted_trajectories": 1,
+      "completed_trajectories": 0,
+      "device": "cuda:0",
+      "effective_state": "interrupted",
+      "elapsed_wall_seconds": 68.21512651500052,
+      "finished_at_utc": "2026-07-22T03:34:06.250233+00:00",
+      "liveness_evidence": {
+        "reason": "pid_not_present_or_unreadable",
+        "status": "not_alive"
+      },
+      "max_wall_seconds": 7200,
+      "output_dir": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-ca6664fc7b36",
+      "physical_device_index": 1,
+      "pid": 215116,
+      "preflight": {
+        "bounded_plan": {
+          "full_table2_optimizer_steps": 71280000,
+          "launches_full_table2": false,
+          "optimizer_steps": 150000,
+          "trajectories": 30
+        },
+        "config_sha256": "09d602a3fd6d3f5961362ff040729f27c7c742d2346ca079b711550ae08f193c",
+        "dataset_verification": {
+          "current": true,
+          "path": "results/texture_repro/dataset_verification.json",
+          "sha256": "bbce2ecd6cac8e313669866e0e542ce88d43415ee6f8395e1d31672d95196b66"
+        },
+        "device": {
+          "architecture": "gfx1201",
+          "index": 0,
+          "name": "AMD Radeon Graphics",
+          "preferred_architecture": "gfx1201",
+          "preferred_architecture_match": true,
+          "requested": "cuda:0",
+          "total_memory_bytes": 34208743424
+        },
+        "disk": {
+          "free_bytes": 834578411520,
+          "path": "results",
+          "required_free_bytes": 10737418240
+        },
+        "errors": [],
+        "full_table2_active_workers": 0,
+        "full_table2_launch_authorization": {
+          "blocks_pilot": false,
+          "path": "results/texture_repro/table2_launch_authorization.json",
+          "present": false
+        },
+        "generated_at_utc": "2026-07-22T03:32:58.085642+00:00",
+        "physical_device_index": 1,
+        "rank": 1,
+        "schema": "peps.texture_convergence_pilot_preflight",
+        "schema_version": 1,
+        "status": "passed",
+        "texture_manifest_sha256": "63e6597b835b6b3f25dca64ea1f0832e42ae49869010795ef8e02117d56070e1",
+        "visibility": {
+          "CUDA_VISIBLE_DEVICES": "1",
+          "HIP_VISIBLE_DEVICES": "1",
+          "ROCR_VISIBLE_DEVICES": null
+        },
+        "wall_clock": {
+          "hard_cap_seconds": 7200,
+          "requested_seconds": 7200
+        },
+        "world_size": 4
+      },
+      "process_alive": false,
+      "process_identity": {
+        "boot_id": "0ca11c34-38ca-4d2c-aa05-091065da66c3",
+        "command_sha256": "9877e9b9214d083d78b15e0cde9cad9a2e15e8dc2f1bd2e4dc9cfdac1ee164ba",
+        "start_time_ticks": 965619
+      },
+      "rank": 1,
+      "schema": "peps.texture_convergence_pilot_worker",
+      "schema_version": 1,
+      "selected_trajectories": 9,
+      "started_at_utc": "2026-07-22T03:33:02.071117+00:00",
+      "state": "interrupted",
+      "visibility": {
+        "CUDA_VISIBLE_DEVICES": "1",
+        "HIP_VISIBLE_DEVICES": "1",
+        "ROCR_VISIBLE_DEVICES": null
+      },
+      "wall_clock_limited_trajectories": 1,
+      "world_size": 4
+    }
+  ],
+  "world_size": 4
+}

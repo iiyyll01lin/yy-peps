@@ -1,0 +1,1007 @@
+{
+  "comparisons": [
+    {
+      "baseline": "Grid",
+      "baseline_artifact": "table1",
+      "candidate": "G-PEPS",
+      "candidate_artifact": "table1",
+      "ci95_high": null,
+      "ci95_low": null,
+      "complete": false,
+      "count": 0,
+      "expected_pairs": 72,
+      "losses": 0,
+      "mean_delta": null,
+      "metric": "psnr",
+      "ties": 0,
+      "verification_status": "partial_do_not_interpret",
+      "wins": 0
+    },
+    {
+      "baseline": "Grid",
+      "baseline_artifact": "table1",
+      "candidate": "G-P-PEPS",
+      "candidate_artifact": "table1",
+      "ci95_high": null,
+      "ci95_low": null,
+      "complete": false,
+      "count": 0,
+      "expected_pairs": 72,
+      "losses": 0,
+      "mean_delta": null,
+      "metric": "psnr",
+      "ties": 0,
+      "verification_status": "partial_do_not_interpret",
+      "wins": 0
+    },
+    {
+      "baseline": "NTC_N",
+      "baseline_artifact": "table1",
+      "candidate": "NTC_PinkPEPS",
+      "candidate_artifact": "table1",
+      "ci95_high": null,
+      "ci95_low": null,
+      "complete": false,
+      "count": 0,
+      "expected_pairs": 72,
+      "losses": 0,
+      "mean_delta": null,
+      "metric": "psnr",
+      "ties": 0,
+      "verification_status": "partial_do_not_interpret",
+      "wins": 0
+    },
+    {
+      "baseline": "LPE",
+      "baseline_artifact": "table1",
+      "candidate": "Grid",
+      "candidate_artifact": "table1",
+      "ci95_high": null,
+      "ci95_low": null,
+      "complete": false,
+      "count": 0,
+      "expected_pairs": 72,
+      "losses": 0,
+      "mean_delta": null,
+      "metric": "psnr",
+      "ties": 0,
+      "verification_status": "partial_do_not_interpret",
+      "wins": 0
+    },
+    {
+      "baseline": "Grid",
+      "baseline_artifact": "table1",
+      "candidate": "G-P-PEPS-25",
+      "candidate_artifact": "table1",
+      "ci95_high": null,
+      "ci95_low": null,
+      "complete": false,
+      "count": 0,
+      "expected_pairs": 72,
+      "losses": 0,
+      "mean_delta": null,
+      "metric": "psnr",
+      "ties": 0,
+      "verification_status": "partial_do_not_interpret",
+      "wins": 0
+    },
+    {
+      "baseline": "G-PEPS",
+      "baseline_artifact": "table1",
+      "candidate": "G-P-PEPS",
+      "candidate_artifact": "table1",
+      "ci95_high": null,
+      "ci95_low": null,
+      "complete": false,
+      "count": 0,
+      "expected_pairs": 72,
+      "losses": 0,
+      "mean_delta": null,
+      "metric": "psnr",
+      "ties": 0,
+      "verification_status": "partial_do_not_interpret",
+      "wins": 0
+    },
+    {
+      "baseline": "Grid-L1",
+      "baseline_artifact": "table5",
+      "candidate": "G-P-PEPS-L1",
+      "candidate_artifact": "table5",
+      "ci95_high": null,
+      "ci95_low": null,
+      "complete": false,
+      "count": 0,
+      "expected_pairs": 72,
+      "losses": 0,
+      "mean_delta": null,
+      "metric": "psnr",
+      "ties": 0,
+      "verification_status": "partial_do_not_interpret",
+      "wins": 0
+    },
+    {
+      "baseline": "NTC_N-L1",
+      "baseline_artifact": "table5",
+      "candidate": "G-P-PEPS-L1",
+      "candidate_artifact": "table5",
+      "ci95_high": null,
+      "ci95_low": null,
+      "complete": false,
+      "count": 0,
+      "expected_pairs": 72,
+      "losses": 0,
+      "mean_delta": null,
+      "metric": "psnr",
+      "ties": 0,
+      "verification_status": "partial_do_not_interpret",
+      "wins": 0
+    },
+    {
+      "baseline": "G-PEPS",
+      "baseline_artifact": "table1",
+      "candidate": "G-PEPS-no-sharing",
+      "candidate_artifact": "core-ablations",
+      "ci95_high": null,
+      "ci95_low": null,
+      "complete": false,
+      "count": 0,
+      "expected_pairs": 72,
+      "losses": 0,
+      "mean_delta": null,
+      "metric": "psnr",
+      "ties": 0,
+      "verification_status": "partial_do_not_interpret",
+      "wins": 0
+    },
+    {
+      "baseline": "G-PEPS",
+      "baseline_artifact": "table1",
+      "candidate": "G-PEPS-no-original-point",
+      "candidate_artifact": "core-ablations",
+      "ci95_high": null,
+      "ci95_low": null,
+      "complete": false,
+      "count": 0,
+      "expected_pairs": 72,
+      "losses": 0,
+      "mean_delta": null,
+      "metric": "psnr",
+      "ties": 0,
+      "verification_status": "partial_do_not_interpret",
+      "wins": 0
+    },
+    {
+      "baseline": "G-PEPS",
+      "baseline_artifact": "table1",
+      "candidate": "G-PEPS-full-sum",
+      "candidate_artifact": "core-ablations",
+      "ci95_high": null,
+      "ci95_low": null,
+      "complete": false,
+      "count": 0,
+      "expected_pairs": 72,
+      "losses": 0,
+      "mean_delta": null,
+      "metric": "psnr",
+      "ties": 0,
+      "verification_status": "partial_do_not_interpret",
+      "wins": 0
+    },
+    {
+      "baseline": "G-PEPS",
+      "baseline_artifact": "table1",
+      "candidate": "G-PEPS-frequency-pair-sum",
+      "candidate_artifact": "core-ablations",
+      "ci95_high": null,
+      "ci95_low": null,
+      "complete": false,
+      "count": 0,
+      "expected_pairs": 72,
+      "losses": 0,
+      "mean_delta": null,
+      "metric": "psnr",
+      "ties": 0,
+      "verification_status": "partial_do_not_interpret",
+      "wins": 0
+    },
+    {
+      "baseline": "G-P-PEPS",
+      "baseline_artifact": "table1",
+      "candidate": "G-Brownian-PEPS",
+      "candidate_artifact": "core-ablations",
+      "ci95_high": null,
+      "ci95_low": null,
+      "complete": false,
+      "count": 0,
+      "expected_pairs": 72,
+      "losses": 0,
+      "mean_delta": null,
+      "metric": "psnr",
+      "ties": 0,
+      "verification_status": "partial_do_not_interpret",
+      "wins": 0
+    },
+    {
+      "baseline": "Grid",
+      "baseline_artifact": "smoke",
+      "candidate": "G-PEPS",
+      "candidate_artifact": "smoke",
+      "ci95_high": 0.9232270373141795,
+      "ci95_low": 0.7990875176048557,
+      "ci_method": "paired Student-t over instance-seed rows",
+      "complete": true,
+      "count": 24,
+      "expected_pairs": 24,
+      "losses": 0,
+      "mean_baseline": 6.004314232584201,
+      "mean_candidate": 6.865471510043719,
+      "mean_delta": 0.8611572774595176,
+      "metric": "psnr",
+      "pairs": [
+        {
+          "baseline": 6.203266932523126,
+          "candidate": 7.122017932444129,
+          "delta": 0.9187509999210022,
+          "instance": "kodim01",
+          "seed": 0
+        },
+        {
+          "baseline": 7.61408145941719,
+          "candidate": 8.427098363675142,
+          "delta": 0.8130169042579523,
+          "instance": "kodim02",
+          "seed": 0
+        },
+        {
+          "baseline": 6.6691537628669835,
+          "candidate": 7.656379718878595,
+          "delta": 0.9872259560116117,
+          "instance": "kodim03",
+          "seed": 0
+        },
+        {
+          "baseline": 6.530698084659265,
+          "candidate": 7.292595116025879,
+          "delta": 0.7618970313666145,
+          "instance": "kodim04",
+          "seed": 0
+        },
+        {
+          "baseline": 7.750816934408248,
+          "candidate": 8.721700718065012,
+          "delta": 0.9708837836567641,
+          "instance": "kodim05",
+          "seed": 0
+        },
+        {
+          "baseline": 4.5389188156674205,
+          "candidate": 5.328542421012399,
+          "delta": 0.7896236053449783,
+          "instance": "kodim06",
+          "seed": 0
+        },
+        {
+          "baseline": 6.271549630501547,
+          "candidate": 7.236428923970831,
+          "delta": 0.9648792934692834,
+          "instance": "kodim07",
+          "seed": 0
+        },
+        {
+          "baseline": 4.812024880050647,
+          "candidate": 5.495203118619727,
+          "delta": 0.6831782385690808,
+          "instance": "kodim08",
+          "seed": 0
+        },
+        {
+          "baseline": 4.863433081921107,
+          "candidate": 5.635975679392146,
+          "delta": 0.7725425974710394,
+          "instance": "kodim09",
+          "seed": 0
+        },
+        {
+          "baseline": 5.471568310724091,
+          "candidate": 6.2924296426790205,
+          "delta": 0.8208613319549292,
+          "instance": "kodim10",
+          "seed": 0
+        },
+        {
+          "baseline": 7.277223427921573,
+          "candidate": 8.273947621616475,
+          "delta": 0.9967241936949023,
+          "instance": "kodim11",
+          "seed": 0
+        },
+        {
+          "baseline": 3.347616724057056,
+          "candidate": 4.05245683414943,
+          "delta": 0.7048401100923738,
+          "instance": "kodim12",
+          "seed": 0
+        },
+        {
+          "baseline": 6.087329623611204,
+          "candidate": 7.009259713919434,
+          "delta": 0.9219300903082299,
+          "instance": "kodim13",
+          "seed": 0
+        },
+        {
+          "baseline": 6.9654225325310835,
+          "candidate": 7.949502606454217,
+          "delta": 0.9840800739231339,
+          "instance": "kodim14",
+          "seed": 0
+        },
+        {
+          "baseline": 4.9378060034674,
+          "candidate": 5.563495432966395,
+          "delta": 0.625689429498995,
+          "instance": "kodim15",
+          "seed": 0
+        },
+        {
+          "baseline": 6.50675454808341,
+          "candidate": 7.427611865838514,
+          "delta": 0.9208573177551047,
+          "instance": "kodim16",
+          "seed": 0
+        },
+        {
+          "baseline": 8.095208570051787,
+          "candidate": 9.061773267909384,
+          "delta": 0.9665646978575975,
+          "instance": "kodim17",
+          "seed": 0
+        },
+        {
+          "baseline": 9.018453111535251,
+          "candidate": 10.26195591451607,
+          "delta": 1.243502802980819,
+          "instance": "kodim18",
+          "seed": 0
+        },
+        {
+          "baseline": 5.660144693027611,
+          "candidate": 6.499091037060102,
+          "delta": 0.8389463440324905,
+          "instance": "kodim19",
+          "seed": 0
+        },
+        {
+          "baseline": 2.0121841615287646,
+          "candidate": 2.542961647525816,
+          "delta": 0.5307774859970515,
+          "instance": "kodim20",
+          "seed": 0
+        },
+        {
+          "baseline": 5.6475632518904595,
+          "candidate": 6.447888642275296,
+          "delta": 0.8003253903848364,
+          "instance": "kodim21",
+          "seed": 0
+        },
+        {
+          "baseline": 5.969331620688541,
+          "candidate": 6.874430632411915,
+          "delta": 0.9050990117233741,
+          "instance": "kodim22",
+          "seed": 0
+        },
+        {
+          "baseline": 5.948051372099793,
+          "candidate": 6.859834892477144,
+          "delta": 0.9117835203773508,
+          "instance": "kodim23",
+          "seed": 0
+        },
+        {
+          "baseline": 5.904940048787266,
+          "candidate": 6.738734497166173,
+          "delta": 0.8337944483789075,
+          "instance": "kodim24",
+          "seed": 0
+        }
+      ],
+      "ties": 0,
+      "verification_status": "smoke_not_paper_comparable",
+      "wins": 24
+    },
+    {
+      "baseline": "Grid",
+      "baseline_artifact": "smoke",
+      "candidate": "G-P-PEPS",
+      "candidate_artifact": "smoke",
+      "ci95_high": 1.1375071330544924,
+      "ci95_low": 0.9520342438745113,
+      "ci_method": "paired Student-t over instance-seed rows",
+      "complete": true,
+      "count": 24,
+      "expected_pairs": 24,
+      "losses": 0,
+      "mean_baseline": 6.004314232584201,
+      "mean_candidate": 7.049084921048703,
+      "mean_delta": 1.0447706884645018,
+      "metric": "psnr",
+      "pairs": [
+        {
+          "baseline": 6.203266932523126,
+          "candidate": 7.303258447934697,
+          "delta": 1.0999915154115705,
+          "instance": "kodim01",
+          "seed": 0
+        },
+        {
+          "baseline": 7.61408145941719,
+          "candidate": 9.097568069621989,
+          "delta": 1.4834866102047988,
+          "instance": "kodim02",
+          "seed": 0
+        },
+        {
+          "baseline": 6.6691537628669835,
+          "candidate": 7.843091614997143,
+          "delta": 1.1739378521301598,
+          "instance": "kodim03",
+          "seed": 0
+        },
+        {
+          "baseline": 6.530698084659265,
+          "candidate": 7.659258800365592,
+          "delta": 1.1285607157063273,
+          "instance": "kodim04",
+          "seed": 0
+        },
+        {
+          "baseline": 7.750816934408248,
+          "candidate": 8.97620184969007,
+          "delta": 1.2253849152818228,
+          "instance": "kodim05",
+          "seed": 0
+        },
+        {
+          "baseline": 4.5389188156674205,
+          "candidate": 5.398700926657387,
+          "delta": 0.8597821109899666,
+          "instance": "kodim06",
+          "seed": 0
+        },
+        {
+          "baseline": 6.271549630501547,
+          "candidate": 7.3979128335063375,
+          "delta": 1.1263632030047903,
+          "instance": "kodim07",
+          "seed": 0
+        },
+        {
+          "baseline": 4.812024880050647,
+          "candidate": 5.6238962986679875,
+          "delta": 0.8118714186173408,
+          "instance": "kodim08",
+          "seed": 0
+        },
+        {
+          "baseline": 4.863433081921107,
+          "candidate": 5.7333351571942,
+          "delta": 0.8699020752730933,
+          "instance": "kodim09",
+          "seed": 0
+        },
+        {
+          "baseline": 5.471568310724091,
+          "candidate": 6.390123655342307,
+          "delta": 0.9185553446182153,
+          "instance": "kodim10",
+          "seed": 0
+        },
+        {
+          "baseline": 7.277223427921573,
+          "candidate": 8.441127219993962,
+          "delta": 1.1639037920723894,
+          "instance": "kodim11",
+          "seed": 0
+        },
+        {
+          "baseline": 3.347616724057056,
+          "candidate": 4.112864324361255,
+          "delta": 0.7652476003041992,
+          "instance": "kodim12",
+          "seed": 0
+        },
+        {
+          "baseline": 6.087329623611204,
+          "candidate": 7.136536431503875,
+          "delta": 1.0492068078926708,
+          "instance": "kodim13",
+          "seed": 0
+        },
+        {
+          "baseline": 6.9654225325310835,
+          "candidate": 8.15522866161823,
+          "delta": 1.1898061290871462,
+          "instance": "kodim14",
+          "seed": 0
+        },
+        {
+          "baseline": 4.9378060034674,
+          "candidate": 5.705967534135726,
+          "delta": 0.7681615306683263,
+          "instance": "kodim15",
+          "seed": 0
+        },
+        {
+          "baseline": 6.50675454808341,
+          "candidate": 7.563981216989016,
+          "delta": 1.0572266689056065,
+          "instance": "kodim16",
+          "seed": 0
+        },
+        {
+          "baseline": 8.095208570051787,
+          "candidate": 9.31338638232161,
+          "delta": 1.2181778122698237,
+          "instance": "kodim17",
+          "seed": 0
+        },
+        {
+          "baseline": 9.018453111535251,
+          "candidate": 10.57790053775766,
+          "delta": 1.559447426222409,
+          "instance": "kodim18",
+          "seed": 0
+        },
+        {
+          "baseline": 5.660144693027611,
+          "candidate": 6.646313061381926,
+          "delta": 0.9861683683543152,
+          "instance": "kodim19",
+          "seed": 0
+        },
+        {
+          "baseline": 2.0121841615287646,
+          "candidate": 2.604906815638947,
+          "delta": 0.5927226541101827,
+          "instance": "kodim20",
+          "seed": 0
+        },
+        {
+          "baseline": 5.6475632518904595,
+          "candidate": 6.560294255289665,
+          "delta": 0.9127310033992053,
+          "instance": "kodim21",
+          "seed": 0
+        },
+        {
+          "baseline": 5.969331620688541,
+          "candidate": 7.03579751953842,
+          "delta": 1.066465898849879,
+          "instance": "kodim22",
+          "seed": 0
+        },
+        {
+          "baseline": 5.948051372099793,
+          "candidate": 7.0179676802707425,
+          "delta": 1.0699163081709493,
+          "instance": "kodim23",
+          "seed": 0
+        },
+        {
+          "baseline": 5.904940048787266,
+          "candidate": 6.88241881039012,
+          "delta": 0.9774787616028542,
+          "instance": "kodim24",
+          "seed": 0
+        }
+      ],
+      "ties": 0,
+      "verification_status": "smoke_not_paper_comparable",
+      "wins": 24
+    },
+    {
+      "baseline": "NTC_N",
+      "baseline_artifact": "smoke",
+      "candidate": "NTC_PinkPEPS",
+      "candidate_artifact": "smoke",
+      "ci95_high": -0.730553289709768,
+      "ci95_low": -0.8898019741659444,
+      "ci_method": "paired Student-t over instance-seed rows",
+      "complete": true,
+      "count": 24,
+      "expected_pairs": 24,
+      "losses": 24,
+      "mean_baseline": 7.554962314370421,
+      "mean_candidate": 6.744784682432564,
+      "mean_delta": -0.8101776319378562,
+      "metric": "psnr",
+      "pairs": [
+        {
+          "baseline": 7.840100292067492,
+          "candidate": 6.983543807133495,
+          "delta": -0.8565564849339964,
+          "instance": "kodim01",
+          "seed": 0
+        },
+        {
+          "baseline": 9.662606829177415,
+          "candidate": 8.371976210790908,
+          "delta": -1.2906306183865066,
+          "instance": "kodim02",
+          "seed": 0
+        },
+        {
+          "baseline": 8.399277488025486,
+          "candidate": 7.4975504654194385,
+          "delta": -0.9017270226060479,
+          "instance": "kodim03",
+          "seed": 0
+        },
+        {
+          "baseline": 8.181966618325875,
+          "candidate": 7.235887139308646,
+          "delta": -0.9460794790172287,
+          "instance": "kodim04",
+          "seed": 0
+        },
+        {
+          "baseline": 9.559228431225968,
+          "candidate": 8.61020501926095,
+          "delta": -0.9490234119650172,
+          "instance": "kodim05",
+          "seed": 0
+        },
+        {
+          "baseline": 5.822429603908255,
+          "candidate": 5.18492144439481,
+          "delta": -0.6375081595134446,
+          "instance": "kodim06",
+          "seed": 0
+        },
+        {
+          "baseline": 7.944824136501348,
+          "candidate": 7.078533748358828,
+          "delta": -0.8662903881425192,
+          "instance": "kodim07",
+          "seed": 0
+        },
+        {
+          "baseline": 6.040123700101071,
+          "candidate": 5.4106513566889625,
+          "delta": -0.6294723434121083,
+          "instance": "kodim08",
+          "seed": 0
+        },
+        {
+          "baseline": 6.197817303048602,
+          "candidate": 5.525907606831286,
+          "delta": -0.6719096962173161,
+          "instance": "kodim09",
+          "seed": 0
+        },
+        {
+          "baseline": 6.887367378515229,
+          "candidate": 6.180189743563042,
+          "delta": -0.7071776349521874,
+          "instance": "kodim10",
+          "seed": 0
+        },
+        {
+          "baseline": 9.036209997314117,
+          "candidate": 8.142711639924077,
+          "delta": -0.8934983573900404,
+          "instance": "kodim11",
+          "seed": 0
+        },
+        {
+          "baseline": 4.499585896987778,
+          "candidate": 3.9244955944473774,
+          "delta": -0.5750903025404006,
+          "instance": "kodim12",
+          "seed": 0
+        },
+        {
+          "baseline": 7.636716164862727,
+          "candidate": 6.851087898316528,
+          "delta": -0.7856282665461984,
+          "instance": "kodim13",
+          "seed": 0
+        },
+        {
+          "baseline": 8.705053942740113,
+          "candidate": 7.796902285106478,
+          "delta": -0.9081516576336348,
+          "instance": "kodim14",
+          "seed": 0
+        },
+        {
+          "baseline": 6.072619509896047,
+          "candidate": 5.488166438453284,
+          "delta": -0.5844530714427627,
+          "instance": "kodim15",
+          "seed": 0
+        },
+        {
+          "baseline": 8.113833692924752,
+          "candidate": 7.302738169472189,
+          "delta": -0.811095523452563,
+          "instance": "kodim16",
+          "seed": 0
+        },
+        {
+          "baseline": 9.911515796767114,
+          "candidate": 8.971476986889641,
+          "delta": -0.940038809877473,
+          "instance": "kodim17",
+          "seed": 0
+        },
+        {
+          "baseline": 11.292019843190232,
+          "candidate": 10.090407024928247,
+          "delta": -1.2016128182619852,
+          "instance": "kodim18",
+          "seed": 0
+        },
+        {
+          "baseline": 7.136438364979345,
+          "candidate": 6.375399475702983,
+          "delta": -0.761038889276362,
+          "instance": "kodim19",
+          "seed": 0
+        },
+        {
+          "baseline": 2.9002852949684628,
+          "candidate": 2.45411405428918,
+          "delta": -0.4461712406792828,
+          "instance": "kodim20",
+          "seed": 0
+        },
+        {
+          "baseline": 7.05313017651176,
+          "candidate": 6.347673639693049,
+          "delta": -0.7054565368187111,
+          "instance": "kodim21",
+          "seed": 0
+        },
+        {
+          "baseline": 7.551324623205534,
+          "candidate": 6.7303503378456595,
+          "delta": -0.8209742853598749,
+          "instance": "kodim22",
+          "seed": 0
+        },
+        {
+          "baseline": 7.505797493659843,
+          "candidate": 6.698881297762444,
+          "delta": -0.8069161958973989,
+          "instance": "kodim23",
+          "seed": 0
+        },
+        {
+          "baseline": 7.368822965985531,
+          "candidate": 6.621060993800045,
+          "delta": -0.7477619721854865,
+          "instance": "kodim24",
+          "seed": 0
+        }
+      ],
+      "ties": 0,
+      "verification_status": "smoke_not_paper_comparable",
+      "wins": 0
+    },
+    {
+      "baseline": "Grid-L1",
+      "baseline_artifact": "appendix-smoke",
+      "candidate": "G-P-PEPS-L1",
+      "candidate_artifact": "appendix-smoke",
+      "ci95_high": null,
+      "ci95_low": null,
+      "ci_method": "paired Student-t over instance-seed rows",
+      "complete": true,
+      "count": 1,
+      "expected_pairs": 1,
+      "losses": 0,
+      "mean_baseline": 8.088219427829632,
+      "mean_candidate": 8.254032732250392,
+      "mean_delta": 0.1658133044207606,
+      "metric": "psnr",
+      "pairs": [
+        {
+          "baseline": 8.088219427829632,
+          "candidate": 8.254032732250392,
+          "delta": 0.1658133044207606,
+          "instance": "kodim01",
+          "seed": 0
+        }
+      ],
+      "ties": 0,
+      "verification_status": "smoke_not_paper_comparable",
+      "wins": 1
+    },
+    {
+      "baseline": "NTC_N-L1",
+      "baseline_artifact": "appendix-smoke",
+      "candidate": "G-P-PEPS-L1",
+      "candidate_artifact": "appendix-smoke",
+      "ci95_high": null,
+      "ci95_low": null,
+      "ci_method": "paired Student-t over instance-seed rows",
+      "complete": true,
+      "count": 1,
+      "expected_pairs": 1,
+      "losses": 1,
+      "mean_baseline": 10.251047079921767,
+      "mean_candidate": 8.254032732250392,
+      "mean_delta": -1.9970143476713744,
+      "metric": "psnr",
+      "pairs": [
+        {
+          "baseline": 10.251047079921767,
+          "candidate": 8.254032732250392,
+          "delta": -1.9970143476713744,
+          "instance": "kodim01",
+          "seed": 0
+        }
+      ],
+      "ties": 0,
+      "verification_status": "smoke_not_paper_comparable",
+      "wins": 0
+    },
+    {
+      "baseline": "G-PEPS",
+      "baseline_artifact": "smoke",
+      "candidate": "G-PEPS-no-sharing",
+      "candidate_artifact": "appendix-smoke",
+      "ci95_high": null,
+      "ci95_low": null,
+      "ci_method": "paired Student-t over instance-seed rows",
+      "complete": true,
+      "count": 1,
+      "expected_pairs": 1,
+      "losses": 0,
+      "mean_baseline": 7.122017932444129,
+      "mean_candidate": 7.432079721757132,
+      "mean_delta": 0.31006178931300354,
+      "metric": "psnr",
+      "pairs": [
+        {
+          "baseline": 7.122017932444129,
+          "candidate": 7.432079721757132,
+          "delta": 0.31006178931300354,
+          "instance": "kodim01",
+          "seed": 0
+        }
+      ],
+      "ties": 0,
+      "verification_status": "smoke_not_paper_comparable",
+      "wins": 1
+    },
+    {
+      "baseline": "G-PEPS",
+      "baseline_artifact": "smoke",
+      "candidate": "G-PEPS-no-original-point",
+      "candidate_artifact": "appendix-smoke",
+      "ci95_high": null,
+      "ci95_low": null,
+      "ci_method": "paired Student-t over instance-seed rows",
+      "complete": true,
+      "count": 1,
+      "expected_pairs": 1,
+      "losses": 1,
+      "mean_baseline": 7.122017932444129,
+      "mean_candidate": 7.00758318096698,
+      "mean_delta": -0.11443475147714821,
+      "metric": "psnr",
+      "pairs": [
+        {
+          "baseline": 7.122017932444129,
+          "candidate": 7.00758318096698,
+          "delta": -0.11443475147714821,
+          "instance": "kodim01",
+          "seed": 0
+        }
+      ],
+      "ties": 0,
+      "verification_status": "smoke_not_paper_comparable",
+      "wins": 0
+    },
+    {
+      "baseline": "G-PEPS",
+      "baseline_artifact": "smoke",
+      "candidate": "G-PEPS-full-sum",
+      "candidate_artifact": "appendix-smoke",
+      "ci95_high": null,
+      "ci95_low": null,
+      "ci_method": "paired Student-t over instance-seed rows",
+      "complete": true,
+      "count": 1,
+      "expected_pairs": 1,
+      "losses": 1,
+      "mean_baseline": 7.122017932444129,
+      "mean_candidate": 6.336807905388754,
+      "mean_delta": -0.785210027055375,
+      "metric": "psnr",
+      "pairs": [
+        {
+          "baseline": 7.122017932444129,
+          "candidate": 6.336807905388754,
+          "delta": -0.785210027055375,
+          "instance": "kodim01",
+          "seed": 0
+        }
+      ],
+      "ties": 0,
+      "verification_status": "smoke_not_paper_comparable",
+      "wins": 0
+    },
+    {
+      "baseline": "G-PEPS",
+      "baseline_artifact": "smoke",
+      "candidate": "G-PEPS-frequency-pair-sum",
+      "candidate_artifact": "appendix-smoke",
+      "ci95_high": null,
+      "ci95_low": null,
+      "ci_method": "paired Student-t over instance-seed rows",
+      "complete": true,
+      "count": 1,
+      "expected_pairs": 1,
+      "losses": 1,
+      "mean_baseline": 7.122017932444129,
+      "mean_candidate": 6.827902067029683,
+      "mean_delta": -0.29411586541444557,
+      "metric": "psnr",
+      "pairs": [
+        {
+          "baseline": 7.122017932444129,
+          "candidate": 6.827902067029683,
+          "delta": -0.29411586541444557,
+          "instance": "kodim01",
+          "seed": 0
+        }
+      ],
+      "ties": 0,
+      "verification_status": "smoke_not_paper_comparable",
+      "wins": 0
+    },
+    {
+      "baseline": "G-P-PEPS",
+      "baseline_artifact": "smoke",
+      "candidate": "G-Brownian-PEPS",
+      "candidate_artifact": "appendix-smoke",
+      "ci95_high": null,
+      "ci95_low": null,
+      "ci_method": "paired Student-t over instance-seed rows",
+      "complete": true,
+      "count": 1,
+      "expected_pairs": 1,
+      "losses": 0,
+      "mean_baseline": 7.303258447934697,
+      "mean_candidate": 8.08640714904393,
+      "mean_delta": 0.7831487011092335,
+      "metric": "psnr",
+      "pairs": [
+        {
+          "baseline": 7.303258447934697,
+          "candidate": 8.08640714904393,
+          "delta": 0.7831487011092335,
+          "instance": "kodim01",
+          "seed": 0
+        }
+      ],
+      "ties": 0,
+      "verification_status": "smoke_not_paper_comparable",
+      "wins": 1
+    }
+  ],
+  "generated_at_utc": "2026-07-22T02:56:47.181527+00:00",
+  "multiple_comparison_adjustment": null,
+  "pairing_unit": [
+    "instance",
+    "seed"
+  ],
+  "paper": "PEPS Extended arXiv:2604.24167v1",
+  "schema": "peps.image_paired_report",
+  "schema_version": 1
+}

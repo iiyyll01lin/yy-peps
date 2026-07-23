@@ -1,0 +1,21 @@
+{
+  "align_corners": true,
+  "aligned_max_abs_error": 3.814697265625e-06,
+  "canonical_coordinate_formula": [
+    "x/(W-1)",
+    "y/(H-1)"
+  ],
+  "half_texel_formula": [
+    "(x+0.5)/W",
+    "(y+0.5)/H"
+  ],
+  "half_texel_mean_abs_error": 2.2393550872802734,
+  "resolution_xy": [
+    9,
+    7
+  ],
+  "schema": "peps.odd_alignment_validation",
+  "schema_version": 1,
+  "scope": "synthetic coordinate-contract validation, not a paper texture metric",
+  "status": "passed"
+}

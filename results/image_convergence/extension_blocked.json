@@ -1,0 +1,287 @@
+{
+  "blocker": {
+    "active_full_table2_processes": [
+      {
+        "command": "/home/aup/yy/workspace/peps/.venv/bin/python /home/aup/yy/workspace/peps/scripts/manage_texture_table2_service.py run",
+        "command_sha256": "2f37615a9781a97373ae4e5242eff2ad6761099bdf702b206d89889afcf739a2",
+        "pid": 228201
+      },
+      {
+        "command": "/home/aup/yy/workspace/peps/.venv/bin/python -m experiments.texture_repro run --artifact table2 --rank 0 --world-size 2 --device cuda:0 --output-root /home/aup/yy/workspace/peps/results --verification-receipt /home/aup/yy/workspace/peps/results/texture_repro/dataset_verification.json --allow-protocol-assumptions",
+        "command_sha256": "24b0b7e2e0abb880ecc7bd0a9ba20389ce24c98aa3f680a57ea5baeec8164c87",
+        "pid": 228460
+      },
+      {
+        "command": "/home/aup/yy/workspace/peps/.venv/bin/python -m experiments.texture_repro run --artifact table2 --rank 1 --world-size 2 --device cuda:0 --output-root /home/aup/yy/workspace/peps/results --verification-receipt /home/aup/yy/workspace/peps/results/texture_repro/dataset_verification.json --allow-protocol-assumptions",
+        "command_sha256": "0866ea4f5e612b32622745647babc7cae2e6b91b675eac373514f2ec9753ceda",
+        "pid": 228461
+      }
+    ],
+    "authorization": {
+      "authorization_id": "explicit-user-request-20260722T1118+0800-gpu01-world2-table2-only",
+      "block_other_texture_gpu_work": true,
+      "bytes": 950,
+      "issued_at_utc": "2026-07-22T03:41:27.309624+00:00",
+      "path": "results/texture_repro/table2_launch_authorization.json",
+      "sha256": "e715ca1980416eb1b79218bd3659a4f529297ffacd2bddbc4f1a3ececbf23a32"
+    },
+    "code": "later_full_table2_authorization_reserves_gpu01",
+    "detail": "A later shared authorization gate and service reserve physical GPUs 0 and 1 for the full Table 2 matrix. The pilot preflight now refuses continuation; this receipt does not modify or bypass that gate."
+  },
+  "decision": {
+    "reason": "The requested 60k/90k/120k continuation was not launched because physical GPUs 0 and 1 became reserved by a later full Table 2 authorization gate.",
+    "recommended_protocol_assumption_steps": null,
+    "status": "inconclusive"
+  },
+  "extension": {
+    "additional_gpu_hours": 0.0,
+    "additional_optimizer_steps": 0,
+    "launched": false,
+    "new_curve_points": 0
+  },
+  "generated_at_utc": "2026-07-22T03:43:31.133937+00:00",
+  "safety": {
+    "full_matrix_launched_by_image_pilot": false,
+    "full_table1_resumed": false,
+    "table1_service_mask_preserved": true
+  },
+  "schema": "peps.image_convergence_extension_blocked",
+  "schema_version": 1,
+  "source": {
+    "aggregate_job_runtime_seconds": 6859.134812319999,
+    "checkpoint_count": 18,
+    "checkpoint_hashes": [
+      {
+        "bytes": 5252600,
+        "category": "baseline",
+        "instance": "kodim23",
+        "job_index": 0,
+        "method": "Grid",
+        "path": "results/work/image-convergence/d6b7c9ab41a5-3f50453216d9/checkpoints/raw/kodim23/Grid/seed-0.pt",
+        "seed": 0,
+        "sha256": "451331fe7764b1a6294f264de33511c6d198f70136e1c26b66f681632e24b013",
+        "step": 30000
+      },
+      {
+        "bytes": 5252600,
+        "category": "baseline",
+        "instance": "kodim23",
+        "job_index": 1,
+        "method": "Grid",
+        "path": "results/work/image-convergence/d6b7c9ab41a5-3f50453216d9/checkpoints/raw/kodim23/Grid/seed-1.pt",
+        "seed": 1,
+        "sha256": "07642af405b276c4b3b5e10ddc972fae38e59f1f3f807063c753a5a72fb1a398",
+        "step": 30000
+      },
+      {
+        "bytes": 5331064,
+        "category": "peps",
+        "instance": "kodim23",
+        "job_index": 2,
+        "method": "G-PEPS",
+        "path": "results/work/image-convergence/d6b7c9ab41a5-3f50453216d9/checkpoints/raw/kodim23/G-PEPS/seed-0.pt",
+        "seed": 0,
+        "sha256": "ce1897885bd943b49413122fbc8eaef0fe69e1ef26b92784aba2ba4f476cd9b2",
+        "step": 30000
+      },
+      {
+        "bytes": 5331064,
+        "category": "peps",
+        "instance": "kodim23",
+        "job_index": 3,
+        "method": "G-PEPS",
+        "path": "results/work/image-convergence/d6b7c9ab41a5-3f50453216d9/checkpoints/raw/kodim23/G-PEPS/seed-1.pt",
+        "seed": 1,
+        "sha256": "b1770b0af1c67da49815d1fcf126f77b7a079197a376dc5644597b9b19b61c74",
+        "step": 30000
+      },
+      {
+        "bytes": 5274104,
+        "category": "pink",
+        "instance": "kodim23",
+        "job_index": 4,
+        "method": "G-P-PEPS",
+        "path": "results/work/image-convergence/d6b7c9ab41a5-3f50453216d9/checkpoints/raw/kodim23/G-P-PEPS/seed-0.pt",
+        "seed": 0,
+        "sha256": "0ce30e158ee60754e6c8441de444a631bcd869b1de0aabacf46557ee2a461110",
+        "step": 30000
+      },
+      {
+        "bytes": 5274104,
+        "category": "pink",
+        "instance": "kodim23",
+        "job_index": 5,
+        "method": "G-P-PEPS",
+        "path": "results/work/image-convergence/d6b7c9ab41a5-3f50453216d9/checkpoints/raw/kodim23/G-P-PEPS/seed-1.pt",
+        "seed": 1,
+        "sha256": "48e02b7d971d90452995f224c87597ab0d862bcebe1271ae649c56abe87da581",
+        "step": 30000
+      },
+      {
+        "bytes": 5252472,
+        "category": "baseline",
+        "instance": "kodim17",
+        "job_index": 6,
+        "method": "Grid",
+        "path": "results/work/image-convergence/d6b7c9ab41a5-3f50453216d9/checkpoints/raw/kodim17/Grid/seed-0.pt",
+        "seed": 0,
+        "sha256": "5f0b7056f616f939d7876ebbc6905b031ea3595a8abd307af132712c41aa9d06",
+        "step": 30000
+      },
+      {
+        "bytes": 5252472,
+        "category": "baseline",
+        "instance": "kodim17",
+        "job_index": 7,
+        "method": "Grid",
+        "path": "results/work/image-convergence/d6b7c9ab41a5-3f50453216d9/checkpoints/raw/kodim17/Grid/seed-1.pt",
+        "seed": 1,
+        "sha256": "2e89f03bba8365997d89b12c33c353ccf1d0a703096eb2d54f9ab103faf18dcf",
+        "step": 30000
+      },
+      {
+        "bytes": 5330936,
+        "category": "peps",
+        "instance": "kodim17",
+        "job_index": 8,
+        "method": "G-PEPS",
+        "path": "results/work/image-convergence/d6b7c9ab41a5-3f50453216d9/checkpoints/raw/kodim17/G-PEPS/seed-0.pt",
+        "seed": 0,
+        "sha256": "15a361a7f21186fae6a2f89a90946291e509c87abe5a91e1c3a649842b6d9859",
+        "step": 30000
+      },
+      {
+        "bytes": 5330936,
+        "category": "peps",
+        "instance": "kodim17",
+        "job_index": 9,
+        "method": "G-PEPS",
+        "path": "results/work/image-convergence/d6b7c9ab41a5-3f50453216d9/checkpoints/raw/kodim17/G-PEPS/seed-1.pt",
+        "seed": 1,
+        "sha256": "8fcca5ffc645badebc98faf4c077ddf519e892a729af4ddb2f47b513c004db23",
+        "step": 30000
+      },
+      {
+        "bytes": 5274104,
+        "category": "pink",
+        "instance": "kodim17",
+        "job_index": 10,
+        "method": "G-P-PEPS",
+        "path": "results/work/image-convergence/d6b7c9ab41a5-3f50453216d9/checkpoints/raw/kodim17/G-P-PEPS/seed-0.pt",
+        "seed": 0,
+        "sha256": "75c5cb03a4cdcb2c097f641ea8cc6958c7e0b2fdbdf5f840973342c231d3186c",
+        "step": 30000
+      },
+      {
+        "bytes": 5274104,
+        "category": "pink",
+        "instance": "kodim17",
+        "job_index": 11,
+        "method": "G-P-PEPS",
+        "path": "results/work/image-convergence/d6b7c9ab41a5-3f50453216d9/checkpoints/raw/kodim17/G-P-PEPS/seed-1.pt",
+        "seed": 1,
+        "sha256": "b56b600e2dcb009c513131e1c711ab170a887cb4871a8829def0367e2689c689",
+        "step": 30000
+      },
+      {
+        "bytes": 5252472,
+        "category": "baseline",
+        "instance": "kodim13",
+        "job_index": 12,
+        "method": "Grid",
+        "path": "results/work/image-convergence/d6b7c9ab41a5-3f50453216d9/checkpoints/raw/kodim13/Grid/seed-0.pt",
+        "seed": 0,
+        "sha256": "0bf593c856e1fbe30252a62c4d6abe74ebd13f72e372d1168d3431567920f72f",
+        "step": 30000
+      },
+      {
+        "bytes": 5252472,
+        "category": "baseline",
+        "instance": "kodim13",
+        "job_index": 13,
+        "method": "Grid",
+        "path": "results/work/image-convergence/d6b7c9ab41a5-3f50453216d9/checkpoints/raw/kodim13/Grid/seed-1.pt",
+        "seed": 1,
+        "sha256": "cb9573eceb36288cfbaccedf916eef615677ce17f4186ffb4f1b85feea516a0b",
+        "step": 30000
+      },
+      {
+        "bytes": 5330936,
+        "category": "peps",
+        "instance": "kodim13",
+        "job_index": 14,
+        "method": "G-PEPS",
+        "path": "results/work/image-convergence/d6b7c9ab41a5-3f50453216d9/checkpoints/raw/kodim13/G-PEPS/seed-0.pt",
+        "seed": 0,
+        "sha256": "6142d33a8abc30a5c738fbd03946384dd8b98191bc0ce51ef6ea3c5dbdcf556b",
+        "step": 30000
+      },
+      {
+        "bytes": 5330936,
+        "category": "peps",
+        "instance": "kodim13",
+        "job_index": 15,
+        "method": "G-PEPS",
+        "path": "results/work/image-convergence/d6b7c9ab41a5-3f50453216d9/checkpoints/raw/kodim13/G-PEPS/seed-1.pt",
+        "seed": 1,
+        "sha256": "a43f37012a13236c64d49bf9f8f0bc1e46c3146f9a2391047887ebc22dbddab9",
+        "step": 30000
+      },
+      {
+        "bytes": 5274232,
+        "category": "pink",
+        "instance": "kodim13",
+        "job_index": 16,
+        "method": "G-P-PEPS",
+        "path": "results/work/image-convergence/d6b7c9ab41a5-3f50453216d9/checkpoints/raw/kodim13/G-P-PEPS/seed-0.pt",
+        "seed": 0,
+        "sha256": "0d4c4d0c9d1749046d3b97d4b796d3b9e3e0ef7e3de86f59dc7facd07c6762cc",
+        "step": 30000
+      },
+      {
+        "bytes": 5274232,
+        "category": "pink",
+        "instance": "kodim13",
+        "job_index": 17,
+        "method": "G-P-PEPS",
+        "path": "results/work/image-convergence/d6b7c9ab41a5-3f50453216d9/checkpoints/raw/kodim13/G-P-PEPS/seed-1.pt",
+        "seed": 1,
+        "sha256": "24cbe2af4e25cbd9ede5d6050ddaf826a8566ece2c697481f7fa5a6b48176d29",
+        "step": 30000
+      }
+    ],
+    "completed_jobs": 18,
+    "curve_points": 90,
+    "gpu_hours": 1.905315225644444,
+    "launch_wall_seconds": 2670.25048,
+    "optimizer_steps": 540000,
+    "receipt": {
+      "bytes": 38488,
+      "path": "results/image_convergence/receipt.json",
+      "sha256": "77b2cf51571924abdbd8d5ad97b72ecff103aad3ad0c620da8f9c1c98dd4871c"
+    }
+  },
+  "source_analysis": {
+    "final_interval_gains_psnr_db": {
+      "G-P-PEPS": 0.2687203463852299,
+      "G-PEPS": 0.24176841125740367,
+      "Grid": 0.5214563411719553
+    },
+    "outcome": "inconclusive",
+    "rankings_stable": true
+  },
+  "status": "inconclusive_blocked_before_extension",
+  "target": {
+    "evaluation_budgets": [
+      60000,
+      90000,
+      120000
+    ],
+    "expected_additional_optimizer_steps": 1620000,
+    "physical_gpus": [
+      0,
+      1
+    ],
+    "resume_step": 30000
+  }
+}

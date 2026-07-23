@@ -1,0 +1,9 @@
+method,frequencies,aggregation,decoder_input_dim,encoder_params,job_count,expected_job_count,map_observation_count,expected_map_observation_count,psnr,ssim,latency_observation_count,latency_median_ms,latency_p95_ms,latency_million_queries_per_second,latency_comparable_to_paper,complete
+Grid-PEPS3F,3,concat,119,17825792,0,54,0,234,,,0,,,,False,False
+Grid-PEPS4F,4,concat,153,17825792,0,54,0,234,,,0,,,,False,False
+Grid-PinkPEPS3F,3,pink,45,17825792,0,54,0,234,,,0,,,,False,False
+Grid-PinkPEPS4F,4,pink,47,17825792,0,54,0,234,,,0,,,,False,False
+NTC_PEPS3F,3,concat,488,17825792,0,54,0,234,,,0,,,,False,False
+NTC_PEPS4F,4,concat,624,17825792,0,54,0,234,,,0,,,,False,False
+NTC_PinkPEPS3F,3,pink,198,17825792,0,54,0,234,,,0,,,,False,False
+NTC_PinkPEPS4F,4,pink,206,17825792,0,54,0,234,,,0,,,,False,False

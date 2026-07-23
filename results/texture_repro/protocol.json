@@ -1,0 +1,1803 @@
+{
+  "code_digest": "6c40de3451031e1878352c7c1c107d44f3b21649c243beb345830c0ba5b349ed",
+  "code_receipts": [
+    {
+      "bytes": 97221,
+      "path": "experiments/texture_repro.py",
+      "sha256": "12571ca99039388c76f2e439fb1aec1c45c861a108f244dddf88ece55b97862a"
+    },
+    {
+      "bytes": 22690,
+      "path": "experiments/runner.py",
+      "sha256": "bac46170318c71a354c37be04a7b34799c36f9073b3a2c618afc9fd3b7ee89f5"
+    },
+    {
+      "bytes": 9714,
+      "path": "apps/texture/build.py",
+      "sha256": "5c2005b323770e32b831a3bb7ec287063decee1a6b861831cb5b3c907760411a"
+    },
+    {
+      "bytes": 8433,
+      "path": "apps/texture/data.py",
+      "sha256": "e863cd5658100ae287ac4c77723468525123f459b0bbf80d1e5e4966c8529c4e"
+    },
+    {
+      "bytes": 27078,
+      "path": "peps/train.py",
+      "sha256": "c0b221634ea5b87a0a819eb9481780a6b800b39cb27a9986b8e336e973635da9"
+    },
+    {
+      "bytes": 7112,
+      "path": "peps/projector.py",
+      "sha256": "2a8a35f63095ac93d4861d0ab767bcb83c15ce6c2cc21429fd74a4b1ba6d235f"
+    },
+    {
+      "bytes": 14207,
+      "path": "peps/aggregate.py",
+      "sha256": "2c571aab4e0438dabd8cd4acebd87678d33f9ba9b9884a6c0274e233bce9816b"
+    },
+    {
+      "bytes": 7016,
+      "path": "peps/wrapper.py",
+      "sha256": "7da7d25a7ce1990e5f91f30d9153334a82c967c443cc941fabb4b14cff6448d1"
+    },
+    {
+      "bytes": 5192,
+      "path": "peps/encoders/grid.py",
+      "sha256": "5ad21b2493ff37c066db2bcecabefbb52d770cc7a6ca7f89f2e8d8eb7aa1a53a"
+    },
+    {
+      "bytes": 6660,
+      "path": "peps/encoders/lpe.py",
+      "sha256": "980efac6c8e65d5e6905397fd31e208fcb8d850367a00dc867ed049512711c7a"
+    },
+    {
+      "bytes": 11193,
+      "path": "peps/encoders/ntc.py",
+      "sha256": "5f17a5432e3239721bc5200fef6f73bebbd607ba5a53eaebeb494da8642acc4d"
+    },
+    {
+      "bytes": 3120,
+      "path": "peps/models/mlp.py",
+      "sha256": "532837a87b4a53448c529da52458c9629ad28d66d71c8e4b67a88c61b87a5919"
+    },
+    {
+      "bytes": 10031,
+      "path": "peps/metrics.py",
+      "sha256": "72ab2031bbfc461960f1dbb0707dafecf255b2438ca13463efde7ac6865156a3"
+    }
+  ],
+  "configs": {
+    "smoke": {
+      "canonical": false,
+      "methods": [
+        {
+          "aggregation": "baseline",
+          "builder_method": "ntc_n",
+          "decoder_input_dim": 23,
+          "decoder_params": 273,
+          "encoder_params": 176,
+          "hidden_dim": 8,
+          "linear_layers": 2,
+          "name": "NTC_N-smoke",
+          "output_channels": 9,
+          "peps_frequencies": null,
+          "role": "canonical",
+          "tiled_encoding_dim": 12,
+          "total_params": 449
+        },
+        {
+          "aggregation": "pink",
+          "builder_method": "grid_pinkpeps4f",
+          "decoder_input_dim": 6,
+          "decoder_params": 137,
+          "encoder_params": 128,
+          "hidden_dim": 8,
+          "linear_layers": 2,
+          "name": "Grid-PinkPEPS-smoke",
+          "output_channels": 9,
+          "peps_frequencies": 2,
+          "role": "canonical",
+          "tiled_encoding_dim": 0,
+          "total_params": 265
+        },
+        {
+          "aggregation": "baseline",
+          "builder_method": "lpe",
+          "decoder_input_dim": 8,
+          "decoder_params": 153,
+          "encoder_params": 512,
+          "hidden_dim": 8,
+          "linear_layers": 2,
+          "name": "LPE-smoke",
+          "output_channels": 9,
+          "peps_frequencies": null,
+          "role": "canonical",
+          "tiled_encoding_dim": 0,
+          "total_params": 665
+        }
+      ],
+      "output_dir": "results/work/texture-repro/smoke/c2edf1d2dcdb-63e6597b835b-6c40de345103",
+      "path": "configs/paper/texture_smoke.toml",
+      "plan_4gpu": {
+        "artifact": "smoke",
+        "canonical": false,
+        "checkpoint_storage_estimate": {
+          "all_completed_checkpoints_bytes": 16548,
+          "basis": "fp32 weights plus two Adam moment tensors",
+          "bytes_per_parameter": 12,
+          "incomplete_jobs_are_always_retained": true,
+          "policy": "all",
+          "retained_completed_checkpoints_bytes": 16548
+        },
+        "code_digest": "6c40de3451031e1878352c7c1c107d44f3b21649c243beb345830c0ba5b349ed",
+        "code_receipts": [
+          {
+            "bytes": 97221,
+            "path": "experiments/texture_repro.py",
+            "sha256": "12571ca99039388c76f2e439fb1aec1c45c861a108f244dddf88ece55b97862a"
+          },
+          {
+            "bytes": 22690,
+            "path": "experiments/runner.py",
+            "sha256": "bac46170318c71a354c37be04a7b34799c36f9073b3a2c618afc9fd3b7ee89f5"
+          },
+          {
+            "bytes": 9714,
+            "path": "apps/texture/build.py",
+            "sha256": "5c2005b323770e32b831a3bb7ec287063decee1a6b861831cb5b3c907760411a"
+          },
+          {
+            "bytes": 8433,
+            "path": "apps/texture/data.py",
+            "sha256": "e863cd5658100ae287ac4c77723468525123f459b0bbf80d1e5e4966c8529c4e"
+          },
+          {
+            "bytes": 27078,
+            "path": "peps/train.py",
+            "sha256": "c0b221634ea5b87a0a819eb9481780a6b800b39cb27a9986b8e336e973635da9"
+          },
+          {
+            "bytes": 7112,
+            "path": "peps/projector.py",
+            "sha256": "2a8a35f63095ac93d4861d0ab767bcb83c15ce6c2cc21429fd74a4b1ba6d235f"
+          },
+          {
+            "bytes": 14207,
+            "path": "peps/aggregate.py",
+            "sha256": "2c571aab4e0438dabd8cd4acebd87678d33f9ba9b9884a6c0274e233bce9816b"
+          },
+          {
+            "bytes": 7016,
+            "path": "peps/wrapper.py",
+            "sha256": "7da7d25a7ce1990e5f91f30d9153334a82c967c443cc941fabb4b14cff6448d1"
+          },
+          {
+            "bytes": 5192,
+            "path": "peps/encoders/grid.py",
+            "sha256": "5ad21b2493ff37c066db2bcecabefbb52d770cc7a6ca7f89f2e8d8eb7aa1a53a"
+          },
+          {
+            "bytes": 6660,
+            "path": "peps/encoders/lpe.py",
+            "sha256": "980efac6c8e65d5e6905397fd31e208fcb8d850367a00dc867ed049512711c7a"
+          },
+          {
+            "bytes": 11193,
+            "path": "peps/encoders/ntc.py",
+            "sha256": "5f17a5432e3239721bc5200fef6f73bebbd607ba5a53eaebeb494da8642acc4d"
+          },
+          {
+            "bytes": 3120,
+            "path": "peps/models/mlp.py",
+            "sha256": "532837a87b4a53448c529da52458c9629ad28d66d71c8e4b67a88c61b87a5919"
+          },
+          {
+            "bytes": 10031,
+            "path": "peps/metrics.py",
+            "sha256": "72ab2031bbfc461960f1dbb0707dafecf255b2438ca13463efde7ac6865156a3"
+          }
+        ],
+        "config": {
+          "canonical": false,
+          "dataset": "synthetic-texture-tensor",
+          "methods": [
+            {
+              "expected_encoder_params": 176,
+              "expected_total_params": null,
+              "factory": "apps.texture.build:build_paper_texture",
+              "kwargs": {
+                "g0_feature_dim": 2,
+                "g0_resolution": 8,
+                "g1_feature_dim": 3,
+                "g1_resolution": 4,
+                "hidden_dim": 8,
+                "method": "ntc_n",
+                "num_layers": 2,
+                "signal_resolution": 16
+              },
+              "name": "NTC_N-smoke",
+              "role": "canonical",
+              "seeds": null,
+              "training": {}
+            },
+            {
+              "expected_encoder_params": 128,
+              "expected_total_params": null,
+              "factory": "apps.texture.build:build_paper_texture",
+              "kwargs": {
+                "feature_dim": 2,
+                "hidden_dim": 8,
+                "method": "grid_pinkpeps4f",
+                "num_frequencies": 2,
+                "num_layers": 2,
+                "resolution": 8
+              },
+              "name": "Grid-PinkPEPS-smoke",
+              "role": "canonical",
+              "seeds": null,
+              "training": {}
+            },
+            {
+              "expected_encoder_params": 512,
+              "expected_total_params": null,
+              "factory": "apps.texture.build:build_paper_texture",
+              "kwargs": {
+                "hidden_dim": 8,
+                "method": "lpe",
+                "num_frequencies": 2,
+                "num_layers": 2,
+                "resolution": 8
+              },
+              "name": "LPE-smoke",
+              "role": "canonical",
+              "seeds": null,
+              "training": {}
+            }
+          ],
+          "name": "texture-paper-smoke",
+          "paper": "PEPS Extended arXiv:2604.24167v1",
+          "profile": "smoke",
+          "runner": {
+            "metrics": [
+              "psnr"
+            ],
+            "output_dir": "results/paper-smoke",
+            "parallelism_mode": "job_shard",
+            "render_chunk": 1024,
+            "world_size": 1
+          },
+          "schema_version": 1,
+          "seeds": [
+            0
+          ],
+          "source": "/home/aup/yy/workspace/peps/configs/paper/texture_smoke.toml",
+          "task": "texture",
+          "training": {
+            "batch_size": 32,
+            "batches_per_epoch": 2,
+            "checkpoint_every": 1,
+            "cosine": true,
+            "encoder_lr": 0.1,
+            "epochs": 1,
+            "log_every": 1,
+            "loss": "l1",
+            "model_lr": 0.001,
+            "task": "texture"
+          }
+        },
+        "config_sha256": "c2edf1d2dcdba88811c01f7766db2dcbff0eca530a2951749dd2651f27d6b60d",
+        "expected_jobs": 3,
+        "expected_optimizer_steps": 6,
+        "expected_training_samples": 192,
+        "instances": 1,
+        "limitations": [
+          {
+            "code": "texture_file_selection_not_published",
+            "detail": "The paper names 18 sets and eight map categories but not exact source files. data/manifests/textures.json freezes a non-duplicating 78-map selection."
+          },
+          {
+            "code": "optimizer_and_seed_not_published",
+            "detail": "Adam and seeds 0/1/2 are explicit reproduction choices. The paper publishes the dual learning rates, cosine schedule, batch size, epochs, and batches per epoch, but not optimizer or seeds."
+          },
+          {
+            "code": "sampling_text_is_ambiguous",
+            "detail": "The main text says bilinear-filtered targets while the appendix says random pixel locations. The runner samples random native pixel locations; at those locations the bilinear target is exactly the stored texel."
+          },
+          {
+            "code": "pytorch_latency_not_fused_paper_latency",
+            "detail": "The 3F/4F sweep times checkpoint inference in PyTorch. It records real local latency but is not comparable to the paper's fused HIP/WMMA three-channel decoder."
+          },
+          {
+            "code": "figure8_crop_not_published",
+            "detail": "The paper states a 100-pixel Paving Stones sample but does not publish crop coordinates. The generator defaults to a centered 100x100 crop and records the exact rectangle."
+          }
+        ],
+        "manifest_sha256": "63e6597b835b6b3f25dca64ea1f0832e42ae49869010795ef8e02117d56070e1",
+        "methods": 3,
+        "paper": "PEPS Extended arXiv:2604.24167v1",
+        "parallelism": {
+          "all_seeds_of_pair_share_rank": true,
+          "assignment": "asset_method_pair_index_mod_world_size",
+          "mode": "asset_method_job_shard",
+          "same_model_distributed": false,
+          "world_size": 4
+        },
+        "per_rank": {
+          "0": {
+            "jobs": 1,
+            "optimizer_steps": 2
+          },
+          "1": {
+            "jobs": 1,
+            "optimizer_steps": 2
+          },
+          "2": {
+            "jobs": 1,
+            "optimizer_steps": 2
+          },
+          "3": {
+            "jobs": 0,
+            "optimizer_steps": 0
+          }
+        },
+        "profile": "smoke",
+        "schema": "peps.texture_job_plan",
+        "schema_version": 1,
+        "seeds": [
+          0
+        ],
+        "wall_clock_estimate": {
+          "formula": "expected_optimizer_steps / measured_aggregate_steps_per_second",
+          "reason": "No texture checkpoint throughput has been measured yet; CPU smoke timing is not extrapolated to RDNA4 full jobs.",
+          "reference_scenarios_not_predictions": [
+            {
+              "aggregate_steps_per_second": 50,
+              "wall_days": 1.3888888888888887e-06
+            },
+            {
+              "aggregate_steps_per_second": 100,
+              "wall_days": 6.944444444444444e-07
+            },
+            {
+              "aggregate_steps_per_second": 200,
+              "wall_days": 3.472222222222222e-07
+            }
+          ],
+          "seconds": null
+        }
+      },
+      "profile": "smoke",
+      "sha256": "c2edf1d2dcdba88811c01f7766db2dcbff0eca530a2951749dd2651f27d6b60d"
+    },
+    "sweep": {
+      "canonical": false,
+      "methods": [
+        {
+          "aggregation": "concat",
+          "builder_method": "grid_peps3f",
+          "decoder_input_dim": 119,
+          "decoder_params": 16975,
+          "encoder_params": 17825792,
+          "hidden_dim": 64,
+          "linear_layers": 4,
+          "name": "Grid-PEPS3F",
+          "output_channels": 15,
+          "peps_frequencies": 3,
+          "role": "frequency_sweep",
+          "tiled_encoding_dim": 0,
+          "total_params": 17842767
+        },
+        {
+          "aggregation": "concat",
+          "builder_method": "grid_peps4f",
+          "decoder_input_dim": 153,
+          "decoder_params": 19151,
+          "encoder_params": 17825792,
+          "hidden_dim": 64,
+          "linear_layers": 4,
+          "name": "Grid-PEPS4F",
+          "output_channels": 15,
+          "peps_frequencies": 4,
+          "role": "frequency_sweep",
+          "tiled_encoding_dim": 0,
+          "total_params": 17844943
+        },
+        {
+          "aggregation": "pink",
+          "builder_method": "grid_pinkpeps3f",
+          "decoder_input_dim": 45,
+          "decoder_params": 12239,
+          "encoder_params": 17825792,
+          "hidden_dim": 64,
+          "linear_layers": 4,
+          "name": "Grid-PinkPEPS3F",
+          "output_channels": 15,
+          "peps_frequencies": 3,
+          "role": "frequency_sweep",
+          "tiled_encoding_dim": 0,
+          "total_params": 17838031
+        },
+        {
+          "aggregation": "pink",
+          "builder_method": "grid_pinkpeps4f",
+          "decoder_input_dim": 47,
+          "decoder_params": 12367,
+          "encoder_params": 17825792,
+          "hidden_dim": 64,
+          "linear_layers": 4,
+          "name": "Grid-PinkPEPS4F",
+          "output_channels": 15,
+          "peps_frequencies": 4,
+          "role": "frequency_sweep",
+          "tiled_encoding_dim": 0,
+          "total_params": 17838159
+        },
+        {
+          "aggregation": "concat",
+          "builder_method": "ntc_peps3f",
+          "decoder_input_dim": 488,
+          "decoder_params": 40591,
+          "encoder_params": 17825792,
+          "hidden_dim": 64,
+          "linear_layers": 4,
+          "name": "NTC_PEPS3F",
+          "output_channels": 15,
+          "peps_frequencies": 3,
+          "role": "frequency_sweep",
+          "tiled_encoding_dim": 12,
+          "total_params": 17866383
+        },
+        {
+          "aggregation": "concat",
+          "builder_method": "ntc_peps",
+          "decoder_input_dim": 624,
+          "decoder_params": 49295,
+          "encoder_params": 17825792,
+          "hidden_dim": 64,
+          "linear_layers": 4,
+          "name": "NTC_PEPS4F",
+          "output_channels": 15,
+          "peps_frequencies": 4,
+          "role": "frequency_sweep",
+          "tiled_encoding_dim": 12,
+          "total_params": 17875087
+        },
+        {
+          "aggregation": "pink",
+          "builder_method": "ntc_pinkpeps3f",
+          "decoder_input_dim": 198,
+          "decoder_params": 22031,
+          "encoder_params": 17825792,
+          "hidden_dim": 64,
+          "linear_layers": 4,
+          "name": "NTC_PinkPEPS3F",
+          "output_channels": 15,
+          "peps_frequencies": 3,
+          "role": "frequency_sweep",
+          "tiled_encoding_dim": 12,
+          "total_params": 17847823
+        },
+        {
+          "aggregation": "pink",
+          "builder_method": "ntc_pinkpeps",
+          "decoder_input_dim": 206,
+          "decoder_params": 22543,
+          "encoder_params": 17825792,
+          "hidden_dim": 64,
+          "linear_layers": 4,
+          "name": "NTC_PinkPEPS4F",
+          "output_channels": 15,
+          "peps_frequencies": 4,
+          "role": "frequency_sweep",
+          "tiled_encoding_dim": 12,
+          "total_params": 17848335
+        }
+      ],
+      "output_dir": "results/work/texture-repro/sweep/5dce37bec48b-63e6597b835b-6c40de345103",
+      "path": "configs/paper/texture_sweep_full.toml",
+      "plan_4gpu": {
+        "artifact": "sweep",
+        "canonical": false,
+        "checkpoint_storage_estimate": {
+          "all_completed_checkpoints_bytes": 92534716224,
+          "basis": "fp32 weights plus two Adam moment tensors",
+          "bytes_per_parameter": 12,
+          "incomplete_jobs_are_always_retained": true,
+          "policy": "none",
+          "retained_completed_checkpoints_bytes": 0
+        },
+        "code_digest": "6c40de3451031e1878352c7c1c107d44f3b21649c243beb345830c0ba5b349ed",
+        "code_receipts": [
+          {
+            "bytes": 97221,
+            "path": "experiments/texture_repro.py",
+            "sha256": "12571ca99039388c76f2e439fb1aec1c45c861a108f244dddf88ece55b97862a"
+          },
+          {
+            "bytes": 22690,
+            "path": "experiments/runner.py",
+            "sha256": "bac46170318c71a354c37be04a7b34799c36f9073b3a2c618afc9fd3b7ee89f5"
+          },
+          {
+            "bytes": 9714,
+            "path": "apps/texture/build.py",
+            "sha256": "5c2005b323770e32b831a3bb7ec287063decee1a6b861831cb5b3c907760411a"
+          },
+          {
+            "bytes": 8433,
+            "path": "apps/texture/data.py",
+            "sha256": "e863cd5658100ae287ac4c77723468525123f459b0bbf80d1e5e4966c8529c4e"
+          },
+          {
+            "bytes": 27078,
+            "path": "peps/train.py",
+            "sha256": "c0b221634ea5b87a0a819eb9481780a6b800b39cb27a9986b8e336e973635da9"
+          },
+          {
+            "bytes": 7112,
+            "path": "peps/projector.py",
+            "sha256": "2a8a35f63095ac93d4861d0ab767bcb83c15ce6c2cc21429fd74a4b1ba6d235f"
+          },
+          {
+            "bytes": 14207,
+            "path": "peps/aggregate.py",
+            "sha256": "2c571aab4e0438dabd8cd4acebd87678d33f9ba9b9884a6c0274e233bce9816b"
+          },
+          {
+            "bytes": 7016,
+            "path": "peps/wrapper.py",
+            "sha256": "7da7d25a7ce1990e5f91f30d9153334a82c967c443cc941fabb4b14cff6448d1"
+          },
+          {
+            "bytes": 5192,
+            "path": "peps/encoders/grid.py",
+            "sha256": "5ad21b2493ff37c066db2bcecabefbb52d770cc7a6ca7f89f2e8d8eb7aa1a53a"
+          },
+          {
+            "bytes": 6660,
+            "path": "peps/encoders/lpe.py",
+            "sha256": "980efac6c8e65d5e6905397fd31e208fcb8d850367a00dc867ed049512711c7a"
+          },
+          {
+            "bytes": 11193,
+            "path": "peps/encoders/ntc.py",
+            "sha256": "5f17a5432e3239721bc5200fef6f73bebbd607ba5a53eaebeb494da8642acc4d"
+          },
+          {
+            "bytes": 3120,
+            "path": "peps/models/mlp.py",
+            "sha256": "532837a87b4a53448c529da52458c9629ad28d66d71c8e4b67a88c61b87a5919"
+          },
+          {
+            "bytes": 10031,
+            "path": "peps/metrics.py",
+            "sha256": "72ab2031bbfc461960f1dbb0707dafecf255b2438ca13463efde7ac6865156a3"
+          }
+        ],
+        "config": {
+          "canonical": false,
+          "dataset": "paper-textures-18-4k",
+          "methods": [
+            {
+              "expected_encoder_params": 17825792,
+              "expected_total_params": null,
+              "factory": "apps.texture.build:build_paper_texture",
+              "kwargs": {
+                "method": "grid_peps3f"
+              },
+              "name": "Grid-PEPS3F",
+              "role": "frequency_sweep",
+              "seeds": null,
+              "training": {}
+            },
+            {
+              "expected_encoder_params": 17825792,
+              "expected_total_params": null,
+              "factory": "apps.texture.build:build_paper_texture",
+              "kwargs": {
+                "method": "grid_peps4f"
+              },
+              "name": "Grid-PEPS4F",
+              "role": "frequency_sweep",
+              "seeds": null,
+              "training": {}
+            },
+            {
+              "expected_encoder_params": 17825792,
+              "expected_total_params": null,
+              "factory": "apps.texture.build:build_paper_texture",
+              "kwargs": {
+                "method": "grid_pinkpeps3f"
+              },
+              "name": "Grid-PinkPEPS3F",
+              "role": "frequency_sweep",
+              "seeds": null,
+              "training": {}
+            },
+            {
+              "expected_encoder_params": 17825792,
+              "expected_total_params": null,
+              "factory": "apps.texture.build:build_paper_texture",
+              "kwargs": {
+                "method": "grid_pinkpeps4f"
+              },
+              "name": "Grid-PinkPEPS4F",
+              "role": "frequency_sweep",
+              "seeds": null,
+              "training": {}
+            },
+            {
+              "expected_encoder_params": 17825792,
+              "expected_total_params": null,
+              "factory": "apps.texture.build:build_paper_texture",
+              "kwargs": {
+                "method": "ntc_peps3f"
+              },
+              "name": "NTC_PEPS3F",
+              "role": "frequency_sweep",
+              "seeds": null,
+              "training": {}
+            },
+            {
+              "expected_encoder_params": 17825792,
+              "expected_total_params": null,
+              "factory": "apps.texture.build:build_paper_texture",
+              "kwargs": {
+                "method": "ntc_peps4f"
+              },
+              "name": "NTC_PEPS4F",
+              "role": "frequency_sweep",
+              "seeds": null,
+              "training": {}
+            },
+            {
+              "expected_encoder_params": 17825792,
+              "expected_total_params": null,
+              "factory": "apps.texture.build:build_paper_texture",
+              "kwargs": {
+                "method": "ntc_pinkpeps3f"
+              },
+              "name": "NTC_PinkPEPS3F",
+              "role": "frequency_sweep",
+              "seeds": null,
+              "training": {}
+            },
+            {
+              "expected_encoder_params": 17825792,
+              "expected_total_params": null,
+              "factory": "apps.texture.build:build_paper_texture",
+              "kwargs": {
+                "method": "ntc_pinkpeps4f"
+              },
+              "name": "NTC_PinkPEPS4F",
+              "role": "frequency_sweep",
+              "seeds": null,
+              "training": {}
+            }
+          ],
+          "name": "texture-frequency-sweep-full",
+          "paper": "PEPS Extended arXiv:2604.24167v1",
+          "profile": "full",
+          "runner": {
+            "completed_checkpoint_retention": "none",
+            "latency_chunk": 65536,
+            "latency_instance_ids": [
+              "paving-stones-070"
+            ],
+            "latency_queries": 1048576,
+            "latency_repeats": 7,
+            "latency_seed": 0,
+            "latency_warmup": 3,
+            "measure_latency": true,
+            "metrics": [
+              "psnr",
+              "ssim"
+            ],
+            "output_dir": "results/paper",
+            "parallelism_mode": "job_shard",
+            "render_chunk": 262144,
+            "target_filter": "bilinear_at_pixel_locations",
+            "target_sampling": "random_pixel_locations",
+            "world_size": 4
+          },
+          "schema_version": 1,
+          "seeds": [
+            0,
+            1,
+            2
+          ],
+          "source": "/home/aup/yy/workspace/peps/configs/paper/texture_sweep_full.toml",
+          "task": "texture",
+          "training": {
+            "batch_size": 60000,
+            "batches_per_epoch": 40,
+            "checkpoint_every": 1000,
+            "cosine": true,
+            "encoder_lr": 0.1,
+            "epochs": 3000,
+            "log_every": 200,
+            "loss": "l1",
+            "model_lr": 0.001,
+            "task": "texture"
+          }
+        },
+        "config_sha256": "5dce37bec48b1c8b15fa5ccbe44725ec89538c2d97ae243da185e87557c8b7b1",
+        "expected_jobs": 432,
+        "expected_optimizer_steps": 51840000,
+        "expected_training_samples": 3110400000000,
+        "instances": 18,
+        "limitations": [
+          {
+            "code": "texture_file_selection_not_published",
+            "detail": "The paper names 18 sets and eight map categories but not exact source files. data/manifests/textures.json freezes a non-duplicating 78-map selection."
+          },
+          {
+            "code": "optimizer_and_seed_not_published",
+            "detail": "Adam and seeds 0/1/2 are explicit reproduction choices. The paper publishes the dual learning rates, cosine schedule, batch size, epochs, and batches per epoch, but not optimizer or seeds."
+          },
+          {
+            "code": "sampling_text_is_ambiguous",
+            "detail": "The main text says bilinear-filtered targets while the appendix says random pixel locations. The runner samples random native pixel locations; at those locations the bilinear target is exactly the stored texel."
+          },
+          {
+            "code": "pytorch_latency_not_fused_paper_latency",
+            "detail": "The 3F/4F sweep times checkpoint inference in PyTorch. It records real local latency but is not comparable to the paper's fused HIP/WMMA three-channel decoder."
+          },
+          {
+            "code": "figure8_crop_not_published",
+            "detail": "The paper states a 100-pixel Paving Stones sample but does not publish crop coordinates. The generator defaults to a centered 100x100 crop and records the exact rectangle."
+          }
+        ],
+        "manifest_sha256": "63e6597b835b6b3f25dca64ea1f0832e42ae49869010795ef8e02117d56070e1",
+        "methods": 8,
+        "paper": "PEPS Extended arXiv:2604.24167v1",
+        "parallelism": {
+          "all_seeds_of_pair_share_rank": true,
+          "assignment": "asset_method_pair_index_mod_world_size",
+          "mode": "asset_method_job_shard",
+          "same_model_distributed": false,
+          "world_size": 4
+        },
+        "per_rank": {
+          "0": {
+            "jobs": 108,
+            "optimizer_steps": 12960000
+          },
+          "1": {
+            "jobs": 108,
+            "optimizer_steps": 12960000
+          },
+          "2": {
+            "jobs": 108,
+            "optimizer_steps": 12960000
+          },
+          "3": {
+            "jobs": 108,
+            "optimizer_steps": 12960000
+          }
+        },
+        "profile": "full",
+        "schema": "peps.texture_job_plan",
+        "schema_version": 1,
+        "seeds": [
+          0,
+          1,
+          2
+        ],
+        "wall_clock_estimate": {
+          "formula": "expected_optimizer_steps / measured_aggregate_steps_per_second",
+          "reason": "No texture checkpoint throughput has been measured yet; CPU smoke timing is not extrapolated to RDNA4 full jobs.",
+          "reference_scenarios_not_predictions": [
+            {
+              "aggregate_steps_per_second": 50,
+              "wall_days": 12.0
+            },
+            {
+              "aggregate_steps_per_second": 100,
+              "wall_days": 6.0
+            },
+            {
+              "aggregate_steps_per_second": 200,
+              "wall_days": 3.0
+            }
+          ],
+          "seconds": null
+        }
+      },
+      "profile": "full",
+      "sha256": "5dce37bec48b1c8b15fa5ccbe44725ec89538c2d97ae243da185e87557c8b7b1"
+    },
+    "table2": {
+      "canonical": true,
+      "methods": [
+        {
+          "aggregation": "baseline",
+          "builder_method": "lpe",
+          "decoder_input_dim": 16,
+          "decoder_params": 10383,
+          "encoder_params": 16777216,
+          "hidden_dim": 64,
+          "linear_layers": 4,
+          "name": "LPE",
+          "output_channels": 15,
+          "peps_frequencies": null,
+          "role": "canonical",
+          "tiled_encoding_dim": 0,
+          "total_params": 16787599
+        },
+        {
+          "aggregation": "baseline",
+          "builder_method": "ntc_n",
+          "decoder_input_dim": 80,
+          "decoder_params": 14479,
+          "encoder_params": 17825792,
+          "hidden_dim": 64,
+          "linear_layers": 4,
+          "name": "NTC_N",
+          "output_channels": 15,
+          "peps_frequencies": null,
+          "role": "canonical",
+          "tiled_encoding_dim": 12,
+          "total_params": 17840271
+        },
+        {
+          "aggregation": "baseline",
+          "builder_method": "bi_grid",
+          "decoder_input_dim": 17,
+          "decoder_params": 10447,
+          "encoder_params": 17825792,
+          "hidden_dim": 64,
+          "linear_layers": 4,
+          "name": "BI-Grid",
+          "output_channels": 15,
+          "peps_frequencies": null,
+          "role": "canonical",
+          "tiled_encoding_dim": 0,
+          "total_params": 17836239
+        },
+        {
+          "aggregation": "concat",
+          "builder_method": "grid_peps4f",
+          "decoder_input_dim": 153,
+          "decoder_params": 19151,
+          "encoder_params": 17825792,
+          "hidden_dim": 64,
+          "linear_layers": 4,
+          "name": "Grid-PEPS4F",
+          "output_channels": 15,
+          "peps_frequencies": 4,
+          "role": "canonical",
+          "tiled_encoding_dim": 0,
+          "total_params": 17844943
+        },
+        {
+          "aggregation": "pink",
+          "builder_method": "grid_pinkpeps4f",
+          "decoder_input_dim": 47,
+          "decoder_params": 12367,
+          "encoder_params": 17825792,
+          "hidden_dim": 64,
+          "linear_layers": 4,
+          "name": "Grid-PinkPEPS4F",
+          "output_channels": 15,
+          "peps_frequencies": 4,
+          "role": "canonical",
+          "tiled_encoding_dim": 0,
+          "total_params": 17838159
+        },
+        {
+          "aggregation": "concat",
+          "builder_method": "ntc_peps",
+          "decoder_input_dim": 624,
+          "decoder_params": 49295,
+          "encoder_params": 17825792,
+          "hidden_dim": 64,
+          "linear_layers": 4,
+          "name": "NTC_PEPS",
+          "output_channels": 15,
+          "peps_frequencies": 4,
+          "role": "canonical",
+          "tiled_encoding_dim": 12,
+          "total_params": 17875087
+        },
+        {
+          "aggregation": "pink",
+          "builder_method": "ntc_pinkpeps",
+          "decoder_input_dim": 206,
+          "decoder_params": 22543,
+          "encoder_params": 17825792,
+          "hidden_dim": 64,
+          "linear_layers": 4,
+          "name": "NTC_PinkPEPS",
+          "output_channels": 15,
+          "peps_frequencies": 4,
+          "role": "canonical",
+          "tiled_encoding_dim": 12,
+          "total_params": 17848335
+        },
+        {
+          "aggregation": "concat",
+          "builder_method": "grid_peps4f_25",
+          "decoder_input_dim": 117,
+          "decoder_params": 16847,
+          "encoder_params": 13631488,
+          "hidden_dim": 64,
+          "linear_layers": 4,
+          "name": "Grid-PEPS4F-25",
+          "output_channels": 15,
+          "peps_frequencies": 4,
+          "role": "canonical",
+          "tiled_encoding_dim": 0,
+          "total_params": 13648335
+        },
+        {
+          "aggregation": "pink",
+          "builder_method": "grid_pinkpeps4f_25",
+          "decoder_input_dim": 35,
+          "decoder_params": 11599,
+          "encoder_params": 13631488,
+          "hidden_dim": 64,
+          "linear_layers": 4,
+          "name": "Grid-PinkPEPS4F-25",
+          "output_channels": 15,
+          "peps_frequencies": 4,
+          "role": "canonical",
+          "tiled_encoding_dim": 0,
+          "total_params": 13643087
+        },
+        {
+          "aggregation": "concat",
+          "builder_method": "ntc_peps_25",
+          "decoder_input_dim": 471,
+          "decoder_params": 39503,
+          "encoder_params": 13369344,
+          "hidden_dim": 64,
+          "linear_layers": 4,
+          "name": "NTC_PEPS-25",
+          "output_channels": 15,
+          "peps_frequencies": 4,
+          "role": "canonical",
+          "tiled_encoding_dim": 12,
+          "total_params": 13408847
+        },
+        {
+          "aggregation": "pink",
+          "builder_method": "ntc_pinkpeps_25",
+          "decoder_input_dim": 155,
+          "decoder_params": 19279,
+          "encoder_params": 13369344,
+          "hidden_dim": 64,
+          "linear_layers": 4,
+          "name": "NTC_PinkPEPS-25",
+          "output_channels": 15,
+          "peps_frequencies": 4,
+          "role": "canonical",
+          "tiled_encoding_dim": 12,
+          "total_params": 13388623
+        }
+      ],
+      "output_dir": "results/work/texture-repro/table2/24a5936cf378-63e6597b835b-6c40de345103",
+      "path": "configs/paper/texture_full.toml",
+      "plan_4gpu": {
+        "artifact": "table2",
+        "canonical": true,
+        "checkpoint_storage_estimate": {
+          "all_completed_checkpoints_bytes": 115316845560,
+          "basis": "fp32 weights plus two Adam moment tensors",
+          "bytes_per_parameter": 12,
+          "incomplete_jobs_are_always_retained": true,
+          "policy": "figure8_seed0",
+          "retained_completed_checkpoints_bytes": 2135514300
+        },
+        "code_digest": "6c40de3451031e1878352c7c1c107d44f3b21649c243beb345830c0ba5b349ed",
+        "code_receipts": [
+          {
+            "bytes": 97221,
+            "path": "experiments/texture_repro.py",
+            "sha256": "12571ca99039388c76f2e439fb1aec1c45c861a108f244dddf88ece55b97862a"
+          },
+          {
+            "bytes": 22690,
+            "path": "experiments/runner.py",
+            "sha256": "bac46170318c71a354c37be04a7b34799c36f9073b3a2c618afc9fd3b7ee89f5"
+          },
+          {
+            "bytes": 9714,
+            "path": "apps/texture/build.py",
+            "sha256": "5c2005b323770e32b831a3bb7ec287063decee1a6b861831cb5b3c907760411a"
+          },
+          {
+            "bytes": 8433,
+            "path": "apps/texture/data.py",
+            "sha256": "e863cd5658100ae287ac4c77723468525123f459b0bbf80d1e5e4966c8529c4e"
+          },
+          {
+            "bytes": 27078,
+            "path": "peps/train.py",
+            "sha256": "c0b221634ea5b87a0a819eb9481780a6b800b39cb27a9986b8e336e973635da9"
+          },
+          {
+            "bytes": 7112,
+            "path": "peps/projector.py",
+            "sha256": "2a8a35f63095ac93d4861d0ab767bcb83c15ce6c2cc21429fd74a4b1ba6d235f"
+          },
+          {
+            "bytes": 14207,
+            "path": "peps/aggregate.py",
+            "sha256": "2c571aab4e0438dabd8cd4acebd87678d33f9ba9b9884a6c0274e233bce9816b"
+          },
+          {
+            "bytes": 7016,
+            "path": "peps/wrapper.py",
+            "sha256": "7da7d25a7ce1990e5f91f30d9153334a82c967c443cc941fabb4b14cff6448d1"
+          },
+          {
+            "bytes": 5192,
+            "path": "peps/encoders/grid.py",
+            "sha256": "5ad21b2493ff37c066db2bcecabefbb52d770cc7a6ca7f89f2e8d8eb7aa1a53a"
+          },
+          {
+            "bytes": 6660,
+            "path": "peps/encoders/lpe.py",
+            "sha256": "980efac6c8e65d5e6905397fd31e208fcb8d850367a00dc867ed049512711c7a"
+          },
+          {
+            "bytes": 11193,
+            "path": "peps/encoders/ntc.py",
+            "sha256": "5f17a5432e3239721bc5200fef6f73bebbd607ba5a53eaebeb494da8642acc4d"
+          },
+          {
+            "bytes": 3120,
+            "path": "peps/models/mlp.py",
+            "sha256": "532837a87b4a53448c529da52458c9629ad28d66d71c8e4b67a88c61b87a5919"
+          },
+          {
+            "bytes": 10031,
+            "path": "peps/metrics.py",
+            "sha256": "72ab2031bbfc461960f1dbb0707dafecf255b2438ca13463efde7ac6865156a3"
+          }
+        ],
+        "config": {
+          "canonical": true,
+          "dataset": "paper-textures-18-4k",
+          "methods": [
+            {
+              "expected_encoder_params": 16777216,
+              "expected_total_params": null,
+              "factory": "apps.texture.build:build_paper_texture",
+              "kwargs": {
+                "method": "lpe"
+              },
+              "name": "LPE",
+              "role": "canonical",
+              "seeds": null,
+              "training": {}
+            },
+            {
+              "expected_encoder_params": 17825792,
+              "expected_total_params": null,
+              "factory": "apps.texture.build:build_paper_texture",
+              "kwargs": {
+                "method": "ntc_n"
+              },
+              "name": "NTC_N",
+              "role": "canonical",
+              "seeds": null,
+              "training": {}
+            },
+            {
+              "expected_encoder_params": 17825792,
+              "expected_total_params": null,
+              "factory": "apps.texture.build:build_paper_texture",
+              "kwargs": {
+                "method": "bi_grid"
+              },
+              "name": "BI-Grid",
+              "role": "canonical",
+              "seeds": null,
+              "training": {}
+            },
+            {
+              "expected_encoder_params": 17825792,
+              "expected_total_params": null,
+              "factory": "apps.texture.build:build_paper_texture",
+              "kwargs": {
+                "method": "grid_peps4f"
+              },
+              "name": "Grid-PEPS4F",
+              "role": "canonical",
+              "seeds": null,
+              "training": {}
+            },
+            {
+              "expected_encoder_params": 17825792,
+              "expected_total_params": null,
+              "factory": "apps.texture.build:build_paper_texture",
+              "kwargs": {
+                "method": "grid_pinkpeps4f"
+              },
+              "name": "Grid-PinkPEPS4F",
+              "role": "canonical",
+              "seeds": null,
+              "training": {}
+            },
+            {
+              "expected_encoder_params": 17825792,
+              "expected_total_params": null,
+              "factory": "apps.texture.build:build_paper_texture",
+              "kwargs": {
+                "method": "ntc_peps"
+              },
+              "name": "NTC_PEPS",
+              "role": "canonical",
+              "seeds": null,
+              "training": {}
+            },
+            {
+              "expected_encoder_params": 17825792,
+              "expected_total_params": null,
+              "factory": "apps.texture.build:build_paper_texture",
+              "kwargs": {
+                "method": "ntc_pinkpeps"
+              },
+              "name": "NTC_PinkPEPS",
+              "role": "canonical",
+              "seeds": null,
+              "training": {}
+            },
+            {
+              "expected_encoder_params": 13631488,
+              "expected_total_params": null,
+              "factory": "apps.texture.build:build_paper_texture",
+              "kwargs": {
+                "method": "grid_peps4f_25"
+              },
+              "name": "Grid-PEPS4F-25",
+              "role": "canonical",
+              "seeds": null,
+              "training": {}
+            },
+            {
+              "expected_encoder_params": 13631488,
+              "expected_total_params": null,
+              "factory": "apps.texture.build:build_paper_texture",
+              "kwargs": {
+                "method": "grid_pinkpeps4f_25"
+              },
+              "name": "Grid-PinkPEPS4F-25",
+              "role": "canonical",
+              "seeds": null,
+              "training": {}
+            },
+            {
+              "expected_encoder_params": 13369344,
+              "expected_total_params": null,
+              "factory": "apps.texture.build:build_paper_texture",
+              "kwargs": {
+                "method": "ntc_peps_25"
+              },
+              "name": "NTC_PEPS-25",
+              "role": "canonical",
+              "seeds": null,
+              "training": {}
+            },
+            {
+              "expected_encoder_params": 13369344,
+              "expected_total_params": null,
+              "factory": "apps.texture.build:build_paper_texture",
+              "kwargs": {
+                "method": "ntc_pinkpeps_25"
+              },
+              "name": "NTC_PinkPEPS-25",
+              "role": "canonical",
+              "seeds": null,
+              "training": {}
+            }
+          ],
+          "name": "texture-table2-full",
+          "paper": "PEPS Extended arXiv:2604.24167v1",
+          "profile": "full",
+          "runner": {
+            "completed_checkpoint_retention": "figure8_seed0",
+            "dataset_manifest": "data/manifests/textures.json",
+            "figure8_crop_size": 100,
+            "figure8_instance": "paving-stones-070",
+            "metrics": [
+              "psnr",
+              "ssim"
+            ],
+            "output_dir": "results/paper",
+            "parallelism_mode": "job_shard",
+            "render_chunk": 262144,
+            "target_filter": "native_texel_equals_bilinear_at_pixel_location",
+            "target_sampling": "random_pixel_locations",
+            "world_size": 4
+          },
+          "schema_version": 1,
+          "seeds": [
+            0,
+            1,
+            2
+          ],
+          "source": "/home/aup/yy/workspace/peps/configs/paper/texture_full.toml",
+          "task": "texture",
+          "training": {
+            "batch_size": 60000,
+            "batches_per_epoch": 40,
+            "checkpoint_every": 1000,
+            "cosine": true,
+            "encoder_lr": 0.1,
+            "epochs": 3000,
+            "log_every": 200,
+            "loss": "l1",
+            "model_lr": 0.001,
+            "task": "texture"
+          }
+        },
+        "config_sha256": "24a5936cf3788f83e495a343d59148dcf00de9bfa7608592eee2eb764c480478",
+        "expected_jobs": 594,
+        "expected_optimizer_steps": 71280000,
+        "expected_training_samples": 4276800000000,
+        "instances": 18,
+        "limitations": [
+          {
+            "code": "texture_file_selection_not_published",
+            "detail": "The paper names 18 sets and eight map categories but not exact source files. data/manifests/textures.json freezes a non-duplicating 78-map selection."
+          },
+          {
+            "code": "optimizer_and_seed_not_published",
+            "detail": "Adam and seeds 0/1/2 are explicit reproduction choices. The paper publishes the dual learning rates, cosine schedule, batch size, epochs, and batches per epoch, but not optimizer or seeds."
+          },
+          {
+            "code": "sampling_text_is_ambiguous",
+            "detail": "The main text says bilinear-filtered targets while the appendix says random pixel locations. The runner samples random native pixel locations; at those locations the bilinear target is exactly the stored texel."
+          },
+          {
+            "code": "pytorch_latency_not_fused_paper_latency",
+            "detail": "The 3F/4F sweep times checkpoint inference in PyTorch. It records real local latency but is not comparable to the paper's fused HIP/WMMA three-channel decoder."
+          },
+          {
+            "code": "figure8_crop_not_published",
+            "detail": "The paper states a 100-pixel Paving Stones sample but does not publish crop coordinates. The generator defaults to a centered 100x100 crop and records the exact rectangle."
+          }
+        ],
+        "manifest_sha256": "63e6597b835b6b3f25dca64ea1f0832e42ae49869010795ef8e02117d56070e1",
+        "methods": 11,
+        "paper": "PEPS Extended arXiv:2604.24167v1",
+        "parallelism": {
+          "all_seeds_of_pair_share_rank": true,
+          "assignment": "asset_method_pair_index_mod_world_size",
+          "mode": "asset_method_job_shard",
+          "same_model_distributed": false,
+          "world_size": 4
+        },
+        "per_rank": {
+          "0": {
+            "jobs": 150,
+            "optimizer_steps": 18000000
+          },
+          "1": {
+            "jobs": 150,
+            "optimizer_steps": 18000000
+          },
+          "2": {
+            "jobs": 147,
+            "optimizer_steps": 17640000
+          },
+          "3": {
+            "jobs": 147,
+            "optimizer_steps": 17640000
+          }
+        },
+        "profile": "full",
+        "schema": "peps.texture_job_plan",
+        "schema_version": 1,
+        "seeds": [
+          0,
+          1,
+          2
+        ],
+        "wall_clock_estimate": {
+          "formula": "expected_optimizer_steps / measured_aggregate_steps_per_second",
+          "reason": "No texture checkpoint throughput has been measured yet; CPU smoke timing is not extrapolated to RDNA4 full jobs.",
+          "reference_scenarios_not_predictions": [
+            {
+              "aggregate_steps_per_second": 50,
+              "wall_days": 16.5
+            },
+            {
+              "aggregate_steps_per_second": 100,
+              "wall_days": 8.25
+            },
+            {
+              "aggregate_steps_per_second": 200,
+              "wall_days": 4.125
+            }
+          ],
+          "seconds": null
+        }
+      },
+      "profile": "full",
+      "sha256": "24a5936cf3788f83e495a343d59148dcf00de9bfa7608592eee2eb764c480478"
+    }
+  },
+  "dataset": {
+    "all_native_4k": true,
+    "dataset_id": "peps-paper-4k-texture-sets",
+    "decode_size": null,
+    "decoded_sets": 0,
+    "manifest": "data/manifests/textures.json",
+    "manifest_sha256": "63e6597b835b6b3f25dca64ea1f0832e42ae49869010795ef8e02117d56070e1",
+    "map_count": 78,
+    "schema": "peps.texture_manifest_validation",
+    "schema_version": 1,
+    "semantic_counts": {
+      "AO": 5,
+      "ARM": 13,
+      "DIFF": 20,
+      "Displacement": 12,
+      "metal": 2,
+      "normal": 18,
+      "rough": 5,
+      "specular": 3
+    },
+    "set_count": 18,
+    "total_output_channels_across_sets": 234,
+    "verified_files": 0
+  },
+  "dataset_sets": [
+    {
+      "decoded_shape": null,
+      "id": "bench-vice-01",
+      "map_count": 3,
+      "output_channels": 9,
+      "paper_name": "bench vice 01",
+      "provider": "polyhaven",
+      "semantics": [
+        "ARM",
+        "DIFF",
+        "normal"
+      ]
+    },
+    {
+      "decoded_shape": null,
+      "id": "cardboard-box-01",
+      "map_count": 3,
+      "output_channels": 9,
+      "paper_name": "cardboard box 01",
+      "provider": "polyhaven",
+      "semantics": [
+        "ARM",
+        "DIFF",
+        "normal"
+      ]
+    },
+    {
+      "decoded_shape": null,
+      "id": "cannon-01",
+      "map_count": 3,
+      "output_channels": 9,
+      "paper_name": "cannon 01",
+      "provider": "polyhaven",
+      "semantics": [
+        "ARM",
+        "DIFF",
+        "normal"
+      ]
+    },
+    {
+      "decoded_shape": null,
+      "id": "clay-roof-tiles-02",
+      "map_count": 4,
+      "output_channels": 12,
+      "paper_name": "clay roof tiles 02",
+      "provider": "polyhaven",
+      "semantics": [
+        "ARM",
+        "DIFF",
+        "Displacement",
+        "normal"
+      ]
+    },
+    {
+      "decoded_shape": null,
+      "id": "fabric-pattern-07",
+      "map_count": 5,
+      "output_channels": 15,
+      "paper_name": "fabric pattern 07",
+      "provider": "polyhaven",
+      "semantics": [
+        "ARM",
+        "DIFF",
+        "DIFF",
+        "DIFF",
+        "normal"
+      ]
+    },
+    {
+      "decoded_shape": null,
+      "id": "garden-gnome",
+      "map_count": 3,
+      "output_channels": 9,
+      "paper_name": "garden gnome",
+      "provider": "polyhaven",
+      "semantics": [
+        "ARM",
+        "DIFF",
+        "normal"
+      ]
+    },
+    {
+      "decoded_shape": null,
+      "id": "garden-sprinkler-01",
+      "map_count": 4,
+      "output_channels": 12,
+      "paper_name": "garden sprinkler 01",
+      "provider": "polyhaven",
+      "semantics": [
+        "ARM",
+        "DIFF",
+        "Displacement",
+        "normal"
+      ]
+    },
+    {
+      "decoded_shape": null,
+      "id": "wood-planks",
+      "map_count": 4,
+      "output_channels": 12,
+      "paper_name": "wood planks",
+      "provider": "polyhaven",
+      "semantics": [
+        "ARM",
+        "DIFF",
+        "Displacement",
+        "normal"
+      ]
+    },
+    {
+      "decoded_shape": null,
+      "id": "treasure-chest",
+      "map_count": 3,
+      "output_channels": 9,
+      "paper_name": "treasure chest",
+      "provider": "polyhaven",
+      "semantics": [
+        "ARM",
+        "DIFF",
+        "normal"
+      ]
+    },
+    {
+      "decoded_shape": null,
+      "id": "red-dirt-mud-01",
+      "map_count": 5,
+      "output_channels": 15,
+      "paper_name": "red dirt mud 01",
+      "provider": "polyhaven",
+      "semantics": [
+        "ARM",
+        "DIFF",
+        "Displacement",
+        "normal",
+        "specular"
+      ]
+    },
+    {
+      "decoded_shape": null,
+      "id": "aerial-rocks-02",
+      "map_count": 4,
+      "output_channels": 12,
+      "paper_name": "Aerial Rocks 02",
+      "provider": "polyhaven",
+      "semantics": [
+        "ARM",
+        "DIFF",
+        "Displacement",
+        "normal"
+      ]
+    },
+    {
+      "decoded_shape": null,
+      "id": "forest-sand-01",
+      "map_count": 5,
+      "output_channels": 15,
+      "paper_name": "forest sand 01",
+      "provider": "polyhaven",
+      "semantics": [
+        "ARM",
+        "DIFF",
+        "Displacement",
+        "normal",
+        "specular"
+      ]
+    },
+    {
+      "decoded_shape": null,
+      "id": "roof-09",
+      "map_count": 5,
+      "output_channels": 15,
+      "paper_name": "roof 09",
+      "provider": "polyhaven",
+      "semantics": [
+        "ARM",
+        "DIFF",
+        "Displacement",
+        "normal",
+        "specular"
+      ]
+    },
+    {
+      "decoded_shape": null,
+      "id": "paving-stones-070",
+      "map_count": 5,
+      "output_channels": 15,
+      "paper_name": "Paving Stones 070",
+      "provider": "ambientcg",
+      "semantics": [
+        "AO",
+        "DIFF",
+        "Displacement",
+        "normal",
+        "rough"
+      ]
+    },
+    {
+      "decoded_shape": null,
+      "id": "rails-001",
+      "map_count": 6,
+      "output_channels": 18,
+      "paper_name": "Rails 001",
+      "provider": "ambientcg",
+      "semantics": [
+        "AO",
+        "DIFF",
+        "Displacement",
+        "metal",
+        "normal",
+        "rough"
+      ]
+    },
+    {
+      "decoded_shape": null,
+      "id": "bricks-090",
+      "map_count": 5,
+      "output_channels": 15,
+      "paper_name": "Bricks 090",
+      "provider": "ambientcg",
+      "semantics": [
+        "AO",
+        "DIFF",
+        "Displacement",
+        "normal",
+        "rough"
+      ]
+    },
+    {
+      "decoded_shape": null,
+      "id": "metal-plates-013",
+      "map_count": 6,
+      "output_channels": 18,
+      "paper_name": "Metal Plates 013",
+      "provider": "ambientcg",
+      "semantics": [
+        "AO",
+        "DIFF",
+        "Displacement",
+        "metal",
+        "normal",
+        "rough"
+      ]
+    },
+    {
+      "decoded_shape": null,
+      "id": "wood-063",
+      "map_count": 5,
+      "output_channels": 15,
+      "paper_name": "Wood 063",
+      "provider": "ambientcg",
+      "semantics": [
+        "AO",
+        "DIFF",
+        "Displacement",
+        "normal",
+        "rough"
+      ]
+    }
+  ],
+  "figure8": {
+    "crop_size": 100,
+    "default_methods": [
+      "BI-Grid",
+      "Grid-PEPS4F",
+      "Grid-PinkPEPS4F",
+      "NTC_N",
+      "NTC_PEPS",
+      "NTC_PinkPEPS"
+    ],
+    "dependency": "retained final Table 2 seed-0 checkpoints",
+    "instance": "paving-stones-070",
+    "metric": "official flip_evaluator LDR error map"
+  },
+  "generated_at_utc": "2026-07-22T00:50:42.589805+00:00",
+  "git": {
+    "available": true,
+    "branch": "master",
+    "dirty": true,
+    "error": null,
+    "sha": "b772b1e403cb170b28475f0ef765e6b1310e7649",
+    "tracked_changes": 25,
+    "untracked_files": 28
+  },
+  "limitations": [
+    {
+      "code": "texture_file_selection_not_published",
+      "detail": "The paper names 18 sets and eight map categories but not exact source files. data/manifests/textures.json freezes a non-duplicating 78-map selection."
+    },
+    {
+      "code": "optimizer_and_seed_not_published",
+      "detail": "Adam and seeds 0/1/2 are explicit reproduction choices. The paper publishes the dual learning rates, cosine schedule, batch size, epochs, and batches per epoch, but not optimizer or seeds."
+    },
+    {
+      "code": "sampling_text_is_ambiguous",
+      "detail": "The main text says bilinear-filtered targets while the appendix says random pixel locations. The runner samples random native pixel locations; at those locations the bilinear target is exactly the stored texel."
+    },
+    {
+      "code": "pytorch_latency_not_fused_paper_latency",
+      "detail": "The 3F/4F sweep times checkpoint inference in PyTorch. It records real local latency but is not comparable to the paper's fused HIP/WMMA three-channel decoder."
+    },
+    {
+      "code": "figure8_crop_not_published",
+      "detail": "The paper states a 100-pixel Paving Stones sample but does not publish crop coordinates. The generator defaults to a centered 100x100 crop and records the exact rectangle."
+    }
+  ],
+  "paper": {
+    "methods": {
+      "grid": "1024^2 x 17; -25 row uses 13 features",
+      "lpe": "1024^2 x 16",
+      "mlp": "three hidden layers, width 64, GELU",
+      "ntc": "G0 1024^2 x 12 plus G1 512^2 x 20; -25 row uses 9 and 15",
+      "peps_frequencies": 4,
+      "training": "L1, grid LR 0.1, MLP LR 0.001, cosine, 3000 epochs x 40 batches x 60000 samples"
+    },
+    "reference": "PEPS Extended arXiv:2604.24167v1",
+    "source": "https://arxiv.org/src/2604.24167",
+    "table2": {
+      "BI-Grid": {
+        "AO": 43.59,
+        "ARM": 42.24,
+        "DIFF": 37.42,
+        "Displacement": 51.18,
+        "metal": 47.35,
+        "normal": 36.03,
+        "psnr": 41.25,
+        "rough": 39.98,
+        "specular": 46.07,
+        "ssim": 0.95
+      },
+      "Grid-PEPS4F": {
+        "AO": 43.42,
+        "ARM": 42.11,
+        "DIFF": 37.09,
+        "Displacement": 50.81,
+        "metal": 49.9,
+        "normal": 35.9,
+        "psnr": 41.23,
+        "rough": 39.67,
+        "specular": 47.74,
+        "ssim": 0.95
+      },
+      "Grid-PEPS4F-25": {
+        "AO": 42.19,
+        "ARM": 40.83,
+        "DIFF": 35.86,
+        "Displacement": 49.15,
+        "metal": 48.63,
+        "normal": 34.58,
+        "psnr": 39.86,
+        "rough": 38.5,
+        "specular": 45.41,
+        "ssim": 0.93
+      },
+      "Grid-PinkPEPS4F": {
+        "AO": 43.55,
+        "ARM": 42.48,
+        "DIFF": 37.48,
+        "Displacement": 50.64,
+        "metal": 49.43,
+        "normal": 36.24,
+        "psnr": 41.44,
+        "rough": 40.1,
+        "specular": 47.73,
+        "ssim": 0.95
+      },
+      "Grid-PinkPEPS4F-25": {
+        "AO": 42.32,
+        "ARM": 41.26,
+        "DIFF": 36.2,
+        "Displacement": 48.83,
+        "metal": 48.07,
+        "normal": 34.81,
+        "psnr": 40.03,
+        "rough": 38.83,
+        "specular": 45.31,
+        "ssim": 0.94
+      },
+      "LPE": {
+        "AO": 42.16,
+        "ARM": 41.18,
+        "DIFF": 36.38,
+        "Displacement": 50.34,
+        "metal": 46.83,
+        "normal": 34.99,
+        "psnr": 40.21,
+        "rough": 39.05,
+        "specular": 44.76,
+        "ssim": 0.95
+      },
+      "NTC_N": {
+        "AO": 42.59,
+        "ARM": 41.29,
+        "DIFF": 36.78,
+        "Displacement": 48.99,
+        "metal": 46.07,
+        "normal": 34.99,
+        "psnr": 40.2,
+        "rough": 39.18,
+        "specular": 46.13,
+        "ssim": 0.95
+      },
+      "NTC_PEPS": {
+        "AO": 44.17,
+        "ARM": 42.73,
+        "DIFF": 37.91,
+        "Displacement": 50.28,
+        "metal": 50.47,
+        "normal": 36.64,
+        "psnr": 41.79,
+        "rough": 40.23,
+        "specular": 48.56,
+        "ssim": 0.95
+      },
+      "NTC_PEPS-25": {
+        "AO": 43.17,
+        "ARM": 41.6,
+        "DIFF": 36.7,
+        "Displacement": 49.65,
+        "metal": 49.23,
+        "normal": 35.27,
+        "psnr": 40.59,
+        "rough": 39.1,
+        "specular": 46.15,
+        "ssim": 0.94
+      },
+      "NTC_PinkPEPS": {
+        "AO": 44.34,
+        "ARM": 42.79,
+        "DIFF": 38.09,
+        "Displacement": 50.42,
+        "metal": 50.1,
+        "normal": 36.71,
+        "psnr": 41.89,
+        "rough": 40.47,
+        "specular": 48.24,
+        "ssim": 0.95
+      },
+      "NTC_PinkPEPS-25": {
+        "AO": 43.18,
+        "ARM": 41.65,
+        "DIFF": 36.74,
+        "Displacement": 49.61,
+        "metal": 47.9,
+        "normal": 35.3,
+        "psnr": 40.56,
+        "rough": 39.19,
+        "specular": 46.12,
+        "ssim": 0.94
+      }
+    }
+  },
+  "schema": "peps.texture_reproduction_protocol",
+  "schema_version": 1
+}

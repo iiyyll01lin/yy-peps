@@ -1,0 +1,1797 @@
+{
+  "artifact": "texture-table2-convergence-pilot",
+  "canonical": false,
+  "curves": [
+    {
+      "aggregate_steps_per_second": 15.951866862452697,
+      "budget_steps": 10,
+      "complete": false,
+      "expected_trajectory_count": 6,
+      "interval_train_seconds": 0.6268858739999814,
+      "method": "LPE",
+      "psnr_mean": 5.362696950098143,
+      "psnr_stddev": 0.0,
+      "semantic_psnr_mean": {
+        "AO": 1.5346810948013414,
+        "ARM": null,
+        "DIFF": 6.204878200278249,
+        "Displacement": 3.4572055298503774,
+        "metal": 10.092749727946638,
+        "normal": 4.306284372927252,
+        "rough": 6.580382774784999,
+        "specular": null
+      },
+      "ssim_mean": 0.10598166721562545,
+      "ssim_stddev": 0.0,
+      "trajectory_count": 1
+    },
+    {
+      "aggregate_steps_per_second": 25.609760719816837,
+      "budget_steps": 10,
+      "complete": false,
+      "expected_trajectory_count": 6,
+      "interval_train_seconds": 0.39047611999990295,
+      "method": "BI-Grid",
+      "psnr_mean": 5.329004602917835,
+      "psnr_stddev": 0.0,
+      "semantic_psnr_mean": {
+        "AO": 0.9517178471959402,
+        "ARM": null,
+        "DIFF": 6.3293815401451745,
+        "Displacement": 3.433333844290334,
+        "metal": 10.171931394797726,
+        "normal": 4.607893476371795,
+        "rough": 6.47976951470604,
+        "specular": null
+      },
+      "ssim_mean": 0.10667468855778377,
+      "ssim_stddev": 0.0,
+      "trajectory_count": 1
+    },
+    {
+      "aggregate_steps_per_second": null,
+      "budget_steps": 10,
+      "complete": false,
+      "expected_trajectory_count": 6,
+      "interval_train_seconds": 0,
+      "method": "Grid-PinkPEPS4F",
+      "psnr_mean": null,
+      "psnr_stddev": null,
+      "semantic_psnr_mean": {
+        "AO": null,
+        "ARM": null,
+        "DIFF": null,
+        "Displacement": null,
+        "metal": null,
+        "normal": null,
+        "rough": null,
+        "specular": null
+      },
+      "ssim_mean": null,
+      "ssim_stddev": null,
+      "trajectory_count": 0
+    },
+    {
+      "aggregate_steps_per_second": null,
+      "budget_steps": 10,
+      "complete": false,
+      "expected_trajectory_count": 6,
+      "interval_train_seconds": 0,
+      "method": "NTC_N",
+      "psnr_mean": null,
+      "psnr_stddev": null,
+      "semantic_psnr_mean": {
+        "AO": null,
+        "ARM": null,
+        "DIFF": null,
+        "Displacement": null,
+        "metal": null,
+        "normal": null,
+        "rough": null,
+        "specular": null
+      },
+      "ssim_mean": null,
+      "ssim_stddev": null,
+      "trajectory_count": 0
+    },
+    {
+      "aggregate_steps_per_second": null,
+      "budget_steps": 10,
+      "complete": false,
+      "expected_trajectory_count": 6,
+      "interval_train_seconds": 0,
+      "method": "NTC_PinkPEPS",
+      "psnr_mean": null,
+      "psnr_stddev": null,
+      "semantic_psnr_mean": {
+        "AO": null,
+        "ARM": null,
+        "DIFF": null,
+        "Displacement": null,
+        "metal": null,
+        "normal": null,
+        "rough": null,
+        "specular": null
+      },
+      "ssim_mean": null,
+      "ssim_stddev": null,
+      "trajectory_count": 0
+    },
+    {
+      "aggregate_steps_per_second": 23.18227591954224,
+      "budget_steps": 50,
+      "complete": false,
+      "expected_trajectory_count": 6,
+      "interval_train_seconds": 1.7254561260001537,
+      "method": "LPE",
+      "psnr_mean": 16.107236396374706,
+      "psnr_stddev": 0.0,
+      "semantic_psnr_mean": {
+        "AO": 18.76746327016645,
+        "ARM": null,
+        "DIFF": 17.21701358702713,
+        "Displacement": 15.85458176107913,
+        "metal": 9.971847523374244,
+        "normal": 15.693447114669954,
+        "rough": 19.13906512193134,
+        "specular": null
+      },
+      "ssim_mean": 0.2917317698399226,
+      "ssim_stddev": 0.0,
+      "trajectory_count": 1
+    },
+    {
+      "aggregate_steps_per_second": 30.26376421531315,
+      "budget_steps": 50,
+      "complete": false,
+      "expected_trajectory_count": 6,
+      "interval_train_seconds": 1.3217126500001086,
+      "method": "BI-Grid",
+      "psnr_mean": 16.29972208780195,
+      "psnr_stddev": 0.0,
+      "semantic_psnr_mean": {
+        "AO": 19.519852177271225,
+        "ARM": null,
+        "DIFF": 16.786495685549113,
+        "Displacement": 14.682538594448403,
+        "metal": 10.118193219244112,
+        "normal": 17.572349473149217,
+        "rough": 19.11890337714962,
+        "specular": null
+      },
+      "ssim_mean": 0.23773800333340964,
+      "ssim_stddev": 0.0,
+      "trajectory_count": 1
+    },
+    {
+      "aggregate_steps_per_second": null,
+      "budget_steps": 50,
+      "complete": false,
+      "expected_trajectory_count": 6,
+      "interval_train_seconds": 0,
+      "method": "Grid-PinkPEPS4F",
+      "psnr_mean": null,
+      "psnr_stddev": null,
+      "semantic_psnr_mean": {
+        "AO": null,
+        "ARM": null,
+        "DIFF": null,
+        "Displacement": null,
+        "metal": null,
+        "normal": null,
+        "rough": null,
+        "specular": null
+      },
+      "ssim_mean": null,
+      "ssim_stddev": null,
+      "trajectory_count": 0
+    },
+    {
+      "aggregate_steps_per_second": null,
+      "budget_steps": 50,
+      "complete": false,
+      "expected_trajectory_count": 6,
+      "interval_train_seconds": 0,
+      "method": "NTC_N",
+      "psnr_mean": null,
+      "psnr_stddev": null,
+      "semantic_psnr_mean": {
+        "AO": null,
+        "ARM": null,
+        "DIFF": null,
+        "Displacement": null,
+        "metal": null,
+        "normal": null,
+        "rough": null,
+        "specular": null
+      },
+      "ssim_mean": null,
+      "ssim_stddev": null,
+      "trajectory_count": 0
+    },
+    {
+      "aggregate_steps_per_second": null,
+      "budget_steps": 50,
+      "complete": false,
+      "expected_trajectory_count": 6,
+      "interval_train_seconds": 0,
+      "method": "NTC_PinkPEPS",
+      "psnr_mean": null,
+      "psnr_stddev": null,
+      "semantic_psnr_mean": {
+        "AO": null,
+        "ARM": null,
+        "DIFF": null,
+        "Displacement": null,
+        "metal": null,
+        "normal": null,
+        "rough": null,
+        "specular": null
+      },
+      "ssim_mean": null,
+      "ssim_stddev": null,
+      "trajectory_count": 0
+    },
+    {
+      "aggregate_steps_per_second": 44.148363217609564,
+      "budget_steps": 200,
+      "complete": false,
+      "expected_trajectory_count": 6,
+      "interval_train_seconds": 3.3976344549998885,
+      "method": "LPE",
+      "psnr_mean": 20.65916472065805,
+      "psnr_stddev": 0.0,
+      "semantic_psnr_mean": {
+        "AO": 25.864470601543843,
+        "ARM": null,
+        "DIFF": 18.101098995610712,
+        "Displacement": 29.313525065478117,
+        "metal": 9.961936883545997,
+        "normal": 19.166922797109315,
+        "rough": 21.547033980660323,
+        "specular": null
+      },
+      "ssim_mean": 0.5595904191335043,
+      "ssim_stddev": 0.0,
+      "trajectory_count": 1
+    },
+    {
+      "aggregate_steps_per_second": 78.45178322127835,
+      "budget_steps": 200,
+      "complete": false,
+      "expected_trajectory_count": 6,
+      "interval_train_seconds": 1.9120024279998233,
+      "method": "BI-Grid",
+      "psnr_mean": 22.642251638230064,
+      "psnr_stddev": 0.0,
+      "semantic_psnr_mean": {
+        "AO": 26.52172965638945,
+        "ARM": null,
+        "DIFF": 23.248723449561982,
+        "Displacement": 26.865794769367245,
+        "metal": 12.081588737322049,
+        "normal": 19.129468694105366,
+        "rough": 28.006204522634302,
+        "specular": null
+      },
+      "ssim_mean": 0.6202291200558344,
+      "ssim_stddev": 0.0,
+      "trajectory_count": 1
+    },
+    {
+      "aggregate_steps_per_second": null,
+      "budget_steps": 200,
+      "complete": false,
+      "expected_trajectory_count": 6,
+      "interval_train_seconds": 0,
+      "method": "Grid-PinkPEPS4F",
+      "psnr_mean": null,
+      "psnr_stddev": null,
+      "semantic_psnr_mean": {
+        "AO": null,
+        "ARM": null,
+        "DIFF": null,
+        "Displacement": null,
+        "metal": null,
+        "normal": null,
+        "rough": null,
+        "specular": null
+      },
+      "ssim_mean": null,
+      "ssim_stddev": null,
+      "trajectory_count": 0
+    },
+    {
+      "aggregate_steps_per_second": null,
+      "budget_steps": 200,
+      "complete": false,
+      "expected_trajectory_count": 6,
+      "interval_train_seconds": 0,
+      "method": "NTC_N",
+      "psnr_mean": null,
+      "psnr_stddev": null,
+      "semantic_psnr_mean": {
+        "AO": null,
+        "ARM": null,
+        "DIFF": null,
+        "Displacement": null,
+        "metal": null,
+        "normal": null,
+        "rough": null,
+        "specular": null
+      },
+      "ssim_mean": null,
+      "ssim_stddev": null,
+      "trajectory_count": 0
+    },
+    {
+      "aggregate_steps_per_second": null,
+      "budget_steps": 200,
+      "complete": false,
+      "expected_trajectory_count": 6,
+      "interval_train_seconds": 0,
+      "method": "NTC_PinkPEPS",
+      "psnr_mean": null,
+      "psnr_stddev": null,
+      "semantic_psnr_mean": {
+        "AO": null,
+        "ARM": null,
+        "DIFF": null,
+        "Displacement": null,
+        "metal": null,
+        "normal": null,
+        "rough": null,
+        "specular": null
+      },
+      "ssim_mean": null,
+      "ssim_stddev": null,
+      "trajectory_count": 0
+    },
+    {
+      "aggregate_steps_per_second": 71.88033976829279,
+      "budget_steps": 1000,
+      "complete": false,
+      "expected_trajectory_count": 6,
+      "interval_train_seconds": 11.129607937007677,
+      "method": "LPE",
+      "psnr_mean": 32.173904704337566,
+      "psnr_stddev": 0.0,
+      "semantic_psnr_mean": {
+        "AO": 31.36980094740968,
+        "ARM": null,
+        "DIFF": 27.13985069988134,
+        "Displacement": 39.72561999295011,
+        "metal": 38.30231063820627,
+        "normal": 21.352095362721638,
+        "rough": 35.15375058485634,
+        "specular": null
+      },
+      "ssim_mean": 0.8726764221986135,
+      "ssim_stddev": 0.0,
+      "trajectory_count": 1
+    },
+    {
+      "aggregate_steps_per_second": 72.09559808035016,
+      "budget_steps": 1000,
+      "complete": false,
+      "expected_trajectory_count": 6,
+      "interval_train_seconds": 11.096377882993693,
+      "method": "BI-Grid",
+      "psnr_mean": 32.648499367881655,
+      "psnr_stddev": 0.0,
+      "semantic_psnr_mean": {
+        "AO": 32.093457306565014,
+        "ARM": null,
+        "DIFF": 25.78711437724359,
+        "Displacement": 39.61470557258389,
+        "metal": 40.44479463013005,
+        "normal": 22.37925076397076,
+        "rough": 35.57167355679664,
+        "specular": null
+      },
+      "ssim_mean": 0.8926076491673788,
+      "ssim_stddev": 0.0,
+      "trajectory_count": 1
+    },
+    {
+      "aggregate_steps_per_second": null,
+      "budget_steps": 1000,
+      "complete": false,
+      "expected_trajectory_count": 6,
+      "interval_train_seconds": 0,
+      "method": "Grid-PinkPEPS4F",
+      "psnr_mean": null,
+      "psnr_stddev": null,
+      "semantic_psnr_mean": {
+        "AO": null,
+        "ARM": null,
+        "DIFF": null,
+        "Displacement": null,
+        "metal": null,
+        "normal": null,
+        "rough": null,
+        "specular": null
+      },
+      "ssim_mean": null,
+      "ssim_stddev": null,
+      "trajectory_count": 0
+    },
+    {
+      "aggregate_steps_per_second": null,
+      "budget_steps": 1000,
+      "complete": false,
+      "expected_trajectory_count": 6,
+      "interval_train_seconds": 0,
+      "method": "NTC_N",
+      "psnr_mean": null,
+      "psnr_stddev": null,
+      "semantic_psnr_mean": {
+        "AO": null,
+        "ARM": null,
+        "DIFF": null,
+        "Displacement": null,
+        "metal": null,
+        "normal": null,
+        "rough": null,
+        "specular": null
+      },
+      "ssim_mean": null,
+      "ssim_stddev": null,
+      "trajectory_count": 0
+    },
+    {
+      "aggregate_steps_per_second": null,
+      "budget_steps": 1000,
+      "complete": false,
+      "expected_trajectory_count": 6,
+      "interval_train_seconds": 0,
+      "method": "NTC_PinkPEPS",
+      "psnr_mean": null,
+      "psnr_stddev": null,
+      "semantic_psnr_mean": {
+        "AO": null,
+        "ARM": null,
+        "DIFF": null,
+        "Displacement": null,
+        "metal": null,
+        "normal": null,
+        "rough": null,
+        "specular": null
+      },
+      "ssim_mean": null,
+      "ssim_stddev": null,
+      "trajectory_count": 0
+    },
+    {
+      "aggregate_steps_per_second": 67.72781439077158,
+      "budget_steps": 2000,
+      "complete": false,
+      "expected_trajectory_count": 6,
+      "interval_train_seconds": 14.764982585002144,
+      "method": "LPE",
+      "psnr_mean": 33.591833875395714,
+      "psnr_stddev": 0.0,
+      "semantic_psnr_mean": {
+        "AO": 32.03803126207293,
+        "ARM": null,
+        "DIFF": 28.25852302667299,
+        "Displacement": 41.69969558424418,
+        "metal": 40.822080707296536,
+        "normal": 22.85027872474537,
+        "rough": 35.88239394734227,
+        "specular": null
+      },
+      "ssim_mean": 0.9064902563889822,
+      "ssim_stddev": 0.0,
+      "trajectory_count": 1
+    },
+    {
+      "aggregate_steps_per_second": 67.68406769894082,
+      "budget_steps": 2000,
+      "complete": false,
+      "expected_trajectory_count": 6,
+      "interval_train_seconds": 14.774525734002964,
+      "method": "BI-Grid",
+      "psnr_mean": 34.03784234104003,
+      "psnr_stddev": 0.0,
+      "semantic_psnr_mean": {
+        "AO": 33.33891191507458,
+        "ARM": null,
+        "DIFF": 26.699528604791574,
+        "Displacement": 42.055222397149294,
+        "metal": 42.41398232238346,
+        "normal": 22.7822591222302,
+        "rough": 36.93714968461109,
+        "specular": null
+      },
+      "ssim_mean": 0.9131909410158793,
+      "ssim_stddev": 0.0,
+      "trajectory_count": 1
+    },
+    {
+      "aggregate_steps_per_second": null,
+      "budget_steps": 2000,
+      "complete": false,
+      "expected_trajectory_count": 6,
+      "interval_train_seconds": 0,
+      "method": "Grid-PinkPEPS4F",
+      "psnr_mean": null,
+      "psnr_stddev": null,
+      "semantic_psnr_mean": {
+        "AO": null,
+        "ARM": null,
+        "DIFF": null,
+        "Displacement": null,
+        "metal": null,
+        "normal": null,
+        "rough": null,
+        "specular": null
+      },
+      "ssim_mean": null,
+      "ssim_stddev": null,
+      "trajectory_count": 0
+    },
+    {
+      "aggregate_steps_per_second": null,
+      "budget_steps": 2000,
+      "complete": false,
+      "expected_trajectory_count": 6,
+      "interval_train_seconds": 0,
+      "method": "NTC_N",
+      "psnr_mean": null,
+      "psnr_stddev": null,
+      "semantic_psnr_mean": {
+        "AO": null,
+        "ARM": null,
+        "DIFF": null,
+        "Displacement": null,
+        "metal": null,
+        "normal": null,
+        "rough": null,
+        "specular": null
+      },
+      "ssim_mean": null,
+      "ssim_stddev": null,
+      "trajectory_count": 0
+    },
+    {
+      "aggregate_steps_per_second": null,
+      "budget_steps": 2000,
+      "complete": false,
+      "expected_trajectory_count": 6,
+      "interval_train_seconds": 0,
+      "method": "NTC_PinkPEPS",
+      "psnr_mean": null,
+      "psnr_stddev": null,
+      "semantic_psnr_mean": {
+        "AO": null,
+        "ARM": null,
+        "DIFF": null,
+        "Displacement": null,
+        "metal": null,
+        "normal": null,
+        "rough": null,
+        "specular": null
+      },
+      "ssim_mean": null,
+      "ssim_stddev": null,
+      "trajectory_count": 0
+    },
+    {
+      "aggregate_steps_per_second": null,
+      "budget_steps": 5000,
+      "complete": false,
+      "expected_trajectory_count": 6,
+      "interval_train_seconds": 0,
+      "method": "LPE",
+      "psnr_mean": null,
+      "psnr_stddev": null,
+      "semantic_psnr_mean": {
+        "AO": null,
+        "ARM": null,
+        "DIFF": null,
+        "Displacement": null,
+        "metal": null,
+        "normal": null,
+        "rough": null,
+        "specular": null
+      },
+      "ssim_mean": null,
+      "ssim_stddev": null,
+      "trajectory_count": 0
+    },
+    {
+      "aggregate_steps_per_second": null,
+      "budget_steps": 5000,
+      "complete": false,
+      "expected_trajectory_count": 6,
+      "interval_train_seconds": 0,
+      "method": "BI-Grid",
+      "psnr_mean": null,
+      "psnr_stddev": null,
+      "semantic_psnr_mean": {
+        "AO": null,
+        "ARM": null,
+        "DIFF": null,
+        "Displacement": null,
+        "metal": null,
+        "normal": null,
+        "rough": null,
+        "specular": null
+      },
+      "ssim_mean": null,
+      "ssim_stddev": null,
+      "trajectory_count": 0
+    },
+    {
+      "aggregate_steps_per_second": null,
+      "budget_steps": 5000,
+      "complete": false,
+      "expected_trajectory_count": 6,
+      "interval_train_seconds": 0,
+      "method": "Grid-PinkPEPS4F",
+      "psnr_mean": null,
+      "psnr_stddev": null,
+      "semantic_psnr_mean": {
+        "AO": null,
+        "ARM": null,
+        "DIFF": null,
+        "Displacement": null,
+        "metal": null,
+        "normal": null,
+        "rough": null,
+        "specular": null
+      },
+      "ssim_mean": null,
+      "ssim_stddev": null,
+      "trajectory_count": 0
+    },
+    {
+      "aggregate_steps_per_second": null,
+      "budget_steps": 5000,
+      "complete": false,
+      "expected_trajectory_count": 6,
+      "interval_train_seconds": 0,
+      "method": "NTC_N",
+      "psnr_mean": null,
+      "psnr_stddev": null,
+      "semantic_psnr_mean": {
+        "AO": null,
+        "ARM": null,
+        "DIFF": null,
+        "Displacement": null,
+        "metal": null,
+        "normal": null,
+        "rough": null,
+        "specular": null
+      },
+      "ssim_mean": null,
+      "ssim_stddev": null,
+      "trajectory_count": 0
+    },
+    {
+      "aggregate_steps_per_second": null,
+      "budget_steps": 5000,
+      "complete": false,
+      "expected_trajectory_count": 6,
+      "interval_train_seconds": 0,
+      "method": "NTC_PinkPEPS",
+      "psnr_mean": null,
+      "psnr_stddev": null,
+      "semantic_psnr_mean": {
+        "AO": null,
+        "ARM": null,
+        "DIFF": null,
+        "Displacement": null,
+        "metal": null,
+        "normal": null,
+        "rough": null,
+        "specular": null
+      },
+      "ssim_mean": null,
+      "ssim_stddev": null,
+      "trajectory_count": 0
+    }
+  ],
+  "decision": {
+    "full_71m_step_run_authorized": false,
+    "last_interval_max_abs_psnr_gain_db": null,
+    "minimum_recommendation_steps": 5000,
+    "next_pilot_budgets": [
+      25000,
+      50000,
+      119999
+    ],
+    "plateau_threshold_db": 0.1,
+    "ranking_stable": false,
+    "reasons": [
+      "not every planned trajectory and checkpoint is complete",
+      "method ordering is not yet stable across the last budgets",
+      "at least one method still changes by more than 0.1 dB"
+    ],
+    "recommendation_scope": "none_inconclusive",
+    "recommended_table2_steps": null,
+    "status": "inconclusive_bounded_pilot"
+  },
+  "evidence": {
+    "checkpoints": [
+      {
+        "bytes": 201479224,
+        "instance": "rails-001",
+        "job_index": 0,
+        "method": "LPE",
+        "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-ca6664fc7b36/checkpoints/raw/rails-001/LPE/seed-0.pt",
+        "seed": 0,
+        "sha256": "464643e91c05dfa13a515f50336cbca278c1a72631989cb55d588acfd8b407ca",
+        "step": 4466
+      },
+      {
+        "bytes": 214062968,
+        "instance": "rails-001",
+        "job_index": 3,
+        "method": "BI-Grid",
+        "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-ca6664fc7b36/checkpoints/raw/rails-001/BI-Grid/seed-0.pt",
+        "seed": 0,
+        "sha256": "d38e841dbc567549995e229ceb601df68e000388d867b10183f9ee1f1572140c",
+        "step": 4465
+      }
+    ],
+    "code_digest": "ca6664fc7b362f2ca7ec2a5f8befcab672c16a57f3a7f8f96f899df4cfd94c9f",
+    "code_receipts": [
+      {
+        "bytes": 172053,
+        "path": "experiments/texture_repro.py",
+        "sha256": "3f55a6d7d35869fc606587dbe2437820649540a0995d5207a3044b3d19b4a45f"
+      },
+      {
+        "bytes": 22690,
+        "path": "experiments/runner.py",
+        "sha256": "bac46170318c71a354c37be04a7b34799c36f9073b3a2c618afc9fd3b7ee89f5"
+      },
+      {
+        "bytes": 9714,
+        "path": "apps/texture/build.py",
+        "sha256": "5c2005b323770e32b831a3bb7ec287063decee1a6b861831cb5b3c907760411a"
+      },
+      {
+        "bytes": 8433,
+        "path": "apps/texture/data.py",
+        "sha256": "e863cd5658100ae287ac4c77723468525123f459b0bbf80d1e5e4966c8529c4e"
+      },
+      {
+        "bytes": 27575,
+        "path": "peps/train.py",
+        "sha256": "c1a341e5b51656bb8bb185fd6dd6d2091b6d5d712d268d1cf5f18810e5efba30"
+      },
+      {
+        "bytes": 7112,
+        "path": "peps/projector.py",
+        "sha256": "2a8a35f63095ac93d4861d0ab767bcb83c15ce6c2cc21429fd74a4b1ba6d235f"
+      },
+      {
+        "bytes": 14207,
+        "path": "peps/aggregate.py",
+        "sha256": "2c571aab4e0438dabd8cd4acebd87678d33f9ba9b9884a6c0274e233bce9816b"
+      },
+      {
+        "bytes": 7016,
+        "path": "peps/wrapper.py",
+        "sha256": "7da7d25a7ce1990e5f91f30d9153334a82c967c443cc941fabb4b14cff6448d1"
+      },
+      {
+        "bytes": 5192,
+        "path": "peps/encoders/grid.py",
+        "sha256": "5ad21b2493ff37c066db2bcecabefbb52d770cc7a6ca7f89f2e8d8eb7aa1a53a"
+      },
+      {
+        "bytes": 6660,
+        "path": "peps/encoders/lpe.py",
+        "sha256": "980efac6c8e65d5e6905397fd31e208fcb8d850367a00dc867ed049512711c7a"
+      },
+      {
+        "bytes": 11193,
+        "path": "peps/encoders/ntc.py",
+        "sha256": "5f17a5432e3239721bc5200fef6f73bebbd607ba5a53eaebeb494da8642acc4d"
+      },
+      {
+        "bytes": 3120,
+        "path": "peps/models/mlp.py",
+        "sha256": "532837a87b4a53448c529da52458c9629ad28d66d71c8e4b67a88c61b87a5919"
+      },
+      {
+        "bytes": 10031,
+        "path": "peps/metrics.py",
+        "sha256": "72ab2031bbfc461960f1dbb0707dafecf255b2438ca13463efde7ac6865156a3"
+      }
+    ],
+    "config": {
+      "path": "configs/paper/texture/convergence_pilot.toml",
+      "sha256": "09d602a3fd6d3f5961362ff040729f27c7c742d2346ca079b711550ae08f193c"
+    },
+    "pilot_manifest": {
+      "current": true,
+      "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-ca6664fc7b36/manifest.json",
+      "present": true,
+      "sha256": "352d4de3f7f680a34f76c426cd6fef1a57f83672b598b5fce9ecf664beb5c4c3"
+    },
+    "raw_csv": {
+      "bytes": 4198,
+      "path": "results/texture_repro/convergence_pilot_observations.csv",
+      "rows": 10,
+      "sha256": "07dafd7855c1f7cbf0c4eaa6ce874f9208eb1797a7f80ada11ccb9481fa1e7f8"
+    },
+    "resume_lineage": {
+      "active_workers": 0,
+      "jobs": [
+        {
+          "checkpoint": {
+            "bytes": 201475832,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/checkpoints/raw/rails-001/LPE/seed-0.pt",
+            "sha256": "d8f087b9c52a48688ccfdf81ee64f9c8cd229698814cc8cedd15558f1939048c"
+          },
+          "instance": "rails-001",
+          "job_index": 0,
+          "method": "LPE",
+          "result": {
+            "bytes": 9780,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/raw/rails-001/LPE/seed-0.json",
+            "sha256": "4ae934f35de4efd172dfb9a975daed5454cf152b89bd7760467c1f10f9c6ea2e"
+          },
+          "seed": 0,
+          "source_elapsed_train_seconds": 5.749976455000024,
+          "source_step": 200
+        },
+        {
+          "checkpoint": {
+            "bytes": 201475832,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/checkpoints/raw/rails-001/LPE/seed-1.pt",
+            "sha256": "a82e6fa9d425ba85c07f3021d9f992d81e186d7facca7dda101b0a06295b63a1"
+          },
+          "instance": "rails-001",
+          "job_index": 1,
+          "method": "LPE",
+          "result": {
+            "bytes": 9783,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/raw/rails-001/LPE/seed-1.json",
+            "sha256": "5ef24195327fd4a243ee7a484d3e458a0fb8678859e568a240f599e704e0014a"
+          },
+          "seed": 1,
+          "source_elapsed_train_seconds": 4.063736544000676,
+          "source_step": 200
+        },
+        {
+          "checkpoint": {
+            "bytes": 201475832,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/checkpoints/raw/rails-001/LPE/seed-2.pt",
+            "sha256": "edc998844f688c92836ea3f14dd209f2d9e1adb3c7a3f0435bed4fead491963f"
+          },
+          "instance": "rails-001",
+          "job_index": 2,
+          "method": "LPE",
+          "result": {
+            "bytes": 9776,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/raw/rails-001/LPE/seed-2.json",
+            "sha256": "f951e64af3b518ad70f680080357844b49acdf6161e84c7be11036705df8fb61"
+          },
+          "seed": 2,
+          "source_elapsed_train_seconds": 3.4197989270001017,
+          "source_step": 200
+        },
+        {
+          "checkpoint": {
+            "bytes": 214059512,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/checkpoints/raw/rails-001/BI-Grid/seed-0.pt",
+            "sha256": "c65ca82027860ed59867c248bef92c9f310f5d5482096a700448210719792dd2"
+          },
+          "instance": "rails-001",
+          "job_index": 3,
+          "method": "BI-Grid",
+          "result": {
+            "bytes": 9804,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/raw/rails-001/BI-Grid/seed-0.json",
+            "sha256": "24d782e53982c1c89a5795178cb0bd0c2f494b5e484103801291a209a943eb79"
+          },
+          "seed": 0,
+          "source_elapsed_train_seconds": 3.624191197999835,
+          "source_step": 200
+        },
+        {
+          "checkpoint": {
+            "bytes": 214059512,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/checkpoints/raw/rails-001/BI-Grid/seed-1.pt",
+            "sha256": "dc639984ab5bb520b442872bf1d4733d14461cee716b26f895fe84d8852cca5b"
+          },
+          "instance": "rails-001",
+          "job_index": 4,
+          "method": "BI-Grid",
+          "result": {
+            "bytes": 9799,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/raw/rails-001/BI-Grid/seed-1.json",
+            "sha256": "8dfba6b334bbbc6b885c9024b8554e96ad540532437068f1836cc2c5e54cd2e8"
+          },
+          "seed": 1,
+          "source_elapsed_train_seconds": 5.352881786000353,
+          "source_step": 200
+        },
+        {
+          "checkpoint": {
+            "bytes": 214059512,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/checkpoints/raw/rails-001/BI-Grid/seed-2.pt",
+            "sha256": "80abee2d482e5e4a9ed976a5aaa9457017008a4c25a3fe4c1a992cdf74ab5cbe"
+          },
+          "instance": "rails-001",
+          "job_index": 5,
+          "method": "BI-Grid",
+          "result": {
+            "bytes": 9800,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/raw/rails-001/BI-Grid/seed-2.json",
+            "sha256": "fb2609183e2ce77fe450ca2f52c1035ad42c767a281340672104c6016a2dfdc0"
+          },
+          "seed": 2,
+          "source_elapsed_train_seconds": 2.6925352139996903,
+          "source_step": 200
+        },
+        {
+          "checkpoint": {
+            "bytes": 214082744,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/checkpoints/raw/rails-001/Grid-PinkPEPS4F/seed-0.pt",
+            "sha256": "8d00c382e4a6c4b443be512ffeccc0d609d420d1ccb6ce150bc80c3ce967e5e0"
+          },
+          "instance": "rails-001",
+          "job_index": 6,
+          "method": "Grid-PinkPEPS4F",
+          "result": {
+            "bytes": 9802,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/raw/rails-001/Grid-PinkPEPS4F/seed-0.json",
+            "sha256": "5a4ebfffa2d67f322c419257557a65ca763e49f8844f66c81d9088b3b33d1745"
+          },
+          "seed": 0,
+          "source_elapsed_train_seconds": 6.682978998000067,
+          "source_step": 200
+        },
+        {
+          "checkpoint": {
+            "bytes": 214082744,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/checkpoints/raw/rails-001/Grid-PinkPEPS4F/seed-1.pt",
+            "sha256": "4ea612b40361853ed1443291d81eb4813d6379cb00782a6312895c6cd888a427"
+          },
+          "instance": "rails-001",
+          "job_index": 7,
+          "method": "Grid-PinkPEPS4F",
+          "result": {
+            "bytes": 9791,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/raw/rails-001/Grid-PinkPEPS4F/seed-1.json",
+            "sha256": "10e9ac788db8cfaf77e53bdcf7680a9ca45ca8ed1c7a8011dcff5bbb8819a6b6"
+          },
+          "seed": 1,
+          "source_elapsed_train_seconds": 5.687579492000282,
+          "source_step": 200
+        },
+        {
+          "checkpoint": {
+            "bytes": 214082744,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/checkpoints/raw/rails-001/Grid-PinkPEPS4F/seed-2.pt",
+            "sha256": "417a558cd9e3fe94bfa6b372578ded7985138ca507dea3f8ec238dae68e193b0"
+          },
+          "instance": "rails-001",
+          "job_index": 8,
+          "method": "Grid-PinkPEPS4F",
+          "result": {
+            "bytes": 9799,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/raw/rails-001/Grid-PinkPEPS4F/seed-2.json",
+            "sha256": "995b6322bc852f3ea7171721e3ba6501a2aa8e24150ac4c79fb206e4fb8be161"
+          },
+          "seed": 2,
+          "source_elapsed_train_seconds": 5.668725606000407,
+          "source_step": 200
+        },
+        {
+          "checkpoint": {
+            "bytes": 214109212,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/checkpoints/raw/rails-001/NTC_N/seed-0.pt",
+            "sha256": "7ba069c4e02fee0500136ee2099960eb67fecea17eb7ca3f6115059fe14b1a00"
+          },
+          "instance": "rails-001",
+          "job_index": 9,
+          "method": "NTC_N",
+          "result": {
+            "bytes": 9790,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/raw/rails-001/NTC_N/seed-0.json",
+            "sha256": "bcc08d4714ec9fccd038e12cbcd6191f91fc54c85a02e5425329ce26c1709ff7"
+          },
+          "seed": 0,
+          "source_elapsed_train_seconds": 4.2483655919998,
+          "source_step": 200
+        },
+        {
+          "checkpoint": {
+            "bytes": 214109212,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/checkpoints/raw/rails-001/NTC_N/seed-1.pt",
+            "sha256": "7b3bd9575c2e7b90f6cf20b96d5680c2a55f462a0084f26671ced0cf942a7c2d"
+          },
+          "instance": "rails-001",
+          "job_index": 10,
+          "method": "NTC_N",
+          "result": {
+            "bytes": 9778,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/raw/rails-001/NTC_N/seed-1.json",
+            "sha256": "59f3e12a13527abd0f17d6f08091cdf28cddbc4d729a20af0d84aed9779d5dbf"
+          },
+          "seed": 1,
+          "source_elapsed_train_seconds": 5.640611381999861,
+          "source_step": 200
+        },
+        {
+          "checkpoint": {
+            "bytes": 214109212,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/checkpoints/raw/rails-001/NTC_N/seed-2.pt",
+            "sha256": "3f6c405075588d2da8bd5ed10ee519b638e0fbf925bca09e906fbf7eb0ad44a1"
+          },
+          "instance": "rails-001",
+          "job_index": 11,
+          "method": "NTC_N",
+          "result": {
+            "bytes": 9804,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/raw/rails-001/NTC_N/seed-2.json",
+            "sha256": "abf7a74e0023c7f33ecc330e82903860d94c96b77d1f46cf65d3ed83036a5fe3"
+          },
+          "seed": 2,
+          "source_elapsed_train_seconds": 3.1839727080005105,
+          "source_step": 200
+        },
+        {
+          "checkpoint": {
+            "bytes": 214206044,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/checkpoints/raw/rails-001/NTC_PinkPEPS/seed-0.pt",
+            "sha256": "6e57652369777af89e96f16b26d2b4a1c1b9825ec9c3e3f0d00449ca70ac3cc2"
+          },
+          "instance": "rails-001",
+          "job_index": 12,
+          "method": "NTC_PinkPEPS",
+          "result": {
+            "bytes": 9803,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/raw/rails-001/NTC_PinkPEPS/seed-0.json",
+            "sha256": "1b47bc59a0e440a7b17811741e105610b33b29361d7b28e928b2295075f515c9"
+          },
+          "seed": 0,
+          "source_elapsed_train_seconds": 12.728321642999617,
+          "source_step": 200
+        },
+        {
+          "checkpoint": {
+            "bytes": 214206044,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/checkpoints/raw/rails-001/NTC_PinkPEPS/seed-1.pt",
+            "sha256": "2dace05411fe71ee02a5b3de9aa0034d9acbfd28b377cb110d2d02419bd94feb"
+          },
+          "instance": "rails-001",
+          "job_index": 13,
+          "method": "NTC_PinkPEPS",
+          "result": {
+            "bytes": 9799,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/raw/rails-001/NTC_PinkPEPS/seed-1.json",
+            "sha256": "bbc935d9892143e0ebb1db5049daab827fc005755b44f64217609d8c11c80024"
+          },
+          "seed": 1,
+          "source_elapsed_train_seconds": 10.19308094799976,
+          "source_step": 200
+        },
+        {
+          "checkpoint": {
+            "bytes": 214206428,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/checkpoints/raw/rails-001/NTC_PinkPEPS/seed-2.pt",
+            "sha256": "5d9c9a09e11cc92e5df4dac489ce549aaeeb88c5f52d6ac869b703aeb8cd117e"
+          },
+          "instance": "rails-001",
+          "job_index": 14,
+          "method": "NTC_PinkPEPS",
+          "result": {
+            "bytes": 9807,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/raw/rails-001/NTC_PinkPEPS/seed-2.json",
+            "sha256": "0cba3d20d00c140e871cd56307d7733035bc5e5af03729e100b2951fdf55c583"
+          },
+          "seed": 2,
+          "source_elapsed_train_seconds": 11.872473960000207,
+          "source_step": 200
+        },
+        {
+          "checkpoint": {
+            "bytes": 201472952,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/checkpoints/raw/roof-09/LPE/seed-0.pt",
+            "sha256": "c7c45fa07365367b82a506b6ed103bfa425cb7f5001b819fa592a73a1afc9d2e"
+          },
+          "instance": "roof-09",
+          "job_index": 15,
+          "method": "LPE",
+          "result": {
+            "bytes": 8954,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/raw/roof-09/LPE/seed-0.json",
+            "sha256": "610d80901afb93eb46d7d16093ad328895c5104e5dc45c91818af9c4cccb8bbc"
+          },
+          "seed": 0,
+          "source_elapsed_train_seconds": 2.953054854000129,
+          "source_step": 200
+        },
+        {
+          "checkpoint": {
+            "bytes": 201472952,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/checkpoints/raw/roof-09/LPE/seed-1.pt",
+            "sha256": "c3fb2e5fbbe914772aa4704e031278d92384831f749be0d451a0fc90a9dc1f50"
+          },
+          "instance": "roof-09",
+          "job_index": 16,
+          "method": "LPE",
+          "result": {
+            "bytes": 8955,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/raw/roof-09/LPE/seed-1.json",
+            "sha256": "1c90855c1b343513e269fa5e81bb3ba75c3496c5ed3089d732a725645e0ff043"
+          },
+          "seed": 1,
+          "source_elapsed_train_seconds": 2.6658042110007045,
+          "source_step": 200
+        },
+        {
+          "checkpoint": {
+            "bytes": 201472952,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/checkpoints/raw/roof-09/LPE/seed-2.pt",
+            "sha256": "5a4ebd2b1189b5a566e24b8c5ffe81f0f06fceba38255402b75539770b6279b1"
+          },
+          "instance": "roof-09",
+          "job_index": 17,
+          "method": "LPE",
+          "result": {
+            "bytes": 8950,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/raw/roof-09/LPE/seed-2.json",
+            "sha256": "f0c87ef1defb54b159a89bd26fc443ce402445995d800e65852ba29feddd4419"
+          },
+          "seed": 2,
+          "source_elapsed_train_seconds": 2.6510011640000357,
+          "source_step": 200
+        },
+        {
+          "checkpoint": {
+            "bytes": 214056696,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/checkpoints/raw/roof-09/BI-Grid/seed-0.pt",
+            "sha256": "4e7d06c8093cbd42a634527be01354240cfa933221e2bb5c6ea1cd2e1edff878"
+          },
+          "instance": "roof-09",
+          "job_index": 18,
+          "method": "BI-Grid",
+          "result": {
+            "bytes": 8950,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/raw/roof-09/BI-Grid/seed-0.json",
+            "sha256": "09f480e9ab4fed2a0ab2cc243e60bc6240e1d900809ece5e18d44b12cb19dd5a"
+          },
+          "seed": 0,
+          "source_elapsed_train_seconds": 2.7013761689997864,
+          "source_step": 200
+        },
+        {
+          "checkpoint": {
+            "bytes": 214056696,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/checkpoints/raw/roof-09/BI-Grid/seed-1.pt",
+            "sha256": "b10bbd2966eabd04adb6c64efe8f06f12b36835d4cef16f58ed1f913e58a2a48"
+          },
+          "instance": "roof-09",
+          "job_index": 19,
+          "method": "BI-Grid",
+          "result": {
+            "bytes": 8961,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/raw/roof-09/BI-Grid/seed-1.json",
+            "sha256": "f176f6d38148760c5570d3b4cba8694704d6d3bdcee95925b6812f74bec39667"
+          },
+          "seed": 1,
+          "source_elapsed_train_seconds": 2.705506548999665,
+          "source_step": 200
+        },
+        {
+          "checkpoint": {
+            "bytes": 214056696,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/checkpoints/raw/roof-09/BI-Grid/seed-2.pt",
+            "sha256": "0136fe3965d72e25d627858b5ba02bb8737d07c971006d23725983bc44548f47"
+          },
+          "instance": "roof-09",
+          "job_index": 20,
+          "method": "BI-Grid",
+          "result": {
+            "bytes": 8962,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/raw/roof-09/BI-Grid/seed-2.json",
+            "sha256": "ca0d3fa739e6b2c72c2bbd71a4144c4dc142b725693dad95eb3e676369f2b795"
+          },
+          "seed": 2,
+          "source_elapsed_train_seconds": 2.6952866949998224,
+          "source_step": 200
+        },
+        {
+          "checkpoint": {
+            "bytes": 214079864,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/checkpoints/raw/roof-09/Grid-PinkPEPS4F/seed-0.pt",
+            "sha256": "41a27e350fe1f907d00efdf11f7a4d4d5e8afb5b62bc368207cf08636f033318"
+          },
+          "instance": "roof-09",
+          "job_index": 21,
+          "method": "Grid-PinkPEPS4F",
+          "result": {
+            "bytes": 8963,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/raw/roof-09/Grid-PinkPEPS4F/seed-0.json",
+            "sha256": "d83139059ab2cd70a468482c475e6e5457c8087c423528ba427941a2012c7787"
+          },
+          "seed": 0,
+          "source_elapsed_train_seconds": 5.6971463820002555,
+          "source_step": 200
+        },
+        {
+          "checkpoint": {
+            "bytes": 214079864,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/checkpoints/raw/roof-09/Grid-PinkPEPS4F/seed-1.pt",
+            "sha256": "0c3d66e8a1cdf2b5fbbaffb2c065a50b8c171bb311f4db4a492bab49e9de47b9"
+          },
+          "instance": "roof-09",
+          "job_index": 22,
+          "method": "Grid-PinkPEPS4F",
+          "result": {
+            "bytes": 8981,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/raw/roof-09/Grid-PinkPEPS4F/seed-1.json",
+            "sha256": "83c9034c3e37a4d3f70cf89b9474a755b66748494d3181afc1f572ec4ea43e1d"
+          },
+          "seed": 1,
+          "source_elapsed_train_seconds": 5.639077212000075,
+          "source_step": 200
+        },
+        {
+          "checkpoint": {
+            "bytes": 214079864,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/checkpoints/raw/roof-09/Grid-PinkPEPS4F/seed-2.pt",
+            "sha256": "09f835b804556c038531aeaf33349e3d294669322fc58347f25519da90581bf3"
+          },
+          "instance": "roof-09",
+          "job_index": 23,
+          "method": "Grid-PinkPEPS4F",
+          "result": {
+            "bytes": 8983,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/raw/roof-09/Grid-PinkPEPS4F/seed-2.json",
+            "sha256": "0d1f1bfdc4ffcefe18917555fbc2ffb55b04b66f692c62c4cbb1b14e1c49d3a2"
+          },
+          "seed": 2,
+          "source_elapsed_train_seconds": 5.735143608000044,
+          "source_step": 200
+        },
+        {
+          "checkpoint": {
+            "bytes": 214106332,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/checkpoints/raw/roof-09/NTC_N/seed-0.pt",
+            "sha256": "fe04b069bc2dadd1d9451b842a9e782ad8589b2d0a756664b518ffc381826649"
+          },
+          "instance": "roof-09",
+          "job_index": 24,
+          "method": "NTC_N",
+          "result": {
+            "bytes": 8957,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/raw/roof-09/NTC_N/seed-0.json",
+            "sha256": "235bc2bb086ab7d3a890ce37d3c3b7e4b4f1bb830ded80d79ce27e01d8db0806"
+          },
+          "seed": 0,
+          "source_elapsed_train_seconds": 3.231919474999586,
+          "source_step": 200
+        },
+        {
+          "checkpoint": {
+            "bytes": 214106332,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/checkpoints/raw/roof-09/NTC_N/seed-1.pt",
+            "sha256": "8fcf9ab361682d816f7f206eaebcef44e5065bdb8e8f934f03ca25f79e45107c"
+          },
+          "instance": "roof-09",
+          "job_index": 25,
+          "method": "NTC_N",
+          "result": {
+            "bytes": 8953,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/raw/roof-09/NTC_N/seed-1.json",
+            "sha256": "803895842581710fe27dea1e2a7f038e92c6ed6fbacf3edcdc1f8e00c9ce4588"
+          },
+          "seed": 1,
+          "source_elapsed_train_seconds": 4.305106541999976,
+          "source_step": 200
+        },
+        {
+          "checkpoint": {
+            "bytes": 214106332,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/checkpoints/raw/roof-09/NTC_N/seed-2.pt",
+            "sha256": "01cb21e92e80959576c8ab21d86bd7224644848eb889677f29c9cc554c6e824b"
+          },
+          "instance": "roof-09",
+          "job_index": 26,
+          "method": "NTC_N",
+          "result": {
+            "bytes": 8969,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/raw/roof-09/NTC_N/seed-2.json",
+            "sha256": "82a260b4b58b1ba87ed10b607e591b1f9a3c9c40baa82c509e081cc47aa25619"
+          },
+          "seed": 2,
+          "source_elapsed_train_seconds": 3.2292698150001797,
+          "source_step": 200
+        },
+        {
+          "checkpoint": {
+            "bytes": 214203228,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/checkpoints/raw/roof-09/NTC_PinkPEPS/seed-0.pt",
+            "sha256": "41d18d4bf19a122a3eb96e74a4566626d10fecb52952d66dc98b6b1b5e6d207f"
+          },
+          "instance": "roof-09",
+          "job_index": 27,
+          "method": "NTC_PinkPEPS",
+          "result": {
+            "bytes": 8975,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/raw/roof-09/NTC_PinkPEPS/seed-0.json",
+            "sha256": "52000b7e63f6c02255147afe0f51c4edfa0c2bdca86e17e32cd0f0ca6bf5bf32"
+          },
+          "seed": 0,
+          "source_elapsed_train_seconds": 9.470096787999864,
+          "source_step": 200
+        },
+        {
+          "checkpoint": {
+            "bytes": 214203548,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/checkpoints/raw/roof-09/NTC_PinkPEPS/seed-1.pt",
+            "sha256": "f929905bc1fab6a21dac5e702cc1e9c006f2e8753405a778b70604efad74781c"
+          },
+          "instance": "roof-09",
+          "job_index": 28,
+          "method": "NTC_PinkPEPS",
+          "result": {
+            "bytes": 8976,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/raw/roof-09/NTC_PinkPEPS/seed-1.json",
+            "sha256": "5dcce71fa821157ae7c2c454287fc89f06fbff5ccecbd5e17812a797e808ca65"
+          },
+          "seed": 1,
+          "source_elapsed_train_seconds": 9.761907592999023,
+          "source_step": 200
+        },
+        {
+          "checkpoint": {
+            "bytes": 214203548,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/checkpoints/raw/roof-09/NTC_PinkPEPS/seed-2.pt",
+            "sha256": "fee0384f884c1ebce0a0f77ac191809b54ecbd8743995c287002d7ac26668090"
+          },
+          "instance": "roof-09",
+          "job_index": 29,
+          "method": "NTC_PinkPEPS",
+          "result": {
+            "bytes": 8974,
+            "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/raw/roof-09/NTC_PinkPEPS/seed-2.json",
+            "sha256": "37fd127bdb13e21686bfa1bad211149a53da6c430161309405b6c068cc3edc35"
+          },
+          "seed": 2,
+          "source_elapsed_train_seconds": 9.738619594999136,
+          "source_step": 200
+        }
+      ],
+      "schedule_continuity": "The source and extension retain the same 120000-step cosine horizon, optimizer state, minibatch stream, and model state.",
+      "source_aggregate_train_seconds": 163.98954710499947,
+      "source_manifest": {
+        "bytes": 14771,
+        "path": "results/work/texture-repro/convergence-pilot/0d8f2ff0951d-63e6597b835b-a3ddbc1bace0/manifest.json",
+        "sha256": "4e65b0fe8d3105c4387f6856613c2eba240a9d3469235fff8eb1c082390a8f9c"
+      },
+      "source_maximum_budget": 200,
+      "source_step_budgets": [
+        10,
+        50,
+        200
+      ]
+    },
+    "texture_manifest": {
+      "path": "data/manifests/textures.json",
+      "sha256": "63e6597b835b6b3f25dca64ea1f0832e42ae49869010795ef8e02117d56070e1"
+    }
+  },
+  "final_interval_psnr_gains": {
+    "BI-Grid": null,
+    "Grid-PinkPEPS4F": null,
+    "LPE": null,
+    "NTC_N": null,
+    "NTC_PinkPEPS": null
+  },
+  "generated_at_utc": "2026-07-22T03:38:27.907567+00:00",
+  "limitations": [
+    {
+      "code": "bounded_early_schedule_observation",
+      "detail": "The pilot stops far before the 120,000-step Table 2 schedule and preserves that full cosine horizon. It can reject an undersized budget, but cannot establish convergence unless the measured curves actually plateau with stable rankings."
+    },
+    {
+      "code": "deterministic_lattice_evaluation_proxy",
+      "detail": "Quality is evaluated on a fixed native-pixel lattice rather than all 4096x4096 pixels. Per-map PSNR and SSIM retain map semantics but are runtime-quality pilot proxies, not Table 2 values."
+    },
+    {
+      "code": "representative_matrix_not_full_table",
+      "detail": "Two sets cover both providers and all eight map semantics, and five methods cover the major architecture families. The omitted sets and methods prevent promotion to a complete Table 2 result."
+    }
+  ],
+  "paper": "PEPS Extended arXiv:2604.24167v1",
+  "profile": "bounded_convergence_pilot",
+  "progress": {
+    "accounted_additional_optimizer_steps": 2931,
+    "accounted_optimizer_steps": 8931,
+    "active_workers": 0,
+    "artifact": "texture-table2-convergence-pilot",
+    "boot_id": "0ca11c34-38ca-4d2c-aa05-091065da66c3",
+    "checkpoint_errors": [],
+    "checkpointed_trajectories": 2,
+    "code_digest": "ca6664fc7b362f2ca7ec2a5f8befcab672c16a57f3a7f8f96f899df4cfd94c9f",
+    "complete": false,
+    "completed_trajectories": 0,
+    "config": "configs/paper/texture/convergence_pilot.toml",
+    "config_sha256": "09d602a3fd6d3f5961362ff040729f27c7c742d2346ca079b711550ae08f193c",
+    "expected_additional_optimizer_steps": 144000,
+    "expected_observations": 180,
+    "expected_optimizer_steps": 150000,
+    "expected_trajectories": 30,
+    "generated_at_utc": "2026-07-22T03:38:27.647059+00:00",
+    "manifest": {
+      "current": true,
+      "path": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-ca6664fc7b36/manifest.json",
+      "present": true,
+      "sha256": "352d4de3f7f680a34f76c426cd6fef1a57f83672b598b5fce9ecf664beb5c4c3"
+    },
+    "maximum_concurrent_workers": 2,
+    "observations": 10,
+    "optimizer_step_completion_fraction": 0.05954,
+    "output_dir": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-ca6664fc7b36",
+    "per_rank": {
+      "0": {
+        "completed_trajectories": 0,
+        "expected_trajectories": 9,
+        "optimizer_steps": 4466
+      },
+      "1": {
+        "completed_trajectories": 0,
+        "expected_trajectories": 9,
+        "optimizer_steps": 4465
+      },
+      "2": {
+        "completed_trajectories": 0,
+        "expected_trajectories": 6,
+        "optimizer_steps": 0
+      },
+      "3": {
+        "completed_trajectories": 0,
+        "expected_trajectories": 6,
+        "optimizer_steps": 0
+      }
+    },
+    "physical_devices": [
+      0,
+      1
+    ],
+    "result_errors": [],
+    "schema": "peps.texture_convergence_pilot_progress",
+    "schema_version": 1,
+    "source_optimizer_steps": 6000,
+    "step_budgets": [
+      10,
+      50,
+      200,
+      1000,
+      2000,
+      5000
+    ],
+    "texture_manifest_sha256": "63e6597b835b6b3f25dca64ea1f0832e42ae49869010795ef8e02117d56070e1",
+    "workers": [
+      {
+        "attempted_trajectories": 1,
+        "completed_trajectories": 0,
+        "device": "cuda:0",
+        "effective_state": "interrupted",
+        "elapsed_wall_seconds": 68.18571110099947,
+        "finished_at_utc": "2026-07-22T03:34:06.217345+00:00",
+        "liveness_evidence": {
+          "reason": "pid_not_present_or_unreadable",
+          "status": "not_alive"
+        },
+        "max_wall_seconds": 7200,
+        "output_dir": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-ca6664fc7b36",
+        "physical_device_index": 0,
+        "pid": 215115,
+        "preflight": {
+          "bounded_plan": {
+            "full_table2_optimizer_steps": 71280000,
+            "launches_full_table2": false,
+            "optimizer_steps": 150000,
+            "trajectories": 30
+          },
+          "config_sha256": "09d602a3fd6d3f5961362ff040729f27c7c742d2346ca079b711550ae08f193c",
+          "dataset_verification": {
+            "current": true,
+            "path": "results/texture_repro/dataset_verification.json",
+            "sha256": "bbce2ecd6cac8e313669866e0e542ce88d43415ee6f8395e1d31672d95196b66"
+          },
+          "device": {
+            "architecture": "gfx1201",
+            "index": 0,
+            "name": "AMD Radeon Graphics",
+            "preferred_architecture": "gfx1201",
+            "preferred_architecture_match": true,
+            "requested": "cuda:0",
+            "total_memory_bytes": 34208743424
+          },
+          "disk": {
+            "free_bytes": 834578411520,
+            "path": "results",
+            "required_free_bytes": 10737418240
+          },
+          "errors": [],
+          "full_table2_active_workers": 0,
+          "full_table2_launch_authorization": {
+            "blocks_pilot": false,
+            "path": "results/texture_repro/table2_launch_authorization.json",
+            "present": false
+          },
+          "generated_at_utc": "2026-07-22T03:32:58.085627+00:00",
+          "physical_device_index": 0,
+          "rank": 0,
+          "schema": "peps.texture_convergence_pilot_preflight",
+          "schema_version": 1,
+          "status": "passed",
+          "texture_manifest_sha256": "63e6597b835b6b3f25dca64ea1f0832e42ae49869010795ef8e02117d56070e1",
+          "visibility": {
+            "CUDA_VISIBLE_DEVICES": "0",
+            "HIP_VISIBLE_DEVICES": "0",
+            "ROCR_VISIBLE_DEVICES": null
+          },
+          "wall_clock": {
+            "hard_cap_seconds": 7200,
+            "requested_seconds": 7200
+          },
+          "world_size": 4
+        },
+        "process_alive": false,
+        "process_identity": {
+          "boot_id": "0ca11c34-38ca-4d2c-aa05-091065da66c3",
+          "command_sha256": "9808df93296da35bf99fc8b1aeb4785eaf5fed343c3432d3cf8af43bb34d0ed6",
+          "start_time_ticks": 965619
+        },
+        "rank": 0,
+        "schema": "peps.texture_convergence_pilot_worker",
+        "schema_version": 1,
+        "selected_trajectories": 9,
+        "started_at_utc": "2026-07-22T03:33:02.070339+00:00",
+        "state": "interrupted",
+        "visibility": {
+          "CUDA_VISIBLE_DEVICES": "0",
+          "HIP_VISIBLE_DEVICES": "0",
+          "ROCR_VISIBLE_DEVICES": null
+        },
+        "wall_clock_limited_trajectories": 1,
+        "world_size": 4
+      },
+      {
+        "attempted_trajectories": 1,
+        "completed_trajectories": 0,
+        "device": "cuda:0",
+        "effective_state": "interrupted",
+        "elapsed_wall_seconds": 68.21512651500052,
+        "finished_at_utc": "2026-07-22T03:34:06.250233+00:00",
+        "liveness_evidence": {
+          "reason": "pid_not_present_or_unreadable",
+          "status": "not_alive"
+        },
+        "max_wall_seconds": 7200,
+        "output_dir": "results/work/texture-repro/convergence-pilot/09d602a3fd6d-63e6597b835b-ca6664fc7b36",
+        "physical_device_index": 1,
+        "pid": 215116,
+        "preflight": {
+          "bounded_plan": {
+            "full_table2_optimizer_steps": 71280000,
+            "launches_full_table2": false,
+            "optimizer_steps": 150000,
+            "trajectories": 30
+          },
+          "config_sha256": "09d602a3fd6d3f5961362ff040729f27c7c742d2346ca079b711550ae08f193c",
+          "dataset_verification": {
+            "current": true,
+            "path": "results/texture_repro/dataset_verification.json",
+            "sha256": "bbce2ecd6cac8e313669866e0e542ce88d43415ee6f8395e1d31672d95196b66"
+          },
+          "device": {
+            "architecture": "gfx1201",
+            "index": 0,
+            "name": "AMD Radeon Graphics",
+            "preferred_architecture": "gfx1201",
+            "preferred_architecture_match": true,
+            "requested": "cuda:0",
+            "total_memory_bytes": 34208743424
+          },
+          "disk": {
+            "free_bytes": 834578411520,
+            "path": "results",
+            "required_free_bytes": 10737418240
+          },
+          "errors": [],
+          "full_table2_active_workers": 0,
+          "full_table2_launch_authorization": {
+            "blocks_pilot": false,
+            "path": "results/texture_repro/table2_launch_authorization.json",
+            "present": false
+          },
+          "generated_at_utc": "2026-07-22T03:32:58.085642+00:00",
+          "physical_device_index": 1,
+          "rank": 1,
+          "schema": "peps.texture_convergence_pilot_preflight",
+          "schema_version": 1,
+          "status": "passed",
+          "texture_manifest_sha256": "63e6597b835b6b3f25dca64ea1f0832e42ae49869010795ef8e02117d56070e1",
+          "visibility": {
+            "CUDA_VISIBLE_DEVICES": "1",
+            "HIP_VISIBLE_DEVICES": "1",
+            "ROCR_VISIBLE_DEVICES": null
+          },
+          "wall_clock": {
+            "hard_cap_seconds": 7200,
+            "requested_seconds": 7200
+          },
+          "world_size": 4
+        },
+        "process_alive": false,
+        "process_identity": {
+          "boot_id": "0ca11c34-38ca-4d2c-aa05-091065da66c3",
+          "command_sha256": "9877e9b9214d083d78b15e0cde9cad9a2e15e8dc2f1bd2e4dc9cfdac1ee164ba",
+          "start_time_ticks": 965619
+        },
+        "rank": 1,
+        "schema": "peps.texture_convergence_pilot_worker",
+        "schema_version": 1,
+        "selected_trajectories": 9,
+        "started_at_utc": "2026-07-22T03:33:02.071117+00:00",
+        "state": "interrupted",
+        "visibility": {
+          "CUDA_VISIBLE_DEVICES": "1",
+          "HIP_VISIBLE_DEVICES": "1",
+          "ROCR_VISIBLE_DEVICES": null
+        },
+        "wall_clock_limited_trajectories": 1,
+        "world_size": 4
+      }
+    ],
+    "world_size": 4
+  },
+  "protocol": {
+    "evaluation_sampling": "deterministic_native_pixel_lattice",
+    "evaluation_side": 256,
+    "full_schedule_steps": 120000,
+    "methods": [
+      "LPE",
+      "BI-Grid",
+      "Grid-PinkPEPS4F",
+      "NTC_N",
+      "NTC_PinkPEPS"
+    ],
+    "physical_devices": [
+      0,
+      1
+    ],
+    "providers": [
+      "polyhaven",
+      "ambientcg"
+    ],
+    "resume_from_steps": 200,
+    "resume_schedule_continuity": "model, Adam moments, minibatch stream, and the original 120000-step cosine scheduler are retained",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "semantic_coverage": [
+      "AO",
+      "ARM",
+      "DIFF",
+      "Displacement",
+      "metal",
+      "normal",
+      "rough",
+      "specular"
+    ],
+    "sets": [
+      "rails-001",
+      "roof-09"
+    ],
+    "step_budgets": [
+      10,
+      50,
+      200,
+      1000,
+      2000,
+      5000
+    ],
+    "table2_numeric_comparable": false
+  },
+  "ranking_agreements": [
+    {
+      "from_budget": 10,
+      "pairwise_agreement": 0.0,
+      "to_budget": 50
+    },
+    {
+      "from_budget": 50,
+      "pairwise_agreement": 1.0,
+      "to_budget": 200
+    },
+    {
+      "from_budget": 200,
+      "pairwise_agreement": 1.0,
+      "to_budget": 1000
+    },
+    {
+      "from_budget": 1000,
+      "pairwise_agreement": 1.0,
+      "to_budget": 2000
+    },
+    {
+      "from_budget": 2000,
+      "pairwise_agreement": null,
+      "to_budget": 5000
+    }
+  ],
+  "rankings": [
+    {
+      "budget_steps": 10,
+      "methods": [
+        "LPE",
+        "BI-Grid"
+      ]
+    },
+    {
+      "budget_steps": 50,
+      "methods": [
+        "BI-Grid",
+        "LPE"
+      ]
+    },
+    {
+      "budget_steps": 200,
+      "methods": [
+        "BI-Grid",
+        "LPE"
+      ]
+    },
+    {
+      "budget_steps": 1000,
+      "methods": [
+        "BI-Grid",
+        "LPE"
+      ]
+    },
+    {
+      "budget_steps": 2000,
+      "methods": [
+        "BI-Grid",
+        "LPE"
+      ]
+    },
+    {
+      "budget_steps": 5000,
+      "methods": []
+    }
+  ],
+  "runtime": {
+    "extension_gpu_hours": 0.033696628721671305,
+    "extension_gpu_seconds_per_optimizer_step": 0.033696628721671305,
+    "extension_gpu_train_seconds": 121.3078633980167,
+    "extension_optimizer_steps": 3600,
+    "full_projection_warning": "Representative early-step throughput only; method mix, output width, evaluation, I/O, and long-run effects make this non-binding.",
+    "maximum_worker_elapsed_seconds": 68.21512651500052,
+    "mean_gpu_seconds_per_optimizer_step": 0.015284915448001583,
+    "measured_optimizer_steps": 4000,
+    "observed_parallel_wall_seconds": 64.179894,
+    "physical_devices": [
+      0,
+      1
+    ],
+    "physical_gpu_count": 2,
+    "rough_full_table2_four_gpu_seconds": 272377.1932833882,
+    "source_gpu_hours": 0.0026039354591666274,
+    "source_gpu_train_seconds": 9.374167652999859,
+    "source_optimizer_steps": 400,
+    "summed_gpu_hours": 0.016983239386668427,
+    "summed_gpu_train_seconds": 61.139661792006336
+  },
+  "schema": "peps.texture_convergence_pilot_report",
+  "schema_version": 1
+}
