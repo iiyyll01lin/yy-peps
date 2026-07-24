@@ -136,8 +136,8 @@
     "mode": "independent_job_shards",
     "world_size": 4,
     "physical_devices": [
-      0,
-      1
+      2,
+      3
     ],
     "maximum_concurrent_workers": 2,
     "required_architecture": "gfx1201",

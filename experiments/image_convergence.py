@@ -50,6 +50,10 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_MANIFEST = ROOT / "configs/paper/image_convergence_pilot.json"
 DEFAULT_OUTPUT_ROOT = ROOT / "results"
 DEFAULT_EVIDENCE_DIR = ROOT / "results/image_convergence"
+TABLE2_AUTHORIZATION_PATH = (
+    ROOT / "results/texture_repro/table2_launch_authorization.json"
+)
+DISJOINT_GPU_OPT_IN = "PEPS_PILOT_ALLOW_DISJOINT_GPU"
 STATUS = "bounded_protocol_assumption_calibration_not_table1"
 CODE_PATHS = (
     ROOT / "experiments/image_convergence.py",
@@ -98,6 +102,146 @@ def _safe(value: str) -> str:
 def _check(condition: bool, message: str) -> None:
     if not condition:
         raise ValueError(message)
+
+
+def _interlock(condition: bool, message: str) -> None:
+    if not condition:
+        raise RuntimeError(message)
+
+
+def _active_table2_workers() -> list[dict[str, object]]:
+    """Return live Table 2 workers and their explicit ROCr physical pins."""
+
+    workers = []
+    for process_root in Path("/proc").iterdir():
+        if not process_root.name.isdigit():
+            continue
+        try:
+            if process_root.stat().st_uid != os.getuid():
+                continue
+            command_bytes = (process_root / "cmdline").read_bytes()
+            command = command_bytes.replace(b"\0", b" ").decode(
+                errors="replace"
+            ).strip()
+            cwd = (process_root / "cwd").resolve()
+            environment = {
+                item.partition(b"=")[0].decode(errors="replace"): item.partition(
+                    b"="
+                )[2].decode(errors="replace")
+                for item in (process_root / "environ").read_bytes().split(b"\0")
+                if b"=" in item
+            }
+        except OSError:
+            continue
+        if cwd != ROOT and ROOT not in cwd.parents:
+            continue
+        if (
+            "experiments.texture_repro" not in command
+            or "--artifact table2" not in command
+        ):
+            continue
+        raw_physical = environment.get(
+            "PEPS_TEXTURE_PHYSICAL_GPU",
+            environment.get("ROCR_VISIBLE_DEVICES"),
+        )
+        try:
+            physical = int(str(raw_physical))
+        except (TypeError, ValueError):
+            physical = None
+        workers.append(
+            {
+                "pid": int(process_root.name),
+                "physical_gpu": physical,
+                "command_sha256": hashlib.sha256(command_bytes).hexdigest(),
+            }
+        )
+    return sorted(workers, key=lambda item: int(item["pid"]))
+
+
+def _disjoint_table2_gate(
+    physical_devices: Sequence[int],
+) -> dict[str, object]:
+    """Permit this pilot only on GPUs disjoint from an active authorized Table 2."""
+
+    selected = tuple(int(value) for value in physical_devices)
+    _interlock(
+        os.environ.get(DISJOINT_GPU_OPT_IN) == "1",
+        f"{DISJOINT_GPU_OPT_IN}=1 is required for the disjoint GPU pilot",
+    )
+    try:
+        authorization = json.loads(
+            TABLE2_AUTHORIZATION_PATH.read_text(encoding="utf-8")
+        )
+    except (OSError, json.JSONDecodeError) as exc:
+        raise RuntimeError(
+            "cannot validate the active Table 2 authorization"
+        ) from exc
+    _interlock(
+        isinstance(authorization, Mapping)
+        and authorization.get("schema")
+        == "peps.texture_table2_launch_authorization"
+        and authorization.get("schema_version") == 1
+        and authorization.get("authorized") is True,
+        "Table 2 authorization is absent or malformed",
+    )
+    authorization_id = authorization.get("authorization_id")
+    _interlock(
+        isinstance(authorization_id, str)
+        and authorization_id.startswith("explicit-user-request-"),
+        "Table 2 has no explicit user authorization ID",
+    )
+    _interlock(
+        authorization.get("block_other_texture_gpu_work") is True
+        and authorization.get("table2_complete") is False,
+        "Table 2 authorization is not an active reserved-GPU run",
+    )
+    raw_reserved = authorization.get("physical_gpus")
+    _interlock(
+        isinstance(raw_reserved, list)
+        and raw_reserved
+        and all(
+            isinstance(value, int) and not isinstance(value, bool)
+            for value in raw_reserved
+        ),
+        "Table 2 authorization has malformed physical GPUs",
+    )
+    reserved = tuple(int(value) for value in raw_reserved)
+    _interlock(
+        len(selected) == len(set(selected))
+        and len(reserved) == len(set(reserved)),
+        "pilot or Table 2 physical GPU allocation contains duplicates",
+    )
+    overlap = sorted(set(selected) & set(reserved))
+    _interlock(
+        not overlap,
+        f"pilot GPUs overlap Table 2 reserved GPUs: {overlap}",
+    )
+    workers = _active_table2_workers()
+    _interlock(workers, "authorized Table 2 has no active workers")
+    worker_devices = [item.get("physical_gpu") for item in workers]
+    _interlock(
+        None not in worker_devices
+        and len(worker_devices) == len(reserved)
+        and set(worker_devices) == set(reserved),
+        "active Table 2 worker pins do not match its authorization",
+    )
+    return {
+        "status": "passed",
+        "opt_in_environment": DISJOINT_GPU_OPT_IN,
+        "authorization": {
+            "path": str(
+                TABLE2_AUTHORIZATION_PATH.relative_to(ROOT)
+                if TABLE2_AUTHORIZATION_PATH.is_relative_to(ROOT)
+                else TABLE2_AUTHORIZATION_PATH
+            ),
+            "sha256": _sha(TABLE2_AUTHORIZATION_PATH),
+            "authorization_id": authorization_id,
+        },
+        "pilot_physical_devices": list(selected),
+        "table2_reserved_physical_devices": list(reserved),
+        "active_table2_workers": workers,
+        "overlap": overlap,
+    }
 
 
 def load_pilot_manifest(path: str | Path = DEFAULT_MANIFEST) -> dict[str, Any]:
@@ -196,7 +340,7 @@ def load_pilot_manifest(path: str | Path = DEFAULT_MANIFEST) -> dict[str, Any]:
         isinstance(parallel, dict)
         and parallel.get("mode") == "independent_job_shards"
         and parallel.get("world_size") == 4
-        and parallel.get("physical_devices") == [0, 1]
+        and parallel.get("physical_devices") == [2, 3]
         and parallel.get("maximum_concurrent_workers") == 2
         and parallel.get("same_model_distributed") is False,
         "parallelism drift",
@@ -388,6 +532,7 @@ def _gpu_receipt(
     physical_devices = [
         int(value) for value in manifest["parallelism"]["physical_devices"]
     ]
+    disjoint_gate = _disjoint_table2_gate(physical_devices)
     expected_visibility = ",".join(str(value) for value in physical_devices)
     visibility = {
         name: os.environ.get(name)
@@ -442,8 +587,10 @@ def _gpu_receipt(
         "idle_check_required": require_idle,
         "idle_check_scope": (
             "selected_device_free-memory threshold; KFD activity on reserved "
-            "physical GPUs 2/3 for the separate SDF worker is intentionally allowed"
+            "physical GPUs 0/1 for the authorized Table 2 workers is intentionally "
+            "allowed only after the disjoint gate passes"
         ),
+        "disjoint_table2_gate": disjoint_gate,
         "visibility": visibility,
         "devices": devices,
     }
@@ -2120,7 +2267,7 @@ def _launch(
     )
     _check(
         maximum_concurrent == len(physical_devices) == 2,
-        "the bounded launcher must reserve exactly physical GPUs 0 and 1",
+        "the bounded launcher must reserve exactly two disjoint physical GPUs",
     )
     pending = list(range(world_size))
     available_devices = list(physical_devices)

@@ -7,8 +7,8 @@ if [[ -n "${PEPS_PILOT_WALL_SECONDS:-}" ]]; then
   arguments+=(--wall-seconds "${PEPS_PILOT_WALL_SECONDS}")
 fi
 
-export HIP_VISIBLE_DEVICES="0,1"
-export CUDA_VISIBLE_DEVICES="0,1"
+export HIP_VISIBLE_DEVICES="2,3"
+export CUDA_VISIBLE_DEVICES="2,3"
 unset ROCR_VISIBLE_DEVICES
 
 exec "${python_bin}" -m experiments.image_convergence launch "${arguments[@]}"

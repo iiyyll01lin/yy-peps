@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import copy
+import json
 import os
 import time
 
@@ -34,10 +35,78 @@ def test_pilot_manifest_freezes_bounded_representative_matrix():
     assert manifest["bounds"]["expected_optimizer_steps"] == 2_160_000
     assert manifest["bounds"]["expected_additional_optimizer_steps"] == 1_620_000
     assert manifest["bounds"]["max_wall_clock_seconds"] == 14_400
-    assert manifest["parallelism"]["physical_devices"] == [0, 1]
+    assert manifest["parallelism"]["physical_devices"] == [2, 3]
     assert manifest["parallelism"]["maximum_concurrent_workers"] == 2
     assert manifest["resume_from"]["completed_step"] == 30_000
     assert manifest["verification_status"] == pilot.STATUS
+
+
+def _table2_authorization(path):
+    path.write_text(
+        json.dumps(
+            {
+                "schema": "peps.texture_table2_launch_authorization",
+                "schema_version": 1,
+                "authorized": True,
+                "authorization_id": "explicit-user-request-test-table2-only",
+                "physical_gpus": [0, 1],
+                "block_other_texture_gpu_work": True,
+                "table2_complete": False,
+            }
+        ),
+        encoding="utf-8",
+    )
+
+
+def test_disjoint_gate_is_opt_in_and_rejects_table2_overlap(
+    tmp_path, monkeypatch
+):
+    authorization = tmp_path / "authorization.json"
+    _table2_authorization(authorization)
+    monkeypatch.setattr(pilot, "TABLE2_AUTHORIZATION_PATH", authorization)
+    monkeypatch.setattr(
+        pilot,
+        "_active_table2_workers",
+        lambda: [
+            {"pid": 10, "physical_gpu": 0, "command_sha256": "a"},
+            {"pid": 11, "physical_gpu": 1, "command_sha256": "b"},
+        ],
+    )
+    monkeypatch.delenv(pilot.DISJOINT_GPU_OPT_IN, raising=False)
+    with pytest.raises(RuntimeError, match="is required"):
+        pilot._disjoint_table2_gate([2, 3])
+    monkeypatch.setenv(pilot.DISJOINT_GPU_OPT_IN, "1")
+    with pytest.raises(RuntimeError, match="overlap"):
+        pilot._disjoint_table2_gate([0, 1])
+
+
+def test_disjoint_gate_accepts_only_matching_active_table2_workers(
+    tmp_path, monkeypatch
+):
+    authorization = tmp_path / "authorization.json"
+    _table2_authorization(authorization)
+    monkeypatch.setattr(pilot, "TABLE2_AUTHORIZATION_PATH", authorization)
+    monkeypatch.setenv(pilot.DISJOINT_GPU_OPT_IN, "1")
+    monkeypatch.setattr(
+        pilot,
+        "_active_table2_workers",
+        lambda: [
+            {"pid": 10, "physical_gpu": 0, "command_sha256": "a"},
+            {"pid": 11, "physical_gpu": 1, "command_sha256": "b"},
+        ],
+    )
+    receipt = pilot._disjoint_table2_gate([2, 3])
+    assert receipt["status"] == "passed"
+    assert receipt["pilot_physical_devices"] == [2, 3]
+    assert receipt["table2_reserved_physical_devices"] == [0, 1]
+    assert receipt["overlap"] == []
+    monkeypatch.setattr(
+        pilot,
+        "_active_table2_workers",
+        lambda: [{"pid": 10, "physical_gpu": 0, "command_sha256": "a"}],
+    )
+    with pytest.raises(RuntimeError, match="worker pins"):
+        pilot._disjoint_table2_gate([2, 3])
 
 
 def test_pilot_four_way_shards_are_disjoint_and_complete():
