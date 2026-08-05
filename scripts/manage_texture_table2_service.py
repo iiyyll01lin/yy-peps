@@ -164,7 +164,11 @@ def _gpu_snapshot() -> dict[str, object]:
         _check(isinstance(card, Mapping), f"GPU {physical} is not visible")
         try:
             use = int(str(card["GPU use (%)"]))
-            memory = int(str(card["GPU memory use (%)"]))
+            # ROCm 7.2.3 renamed this field; both spellings mean VRAM percent.
+            memory_field = card.get("GPU memory use (%)")
+            if memory_field is None:
+                memory_field = card["GPU Memory Allocated (VRAM%)"]
+            memory = int(str(memory_field))
         except (KeyError, TypeError, ValueError) as exc:
             raise HardInterlock(
                 f"GPU {physical} occupancy fields are malformed"
