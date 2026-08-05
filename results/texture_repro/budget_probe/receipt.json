@@ -1,0 +1,221 @@
+{
+  "coverage": {
+    "curves_total": 2,
+    "curves_with_all_three_budgets": 1,
+    "observations": 114
+  },
+  "curves": [
+    {
+      "advantage_change_db": -0.26334734012479544,
+      "advantage_monotone_decreasing": true,
+      "budget_span": [
+        120000,
+        240000
+      ],
+      "instance": "metal-plates-013",
+      "points": [
+        {
+          "ntc_n_maps": {
+            "AO": 54.54103677326707,
+            "DIFF": 38.93593885364599,
+            "Displacement": 51.79537864162435,
+            "metal": 35.65645922295109,
+            "normal": 32.08086347305252,
+            "rough": 41.14098871245197
+          },
+          "ntc_n_psnr": 42.35844427949883,
+          "ntc_peps_maps": {
+            "AO": 56.03364988671399,
+            "DIFF": 38.69113265466377,
+            "Displacement": 54.57406374428315,
+            "metal": 45.132964964666186,
+            "normal": 32.79045216398757,
+            "rough": 42.42761699076859
+          },
+          "ntc_peps_psnr": 44.941646734180544,
+          "optimizer_steps": 120000,
+          "peps_advantage_db": 2.583202454681711,
+          "per_map_advantage_db": {
+            "AO": 1.4926131134469216,
+            "DIFF": -0.244806198982225,
+            "Displacement": 2.778685102658798,
+            "metal": 9.476505741715094,
+            "normal": 0.7095886909350497,
+            "rough": 1.2866282783166199
+          }
+        },
+        {
+          "ntc_n_maps": {
+            "AO": 55.32375526927993,
+            "DIFF": 39.249632641015374,
+            "Displacement": 52.73241332057943,
+            "metal": 37.39998405271003,
+            "normal": 32.40264798139894,
+            "rough": 41.977315340565056
+          },
+          "ntc_n_psnr": 43.18095810092479,
+          "ntc_peps_maps": {
+            "AO": 56.39946272799358,
+            "DIFF": 39.11763780845217,
+            "Displacement": 55.28489421469808,
+            "metal": 45.66226480900424,
+            "normal": 33.27863687897533,
+            "rough": 43.26198285376684
+          },
+          "ntc_peps_psnr": 45.500813215481706,
+          "optimizer_steps": 240000,
+          "peps_advantage_db": 2.3198551145569155,
+          "per_map_advantage_db": {
+            "AO": 1.0757074587136515,
+            "DIFF": -0.13199483256320121,
+            "Displacement": 2.552480894118645,
+            "metal": 8.26228075629421,
+            "normal": 0.8759888975763843,
+            "rough": 1.2846675132017822
+          }
+        }
+      ],
+      "seed": 0
+    },
+    {
+      "advantage_change_db": -0.209193004821131,
+      "advantage_monotone_decreasing": true,
+      "budget_span": [
+        120000,
+        480000
+      ],
+      "instance": "paving-stones-070",
+      "points": [
+        {
+          "ntc_n_maps": {
+            "AO": 36.75675452310466,
+            "DIFF": 27.961782364251984,
+            "Displacement": 44.422655122769996,
+            "normal": 25.05202555904075,
+            "rough": 33.25021437396582
+          },
+          "ntc_n_psnr": 33.48868638862665,
+          "ntc_peps_maps": {
+            "AO": 37.93668872606342,
+            "DIFF": 30.532403563676645,
+            "Displacement": 44.11110039467864,
+            "normal": 25.062233970429027,
+            "rough": 33.09524849180719
+          },
+          "ntc_peps_psnr": 34.14753502933098,
+          "optimizer_steps": 120000,
+          "peps_advantage_db": 0.6588486407043348,
+          "per_map_advantage_db": {
+            "AO": 1.179934202958762,
+            "DIFF": 2.570621199424661,
+            "Displacement": -0.31155472809135887,
+            "normal": 0.010208411388276772,
+            "rough": -0.15496588215862772
+          }
+        },
+        {
+          "ntc_n_maps": {
+            "AO": 37.282917772678324,
+            "DIFF": 28.73886084357155,
+            "Displacement": 44.69140114815212,
+            "normal": 25.347383848961403,
+            "rough": 33.49017532005291
+          },
+          "ntc_n_psnr": 33.91014778668326,
+          "ntc_peps_maps": {
+            "AO": 38.26555121701125,
+            "DIFF": 31.149309239481745,
+            "Displacement": 44.394778043789074,
+            "normal": 25.2065843576071,
+            "rough": 33.33498407767211
+          },
+          "ntc_peps_psnr": 34.47024138711225,
+          "optimizer_steps": 240000,
+          "peps_advantage_db": 0.560093600428992,
+          "per_map_advantage_db": {
+            "AO": 0.9826334443329259,
+            "DIFF": 2.410448395910194,
+            "Displacement": -0.29662310436304296,
+            "normal": -0.14079949135430425,
+            "rough": -0.15519124238080195
+          }
+        },
+        {
+          "ntc_n_maps": {
+            "AO": 37.54965887562709,
+            "DIFF": 29.328630662886106,
+            "Displacement": 44.802492313115536,
+            "normal": 25.5144639377121,
+            "rough": 33.60754482263189
+          },
+          "ntc_n_psnr": 34.16055812239454,
+          "ntc_peps_maps": {
+            "AO": 38.4423425854364,
+            "DIFF": 31.149220308169593,
+            "Displacement": 44.617696150951076,
+            "normal": 25.298103656925495,
+            "rough": 33.54370608990616
+          },
+          "ntc_peps_psnr": 34.610213758277744,
+          "optimizer_steps": 480000,
+          "peps_advantage_db": 0.4496556358832038,
+          "per_map_advantage_db": {
+            "AO": 0.8926837098093117,
+            "DIFF": 1.820589645283487,
+            "Displacement": -0.18479616216446004,
+            "normal": -0.2163602807866063,
+            "rough": -0.06383873272572771
+          }
+        }
+      ],
+      "seed": 0
+    }
+  ],
+  "design": {
+    "budgets_optimizer_steps": [
+      120000,
+      240000,
+      480000
+    ],
+    "instances": [
+      "metal-plates-013",
+      "paving-stones-070"
+    ],
+    "isolation_note": "Probes ran in disposable clones whose texture_full.toml was replaced; the texture code digest was unchanged, so committed Table 2 output paths were never affected.",
+    "methods": [
+      "NTC_N",
+      "NTC_PEPS"
+    ],
+    "reference_budget": 120000,
+    "reference_source": "committed Table 2 evidence (not re-run)",
+    "schedule_note": "Each probe budget uses its own full cosine schedule, so every point is a clean run at that budget rather than a re-horizoned continuation.",
+    "seeds": [
+      0
+    ]
+  },
+  "finding": {
+    "budget_explains_absolute_psnr": true,
+    "budget_explains_peps_advantage": false,
+    "detail": "Absolute PSNR keeps rising with budget for both methods, so the roughly 1.15 dB absolute deficit is at least partly under-training. The PEPS advantage, however, shrinks monotonically as budget grows, so the shortfall in the PEPS effect is not a compute problem.",
+    "peps_advantage_change_db": {
+      "metal-plates-013:seed0": -0.26334734012479544,
+      "paving-stones-070:seed0": -0.209193004821131
+    }
+  },
+  "generated_at_utc": "2026-08-05T07:21:22.388550+00:00",
+  "limitations": [
+    "Two texture sets and at most two seeds; not a method-level or Table 2-wide claim.",
+    "The published per-set values are not available, so only our own budget trend is measured.",
+    "Absolute PSNR at any probe budget remains below the published method-level values."
+  ],
+  "paper_exact": false,
+  "question": "Is the shortfall between our reproduced PEPS gain on the NTC pipeline (+1.152 dB) and the published gain (+1.59 dB) explained by training budget?",
+  "schema": "peps.texture_budget_probe",
+  "schema_version": 1,
+  "training": {
+    "loss": "l1",
+    "per_map_loss_weighting": false
+  },
+  "verification_status": "bounded_budget_probe_not_paper_comparable",
+  "verified_table2": false
+}
