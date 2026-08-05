@@ -1,13 +1,51 @@
 {
-  "blockers": [
-    "BI-Grid: completed result is missing",
-    "Grid-PEPS4F: completed result is missing",
-    "Grid-PinkPEPS4F: completed result is missing",
-    "NTC_N: completed result is missing",
-    "NTC_PEPS: completed result is missing",
-    "NTC_PinkPEPS: completed result is missing"
+  "checkpoints": [
+    {
+      "method": "BI-Grid",
+      "path": "/home/aup/yy/workspace/peps/results/work/texture-repro/table2/24a5936cf378-63e6597b835b-ca6664fc7b36/checkpoints/raw/paving-stones-070/BI-Grid/seed-0.pt",
+      "sha256": "e638c74f82f7505eccbfd4b073893aed9bd12065b941bff75c4aeca191763c8c",
+      "step": 120000
+    },
+    {
+      "method": "Grid-PEPS4F",
+      "path": "/home/aup/yy/workspace/peps/results/work/texture-repro/table2/24a5936cf378-63e6597b835b-ca6664fc7b36/checkpoints/raw/paving-stones-070/Grid-PEPS4F/seed-0.pt",
+      "sha256": "afb9fb640ea09d4ac0d1e3412fd721dfd48f658fba7837e5f3de20b86126a008",
+      "step": 120000
+    },
+    {
+      "method": "Grid-PinkPEPS4F",
+      "path": "/home/aup/yy/workspace/peps/results/work/texture-repro/table2/24a5936cf378-63e6597b835b-ca6664fc7b36/checkpoints/raw/paving-stones-070/Grid-PinkPEPS4F/seed-0.pt",
+      "sha256": "a30502a9897d86aa6da53a895584ca31fadd96c57cf8c8af6f5609c0943ed937",
+      "step": 120000
+    },
+    {
+      "method": "NTC_N",
+      "path": "/home/aup/yy/workspace/peps/results/work/texture-repro/table2/24a5936cf378-63e6597b835b-ca6664fc7b36/checkpoints/raw/paving-stones-070/NTC_N/seed-0.pt",
+      "sha256": "ede7d030bc2157f10b857f9636d8544345970196cce2efe14b0e75010bf54545",
+      "step": 120000
+    },
+    {
+      "method": "NTC_PEPS",
+      "path": "/home/aup/yy/workspace/peps/results/work/texture-repro/table2/24a5936cf378-63e6597b835b-ca6664fc7b36/checkpoints/raw/paving-stones-070/NTC_PEPS/seed-0.pt",
+      "sha256": "cebbb434b8fa1ed407eb40447474f80b340705fff87c621439ca6bfe903b6980",
+      "step": 120000
+    },
+    {
+      "method": "NTC_PinkPEPS",
+      "path": "/home/aup/yy/workspace/peps/results/work/texture-repro/table2/24a5936cf378-63e6597b835b-ca6664fc7b36/checkpoints/raw/paving-stones-070/NTC_PinkPEPS/seed-0.pt",
+      "sha256": "fecd6d7d84ebf7f82a9755d4f6d382a630c7d12e2ac92e8a3cb519c83ba2f94a",
+      "step": 120000
+    }
   ],
-  "generated_at_utc": "2026-07-22T00:50:44.643504+00:00",
+  "crop_coordinates_published_by_paper": false,
+  "crop_xywh": [
+    1998,
+    1998,
+    100,
+    100
+  ],
+  "flip_rows": "/home/aup/yy/workspace/peps/results/texture_repro/figure8_flip.csv",
+  "generated_at_utc": "2026-08-05T01:03:41.978746+00:00",
   "instance": "paving-stones-070",
   "methods": [
     "BI-Grid",
@@ -18,9 +56,9 @@
     "NTC_PinkPEPS"
   ],
   "output": "/home/aup/yy/workspace/peps/results/texture_repro/figure8.png",
-  "required_artifact": "complete retained Table 2 seed checkpoint",
   "schema": "peps.texture_figure8_status",
   "schema_version": 1,
   "seed": 0,
-  "status": "blocked"
+  "status": "generated",
+  "verification_receipt": "/home/aup/yy/workspace/peps/results/texture_repro/dataset_verification.json"
 }
