@@ -1,0 +1,75 @@
+{
+  "authorization": {
+    "id": "explicit-user-request-20260722T1118+0800-gpu01-world2-table2-only",
+    "scope": "Texture Table 2 full matrix only",
+    "sweep_authorized": false
+  },
+  "output_dir": "/home/aup/yy/workspace/peps/results/work/texture-repro/table2/24a5936cf378-63e6597b835b-ca6664fc7b36",
+  "preflight": "/home/aup/yy/workspace/peps/results/texture_repro/table2_service_preflight.json",
+  "schema": "peps.texture_table2_service_state",
+  "schema_version": 1,
+  "service_pid": 3382479,
+  "service_unit": "peps-texture-table2.service",
+  "state": "complete",
+  "sweep_started": false,
+  "updated_at_utc": "2026-08-04T19:37:26.261006+00:00",
+  "workers": [
+    {
+      "alive": false,
+      "command": [
+        "/home/aup/yy/workspace/peps/.venv/bin/python",
+        "-m",
+        "experiments.texture_repro",
+        "run",
+        "--artifact",
+        "table2",
+        "--rank",
+        "0",
+        "--world-size",
+        "2",
+        "--device",
+        "cuda:0",
+        "--output-root",
+        "/home/aup/yy/workspace/peps/results",
+        "--verification-receipt",
+        "/home/aup/yy/workspace/peps/results/texture_repro/dataset_verification.json",
+        "--allow-protocol-assumptions"
+      ],
+      "log": "/home/aup/yy/workspace/peps/results/work/texture-repro/service/logs/rank-0-gpu-0.log",
+      "pgid": 3383038,
+      "physical_gpu": 0,
+      "pid": 3383038,
+      "rank": 0,
+      "returncode": 0
+    },
+    {
+      "alive": false,
+      "command": [
+        "/home/aup/yy/workspace/peps/.venv/bin/python",
+        "-m",
+        "experiments.texture_repro",
+        "run",
+        "--artifact",
+        "table2",
+        "--rank",
+        "1",
+        "--world-size",
+        "2",
+        "--device",
+        "cuda:0",
+        "--output-root",
+        "/home/aup/yy/workspace/peps/results",
+        "--verification-receipt",
+        "/home/aup/yy/workspace/peps/results/texture_repro/dataset_verification.json",
+        "--allow-protocol-assumptions"
+      ],
+      "log": "/home/aup/yy/workspace/peps/results/work/texture-repro/service/logs/rank-1-gpu-1.log",
+      "pgid": 3383039,
+      "physical_gpu": 1,
+      "pid": 3383039,
+      "rank": 1,
+      "returncode": 0
+    }
+  ],
+  "world_size": 2
+}

@@ -1,0 +1,57 @@
+{
+  "schema": "peps.texture_table2_service_observation",
+  "schema_version": 1,
+  "observed_at_utc": "2026-07-22T03:48:20+00:00",
+  "observation_started_at_utc": "2026-07-22T03:41:28.105876+00:00",
+  "observation_seconds": 411.894124,
+  "service": {
+    "unit": "peps-texture-table2.service",
+    "enabled": true,
+    "active": true,
+    "substate": "running",
+    "main_pid": 228201,
+    "parent_is_user_systemd": true,
+    "restart_count": 0,
+    "manual_stop_protected": true
+  },
+  "workers": [
+    {
+      "rank": 0,
+      "pid": 228460,
+      "physical_gpu": 0,
+      "initial_checkpoint_step": 6000,
+      "final_checkpoint_step": 38000,
+      "checkpoint_step_delta": 32000,
+      "log": "results/work/texture-repro/service/logs/rank-0-gpu-0.log"
+    },
+    {
+      "rank": 1,
+      "pid": 228461,
+      "physical_gpu": 1,
+      "initial_checkpoint_step": 6000,
+      "final_checkpoint_step": 32000,
+      "checkpoint_step_delta": 26000,
+      "log": "results/work/texture-repro/service/logs/rank-1-gpu-1.log"
+    }
+  ],
+  "progress": {
+    "accounted_optimizer_steps": 70000,
+    "expected_optimizer_steps": 71280000,
+    "completion_fraction": 0.0009820426487093155,
+    "checkpointed_incomplete_jobs": 2,
+    "completed_jobs": 0,
+    "active_workers": 2,
+    "checkpoint_errors": 0,
+    "result_errors": 0,
+    "aggregate_checkpointed_steps_per_second": 169.50068174384916,
+    "naive_remaining_seconds": 420116.3043557143,
+    "estimate_warning": "Method costs vary; this is a checkpoint-rate projection, not a guaranteed ETA."
+  },
+  "guards": {
+    "table1_service_masked": true,
+    "sweep_started": false,
+    "pilot_blocked_until_table2_complete": true,
+    "gpu2_and_gpu3_untouched_by_texture": true
+  },
+  "output_dir": "results/work/texture-repro/table2/24a5936cf378-63e6597b835b-ca6664fc7b36"
+}

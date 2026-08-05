@@ -1,0 +1,25 @@
+{
+  "authorization_id": "explicit-user-request-20260722T1118+0800-gpu01-world2-table2-only",
+  "authorized": true,
+  "block_other_texture_gpu_work": true,
+  "completed_at_utc": "2026-08-04T19:37:26.262110+00:00",
+  "expected_jobs": 594,
+  "expected_optimizer_steps": 71280000,
+  "issued_at_utc": "2026-07-27T00:29:11.489001+00:00",
+  "physical_gpus": [
+    0,
+    1
+  ],
+  "pins": {
+    "code_digest": "ca6664fc7b362f2ca7ec2a5f8befcab672c16a57f3a7f8f96f899df4cfd94c9f",
+    "config_sha256": "24a5936cf3788f83e495a343d59148dcf00de9bfa7608592eee2eb764c480478",
+    "manager_sha256": "d7c29d5875be9ad292a5c245878a58ebfc54bdf28edfbc93324169c3b94843e1",
+    "manifest_sha256": "63e6597b835b6b3f25dca64ea1f0832e42ae49869010795ef8e02117d56070e1",
+    "receipt_sha256": "bbce2ecd6cac8e313669866e0e542ce88d43415ee6f8395e1d31672d95196b66"
+  },
+  "schema": "peps.texture_table2_launch_authorization",
+  "schema_version": 1,
+  "scope": "Texture Table 2 full matrix only",
+  "table2_complete": true,
+  "world_size": 2
+}

@@ -1,0 +1,331 @@
+{
+  "artifact": "table2",
+  "canonical": true,
+  "checkpoint_storage_estimate": {
+    "all_completed_checkpoints_bytes": 115316845560,
+    "basis": "fp32 weights plus two Adam moment tensors",
+    "bytes_per_parameter": 12,
+    "incomplete_jobs_are_always_retained": true,
+    "policy": "figure8_seed0",
+    "retained_completed_checkpoints_bytes": 2135514300
+  },
+  "code_digest": "ca6664fc7b362f2ca7ec2a5f8befcab672c16a57f3a7f8f96f899df4cfd94c9f",
+  "code_receipts": [
+    {
+      "bytes": 172053,
+      "path": "experiments/texture_repro.py",
+      "sha256": "3f55a6d7d35869fc606587dbe2437820649540a0995d5207a3044b3d19b4a45f"
+    },
+    {
+      "bytes": 22690,
+      "path": "experiments/runner.py",
+      "sha256": "bac46170318c71a354c37be04a7b34799c36f9073b3a2c618afc9fd3b7ee89f5"
+    },
+    {
+      "bytes": 9714,
+      "path": "apps/texture/build.py",
+      "sha256": "5c2005b323770e32b831a3bb7ec287063decee1a6b861831cb5b3c907760411a"
+    },
+    {
+      "bytes": 8433,
+      "path": "apps/texture/data.py",
+      "sha256": "e863cd5658100ae287ac4c77723468525123f459b0bbf80d1e5e4966c8529c4e"
+    },
+    {
+      "bytes": 27575,
+      "path": "peps/train.py",
+      "sha256": "c1a341e5b51656bb8bb185fd6dd6d2091b6d5d712d268d1cf5f18810e5efba30"
+    },
+    {
+      "bytes": 7112,
+      "path": "peps/projector.py",
+      "sha256": "2a8a35f63095ac93d4861d0ab767bcb83c15ce6c2cc21429fd74a4b1ba6d235f"
+    },
+    {
+      "bytes": 14207,
+      "path": "peps/aggregate.py",
+      "sha256": "2c571aab4e0438dabd8cd4acebd87678d33f9ba9b9884a6c0274e233bce9816b"
+    },
+    {
+      "bytes": 7016,
+      "path": "peps/wrapper.py",
+      "sha256": "7da7d25a7ce1990e5f91f30d9153334a82c967c443cc941fabb4b14cff6448d1"
+    },
+    {
+      "bytes": 5192,
+      "path": "peps/encoders/grid.py",
+      "sha256": "5ad21b2493ff37c066db2bcecabefbb52d770cc7a6ca7f89f2e8d8eb7aa1a53a"
+    },
+    {
+      "bytes": 6660,
+      "path": "peps/encoders/lpe.py",
+      "sha256": "980efac6c8e65d5e6905397fd31e208fcb8d850367a00dc867ed049512711c7a"
+    },
+    {
+      "bytes": 11193,
+      "path": "peps/encoders/ntc.py",
+      "sha256": "5f17a5432e3239721bc5200fef6f73bebbd607ba5a53eaebeb494da8642acc4d"
+    },
+    {
+      "bytes": 3120,
+      "path": "peps/models/mlp.py",
+      "sha256": "532837a87b4a53448c529da52458c9629ad28d66d71c8e4b67a88c61b87a5919"
+    },
+    {
+      "bytes": 10031,
+      "path": "peps/metrics.py",
+      "sha256": "72ab2031bbfc461960f1dbb0707dafecf255b2438ca13463efde7ac6865156a3"
+    }
+  ],
+  "config": {
+    "canonical": true,
+    "dataset": "paper-textures-18-4k",
+    "methods": [
+      {
+        "expected_encoder_params": 16777216,
+        "expected_total_params": null,
+        "factory": "apps.texture.build:build_paper_texture",
+        "kwargs": {
+          "method": "lpe"
+        },
+        "name": "LPE",
+        "role": "canonical",
+        "seeds": null,
+        "training": {}
+      },
+      {
+        "expected_encoder_params": 17825792,
+        "expected_total_params": null,
+        "factory": "apps.texture.build:build_paper_texture",
+        "kwargs": {
+          "method": "ntc_n"
+        },
+        "name": "NTC_N",
+        "role": "canonical",
+        "seeds": null,
+        "training": {}
+      },
+      {
+        "expected_encoder_params": 17825792,
+        "expected_total_params": null,
+        "factory": "apps.texture.build:build_paper_texture",
+        "kwargs": {
+          "method": "bi_grid"
+        },
+        "name": "BI-Grid",
+        "role": "canonical",
+        "seeds": null,
+        "training": {}
+      },
+      {
+        "expected_encoder_params": 17825792,
+        "expected_total_params": null,
+        "factory": "apps.texture.build:build_paper_texture",
+        "kwargs": {
+          "method": "grid_peps4f"
+        },
+        "name": "Grid-PEPS4F",
+        "role": "canonical",
+        "seeds": null,
+        "training": {}
+      },
+      {
+        "expected_encoder_params": 17825792,
+        "expected_total_params": null,
+        "factory": "apps.texture.build:build_paper_texture",
+        "kwargs": {
+          "method": "grid_pinkpeps4f"
+        },
+        "name": "Grid-PinkPEPS4F",
+        "role": "canonical",
+        "seeds": null,
+        "training": {}
+      },
+      {
+        "expected_encoder_params": 17825792,
+        "expected_total_params": null,
+        "factory": "apps.texture.build:build_paper_texture",
+        "kwargs": {
+          "method": "ntc_peps"
+        },
+        "name": "NTC_PEPS",
+        "role": "canonical",
+        "seeds": null,
+        "training": {}
+      },
+      {
+        "expected_encoder_params": 17825792,
+        "expected_total_params": null,
+        "factory": "apps.texture.build:build_paper_texture",
+        "kwargs": {
+          "method": "ntc_pinkpeps"
+        },
+        "name": "NTC_PinkPEPS",
+        "role": "canonical",
+        "seeds": null,
+        "training": {}
+      },
+      {
+        "expected_encoder_params": 13631488,
+        "expected_total_params": null,
+        "factory": "apps.texture.build:build_paper_texture",
+        "kwargs": {
+          "method": "grid_peps4f_25"
+        },
+        "name": "Grid-PEPS4F-25",
+        "role": "canonical",
+        "seeds": null,
+        "training": {}
+      },
+      {
+        "expected_encoder_params": 13631488,
+        "expected_total_params": null,
+        "factory": "apps.texture.build:build_paper_texture",
+        "kwargs": {
+          "method": "grid_pinkpeps4f_25"
+        },
+        "name": "Grid-PinkPEPS4F-25",
+        "role": "canonical",
+        "seeds": null,
+        "training": {}
+      },
+      {
+        "expected_encoder_params": 13369344,
+        "expected_total_params": null,
+        "factory": "apps.texture.build:build_paper_texture",
+        "kwargs": {
+          "method": "ntc_peps_25"
+        },
+        "name": "NTC_PEPS-25",
+        "role": "canonical",
+        "seeds": null,
+        "training": {}
+      },
+      {
+        "expected_encoder_params": 13369344,
+        "expected_total_params": null,
+        "factory": "apps.texture.build:build_paper_texture",
+        "kwargs": {
+          "method": "ntc_pinkpeps_25"
+        },
+        "name": "NTC_PinkPEPS-25",
+        "role": "canonical",
+        "seeds": null,
+        "training": {}
+      }
+    ],
+    "name": "texture-table2-full",
+    "paper": "PEPS Extended arXiv:2604.24167v1",
+    "profile": "full",
+    "runner": {
+      "completed_checkpoint_retention": "figure8_seed0",
+      "dataset_manifest": "data/manifests/textures.json",
+      "figure8_crop_size": 100,
+      "figure8_instance": "paving-stones-070",
+      "metrics": [
+        "psnr",
+        "ssim"
+      ],
+      "output_dir": "results/paper",
+      "parallelism_mode": "job_shard",
+      "render_chunk": 262144,
+      "target_filter": "native_texel_equals_bilinear_at_pixel_location",
+      "target_sampling": "random_pixel_locations",
+      "world_size": 4
+    },
+    "schema_version": 1,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "source": "/home/aup/yy/workspace/peps/configs/paper/texture_full.toml",
+    "task": "texture",
+    "training": {
+      "batch_size": 60000,
+      "batches_per_epoch": 40,
+      "checkpoint_every": 1000,
+      "cosine": true,
+      "encoder_lr": 0.1,
+      "epochs": 3000,
+      "log_every": 200,
+      "loss": "l1",
+      "model_lr": 0.001,
+      "task": "texture"
+    }
+  },
+  "config_sha256": "24a5936cf3788f83e495a343d59148dcf00de9bfa7608592eee2eb764c480478",
+  "expected_jobs": 594,
+  "expected_optimizer_steps": 71280000,
+  "expected_training_samples": 4276800000000,
+  "instances": 18,
+  "limitations": [
+    {
+      "code": "texture_file_selection_not_published",
+      "detail": "The paper names 18 sets and eight map categories but not exact source files. data/manifests/textures.json freezes a non-duplicating 78-map selection."
+    },
+    {
+      "code": "optimizer_and_seed_not_published",
+      "detail": "Adam and seeds 0/1/2 are explicit reproduction choices. The paper publishes the dual learning rates, cosine schedule, batch size, epochs, and batches per epoch, but not optimizer or seeds."
+    },
+    {
+      "code": "sampling_text_is_ambiguous",
+      "detail": "The main text says bilinear-filtered targets while the appendix says random pixel locations. The runner samples random native pixel locations; at those locations the bilinear target is exactly the stored texel."
+    },
+    {
+      "code": "pytorch_latency_not_fused_paper_latency",
+      "detail": "The 3F/4F sweep times checkpoint inference in PyTorch. It records real local latency but is not comparable to the paper's fused HIP/WMMA three-channel decoder."
+    },
+    {
+      "code": "figure8_crop_not_published",
+      "detail": "The paper states a 100-pixel Paving Stones sample but does not publish crop coordinates. The generator defaults to a centered 100x100 crop and records the exact rectangle."
+    }
+  ],
+  "manifest_sha256": "63e6597b835b6b3f25dca64ea1f0832e42ae49869010795ef8e02117d56070e1",
+  "methods": 11,
+  "paper": "PEPS Extended arXiv:2604.24167v1",
+  "parallelism": {
+    "all_seeds_of_pair_share_rank": true,
+    "assignment": "asset_method_pair_index_mod_world_size",
+    "mode": "asset_method_job_shard",
+    "same_model_distributed": false,
+    "world_size": 2
+  },
+  "per_rank": {
+    "0": {
+      "jobs": 297,
+      "optimizer_steps": 35640000
+    },
+    "1": {
+      "jobs": 297,
+      "optimizer_steps": 35640000
+    }
+  },
+  "profile": "full",
+  "schema": "peps.texture_job_plan",
+  "schema_version": 1,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "wall_clock_estimate": {
+    "formula": "expected_optimizer_steps / measured_aggregate_steps_per_second",
+    "reason": "No texture checkpoint throughput has been measured yet; CPU smoke timing is not extrapolated to RDNA4 full jobs.",
+    "reference_scenarios_not_predictions": [
+      {
+        "aggregate_steps_per_second": 50,
+        "wall_days": 16.5
+      },
+      {
+        "aggregate_steps_per_second": 100,
+        "wall_days": 8.25
+      },
+      {
+        "aggregate_steps_per_second": 200,
+        "wall_days": 4.125
+      }
+    ],
+    "seconds": null
+  }
+}

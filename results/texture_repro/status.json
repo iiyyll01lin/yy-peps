@@ -1,0 +1,217 @@
+{
+  "generated_at_utc": "2026-08-05T00:46:34.645053+00:00",
+  "reports": {
+    "sweep_csv": "/home/aup/yy/workspace/peps/results/texture_repro/frequency_sweep.csv",
+    "sweep_json": "/home/aup/yy/workspace/peps/results/texture_repro/frequency_sweep.json",
+    "table2_csv": "/home/aup/yy/workspace/peps/results/texture_repro/table2.csv",
+    "table2_instances_csv": "/home/aup/yy/workspace/peps/results/texture_repro/table2_instances.csv",
+    "table2_json": "/home/aup/yy/workspace/peps/results/texture_repro/table2.json"
+  },
+  "schema": "peps.texture_reproduction_status",
+  "schema_version": 1,
+  "sweep": {
+    "accounted_optimizer_steps": 0,
+    "active_workers": 0,
+    "artifact": "sweep",
+    "canonical": false,
+    "checkpoint_errors": [],
+    "checkpointed_incomplete_jobs": 0,
+    "complete": false,
+    "completed_jobs": 0,
+    "config": "configs/paper/texture_sweep_full.toml",
+    "config_sha256": "5dce37bec48b1c8b15fa5ccbe44725ec89538c2d97ae243da185e87557c8b7b1",
+    "expected_jobs": 432,
+    "expected_optimizer_steps": 51840000,
+    "job_completion_fraction": 0.0,
+    "optimizer_step_completion_fraction": 0.0,
+    "output_dir": "/home/aup/yy/workspace/peps/results/work/texture-repro/sweep/5dce37bec48b-63e6597b835b-ca6664fc7b36",
+    "per_rank": {
+      "0": {
+        "completed_jobs": 0,
+        "expected_jobs": 108,
+        "optimizer_steps": 0
+      },
+      "1": {
+        "completed_jobs": 0,
+        "expected_jobs": 108,
+        "optimizer_steps": 0
+      },
+      "2": {
+        "completed_jobs": 0,
+        "expected_jobs": 108,
+        "optimizer_steps": 0
+      },
+      "3": {
+        "completed_jobs": 0,
+        "expected_jobs": 108,
+        "optimizer_steps": 0
+      }
+    },
+    "profile": "full",
+    "result_errors": [],
+    "throughput_observation": null,
+    "workers": [],
+    "world_size": 4
+  },
+  "table2": {
+    "accounted_optimizer_steps": 71280000,
+    "active_workers": 0,
+    "artifact": "table2",
+    "canonical": true,
+    "checkpoint_errors": [],
+    "checkpointed_incomplete_jobs": 0,
+    "complete": true,
+    "completed_jobs": 594,
+    "config": "configs/paper/texture_full.toml",
+    "config_sha256": "24a5936cf3788f83e495a343d59148dcf00de9bfa7608592eee2eb764c480478",
+    "expected_jobs": 594,
+    "expected_optimizer_steps": 71280000,
+    "job_completion_fraction": 1.0,
+    "optimizer_step_completion_fraction": 1.0,
+    "output_dir": "/home/aup/yy/workspace/peps/results/work/texture-repro/table2/24a5936cf378-63e6597b835b-ca6664fc7b36",
+    "per_rank": {
+      "0": {
+        "completed_jobs": 297,
+        "expected_jobs": 297,
+        "optimizer_steps": 35640000
+      },
+      "1": {
+        "completed_jobs": 297,
+        "expected_jobs": 297,
+        "optimizer_steps": 35640000
+      }
+    },
+    "profile": "full",
+    "result_errors": [],
+    "throughput_observation": {
+      "aggregate_checkpointed_steps_per_second": 91.5439739158169,
+      "naive_remaining_seconds_at_current_job_mix": 0.0,
+      "warning": "Not a guaranteed ETA: method/output widths differ and progress appears only at checkpoint boundaries."
+    },
+    "workers": [
+      {
+        "artifact": "table2",
+        "completed_records": 297,
+        "device": "cuda:0",
+        "effective_state": "complete",
+        "finished_at_utc": "2026-08-04T18:56:54.155908+00:00",
+        "liveness_evidence": {
+          "reason": "pid_not_present_or_unreadable",
+          "status": "not_alive"
+        },
+        "output_dir": "/home/aup/yy/workspace/peps/results/work/texture-repro/table2/24a5936cf378-63e6597b835b-ca6664fc7b36",
+        "pid": 3383038,
+        "process_alive": false,
+        "process_identity": {
+          "boot_id": "0ca11c34-38ca-4d2c-aa05-091065da66c3",
+          "command_sha256": "24b0b7e2e0abb880ecc7bd0a9ba20389ce24c98aa3f680a57ea5baeec8164c87",
+          "start_time_ticks": 43063049
+        },
+        "rank": 0,
+        "schema": "peps.texture_worker_status",
+        "schema_version": 1,
+        "selected_instances": [
+          "aerial-rocks-02",
+          "bench-vice-01",
+          "bricks-090",
+          "cannon-01",
+          "cardboard-box-01",
+          "clay-roof-tiles-02",
+          "fabric-pattern-07",
+          "forest-sand-01",
+          "garden-gnome",
+          "garden-sprinkler-01",
+          "metal-plates-013",
+          "paving-stones-070",
+          "rails-001",
+          "red-dirt-mud-01",
+          "roof-09",
+          "treasure-chest",
+          "wood-063",
+          "wood-planks"
+        ],
+        "selected_jobs": 297,
+        "selected_methods": [
+          "BI-Grid",
+          "Grid-PEPS4F",
+          "Grid-PEPS4F-25",
+          "Grid-PinkPEPS4F",
+          "Grid-PinkPEPS4F-25",
+          "LPE",
+          "NTC_N",
+          "NTC_PEPS",
+          "NTC_PEPS-25",
+          "NTC_PinkPEPS",
+          "NTC_PinkPEPS-25"
+        ],
+        "started_at_utc": "2026-07-27T00:29:12.439432+00:00",
+        "state": "complete",
+        "verification_receipt": "/home/aup/yy/workspace/peps/results/texture_repro/dataset_verification.json",
+        "verification_receipt_current": true,
+        "world_size": 2
+      },
+      {
+        "artifact": "table2",
+        "completed_records": 297,
+        "device": "cuda:0",
+        "effective_state": "complete",
+        "finished_at_utc": "2026-08-04T19:37:22.102280+00:00",
+        "liveness_evidence": {
+          "reason": "pid_not_present_or_unreadable",
+          "status": "not_alive"
+        },
+        "output_dir": "/home/aup/yy/workspace/peps/results/work/texture-repro/table2/24a5936cf378-63e6597b835b-ca6664fc7b36",
+        "pid": 3383039,
+        "process_alive": false,
+        "process_identity": {
+          "boot_id": "0ca11c34-38ca-4d2c-aa05-091065da66c3",
+          "command_sha256": "0866ea4f5e612b32622745647babc7cae2e6b91b675eac373514f2ec9753ceda",
+          "start_time_ticks": 43063049
+        },
+        "rank": 1,
+        "schema": "peps.texture_worker_status",
+        "schema_version": 1,
+        "selected_instances": [
+          "aerial-rocks-02",
+          "bench-vice-01",
+          "bricks-090",
+          "cannon-01",
+          "cardboard-box-01",
+          "clay-roof-tiles-02",
+          "fabric-pattern-07",
+          "forest-sand-01",
+          "garden-gnome",
+          "garden-sprinkler-01",
+          "metal-plates-013",
+          "paving-stones-070",
+          "rails-001",
+          "red-dirt-mud-01",
+          "roof-09",
+          "treasure-chest",
+          "wood-063",
+          "wood-planks"
+        ],
+        "selected_jobs": 297,
+        "selected_methods": [
+          "BI-Grid",
+          "Grid-PEPS4F",
+          "Grid-PEPS4F-25",
+          "Grid-PinkPEPS4F",
+          "Grid-PinkPEPS4F-25",
+          "LPE",
+          "NTC_N",
+          "NTC_PEPS",
+          "NTC_PEPS-25",
+          "NTC_PinkPEPS",
+          "NTC_PinkPEPS-25"
+        ],
+        "started_at_utc": "2026-07-27T00:29:12.429028+00:00",
+        "state": "complete",
+        "verification_receipt": "/home/aup/yy/workspace/peps/results/texture_repro/dataset_verification.json",
+        "verification_receipt_current": true,
+        "world_size": 2
+      }
+    ],
+    "world_size": 2
+  }
+}

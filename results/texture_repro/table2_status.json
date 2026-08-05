@@ -1,0 +1,157 @@
+{
+  "accounted_optimizer_steps": 70000,
+  "active_workers": 2,
+  "artifact": "table2",
+  "canonical": true,
+  "checkpoint_errors": [],
+  "checkpointed_incomplete_jobs": 2,
+  "complete": false,
+  "completed_jobs": 0,
+  "config": "configs/paper/texture_full.toml",
+  "config_sha256": "24a5936cf3788f83e495a343d59148dcf00de9bfa7608592eee2eb764c480478",
+  "expected_jobs": 594,
+  "expected_optimizer_steps": 71280000,
+  "job_completion_fraction": 0.0,
+  "optimizer_step_completion_fraction": 0.0009820426487093155,
+  "output_dir": "results/work/texture-repro/table2/24a5936cf378-63e6597b835b-ca6664fc7b36",
+  "per_rank": {
+    "0": {
+      "completed_jobs": 0,
+      "expected_jobs": 297,
+      "optimizer_steps": 38000
+    },
+    "1": {
+      "completed_jobs": 0,
+      "expected_jobs": 297,
+      "optimizer_steps": 32000
+    }
+  },
+  "profile": "full",
+  "result_errors": [],
+  "throughput_observation": {
+    "aggregate_checkpointed_steps_per_second": 169.50068174384916,
+    "naive_remaining_seconds_at_current_job_mix": 420116.3043557143,
+    "warning": "Not a guaranteed ETA: method/output widths differ and progress appears only at checkpoint boundaries."
+  },
+  "workers": [
+    {
+      "artifact": "table2",
+      "device": "cuda:0",
+      "effective_state": "running",
+      "liveness_evidence": {
+        "reason": "boot_id_start_time_and_command_match",
+        "status": "verified_alive"
+      },
+      "output_dir": "/home/aup/yy/workspace/peps/results/work/texture-repro/table2/24a5936cf378-63e6597b835b-ca6664fc7b36",
+      "pid": 228460,
+      "process_alive": true,
+      "process_identity": {
+        "boot_id": "0ca11c34-38ca-4d2c-aa05-091065da66c3",
+        "command_sha256": "24b0b7e2e0abb880ecc7bd0a9ba20389ce24c98aa3f680a57ea5baeec8164c87",
+        "start_time_ticks": 1016629
+      },
+      "rank": 0,
+      "schema": "peps.texture_worker_status",
+      "schema_version": 1,
+      "selected_instances": [
+        "aerial-rocks-02",
+        "bench-vice-01",
+        "bricks-090",
+        "cannon-01",
+        "cardboard-box-01",
+        "clay-roof-tiles-02",
+        "fabric-pattern-07",
+        "forest-sand-01",
+        "garden-gnome",
+        "garden-sprinkler-01",
+        "metal-plates-013",
+        "paving-stones-070",
+        "rails-001",
+        "red-dirt-mud-01",
+        "roof-09",
+        "treasure-chest",
+        "wood-063",
+        "wood-planks"
+      ],
+      "selected_jobs": 297,
+      "selected_methods": [
+        "BI-Grid",
+        "Grid-PEPS4F",
+        "Grid-PEPS4F-25",
+        "Grid-PinkPEPS4F",
+        "Grid-PinkPEPS4F-25",
+        "LPE",
+        "NTC_N",
+        "NTC_PEPS",
+        "NTC_PEPS-25",
+        "NTC_PinkPEPS",
+        "NTC_PinkPEPS-25"
+      ],
+      "started_at_utc": "2026-07-22T03:41:28.105876+00:00",
+      "state": "running",
+      "verification_receipt": "/home/aup/yy/workspace/peps/results/texture_repro/dataset_verification.json",
+      "verification_receipt_current": true,
+      "world_size": 2
+    },
+    {
+      "artifact": "table2",
+      "device": "cuda:0",
+      "effective_state": "running",
+      "liveness_evidence": {
+        "reason": "boot_id_start_time_and_command_match",
+        "status": "verified_alive"
+      },
+      "output_dir": "/home/aup/yy/workspace/peps/results/work/texture-repro/table2/24a5936cf378-63e6597b835b-ca6664fc7b36",
+      "pid": 228461,
+      "process_alive": true,
+      "process_identity": {
+        "boot_id": "0ca11c34-38ca-4d2c-aa05-091065da66c3",
+        "command_sha256": "0866ea4f5e612b32622745647babc7cae2e6b91b675eac373514f2ec9753ceda",
+        "start_time_ticks": 1016629
+      },
+      "rank": 1,
+      "schema": "peps.texture_worker_status",
+      "schema_version": 1,
+      "selected_instances": [
+        "aerial-rocks-02",
+        "bench-vice-01",
+        "bricks-090",
+        "cannon-01",
+        "cardboard-box-01",
+        "clay-roof-tiles-02",
+        "fabric-pattern-07",
+        "forest-sand-01",
+        "garden-gnome",
+        "garden-sprinkler-01",
+        "metal-plates-013",
+        "paving-stones-070",
+        "rails-001",
+        "red-dirt-mud-01",
+        "roof-09",
+        "treasure-chest",
+        "wood-063",
+        "wood-planks"
+      ],
+      "selected_jobs": 297,
+      "selected_methods": [
+        "BI-Grid",
+        "Grid-PEPS4F",
+        "Grid-PEPS4F-25",
+        "Grid-PinkPEPS4F",
+        "Grid-PinkPEPS4F-25",
+        "LPE",
+        "NTC_N",
+        "NTC_PEPS",
+        "NTC_PEPS-25",
+        "NTC_PinkPEPS",
+        "NTC_PinkPEPS-25"
+      ],
+      "started_at_utc": "2026-07-22T03:41:28.116942+00:00",
+      "state": "running",
+      "verification_receipt": "/home/aup/yy/workspace/peps/results/texture_repro/dataset_verification.json",
+      "verification_receipt_current": true,
+      "world_size": 2
+    }
+  ],
+  "world_size": 2
+}

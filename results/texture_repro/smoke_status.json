@@ -1,0 +1,111 @@
+{
+  "accounted_optimizer_steps": 6,
+  "active_workers": 0,
+  "artifact": "smoke",
+  "canonical": false,
+  "checkpoint_errors": [],
+  "checkpointed_incomplete_jobs": 0,
+  "complete": true,
+  "completed_jobs": 3,
+  "config": "configs/paper/texture_smoke.toml",
+  "config_sha256": "c2edf1d2dcdba88811c01f7766db2dcbff0eca530a2951749dd2651f27d6b60d",
+  "expected_jobs": 3,
+  "expected_optimizer_steps": 6,
+  "job_completion_fraction": 1.0,
+  "optimizer_step_completion_fraction": 1.0,
+  "output_dir": "results/work/texture-repro/smoke/c2edf1d2dcdb-63e6597b835b-ca6664fc7b36",
+  "per_rank": {
+    "0": {
+      "completed_jobs": 2,
+      "expected_jobs": 2,
+      "optimizer_steps": 4
+    },
+    "1": {
+      "completed_jobs": 1,
+      "expected_jobs": 1,
+      "optimizer_steps": 2
+    }
+  },
+  "profile": "smoke",
+  "result_errors": [],
+  "throughput_observation": {
+    "aggregate_checkpointed_steps_per_second": 1.6925385285239287,
+    "naive_remaining_seconds_at_current_job_mix": 0.0,
+    "warning": "Not a guaranteed ETA: method/output widths differ and progress appears only at checkpoint boundaries."
+  },
+  "workers": [
+    {
+      "artifact": "smoke",
+      "completed_records": 2,
+      "device": "cpu",
+      "effective_state": "complete",
+      "finished_at_utc": "2026-07-22T03:33:30.019550+00:00",
+      "liveness_evidence": {
+        "reason": "pid_not_present_or_unreadable",
+        "status": "not_alive"
+      },
+      "output_dir": "results/work/texture-repro/smoke/c2edf1d2dcdb-63e6597b835b-ca6664fc7b36",
+      "pid": 216111,
+      "process_alive": false,
+      "process_identity": {
+        "boot_id": "0ca11c34-38ca-4d2c-aa05-091065da66c3",
+        "command_sha256": "c6c046e83599da74a521a08fb5f5f14c3aaaa9b0251869a763e9f945cbb5f7dc",
+        "start_time_ticks": 968748
+      },
+      "rank": 0,
+      "schema": "peps.texture_worker_status",
+      "schema_version": 1,
+      "selected_instances": [
+        "synthetic-texture"
+      ],
+      "selected_jobs": 2,
+      "selected_methods": [
+        "Grid-PinkPEPS-smoke",
+        "LPE-smoke",
+        "NTC_N-smoke"
+      ],
+      "started_at_utc": "2026-07-22T03:33:29.331586+00:00",
+      "state": "complete",
+      "verification_receipt": "results/texture_repro/dataset_verification.json",
+      "verification_receipt_current": true,
+      "world_size": 2
+    },
+    {
+      "artifact": "smoke",
+      "completed_records": 1,
+      "device": "cpu",
+      "effective_state": "complete",
+      "finished_at_utc": "2026-07-22T03:33:31.758666+00:00",
+      "liveness_evidence": {
+        "reason": "pid_not_present_or_unreadable",
+        "status": "not_alive"
+      },
+      "output_dir": "results/work/texture-repro/smoke/c2edf1d2dcdb-63e6597b835b-ca6664fc7b36",
+      "pid": 216261,
+      "process_alive": false,
+      "process_identity": {
+        "boot_id": "0ca11c34-38ca-4d2c-aa05-091065da66c3",
+        "command_sha256": "f93291a8ba26f3fe01624ea0be581cc08ff421b9ccf9e1956a388b44f1d559e1",
+        "start_time_ticks": 968931
+      },
+      "rank": 1,
+      "schema": "peps.texture_worker_status",
+      "schema_version": 1,
+      "selected_instances": [
+        "synthetic-texture"
+      ],
+      "selected_jobs": 1,
+      "selected_methods": [
+        "Grid-PinkPEPS-smoke",
+        "LPE-smoke",
+        "NTC_N-smoke"
+      ],
+      "started_at_utc": "2026-07-22T03:33:31.128968+00:00",
+      "state": "complete",
+      "verification_receipt": "results/texture_repro/dataset_verification.json",
+      "verification_receipt_current": true,
+      "world_size": 2
+    }
+  ],
+  "world_size": 2
+}

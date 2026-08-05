@@ -1,0 +1,262 @@
+{
+  "authorization": {
+    "id": "explicit-user-request-20260722T1118+0800-gpu01-world2-table2-only",
+    "scope": "Texture Table 2 full matrix only",
+    "sweep_authorized": false
+  },
+  "dataset": {
+    "decoded_sets": 18,
+    "licenses": {
+      "ambientcg-cc0": "CC0 1.0 Universal",
+      "polyhaven-cc0": "CC0 1.0 Universal"
+    },
+    "maps": 78,
+    "sets": 18,
+    "verified_files": 78
+  },
+  "disk": {
+    "free_bytes": 677385539584,
+    "minimum_free_bytes": 21474836480
+  },
+  "generated_at_utc": "2026-07-27T00:29:11.487107+00:00",
+  "gpu": {
+    "physical_devices": [
+      0,
+      1
+    ],
+    "snapshot": {
+      "card0": {
+        "GPU Memory Allocated (VRAM%)": "0",
+        "GPU memory use (%)": "0",
+        "GPU use (%)": "0",
+        "Memory Activity": "N/A"
+      },
+      "card1": {
+        "GPU Memory Allocated (VRAM%)": "0",
+        "GPU memory use (%)": "0",
+        "GPU use (%)": "0",
+        "Memory Activity": "N/A"
+      },
+      "card2": {
+        "GPU Memory Allocated (VRAM%)": "0",
+        "GPU memory use (%)": "0",
+        "GPU use (%)": "0",
+        "Memory Activity": "N/A"
+      },
+      "card3": {
+        "GPU Memory Allocated (VRAM%)": "0",
+        "GPU memory use (%)": "0",
+        "GPU use (%)": "0",
+        "Memory Activity": "N/A"
+      }
+    },
+    "visibility_probes": {
+      "0": {
+        "architecture": "gfx1201",
+        "available": true,
+        "count": 1,
+        "name": "AMD Radeon Graphics",
+        "total_memory_bytes": 34208743424
+      },
+      "1": {
+        "architecture": "gfx1201",
+        "available": true,
+        "count": 1,
+        "name": "AMD Radeon Graphics",
+        "total_memory_bytes": 34208743424
+      }
+    }
+  },
+  "guards": {
+    "existing_table2_active_workers": 0,
+    "sweep_active_workers": 0,
+    "table1_masked": true,
+    "unmanaged_table2_processes": []
+  },
+  "matrix": {
+    "checkpoint_storage_estimate": {
+      "all_completed_checkpoints_bytes": 115316845560,
+      "basis": "fp32 weights plus two Adam moment tensors",
+      "bytes_per_parameter": 12,
+      "incomplete_jobs_are_always_retained": true,
+      "policy": "figure8_seed0",
+      "retained_completed_checkpoints_bytes": 2135514300
+    },
+    "jobs": 594,
+    "optimizer_steps": 71280000,
+    "per_rank": {
+      "0": {
+        "jobs": 297,
+        "optimizer_steps": 35640000
+      },
+      "1": {
+        "jobs": 297,
+        "optimizer_steps": 35640000
+      }
+    },
+    "world_size": 2
+  },
+  "output_dir": "/home/aup/yy/workspace/peps/results/work/texture-repro/table2/24a5936cf378-63e6597b835b-ca6664fc7b36",
+  "parameter_budgets": [
+    {
+      "aggregation": "baseline",
+      "builder_method": "lpe",
+      "decoder_input_dim": 16,
+      "decoder_params": 10383,
+      "encoder_params": 16777216,
+      "hidden_dim": 64,
+      "linear_layers": 4,
+      "output_channels": 15,
+      "peps_frequencies": null,
+      "tiled_encoding_dim": 0,
+      "total_params": 16787599
+    },
+    {
+      "aggregation": "baseline",
+      "builder_method": "ntc_n",
+      "decoder_input_dim": 80,
+      "decoder_params": 14479,
+      "encoder_params": 17825792,
+      "hidden_dim": 64,
+      "linear_layers": 4,
+      "output_channels": 15,
+      "peps_frequencies": null,
+      "tiled_encoding_dim": 12,
+      "total_params": 17840271
+    },
+    {
+      "aggregation": "baseline",
+      "builder_method": "bi_grid",
+      "decoder_input_dim": 17,
+      "decoder_params": 10447,
+      "encoder_params": 17825792,
+      "hidden_dim": 64,
+      "linear_layers": 4,
+      "output_channels": 15,
+      "peps_frequencies": null,
+      "tiled_encoding_dim": 0,
+      "total_params": 17836239
+    },
+    {
+      "aggregation": "concat",
+      "builder_method": "grid_peps4f",
+      "decoder_input_dim": 153,
+      "decoder_params": 19151,
+      "encoder_params": 17825792,
+      "hidden_dim": 64,
+      "linear_layers": 4,
+      "output_channels": 15,
+      "peps_frequencies": 4,
+      "tiled_encoding_dim": 0,
+      "total_params": 17844943
+    },
+    {
+      "aggregation": "pink",
+      "builder_method": "grid_pinkpeps4f",
+      "decoder_input_dim": 47,
+      "decoder_params": 12367,
+      "encoder_params": 17825792,
+      "hidden_dim": 64,
+      "linear_layers": 4,
+      "output_channels": 15,
+      "peps_frequencies": 4,
+      "tiled_encoding_dim": 0,
+      "total_params": 17838159
+    },
+    {
+      "aggregation": "concat",
+      "builder_method": "ntc_peps",
+      "decoder_input_dim": 624,
+      "decoder_params": 49295,
+      "encoder_params": 17825792,
+      "hidden_dim": 64,
+      "linear_layers": 4,
+      "output_channels": 15,
+      "peps_frequencies": 4,
+      "tiled_encoding_dim": 12,
+      "total_params": 17875087
+    },
+    {
+      "aggregation": "pink",
+      "builder_method": "ntc_pinkpeps",
+      "decoder_input_dim": 206,
+      "decoder_params": 22543,
+      "encoder_params": 17825792,
+      "hidden_dim": 64,
+      "linear_layers": 4,
+      "output_channels": 15,
+      "peps_frequencies": 4,
+      "tiled_encoding_dim": 12,
+      "total_params": 17848335
+    },
+    {
+      "aggregation": "concat",
+      "builder_method": "grid_peps4f_25",
+      "decoder_input_dim": 117,
+      "decoder_params": 16847,
+      "encoder_params": 13631488,
+      "hidden_dim": 64,
+      "linear_layers": 4,
+      "output_channels": 15,
+      "peps_frequencies": 4,
+      "tiled_encoding_dim": 0,
+      "total_params": 13648335
+    },
+    {
+      "aggregation": "pink",
+      "builder_method": "grid_pinkpeps4f_25",
+      "decoder_input_dim": 35,
+      "decoder_params": 11599,
+      "encoder_params": 13631488,
+      "hidden_dim": 64,
+      "linear_layers": 4,
+      "output_channels": 15,
+      "peps_frequencies": 4,
+      "tiled_encoding_dim": 0,
+      "total_params": 13643087
+    },
+    {
+      "aggregation": "concat",
+      "builder_method": "ntc_peps_25",
+      "decoder_input_dim": 471,
+      "decoder_params": 39503,
+      "encoder_params": 13369344,
+      "hidden_dim": 64,
+      "linear_layers": 4,
+      "output_channels": 15,
+      "peps_frequencies": 4,
+      "tiled_encoding_dim": 12,
+      "total_params": 13408847
+    },
+    {
+      "aggregation": "pink",
+      "builder_method": "ntc_pinkpeps_25",
+      "decoder_input_dim": 155,
+      "decoder_params": 19279,
+      "encoder_params": 13369344,
+      "hidden_dim": 64,
+      "linear_layers": 4,
+      "output_channels": 15,
+      "peps_frequencies": 4,
+      "tiled_encoding_dim": 12,
+      "total_params": 13388623
+    }
+  ],
+  "pins": {
+    "code_digest": "ca6664fc7b362f2ca7ec2a5f8befcab672c16a57f3a7f8f96f899df4cfd94c9f",
+    "config_sha256": "24a5936cf3788f83e495a343d59148dcf00de9bfa7608592eee2eb764c480478",
+    "manager_sha256": "d7c29d5875be9ad292a5c245878a58ebfc54bdf28edfbc93324169c3b94843e1",
+    "manifest_sha256": "63e6597b835b6b3f25dca64ea1f0832e42ae49869010795ef8e02117d56070e1",
+    "receipt_sha256": "bbce2ecd6cac8e313669866e0e542ce88d43415ee6f8395e1d31672d95196b66"
+  },
+  "schema": "peps.texture_table2_service_preflight",
+  "schema_version": 1,
+  "service_unit": "peps-texture-table2.service",
+  "smoke": {
+    "complete": true,
+    "completed_jobs": 3,
+    "expected_jobs": 3,
+    "output_dir": "results/work/texture-repro/smoke/c2edf1d2dcdb-63e6597b835b-ca6664fc7b36"
+  },
+  "status": "passed"
+}
