@@ -216,3 +216,68 @@ The opt-in hardware integration tests are:
 PEPS_RUN_4GPU_TESTS=1 .venv/bin/python -m pytest -q \
   tests/test_distributed.py
 ```
+
+## When an unreported protocol dominates the result
+
+Texture Table 2 reproduces the paper's qualitative pattern but not its
+top-line ordering: our `NTC_PEPS` minus `NTC_N` gain is +1.152 dB against a
+published +1.59 dB, and that 0.44 dB shortfall is exactly enough to stop
+`NTC_PEPS` from overtaking `BI-Grid`. Two bounded probes localise the cause,
+and the second one is the more useful lesson.
+
+The first probe tests compute. `NTC_N` and `NTC_PEPS` were retrained at
+240,000 and 480,000 optimizer steps, each with its own full cosine schedule so
+every point is a clean run rather than a continuation. Absolute PSNR keeps
+rising, so part of the roughly 1.15 dB absolute deficit is under-training at
+120k. The PEPS advantage, however, shrinks monotonically on two sets and two
+seeds:
+
+| set | seed | 120k | 240k | 480k |
+| --- | --- | --- | --- | --- |
+| paving-stones-070 | 0 | +0.6588 | +0.5601 | +0.4497 |
+| paving-stones-070 | 1 | +0.7861 | | +0.6457 |
+| metal-plates-013 | 0 | +2.5832 | +2.3199 | +2.0493 |
+
+Seed spread of the 120k advantage is about 0.07 dB, so the shrinkage is well
+outside noise. More compute lifts both methods and lifts the baseline faster,
+so the published ordering cannot be recovered by training longer.
+
+The second probe changes only the loss. Table 2 optimises a single global L1
+over all concatenated output channels. Every map occupies exactly three
+channels, so that loss gives each map an equal coefficient on its mean
+absolute error; it is blind to how large each map's error is. A per-map
+normalised L1 divides each map's term by its own detached magnitude, so maps
+with small residual error receive proportionally larger gradient. On the same
+set, seed, architecture and budget:
+
+| budget | gap under global L1 | gap under per-map normalised L1 | ratio |
+| --- | --- | --- | --- |
+| 240,000 | +0.5601 | +3.1919 | 5.70x |
+| 480,000 | +0.4497 | +3.5334 | 7.86x |
+
+The budget trend reverses as well: the advantage shrinks with compute under
+the global loss and grows under the per-map loss. The loss also decides where
+the advantage appears. At 480k, PEPS minus `NTC_N` moves from +0.89 to +14.20
+dB on ambient occlusion and from -0.19 to +3.83 dB on displacement, while
+colour moves from +1.82 to -0.69 dB. PEPS is strongest on the smooth maps, and
+the loss decides whether those maps receive optimisation pressure.
+
+This matters because Table 2 reports a per-map average of PSNR, a relative
+log-domain quantity per map, while the frozen recipe optimises a single
+absolute global L1. Aligning the loss with the metric raises both methods on
+the probed set, `NTC_N` from 34.16 to 35.69 and `NTC_PEPS` from 34.61 to
+39.22, and the published gain of +1.59 dB falls between our two variants.
+
+The reproduction lesson is therefore not "we needed more GPUs". A protocol
+detail the paper never reports moves the headline effect by almost eight
+times, which is far larger than any budget effect we measured. When a
+reproduction misses a published margin, rank the candidate causes by measured
+sensitivity before spending compute.
+
+Evidence lives in `results/texture_repro/budget_probe/`; `curves.csv` carries
+one row per loss, set, seed and budget, and `receipt.json` records the design,
+the matched loss contrast, and the limitations. Both probes are labelled
+`bounded_budget_probe_not_paper_comparable`: they cover two sets and at most
+two seeds, and the per-map normalised loss is our own construction rather than
+a recovered recipe, so they demonstrate sensitivity rather than restating the
+paper's protocol.
