@@ -401,3 +401,40 @@ naming each wrong claim, the evidence that overturned it, and the corrected
 statement, and the commit that retracted the second one greps the tree for the
 old wording and refuses to complete if any copy survives. A reader who saw the
 earlier text can then find out what happened to it, which is the whole point.
+
+## Separating what a selection effect can and cannot do
+
+The composition argument above accounts for the uniform 1.15 dB offset, and it
+is worth being precise about what it cannot touch. Changing which map files a
+selection carries moves every method by nearly the same amount, because they
+all encode the same maps. A selection effect can move the whole table up or
+down; it cannot reorder the rows.
+
+The reproduction reorders the rows. The paper puts the NTC family above
+`BI-Grid` by +0.540 dB on `NTC_PEPS`; this reproduction puts `BI-Grid` ahead by
+0.162. So there must be a second, independent discrepancy, and it has to be
+something that treats the methods unequally.
+
+The unreported reduction does exactly that. On `paving-stones-070` seed 0 at
+240k steps, holding data, architecture, seed and budget fixed and varying only
+the exponent applied to each map's own error:
+
+| exponent | `BI-Grid` | `NTC_PEPS` | `NTC_PEPS` - `BI-Grid` |
+| ---: | ---: | ---: | ---: |
+| 0.0 | 34.5411 | 34.4702 | -0.0709 |
+| 0.5 | 35.7542 | 36.1223 | +0.3680 |
+| 1.0 | 36.4066 | 38.4111 | +2.0044 |
+
+Over that range `BI-Grid` gains 1.87 dB and `NTC_PEPS` gains 3.94. The series is
+monotone, the sign flips between exponent 0 and 0.5, and the published +0.540
+falls inside the bracket, nearer 0.5 than 1.
+
+Two different unreported choices therefore account for two different symptoms:
+the file selection for the level, the map reduction for the order. Neither
+requires an implementation error, and the two would have been impossible to
+separate without holding one fixed while moving the other.
+
+Both claims stop at sufficiency. Showing that a choice *can* produce an effect
+is not showing that the authors made it, and `results/texture_repro/
+ordering_probe/receipt.json` says so in its limitations rather than leaving the
+reader to infer it.
