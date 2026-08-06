@@ -1,5 +1,5 @@
 {
-  "answer": "No. Extra compute shrinks the PEPS advantage instead of growing it. The advantage is instead dominated by the training loss, which the paper does not report: switching from a single global L1 to a per-map normalised L1 multiplies the advantage on the probed set by about eight.",
+  "answer": "No. Extra compute shrinks the PEPS advantage instead of growing it. The paper does specify L1 for Table 2 and this run uses L1, so the loss family is not the discrepancy either. What the paper does not pin down is how that L1 is reduced across the several maps a set carries, and switching from a global reduction to a per-map normalised one multiplies the advantage on the probed set by about eight.",
   "coverage": {
     "curves_total": 4,
     "curves_with_all_three_budgets": 2,
@@ -211,11 +211,11 @@
     "reference_source": "committed Table 2 evidence (not re-run)",
     "schedule_note": "Each probe budget uses its own full cosine schedule, so every point is a clean run at that budget rather than a re-horizoned continuation."
   },
-  "generated_at_utc": "2026-08-06T01:01:31.867379+00:00",
+  "generated_at_utc": "2026-08-06T01:19:19.171046+00:00",
   "limitations": [
     "Two texture sets and at most two seeds; not a method-level or Table 2-wide claim.",
     "The loss contrast covers one set and one seed at two budgets.",
-    "The per-map normalised loss is our own construction, not a published recipe.",
+    "The per-map normalised L1 is our own construction, not a published recipe; the paper specifies L1 and Table 2 uses L1.",
     "The published per-set values are unavailable, so only our own trends are measured."
   ],
   "loss_contrast": [
@@ -284,7 +284,9 @@
     "channels_per_map": 3,
     "probe_loss": "per_map_normalised_l1",
     "table2_loss": "l1",
-    "table2_per_map_loss_weighting": false
+    "table2_loss_reduction": "global_over_concatenated_channels",
+    "table2_loss_reduction_reported_by_paper": false,
+    "table2_loss_reported_by_paper": true
   },
   "verification_status": "bounded_budget_probe_not_paper_comparable",
   "verified_table2": false

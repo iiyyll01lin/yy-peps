@@ -242,12 +242,14 @@ Seed spread of the 120k advantage is about 0.07 dB, so the shrinkage is well
 outside noise. More compute lifts both methods and lifts the baseline faster,
 so the published ordering cannot be recovered by training longer.
 
-The second probe changes only the loss. Table 2 optimises a single global L1
-over all concatenated output channels. Every map occupies exactly three
-channels, so that loss gives each map an equal coefficient on its mean
-absolute error; it is blind to how large each map's error is. A per-map
-normalised L1 divides each map's term by its own detached magnitude, so maps
-with small residual error receive proportionally larger gradient. On the same
+The second probe changes how that loss is reduced across maps. The paper does
+report the Table 2 recipe, L1 included, and this reproduction uses L1, so the
+loss family is not a deviation. What "L1" leaves open is the reduction: a set
+carries five to eight maps, each decoded as three channels, and Table 2
+reduces one L1 globally over all concatenated channels. That weights every
+map's mean absolute error equally. Reducing per map and normalising each by
+its own detached magnitude is an equally literal reading, and it hands
+proportionally more gradient to maps that are already accurate. On the same
 set, seed, architecture and budget:
 
 | budget | gap under global L1 | gap under per-map normalised L1 | ratio |
@@ -268,11 +270,13 @@ absolute global L1. Aligning the loss with the metric raises both methods on
 the probed set, `NTC_N` from 34.16 to 35.69 and `NTC_PEPS` from 34.61 to
 39.22, and the published gain of +1.59 dB falls between our two variants.
 
-The reproduction lesson is therefore not "we needed more GPUs". A protocol
-detail the paper never reports moves the headline effect by almost eight
-times, which is far larger than any budget effect we measured. When a
-reproduction misses a published margin, rank the candidate causes by measured
-sensitivity before spending compute.
+The reproduction lesson is therefore not "we needed more GPUs". A detail the
+paper leaves open, one level below the reported recipe, moves the headline
+effect by almost eight times, far more than any budget effect measured here.
+This is not a claim that Table 2 is mis-specified: all 594 jobs used the same
+global reduction, so the method comparison is internally fair. It is a claim
+about where to look first. When a reproduction misses a published margin, rank
+the candidate causes by measured sensitivity before spending compute.
 
 Evidence lives in `results/texture_repro/budget_probe/`; `curves.csv` carries
 one row per loss, set, seed and budget, and `receipt.json` records the design,
