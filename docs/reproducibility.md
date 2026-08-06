@@ -415,9 +415,10 @@ The reproduction reorders the rows. The paper puts the NTC family above
 0.162. So there must be a second, independent discrepancy, and it has to be
 something that treats the methods unequally.
 
-The unreported reduction does exactly that. On `paving-stones-070` seed 0 at
-240k steps, holding data, architecture, seed and budget fixed and varying only
-the exponent applied to each map's own error:
+The unreported reduction can do exactly that, though only where the
+reproduction actually disagrees. On `paving-stones-070` seed 0 at 240k steps,
+holding data, architecture, seed and budget fixed and varying only the exponent
+applied to each map's own error:
 
 | exponent | `BI-Grid` | `NTC_PEPS` | `NTC_PEPS` - `BI-Grid` |
 | ---: | ---: | ---: | ---: |
@@ -429,10 +430,20 @@ Over that range `BI-Grid` gains 1.87 dB and `NTC_PEPS` gains 3.94. The series is
 monotone, the sign flips between exponent 0 and 0.5, and the published +0.540
 falls inside the bracket, nearer 0.5 than 1.
 
+A second material bounds the claim sharply. On `metal-plates-013` the
+reproduction never reverses the published order at all: `NTC_PEPS` already
+leads `BI-Grid` by +1.93 dB, and the same sweep moves the contrast the other
+way, to +1.35. Across exponents 0 to 1 there, `BI-Grid` gains 1.77 dB against
+`NTC_PEPS`'s 1.19, the opposite of the paving ordering. The reduction favours
+the NTC side on one material and the Grid side on the other, so no single
+exponent repairs Table 2 as a whole, and the reproduction's reversal is itself
+material-specific rather than uniform.
+
 Two different unreported choices therefore account for two different symptoms:
-the file selection for the level, the map reduction for the order. Neither
-requires an implementation error, and the two would have been impossible to
-separate without holding one fixed while moving the other.
+the file selection for the level, the map reduction for the order where the
+order goes wrong. Neither requires an implementation error, and the two would
+have been impossible to separate without holding one fixed while moving the
+other.
 
 Both claims stop at sufficiency. Showing that a choice *can* produce an effect
 is not showing that the authors made it, and `results/texture_repro/
