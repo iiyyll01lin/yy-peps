@@ -1,0 +1,294 @@
+{
+  "composition_weights": {
+    "actual": {
+      "AO": 5,
+      "ARM": 13,
+      "DIFF": 18,
+      "Displacement": 12,
+      "metal": 2,
+      "normal": 18,
+      "rough": 5,
+      "specular": 3
+    },
+    "balanced": {
+      "AO": 1,
+      "ARM": 1,
+      "DIFF": 1,
+      "Displacement": 1,
+      "metal": 1,
+      "normal": 1,
+      "rough": 1,
+      "specular": 1
+    }
+  },
+  "headline_pairs": {
+    "NTC_PEPS - BI-Grid": {
+      "actual_composition_db": -0.151695,
+      "balanced_composition_db": 0.284243,
+      "per_category_db": {
+        "AO": -0.173493,
+        "ARM": -0.520605,
+        "DIFF": 0.333754,
+        "Displacement": -1.168472,
+        "metal": 2.067745,
+        "normal": -0.360238,
+        "rough": 0.09181,
+        "specular": 2.003443
+      },
+      "published_db": 0.54,
+      "sign_depends_on_category": true
+    },
+    "NTC_PEPS - NTC_N": {
+      "actual_composition_db": 1.159007,
+      "balanced_composition_db": 1.544296,
+      "per_category_db": {
+        "AO": 1.056761,
+        "ARM": 0.950303,
+        "DIFF": 1.48587,
+        "Displacement": 0.83986,
+        "metal": 2.655926,
+        "normal": 0.655542,
+        "rough": 1.190442,
+        "specular": 3.519663
+      },
+      "published_db": 1.59,
+      "sign_depends_on_category": false
+    },
+    "NTC_PinkPEPS - BI-Grid": {
+      "actual_composition_db": -0.419974,
+      "balanced_composition_db": -0.145639,
+      "per_category_db": {
+        "AO": -0.261665,
+        "ARM": -0.688998,
+        "DIFF": 0.288555,
+        "Displacement": -1.518551,
+        "metal": 0.657766,
+        "normal": -0.7093,
+        "rough": -0.18673,
+        "specular": 1.253816
+      },
+      "published_db": 0.64,
+      "sign_depends_on_category": true
+    }
+  },
+  "note": "Whether composition can reorder methods depends on whether their relative strengths are constant across map categories. They are not.",
+  "pairs_that_swap": [
+    {
+      "actual_db": 0.207578,
+      "balanced_db": -0.085775,
+      "pair": [
+        "BI-Grid",
+        "Grid-PEPS4F"
+      ]
+    },
+    {
+      "actual_db": 0.151695,
+      "balanced_db": -0.284243,
+      "pair": [
+        "BI-Grid",
+        "NTC_PEPS"
+      ]
+    },
+    {
+      "actual_db": 0.12548,
+      "balanced_db": -0.108164,
+      "pair": [
+        "Grid-PEPS4F-25",
+        "NTC_PEPS-25"
+      ]
+    },
+    {
+      "actual_db": 0.210813,
+      "balanced_db": -0.001677,
+      "pair": [
+        "Grid-PinkPEPS4F",
+        "NTC_PEPS"
+      ]
+    },
+    {
+      "actual_db": 0.025343,
+      "balanced_db": -0.320499,
+      "pair": [
+        "LPE",
+        "NTC_PinkPEPS-25"
+      ]
+    },
+    {
+      "actual_db": 0.224073,
+      "balanced_db": -0.055496,
+      "pair": [
+        "NTC_N",
+        "NTC_PEPS-25"
+      ]
+    }
+  ],
+  "per_method_category_mean_psnr": {
+    "BI-Grid": {
+      "AO": 42.09941,
+      "ARM": 39.720232,
+      "DIFF": 37.824205,
+      "Displacement": 53.196652,
+      "metal": 49.20522,
+      "normal": 33.487134,
+      "rough": 39.410483,
+      "specular": 44.896013
+    },
+    "Grid-PEPS4F": {
+      "AO": 41.772572,
+      "ARM": 38.594129,
+      "DIFF": 37.966248,
+      "Displacement": 53.100984,
+      "metal": 50.80392,
+      "normal": 33.183948,
+      "rough": 38.888979,
+      "specular": 46.21477
+    },
+    "Grid-PEPS4F-25": {
+      "AO": 40.506405,
+      "ARM": 37.655681,
+      "DIFF": 36.507013,
+      "Displacement": 52.421656,
+      "metal": 49.709803,
+      "normal": 32.118381,
+      "rough": 37.41005,
+      "specular": 43.008591
+    },
+    "Grid-PinkPEPS4F": {
+      "AO": 42.084718,
+      "ARM": 38.977069,
+      "DIFF": 38.28869,
+      "Displacement": 53.317129,
+      "metal": 50.083847,
+      "normal": 33.353905,
+      "rough": 39.409403,
+      "specular": 46.585117
+    },
+    "Grid-PinkPEPS4F-25": {
+      "AO": 40.803117,
+      "ARM": 37.985831,
+      "DIFF": 36.823993,
+      "Displacement": 52.660948,
+      "metal": 48.693332,
+      "normal": 32.232554,
+      "rough": 37.763953,
+      "specular": 43.660333
+    },
+    "LPE": {
+      "AO": 40.46343,
+      "ARM": 37.365335,
+      "DIFF": 36.363213,
+      "Displacement": 51.153803,
+      "metal": 47.073404,
+      "normal": 32.55826,
+      "rough": 37.388587,
+      "specular": 42.149256
+    },
+    "NTC_N": {
+      "AO": 40.869157,
+      "ARM": 38.249325,
+      "DIFF": 36.672089,
+      "Displacement": 51.18832,
+      "metal": 48.617038,
+      "normal": 32.471354,
+      "rough": 38.31185,
+      "specular": 43.379793
+    },
+    "NTC_PEPS": {
+      "AO": 41.925917,
+      "ARM": 39.199627,
+      "DIFF": 38.157959,
+      "Displacement": 52.02818,
+      "metal": 51.272964,
+      "normal": 33.126895,
+      "rough": 39.502292,
+      "specular": 46.899456
+    },
+    "NTC_PEPS-25": {
+      "AO": 40.318747,
+      "ARM": 37.526948,
+      "DIFF": 36.529265,
+      "Displacement": 51.272294,
+      "metal": 50.685307,
+      "normal": 32.022399,
+      "rough": 38.388006,
+      "specular": 43.45993
+    },
+    "NTC_PinkPEPS": {
+      "AO": 41.837745,
+      "ARM": 39.031233,
+      "DIFF": 38.11276,
+      "Displacement": 51.678101,
+      "metal": 49.862985,
+      "normal": 32.777833,
+      "rough": 39.223753,
+      "specular": 46.149829
+    },
+    "NTC_PinkPEPS-25": {
+      "AO": 40.45165,
+      "ARM": 37.708865,
+      "DIFF": 36.572285,
+      "Displacement": 50.911667,
+      "metal": 48.857423,
+      "normal": 31.70755,
+      "rough": 37.667592,
+      "specular": 43.202248
+    }
+  },
+  "ranking": {
+    "actual": [
+      "Grid-PinkPEPS4F",
+      "BI-Grid",
+      "NTC_PEPS",
+      "Grid-PEPS4F",
+      "NTC_PinkPEPS",
+      "Grid-PinkPEPS4F-25",
+      "NTC_N",
+      "Grid-PEPS4F-25",
+      "NTC_PEPS-25",
+      "LPE",
+      "NTC_PinkPEPS-25"
+    ],
+    "balanced": [
+      "NTC_PEPS",
+      "Grid-PinkPEPS4F",
+      "Grid-PEPS4F",
+      "BI-Grid",
+      "NTC_PinkPEPS",
+      "Grid-PinkPEPS4F-25",
+      "NTC_PEPS-25",
+      "NTC_N",
+      "Grid-PEPS4F-25",
+      "NTC_PinkPEPS-25",
+      "LPE"
+    ],
+    "identical": false
+  },
+  "scores": {
+    "actual": {
+      "BI-Grid": 40.512827,
+      "Grid-PEPS4F": 40.305249,
+      "Grid-PEPS4F-25": 39.103533,
+      "Grid-PinkPEPS4F": 40.571945,
+      "Grid-PinkPEPS4F-25": 39.341685,
+      "LPE": 38.816265,
+      "NTC_N": 39.202125,
+      "NTC_PEPS": 40.361132,
+      "NTC_PEPS-25": 38.978052,
+      "NTC_PinkPEPS": 40.092854,
+      "NTC_PinkPEPS-25": 38.790922
+    },
+    "balanced": {
+      "BI-Grid": 42.479918,
+      "Grid-PEPS4F": 42.565694,
+      "Grid-PEPS4F-25": 41.167198,
+      "Grid-PinkPEPS4F": 42.762485,
+      "Grid-PinkPEPS4F-25": 41.328008,
+      "LPE": 40.564411,
+      "NTC_N": 41.219866,
+      "NTC_PEPS": 42.764161,
+      "NTC_PEPS-25": 41.275362,
+      "NTC_PinkPEPS": 42.33428,
+      "NTC_PinkPEPS-25": 40.88491
+    }
+  }
+}

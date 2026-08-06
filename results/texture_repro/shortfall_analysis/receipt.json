@@ -4,7 +4,7 @@
     "semantic_weighting": "map_weighted_within_category",
     "unit": "individual RGB map, then mean over all maps and seeds"
   },
-  "answer": "The selection accounts for it. The reported score is a plain mean over the individual maps, the eight map categories span 19.4 dB, and our frozen selection puts 47 percent of its maps in the two lowest-scoring categories. Rebalancing the categories alone moves the mean by more than the shortfall, and the paper does not publish the file list.",
+  "answer": "The selection accounts for it, and for more than the level. The reported score is a plain mean over the individual maps, the eight map categories span 19.4 dB, and our frozen selection puts 47 percent of its maps in the two lowest-scoring categories. Rebalancing the categories alone moves the mean by more than the shortfall. Because the methods' relative strengths differ by category, rebalancing also reorders them: see reordering.json.",
   "composition": {
     "category_mean_psnr": {
       "AO": 41.19389711291459,
@@ -33,12 +33,12 @@
     "share_in_two_lowest_categories": 0.47368421052631576,
     "total_maps": 76
   },
-  "generated_at_utc": "2026-08-06T07:10:44.537893+00:00",
+  "generated_at_utc": "2026-08-06T11:10:45.373815+00:00",
   "limitations": [
     "This is an analysis of committed evidence, not a new measurement.",
     "The paper's map-file list is unpublished, so the true composition difference cannot be measured, only bounded.",
     "The category means pool all eleven methods and three seeds; they are not a per-method statement.",
-    "Composition shifts every method almost equally, so it explains the uniform offset but not the method ordering mismatch."
+    "A balanced composition is a reference point, not a claim about what the paper used; the true composition is unpublished and the balanced one overshoots the published absolute values."
   ],
   "method_means": {
     "ours": 39.668884302281896,

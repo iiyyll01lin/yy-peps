@@ -1,9 +1,10 @@
 # Where the Table 2 shortfall comes from
 
 Every one of the eleven reproduced Table 2 methods scores below the published
-value, by a mean of **1.154 dB**. This directory decomposes that shortfall using
-only committed evidence. No GPU work was run and no new measurement was taken;
-`receipt.json` is derived entirely from `table2.json` and
+value, by a mean of **1.154 dB**, and the reproduced table also reverses the
+paper's ordering between the NTC and Grid families. This directory shows that
+one unpublished choice accounts for both. No GPU work was run; `receipt.json`
+and `reordering.json` are derived entirely from `table2.json` and
 `table2_instances.csv`.
 
 ## The reported score is a mean over maps, not over materials
@@ -31,9 +32,7 @@ remotely comparable to each other.
 The spread from `normal` to `Displacement` is **19.445 dB**, and **47% of our
 maps sit in the two lowest-scoring categories**.
 
-## Composition alone covers the shortfall
-
-Because the mean is taken over maps, one substitution moves it directly:
+## Composition alone covers the level
 
 | quantity | value |
 | --- | ---: |
@@ -48,40 +47,72 @@ Because the mean is taken over maps, one substitution moves it directly:
 The paper names eighteen sets and eight map categories but does not publish the
 file list, which `table2.json` already records as
 `texture_file_selection_not_published`. A 5.9% difference in which files were
-chosen is therefore not a plausible coincidence to rule out; it is the expected
-state of affairs. Rebalancing the categories has almost twice the headroom
-needed to erase the gap.
+chosen is not a coincidence to rule out; it is the expected state of affairs.
 
-This is consistent with two other observations. The offset is nearly uniform
-across all eleven methods, which is what a content difference produces and what
-an algorithmic error generally does not. And SSIM matches the published values
-closely, which is what one expects from a bounded metric that is far less
-sensitive to map category than PSNR is.
+## Composition also changes the order
 
-## What this does not explain
+An earlier version of this file claimed a selection effect could shift the whole
+table but never reorder it. That is wrong, and `reordering.json` shows why: it
+would only hold if every method's relative strength were constant across map
+categories, and it is not.
 
-Composition shifts every method by almost the same amount, so it cannot produce
-a **reordering**. The ordering mismatch is untouched by this analysis and
-remains open: the paper puts the NTC family on top (NTC_PinkPEPS 41.89,
-NTC_PEPS 41.79) while this reproduction puts the Grid family on top
-(Grid-PinkPEPS4F 40.603, BI-Grid 40.549), demoting the paper's best method to
-fifth.
+`NTC_PEPS` minus `BI-Grid`, computed within each category:
+
+| category | `NTC_PEPS` - `BI-Grid` |
+| --- | ---: |
+| Displacement | **-1.17** |
+| ARM | -0.52 |
+| normal | -0.36 |
+| AO | -0.17 |
+| rough | +0.09 |
+| DIFF | +0.34 |
+| specular | **+2.00** |
+| metal | **+2.06** |
+
+The sign depends on the category. Our selection carries twelve `Displacement`
+maps but only two `metal` and three `specular`, which is close to the worst
+possible weighting for `NTC_PEPS`. Reweighting the same measurements to equal
+categories:
+
+| contrast | our composition | balanced | published |
+| --- | ---: | ---: | ---: |
+| `NTC_PEPS` - `BI-Grid` | -0.152 | **+0.284** | +0.540 |
+| `NTC_PEPS` - `NTC_N` | +1.159 | **+1.544** | +1.590 |
+
+The first flips sign into agreement with the paper. The second, the headline
+PEPS gain, moves from 0.43 dB short of the published value to **0.046 dB
+short**. Six method pairs swap places between the two weightings, and
+`NTC_PEPS` moves from third to first.
+
+## What this means
+
+One unpublished choice, the map-file selection, is enough to account for the
+level, for the size of the headline PEPS gain, and for the ordering. That is
+more parsimonious than attributing the level and the order to two separate
+causes, which is what an earlier version of this analysis did.
+
+It remains a bound rather than a measurement. The paper's file list is
+unpublished, so we can show what a reasonable selection does to our own numbers
+but not what the authors' selection was. A perfectly balanced composition
+overshoots the published absolute values, so the truth lies between our
+selection and that one.
+
+`../ordering_probe/` shows the unreported map-reduction can also flip the order
+on some materials. That remains true and remains a real degree of freedom, but
+it is no longer required to explain the mismatch.
 
 ## Per-set variation, for scale
 
-`per_set_gap.csv` records the NTC_PEPS minus NTC_N advantage per set, averaged
-over the three seeds. It ranges from **-0.453 dB** (fabric-pattern-07, where
-PEPS loses) to **+4.061 dB** (garden-gnome), with a standard deviation of 1.089
-across the eighteen sets. The mean is +1.249 against the published +1.59.
+`per_set_gap.csv` records the `NTC_PEPS` minus `NTC_N` advantage per set,
+averaged over the three seeds. It ranges from **-0.453 dB**
+(fabric-pattern-07, where PEPS loses) to **+4.061 dB** (garden-gnome), with a
+standard deviation of 1.089 across the eighteen sets. Seed spread within a set
+is small by comparison, mostly under 0.5 dB.
 
-Seed spread within a set is small by comparison, mostly under 0.5 dB. The
-variation that matters here is between materials, not between seeds.
-
-This also bounds what the two-set budget and loss probes in `../budget_probe/`
-can claim: paving-stones-070 ranks 8th of 18 on this advantage and
-metal-plates-013 ranks 16th, so that pair averages +1.642 against the
-full-table +1.249. It is not a representative sample and no probe run on it
-should be read as a Table 2-wide statement.
+This bounds what the two-material probes in `../budget_probe/` and
+`../ordering_probe/` can claim: `paving-stones-070` ranks 8th of 18 on this
+advantage and `metal-plates-013` ranks 16th, so that pair averages +1.642
+against the full-table +1.249 and is not a representative sample.
 
 ## Files
 
@@ -89,10 +120,12 @@ should be read as a Table 2-wide statement.
 | --- | --- |
 | `receipt.json` | the decomposition, its inputs and its limitations |
 | `composition.csv` | map count, share and mean PSNR per category |
-| `per_set_gap.csv` | per-set NTC_PEPS advantage, ranked |
+| `reordering.json` | per-method category means, both rankings, every pair that swaps |
+| `method_by_category.csv` | mean PSNR per method per category |
+| `per_set_gap.csv` | per-set `NTC_PEPS` advantage, ranked |
 
 ## Status
 
 `analysis_of_committed_evidence_no_new_measurement`. `paper_exact` is false.
-The paper's map-file list is unpublished, so the true composition difference is
+The paper's map-file list is unpublished, so the composition difference is
 bounded here, not measured.

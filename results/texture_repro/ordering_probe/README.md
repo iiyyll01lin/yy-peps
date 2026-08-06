@@ -10,9 +10,11 @@ table puts `BI-Grid` above the NTC family.
 | `NTC_PinkPEPS` - `BI-Grid` | +0.640 | -0.424 |
 
 `../shortfall_analysis/` shows the unpublished map-file selection accounts for
-the uniform 1.15 dB offset, but composition shifts every method by nearly the
-same amount, so it cannot reorder rows. This probe tests the other unreported
-choice: how the L1 is reduced across a set's maps.
+the uniform 1.15 dB offset **and** for the ordering, because the methods'
+relative strengths vary by map category. This probe tests a second unreported
+choice, how the L1 is reduced across a set's maps, which turns out to be
+sufficient on some materials but is no longer required to explain the
+mismatch.
 
 ## Method
 

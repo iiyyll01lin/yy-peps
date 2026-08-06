@@ -336,10 +336,9 @@ algorithmic error usually does not. And SSIM matches the published values
 closely, which is what a bounded metric does when the content differs but the
 method is right.
 
-What this does not explain is the ordering. Composition shifts every method by
-almost the same amount, so it cannot reorder them, and this reproduction still
-places the Grid family above the NTC family where the paper does the reverse.
-That mismatch is the open question, and a better target than the offset.
+It explains the ordering too, which is less obvious and is treated in its own
+section below. Methods are not equally strong on every category, so reweighting
+the categories moves them by different amounts and can swap their positions.
 
 Evidence lives in `results/texture_repro/shortfall_analysis/`, labelled
 `analysis_of_committed_evidence_no_new_measurement`: it re-reads the committed
@@ -402,20 +401,35 @@ statement, and the commit that retracted the second one greps the tree for the
 old wording and refuses to complete if any copy survives. A reader who saw the
 earlier text can then find out what happened to it, which is the whole point.
 
-## Separating what a selection effect can and cannot do
+## A selection effect reorders the table as well
 
-The composition argument above accounts for the uniform 1.15 dB offset, and it
-is worth being precise about what it cannot touch. Changing which map files a
-selection carries moves every method by nearly the same amount, because they
-all encode the same maps. A selection effect can move the whole table up or
-down; it cannot reorder the rows.
+The composition argument above accounts for the uniform 1.15 dB offset. An
+earlier version of this guide then asserted that it could not touch the
+ordering, reasoning that every method encodes the same maps and so moves by the
+same amount. That reasoning is wrong, and checking it was worth the few minutes
+it took.
 
-The reproduction reorders the rows. The paper puts the NTC family above
-`BI-Grid` by +0.540 dB on `NTC_PEPS`; this reproduction puts `BI-Grid` ahead by
-0.162. So there must be a second, independent discrepancy, and it has to be
-something that treats the methods unequally.
+It would hold only if each method's relative strength were constant across map
+categories. Computed within categories, `NTC_PEPS` minus `BI-Grid` runs from
+-1.17 dB on `Displacement` to +2.06 dB on `metal`. The sign depends on which
+categories a selection emphasises, and ours carries twelve `Displacement` maps
+against two `metal` and three `specular`, close to the worst available
+weighting for `NTC_PEPS`.
 
-The unreported reduction can do exactly that, though only where the
+Reweighting the same 594 measured jobs to equal categories:
+
+| contrast | our composition | balanced | published |
+| --- | ---: | ---: | ---: |
+| `NTC_PEPS` - `BI-Grid` | -0.152 | +0.284 | +0.540 |
+| `NTC_PEPS` - `NTC_N` | +1.159 | +1.544 | +1.590 |
+
+The ordering contrast flips into agreement with the paper, and the headline
+PEPS gain closes from 0.43 dB short of the published value to 0.046 dB short.
+Six method pairs swap places and `NTC_PEPS` moves from third to first. So a
+single unpublished choice accounts for the level, the size of the headline
+gain, and the order.
+
+The unreported reduction can also change the order, though only where the
 reproduction actually disagrees. On `paving-stones-070` seed 0 at 240k steps,
 holding data, architecture, seed and budget fixed and varying only the exponent
 applied to each map's own error:
@@ -439,13 +453,18 @@ the NTC side on one material and the Grid side on the other, so no single
 exponent repairs Table 2 as a whole, and the reproduction's reversal is itself
 material-specific rather than uniform.
 
-Two different unreported choices therefore account for two different symptoms:
-the file selection for the level, the map reduction for the order where the
-order goes wrong. Neither requires an implementation error, and the two would
-have been impossible to separate without holding one fixed while moving the
-other.
+So there are two candidate explanations for the ordering, not one, and they
+are not equally strong. The selection effect explains the level, the headline
+gain and the order together, from data that already existed. The reduction
+explains the order on one material and pushes it the wrong way on another, and
+it cost several GPU-hours to measure. Prefer the account that explains more
+symptoms with fewer assumptions.
 
-Both claims stop at sufficiency. Showing that a choice *can* produce an effect
-is not showing that the authors made it, and `results/texture_repro/
-ordering_probe/receipt.json` says so in its limitations rather than leaving the
-reader to infer it.
+Both stop at sufficiency. Showing that a choice *can* produce an effect is not
+showing the authors made it, and both receipts say so in their limitations
+rather than leaving the reader to infer it. Neither requires an implementation
+error anywhere in this reproduction.
+
+The sharper lesson is about the order of work. The reordering test above is a
+few dozen lines over a CSV that had been sitting in the repository for a day.
+It was run only after the GPU probes, and it turned out to subsume them.
