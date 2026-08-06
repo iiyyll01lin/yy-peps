@@ -1,0 +1,9 @@
+map_category,map_count,share_percent,mean_psnr_db
+normal,18,23.68,32.64
+DIFF,18,23.68,37.2562
+ARM,13,17.11,38.3649
+rough,5,6.58,38.4877
+AO,5,6.58,41.1939
+specular,3,3.95,44.5096
+metal,2,2.63,49.5332
+Displacement,12,15.79,52.0845

@@ -1,0 +1,145 @@
+{
+  "aggregation_declared_by_table2": {
+    "global_weighting": "map_weighted",
+    "semantic_weighting": "map_weighted_within_category",
+    "unit": "individual RGB map, then mean over all maps and seeds"
+  },
+  "answer": "The selection accounts for it. The reported score is a plain mean over the individual maps, the eight map categories span 19.4 dB, and our frozen selection puts 47 percent of its maps in the two lowest-scoring categories. Rebalancing the categories alone moves the mean by more than the shortfall, and the paper does not publish the file list.",
+  "composition": {
+    "category_mean_psnr": {
+      "AO": 41.19389711291459,
+      "ARM": 38.36493413375779,
+      "DIFF": 37.256156519462515,
+      "Displacement": 52.08452129210235,
+      "metal": 49.53320388624748,
+      "normal": 32.64001935853949,
+      "rough": 38.487722541510855,
+      "specular": 44.50957595170699
+    },
+    "category_spread_db": 19.44450193356286,
+    "counts": {
+      "AO": 5,
+      "ARM": 13,
+      "DIFF": 18,
+      "Displacement": 12,
+      "metal": 2,
+      "normal": 18,
+      "rough": 5,
+      "specular": 3
+    },
+    "highest_category": "Displacement",
+    "lowest_category": "normal",
+    "sets": 18,
+    "share_in_two_lowest_categories": 0.47368421052631576,
+    "total_maps": 76
+  },
+  "generated_at_utc": "2026-08-06T07:10:44.537893+00:00",
+  "limitations": [
+    "This is an analysis of committed evidence, not a new measurement.",
+    "The paper's map-file list is unpublished, so the true composition difference cannot be measured, only bounded.",
+    "The category means pool all eleven methods and three seeds; they are not a per-method statement.",
+    "Composition shifts every method almost equally, so it explains the uniform offset but not the method ordering mismatch."
+  ],
+  "method_means": {
+    "ours": 39.668884302281896,
+    "paper": 40.82272727272727
+  },
+  "paper_exact": false,
+  "per_set_variation": {
+    "headline_gap": {
+      "max_db": 4.060962010635035,
+      "min_db": -0.4534360503400639,
+      "ours_mean_over_sets_db": 1.2486117362875748,
+      "paper_db": 1.59,
+      "sets_where_peps_loses": 2,
+      "stdev_db": 1.0890885976078315
+    },
+    "note": "Context for scale only. The paper names the same eighteen sets, so the set list is not a free parameter; the map files within them are.",
+    "per_method": {
+      "BI-Grid": {
+        "per_set_max": 47.13661041964182,
+        "per_set_min": 30.05596971046132,
+        "per_set_range_db": 17.0806407091805,
+        "per_set_stdev_db": 4.6845280454618345
+      },
+      "Grid-PEPS4F": {
+        "per_set_max": 47.155699833639765,
+        "per_set_min": 30.77885380714571,
+        "per_set_range_db": 16.376846026494057,
+        "per_set_stdev_db": 4.5550556560725335
+      },
+      "Grid-PEPS4F-25": {
+        "per_set_max": 45.14000997183196,
+        "per_set_min": 29.8789907752437,
+        "per_set_range_db": 15.261019196588258,
+        "per_set_stdev_db": 4.51339096697453
+      },
+      "Grid-PinkPEPS4F": {
+        "per_set_max": 47.44929481868127,
+        "per_set_min": 30.842724199543433,
+        "per_set_range_db": 16.606570619137834,
+        "per_set_stdev_db": 4.503913504402355
+      },
+      "Grid-PinkPEPS4F-25": {
+        "per_set_max": 45.530958656289705,
+        "per_set_min": 29.942267134896813,
+        "per_set_range_db": 15.588691521392892,
+        "per_set_stdev_db": 4.457048262987794
+      },
+      "LPE": {
+        "per_set_max": 44.767055067660145,
+        "per_set_min": 29.534325500899875,
+        "per_set_range_db": 15.23272956676027,
+        "per_set_stdev_db": 4.108822248700614
+      },
+      "NTC_N": {
+        "per_set_max": 45.99548642672243,
+        "per_set_min": 29.613557081960916,
+        "per_set_range_db": 16.381929344761513,
+        "per_set_stdev_db": 4.402376090722962
+      },
+      "NTC_PEPS": {
+        "per_set_max": 48.3019441091131,
+        "per_set_min": 31.23566589047818,
+        "per_set_range_db": 17.06627821863492,
+        "per_set_stdev_db": 4.75158957399238
+      },
+      "NTC_PEPS-25": {
+        "per_set_max": 45.58251299690871,
+        "per_set_min": 30.249283914854146,
+        "per_set_range_db": 15.333229082054565,
+        "per_set_stdev_db": 4.385504938014628
+      },
+      "NTC_PinkPEPS": {
+        "per_set_max": 47.74850451074523,
+        "per_set_min": 31.348957290623677,
+        "per_set_range_db": 16.39954722012155,
+        "per_set_stdev_db": 4.623082173308135
+      },
+      "NTC_PinkPEPS-25": {
+        "per_set_max": 45.537915196874565,
+        "per_set_min": 30.12716349102533,
+        "per_set_range_db": 15.410751705849236,
+        "per_set_stdev_db": 4.509882466408265
+      }
+    }
+  },
+  "question": "Does the uniform 1.15 dB Table 2 shortfall indicate an implementation error, or can the unpublished map-file selection account for it?",
+  "schema": "peps.texture_shortfall_analysis",
+  "schema_version": 1,
+  "sensitivity": {
+    "category_balanced_mean": 41.75875384953026,
+    "db_per_single_map_swap": 0.2558487096521429,
+    "fraction_of_selection_to_close_shortfall": 0.05934032017830942,
+    "headroom_over_shortfall": 1.833375599426845,
+    "our_map_weighted_mean": 39.643326301945514,
+    "rebalancing_headroom_db": 2.115427547584744,
+    "swaps_to_close_shortfall": 4.509864333551516
+  },
+  "shortfall_db": 1.1538429704453768,
+  "sources": [
+    "results/texture_repro/table2.json",
+    "results/texture_repro/table2_instances.csv"
+  ],
+  "verification_status": "analysis_of_committed_evidence_no_new_measurement"
+}

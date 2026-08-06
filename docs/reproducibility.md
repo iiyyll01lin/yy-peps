@@ -268,15 +268,30 @@ This matters because Table 2 reports a per-map average of PSNR, a relative
 log-domain quantity per map, while the frozen recipe optimises a single
 absolute global L1. Aligning the loss with the metric raises both methods on
 the probed set, `NTC_N` from 34.16 to 35.69 and `NTC_PEPS` from 34.61 to
-39.22, and the published gain of +1.59 dB falls between our two variants.
+39.22. The published gain of +1.59 dB is a mean over eighteen materials,
+so no single-set number here can be compared against it directly.
 
-The reproduction lesson is therefore not "we needed more GPUs". A detail the
-paper leaves open, one level below the reported recipe, moves the headline
-effect by almost eight times, far more than any budget effect measured here.
-This is not a claim that Table 2 is mis-specified: all 594 jobs used the same
-global reduction, so the method comparison is internally fair. It is a claim
-about where to look first. When a reproduction misses a published margin, rank
-the candidate causes by measured sensitivity before spending compute.
+Extending the contrast to a second material overturns the general reading. On
+`metal-plates-013` at the same budget the per-map reduction changes almost
+nothing: +2.3199 dB becomes +2.2105 dB, a ratio of 0.95. The sixfold swing is a
+property of `paving-stones-070`, not of the reduction. The reading that fits
+both is that per-map normalisation only unlocks advantage a global reduction
+was hiding in smooth maps, and on `metal-plates-013` PEPS already leads by a
+wide margin, so there is nothing left to unlock.
+
+A graded ladder on `paving-stones-070` at 240k steps shows a dose response
+rather than a quirk of one implementation. Dividing each map by its own error
+raised to 0, 0.5 and 1 gives +0.5601, +1.2399 and +3.1919 dB, monotone in the
+normalisation strength. A fourth variant dividing by the target's dynamic range
+rather than the current error gives +0.6359, barely above the global reduction,
+so the mechanism is adaptive error-dependent weighting and not putting the maps
+on a common scale.
+
+The reproduction lesson is therefore not "we needed more GPUs", and not that
+the reduction explains the shortfall either. It is that an unreported detail one
+level below the published recipe can move a per-set result several fold while
+leaving another material untouched. Rank candidate causes by measured
+sensitivity, and confirm a mechanism replicates before believing it.
 
 Evidence lives in `results/texture_repro/budget_probe/`; `curves.csv` carries
 one row per loss, set, seed and budget, and `receipt.json` records the design,
@@ -285,3 +300,52 @@ the matched loss contrast, and the limitations. Both probes are labelled
 two seeds, and the per-map normalised loss is our own construction rather than
 a recovered recipe, so they demonstrate sensitivity rather than restating the
 paper's protocol.
+
+## The shortfall is a selection effect, not an implementation error
+
+Every one of the eleven reproduced Table 2 methods lands below its published
+value, by a mean of 1.154 dB. That looks like a defect until you read what the
+number averages. `table2.json` declares its own aggregation as `map_weighted`,
+with the unit "individual RGB map, then mean over all maps and seeds", so the
+headline figure is a plain mean over the 76 individual maps the frozen
+selection carries.
+
+The eight map categories are not comparable to one another. Pooled over all
+eleven methods, eighteen sets and three seeds they run from `normal` at 32.640
+dB to `Displacement` at 52.085 dB, a spread of 19.445 dB. Our selection puts
+47% of its maps in the two lowest-scoring categories: eighteen `normal` and
+eighteen `DIFF` out of 76.
+
+Because the mean is taken over maps, composition moves it directly. Swapping a
+single `normal` map for a single `Displacement` map shifts the headline number
+by 0.2558 dB, so 4.5 such swaps, 5.9% of the selection, close the entire
+shortfall. A category-balanced selection would score 41.759 against our 39.643,
+a headroom of +2.115 dB, or 1.83 times the gap to be explained.
+
+The paper names eighteen sets and eight map categories but never publishes the
+file list, which `table2.json` already carries as
+`texture_file_selection_not_published`. A 5.9% difference in which files were
+chosen is not a coincidence that needs ruling out; it is the expected state of
+affairs.
+
+Two independent observations agree. The offset is nearly uniform across all
+eleven methods, which is what differing content produces and what an
+algorithmic error usually does not. And SSIM matches the published values
+closely, which is what a bounded metric does when the content differs but the
+method is right.
+
+What this does not explain is the ordering. Composition shifts every method by
+almost the same amount, so it cannot reorder them, and this reproduction still
+places the Grid family above the NTC family where the paper does the reverse.
+That mismatch is the open question, and a better target than the offset.
+
+Evidence lives in `results/texture_repro/shortfall_analysis/`, labelled
+`analysis_of_committed_evidence_no_new_measurement`: it re-reads the committed
+Table 2 artifacts and runs nothing. `per_set_gap.csv` also bounds what the
+two-set probes above can claim, since `paving-stones-070` ranks 8th of 18 on
+the PEPS advantage and `metal-plates-013` ranks 16th.
+
+The process lesson is the sharper one. This decomposition costs no GPU time and
+uses data that already existed, yet it was run only after several GPU-hours of
+loss probes. Cheap variance decomposition belongs before expensive mechanism
+hunting.
