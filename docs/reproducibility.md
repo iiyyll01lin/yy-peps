@@ -349,3 +349,53 @@ The process lesson is the sharper one. This decomposition costs no GPU time and
 uses data that already existed, yet it was run only after several GPU-hours of
 loss probes. Cheap variance decomposition belongs before expensive mechanism
 hunting.
+
+## Three habits this reproduction had to learn
+
+### Let the digest separate outputs, and clone to keep the tree clean
+
+`_artifact_output()` keys every run directory on three hashes: the experiment
+config, the dataset manifest, and the tracked source. A probe that patches
+`peps/train.py` therefore writes somewhere different from Table 2 by
+construction, with no naming convention to remember. The directory names show
+it directly: the patched loss probes landed under
+`...-63e6597b835b-6c49d8dc482e` and the unpatched control under
+`...-63e6597b835b-ca6664fc7b36`, same manifest, different code.
+
+That protects the outputs, not the tree. Editing
+`configs/paper/texture_full.toml` in place to try a variant leaves the working
+tree dirty and leaves committed evidence citing a file that no longer matches
+it. So every probe here runs in a disposable clone: `git clone --shared`,
+symlink `data/raw` and `data/processed`, copy the dataset verification receipt,
+and overwrite only that clone's config. Then say which clone produced each
+number.
+
+### Assume a long run will die silently
+
+The Table 2 service stopped for fifty-five hours before anyone noticed. Nothing
+crashed and nothing logged an error. `Linger=no` meant the user manager, and
+everything under it, was torn down at logout, so the progress counter simply
+stopped advancing while every process that would have complained was already
+gone.
+
+A liveness check therefore has to live outside the run and assert progress
+rather than process existence: watch a monotone counter against wall-clock time
+and alarm when it stalls. `results/texture_repro/table2_service_observation.json`
+records the one this repository watches. A job that can take fourteen days needs
+that check before it starts, not after it fails.
+
+### Retract in place rather than quietly deleting
+
+Two claims here were committed and then contradicted by our own measurements.
+The first said that maps with larger absolute error dominate a global L1
+gradient; they do not, because every map occupies exactly three channels, so the
+reduction already weights each map's mean absolute error equally. The second
+said the paper never reports its texture loss; `docs/03_applications.md` records
+that it does specify L1, and only the optimizer and the seeds are assumptions.
+
+The fix is not to edit the sentence away.
+`results/texture_repro/budget_probe/README.md` carries a corrections section
+naming each wrong claim, the evidence that overturned it, and the corrected
+statement, and the commit that retracted the second one greps the tree for the
+old wording and refuses to complete if any copy survives. A reader who saw the
+earlier text can then find out what happened to it, which is the whole point.

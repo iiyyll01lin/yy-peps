@@ -40,8 +40,8 @@ The times are planning targets, not performance claims.
 | W10 | [Integer-only quantization](https://doi.org/10.1109/CVPR.2018.00068) | Storage accounting tests include all parameters and metadata; multi-seed observations are separated from causal hypotheses. |
 | W11 | [HIP documentation](https://rocm.docs.amd.com/projects/HIP/en/latest/) | CPU fixture parity passes; GPU evidence records ISA, ROCm, exact workload, repetitions, tolerance, or an explicit skip. |
 | W12 | [RDNA 4 ISA guide](https://www.amd.com/content/dam/amd/en/documents/radeon-tech-docs/instruction-set-architectures/rdna4-instruction-set-architecture.pdf) | CPU fp16/int8 references pass; paper latency is compared only under a matched full workload. |
-| W13 | [ACM Artifact Review and Badging](https://www.acm.org/publications/policies/artifact-review-and-badging-current) | Nonblank proposal, finite rerun baseline, profile, seeds, data hashes, primary metric, and evidence paths. |
-| W14 | [Good Enough Practices in Scientific Computing](https://doi.org/10.1371/journal.pcbi.1005510) | Validator accepts the notebook, nonblank numeric CSV, run manifest, Marp slide, conclusion, and limitations. |
+| W13 | [ACM Artifact Review and Badging](https://www.acm.org/publications/policies/artifact-review-and-badging-current) | Nonblank proposal, finite rerun baseline, profile, seeds, data hashes, primary metric, and evidence paths; variant runs are isolated in a clone and long runs declare a progress-based liveness check. |
+| W14 | [Good Enough Practices in Scientific Computing](https://doi.org/10.1371/journal.pcbi.1005510) | Validator accepts the notebook, nonblank numeric CSV, run manifest, Marp slide, conclusion, and limitations; any claim overturned by later evidence is retracted in place rather than deleted. |
 
 ## Focused grading commands / 聚焦評分指令
 

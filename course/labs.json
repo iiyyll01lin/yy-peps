@@ -368,6 +368,16 @@
           "id": "verified-baseline",
           "description": "The baseline is rerun under the selected profile rather than copied from a legacy CSV.",
           "evidence": "capstone submission manifest"
+        },
+        {
+          "id": "evidence-isolation",
+          "description": "Any run that changes config or tracked source happens in a disposable clone, so the committed tree stays clean and earlier evidence keeps matching the files it cites. Name the clone that produced each number.",
+          "evidence": "capstone submission manifest and docs/reproducibility.md"
+        },
+        {
+          "id": "run-liveness",
+          "description": "A run expected to last more than a few hours declares a liveness check that lives outside the run and asserts progress, not process existence: a monotone counter compared against wall-clock time.",
+          "evidence": "results/texture_repro/table2_service_observation.json"
         }
       ],
       "budget": "project"
@@ -394,6 +404,11 @@
           "id": "honest-conclusion",
           "description": "The conclusion follows the measured result, including a null or negative result.",
           "evidence": "limitations and conclusion fields in the submission manifest"
+        },
+        {
+          "id": "retraction-path",
+          "description": "A claim contradicted by later evidence is retracted in place, not deleted. The wrong claim, the evidence that overturned it, and the corrected statement all remain visible, and a check confirms the retracted wording survives nowhere else.",
+          "evidence": "results/texture_repro/budget_probe/README.md corrections section"
         }
       ],
       "budget": "project"
