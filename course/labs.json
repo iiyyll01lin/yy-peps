@@ -228,6 +228,11 @@
           "id": "baseline-language",
           "description": "A local proxy is labelled proxy and is not called RTXNTC-equivalent without official parity evidence.",
           "evidence": "notebook narrative and result metadata"
+        },
+        {
+          "id": "metric-composition",
+          "description": "State what the reported PSNR averages before comparing against the paper. It is a map-weighted mean over individual maps, and the eight map categories span about 19 dB, so a difference of a few maps in an unpublished selection moves the headline number by more than the reproduction gap. A comparison that skips this step is not a result.",
+          "evidence": "notebooks/W08_texture_ntc.ipynb section 6 and results/texture_repro/shortfall_analysis/composition.csv"
         }
       ],
       "budget": "paper-exact"
