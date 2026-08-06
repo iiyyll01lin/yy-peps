@@ -5,11 +5,10 @@
       "metal-plates-013",
       "paving-stones-070"
     ],
-    "observations": 19,
+    "observations": 20,
     "pending": [
       "global_l1/metal-plates-013/NTC_PinkPEPS",
       "per_map_normalised_l1/metal-plates-013/NTC_PinkPEPS",
-      "sqrt_map_l1/metal-plates-013/NTC_PEPS",
       "sqrt_map_l1/metal-plates-013/NTC_PinkPEPS"
     ]
   },
@@ -28,7 +27,7 @@
     },
     "reference_method": "BI-Grid"
   },
-  "generated_at_utc": "2026-08-06T13:03:33.812517+00:00",
+  "generated_at_utc": "2026-08-06T13:57:44.611523+00:00",
   "ladders": [
     {
       "differential_gain_vs_reference_db": {
@@ -39,6 +38,7 @@
       "monotone_in_normalisation_strength": false,
       "ntc_peps_contrast_series": [
         1.930203,
+        1.229094,
         1.348269
       ],
       "published_contrast_db": 0.5399999999999991,
@@ -66,11 +66,14 @@
           }
         },
         {
-          "contrast_vs_reference": {},
+          "contrast_vs_reference": {
+            "NTC_PEPS": 1.229094
+          },
           "loss": "sqrt_map_l1",
           "normalisation_exponent": 0.5,
           "psnr": {
-            "BI-Grid": 44.76064479450185
+            "BI-Grid": 44.76064479450185,
+            "NTC_PEPS": 45.98973870638175
           }
         },
         {

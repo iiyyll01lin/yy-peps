@@ -3,6 +3,7 @@ metal-plates-013,global_l1,0.0,BI-Grid,43.57061,
 metal-plates-013,global_l1,0.0,NTC_N,43.180958,
 metal-plates-013,global_l1,0.0,NTC_PEPS,45.500813,1.930203
 metal-plates-013,sqrt_map_l1,0.5,BI-Grid,44.760645,
+metal-plates-013,sqrt_map_l1,0.5,NTC_PEPS,45.989739,1.229094
 metal-plates-013,per_map_normalised_l1,1.0,BI-Grid,45.338246,
 metal-plates-013,per_map_normalised_l1,1.0,NTC_N,44.476039,
 metal-plates-013,per_map_normalised_l1,1.0,NTC_PEPS,46.686515,1.348269

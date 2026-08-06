@@ -28,7 +28,13 @@ normalisation.
 | instance | exponent 0.0 | exponent 0.5 | exponent 1.0 | published |
 | --- | ---: | ---: | ---: | ---: |
 | paving-stones-070 | **-0.0709** | +0.3680 | +2.0044 | +0.540 |
-| metal-plates-013 | **+1.9302** | pending | +1.3483 | +0.540 |
+| metal-plates-013 | **+1.9302** | +1.2291 | +1.3483 | +0.540 |
+
+The two ladders do not even have the same shape. `paving-stones-070` rises
+monotonically with the normalisation strength; `metal-plates-013` dips at the
+midpoint and comes back up, so on that material the contrast is not a monotone
+function of the exponent at all. Any attempt to pick one exponent that repairs
+Table 2 has to contend with that.
 
 On `paving-stones-070` the reproduction does reverse the published order, and
 sweeping the reduction flips it back: the series is monotone, the sign changes
@@ -84,7 +90,7 @@ over eighteen materials and three seeds.
 
 `receipt.json` lists outstanding observations under `coverage.pending`, so a
 partially populated ladder stays visible rather than being silently averaged.
-The `sqrt_map_l1` row for `metal-plates-013` is among them.
+The remaining entries are the `NTC_PinkPEPS` cells on `metal-plates-013`.
 
 ## Status
 
