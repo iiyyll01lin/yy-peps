@@ -13,6 +13,7 @@ from peps import (
     ConcatAggregator,
     GridEncoder,
     IdentityEncoder,
+    LocalPositionalEncoding,
     MLP,
     PEPS,
     PinkAggregator,
@@ -461,3 +462,110 @@ def test_app_builder_defaults_use_paper_depth_and_pink_schedule(monkeypatch):
     assert pink.aggregator.out_dim == 28
     assert pink.aggregator.point_layout == pink.projector.point_layout
     assert pink.selective_sampling
+
+
+def test_lpe_parameter_count_follows_the_paper_formula():
+    encoder = LocalPositionalEncoding(dim=2, resolution=(8, 6), num_frequencies=4)
+    assert encoder.num_params == 8 * 6 * 2 * 2 * 4
+    assert encoder.feature_dim == 2 * 2 * 4
+    assert encoder.per_axis_feature_dim == 2 * 4
+
+
+def test_lpe_first_two_features_per_axis_are_unmodulated():
+    encoder = LocalPositionalEncoding(dim=2, resolution=(4, 4), num_frequencies=3)
+    coords = torch.rand(16, 2)
+    basis = encoder.local_basis(coords).reshape(16, 2, encoder.per_axis_feature_dim)
+    assert torch.allclose(basis[:, :, 0], torch.ones(16, 2))
+    assert torch.allclose(basis[:, :, 1], torch.ones(16, 2))
+    assert not torch.allclose(basis[:, :, 2], torch.ones(16, 2))
+
+
+def test_lpe_basis_uses_the_paper_angular_frequencies():
+    encoder = LocalPositionalEncoding(dim=2, resolution=(4, 4), num_frequencies=4)
+    coords = torch.tensor([[0.13, 0.77], [0.42, 0.05]])
+    local = torch.remainder(coords * torch.tensor([4.0, 4.0]), 1.0)
+    basis = encoder.local_basis(coords).reshape(2, 2, encoder.per_axis_feature_dim)
+    for index in range(1, encoder.num_frequencies):
+        angle = local * (2**index) * math.pi
+        assert torch.allclose(basis[:, :, 2 * index], torch.cos(angle), atol=1e-6)
+        assert torch.allclose(basis[:, :, 2 * index + 1], torch.sin(angle), atol=1e-6)
+
+
+def test_lpe_has_no_seam_at_cell_boundaries():
+    """Continuity holds only because 2**i * pi is an even multiple of pi.
+
+    The interpolated coefficients are continuous by construction, but the local
+    basis is evaluated on the within-cell fraction, which jumps from 1 to 0 at
+    every vertex. A frequency that was not an even multiple of pi would leave a
+    seam there.
+
+    Comparing against a step of the same size taken inside a cell is what
+    separates a seam from the basis's own slope: the top frequency has a
+    derivative of order 2**(n-1) * pi, so a raw threshold on the difference
+    measures the slope instead.
+    """
+
+    torch.manual_seed(0)
+    encoder = LocalPositionalEncoding(
+        dim=2, resolution=(8, 8), num_frequencies=4, init_bound=0.5
+    )
+    epsilon = 1e-6
+
+    def step(centre: float) -> float:
+        before = torch.tensor([[centre - epsilon, 0.3125]])
+        after = torch.tensor([[centre + epsilon, 0.3125]])
+        return (encoder(after) - encoder(before)).abs().max().item()
+
+    interior = max(step(offset / 8.0 + 1.0 / 16.0) for offset in (1, 3, 7))
+    for offset in (1, 3, 7):
+        edge = offset / 8.0
+        assert step(edge) <= 10 * interior + 1e-6, (
+            f"seam at x={edge}: {step(edge)} against an interior step of {interior}"
+        )
+
+
+def test_lpe_seam_test_would_catch_an_odd_frequency():
+    """The guard above is only meaningful if it fails for a broken basis."""
+
+    torch.manual_seed(0)
+    encoder = LocalPositionalEncoding(
+        dim=2, resolution=(8, 8), num_frequencies=4, init_bound=0.5
+    )
+    epsilon = 1e-6
+
+    def step(module, centre: float) -> float:
+        before = torch.tensor([[centre - epsilon, 0.3125]])
+        after = torch.tensor([[centre + epsilon, 0.3125]])
+        return (module(after) - module(before)).abs().max().item()
+
+    original = LocalPositionalEncoding.local_basis
+
+    def odd_basis(self, coords):
+        resolution = coords.new_tensor(self.resolution)
+        local = torch.remainder(coords * resolution, 1.0)
+        basis = coords.new_ones(
+            (coords.shape[0], self.dim, self.per_axis_feature_dim)
+        )
+        for index in range(1, self.num_frequencies):
+            angle = local * ((2**index + 1) * math.pi)
+            basis[:, :, 2 * index] = torch.cos(angle)
+            basis[:, :, 2 * index + 1] = torch.sin(angle)
+        return basis.reshape(coords.shape[0], self.feature_dim)
+
+    LocalPositionalEncoding.local_basis = odd_basis
+    try:
+        interior = max(step(encoder, off / 8.0 + 1.0 / 16.0) for off in (1, 3, 7))
+        seams = [step(encoder, off / 8.0) for off in (1, 3, 7)]
+    finally:
+        LocalPositionalEncoding.local_basis = original
+
+    assert max(seams) > 10 * interior, (
+        "an odd multiple of pi should leave a seam the guard can see"
+    )
+
+
+def test_lpe_reduces_to_a_plain_grid_lookup_at_one_frequency():
+    encoder = LocalPositionalEncoding(dim=2, resolution=(4, 4), num_frequencies=1)
+    coords = torch.rand(32, 2)
+    assert torch.allclose(encoder(coords), encoder.interpolate_coefficients(coords))
+
