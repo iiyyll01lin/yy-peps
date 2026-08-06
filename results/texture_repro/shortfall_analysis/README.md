@@ -84,12 +84,52 @@ PEPS gain, moves from 0.43 dB short of the published value to **0.046 dB
 short**. Six method pairs swap places between the two weightings, and
 `NTC_PEPS` moves from third to first.
 
+## How far does composition actually get us?
+
+`implied_composition.json` solves for the non-negative category weights that
+best reproduce all eleven published values from our own per-category
+measurements. Eight free weights against eleven targets can overfit, so the
+honest score is leave-one-method-out: fit on ten methods, predict the
+eleventh.
+
+| composition | held-out RMS error against the published values |
+| --- | ---: |
+| ours | 1.248 dB |
+| best fit | **0.405 dB** |
+
+Reweighting cuts the out-of-sample error **3.1x**, so this is a real effect and
+not an artefact of fitting. The fitted mean lands at 40.818 against the
+published 40.823.
+
+Two things stop it being the whole answer.
+
+The optimum sits on a boundary of the simplex, driving `Displacement`, `normal`
+and `specular` to exactly zero weight. No material-texture paper omits normal
+maps, so the fitted vector should be read as a direction, more weight on the
+mid-scoring categories and less on `normal` and `ARM`, rather than as a literal
+recipe.
+
+And even at that optimum one contrast is not recovered:
+
+| contrast | ours | best fit | published |
+| --- | ---: | ---: | ---: |
+| `NTC_PEPS` - `BI-Grid` | -0.152 | +0.324 | +0.540 |
+| `NTC_PEPS` - `NTC_N` | +1.159 | +1.417 | +1.590 |
+| `NTC_PinkPEPS` - `BI-Grid` | -0.420 | **-0.001** | **+0.640** |
+
+The Pink variants and `LPE` carry the largest residuals, -0.41 to -0.51 dB. No
+choice of category weights moves `NTC_PinkPEPS` past `BI-Grid`. So composition
+is the dominant term, it fixes the level and most of the ordering, and
+something method-specific remains for the Pink variants that this analysis
+cannot absorb.
+
 ## What this means
 
-One unpublished choice, the map-file selection, is enough to account for the
-level, for the size of the headline PEPS gain, and for the ordering. That is
-more parsimonious than attributing the level and the order to two separate
-causes, which is what an earlier version of this analysis did.
+The map-file selection accounts for the level, for most of the headline PEPS
+gain, and for the `NTC_PEPS` ordering. That is more parsimonious than
+attributing the level and the order to two separate causes, which is what an
+earlier version of this analysis did. It is not a complete account: the Pink
+variants resist every composition we can fit.
 
 It remains a bound rather than a measurement. The paper's file list is
 unpublished, so we can show what a reasonable selection does to our own numbers
@@ -122,6 +162,7 @@ against the full-table +1.249 and is not a representative sample.
 | `composition.csv` | map count, share and mean PSNR per category |
 | `reordering.json` | per-method category means, both rankings, every pair that swaps |
 | `method_by_category.csv` | mean PSNR per method per category |
+| `implied_composition.json` | best-fit weights, held-out error, what it still misses |
 | `per_set_gap.csv` | per-set `NTC_PEPS` advantage, ranked |
 
 ## Status

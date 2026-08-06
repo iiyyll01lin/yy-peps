@@ -1,0 +1,115 @@
+{
+  "categories": [
+    "AO",
+    "ARM",
+    "DIFF",
+    "Displacement",
+    "metal",
+    "normal",
+    "rough",
+    "specular"
+  ],
+  "contrasts": {
+    "balanced": {
+      "NTC_PEPS - BI-Grid": 0.28424296395830595,
+      "NTC_PEPS - NTC_N": 1.544295654396521,
+      "NTC_PinkPEPS - BI-Grid": -0.14563850904679043,
+      "mean_psnr": 41.75875384953026
+    },
+    "implied": {
+      "NTC_PEPS - BI-Grid": 0.32422513252525675,
+      "NTC_PEPS - NTC_N": 1.4169204529160169,
+      "NTC_PinkPEPS - BI-Grid": -0.0004917243089366252,
+      "mean_psnr": 40.81772093078728
+    },
+    "ours": {
+      "NTC_PEPS - BI-Grid": -0.15169516591087273,
+      "NTC_PEPS - NTC_N": 1.1590067342938397,
+      "NTC_PinkPEPS - BI-Grid": -0.4199736925093305,
+      "mean_psnr": 39.64332630194551
+    },
+    "published": {
+      "NTC_PEPS - BI-Grid": 0.5399999999999991,
+      "NTC_PEPS - NTC_N": 1.5899999999999963,
+      "NTC_PinkPEPS - BI-Grid": 0.6400000000000006,
+      "mean_psnr": 40.82272727272727
+    }
+  },
+  "fit_quality": {
+    "held_out_improvement_factor": 3.0803,
+    "leave_one_method_out_rms_db": 0.405188,
+    "max_abs_residual_db": 0.514382,
+    "our_composition_rms_db": 1.248118,
+    "per_method_residual_db": {
+      "BI-Grid": 0.235203,
+      "Grid-PEPS4F": 0.242686,
+      "Grid-PEPS4F-25": 0.287269,
+      "Grid-PinkPEPS4F": 0.247964,
+      "Grid-PinkPEPS4F-25": 0.238867,
+      "LPE": -0.514382,
+      "NTC_N": 0.192508,
+      "NTC_PEPS": 0.019429,
+      "NTC_PEPS-25": -0.120557,
+      "NTC_PinkPEPS": -0.405288,
+      "NTC_PinkPEPS-25": -0.478769
+    },
+    "rms_residual_db": 0.305305
+  },
+  "interpretation": {
+    "boundary_solution_is_physically_implausible": true,
+    "categories_driven_to_zero": [
+      "Displacement",
+      "normal",
+      "specular"
+    ],
+    "composition_is_a_large_real_effect": true,
+    "conclusion": "Reweighting categories cuts the held-out error roughly threefold and reconciles the level and most contrasts, so composition is the dominant term. It is not the whole story: the optimum sits on a simplex boundary that no texture paper would actually use, and even there the NTC_PinkPEPS ordering is not recovered.",
+    "contrasts_the_best_composition_still_misses": {
+      "NTC_PinkPEPS - BI-Grid": {
+        "implied": -0.000492,
+        "published": 0.64,
+        "residual": 0.640492
+      }
+    }
+  },
+  "limitations": [
+    "Eight free weights against eleven published numbers; the held-out error is the honest measure of fit, not the in-sample residual.",
+    "The least-squares optimum lands on a simplex boundary with zero weight on several categories, which is a fitting artefact rather than a credible selection; read the direction, not the literal weights.",
+    "Conflates a different category mix with different files inside each category; both are unpublished and cannot be separated here.",
+    "Category means pool three seeds and eighteen materials of our own selection, so they carry our material choice with them.",
+    "A best-fit composition estimates what would reconcile the numbers, not what the authors did."
+  ],
+  "note": "Weights that best reproduce the eleven published values from our own per-category measurements. Assumes per-category difficulty is comparable between the paper's files and ours, which is exactly the assumption the unpublished file list prevents us from checking.",
+  "weights": {
+    "balanced": {
+      "AO": 0.125,
+      "ARM": 0.125,
+      "DIFF": 0.125,
+      "Displacement": 0.125,
+      "metal": 0.125,
+      "normal": 0.125,
+      "rough": 0.125,
+      "specular": 0.125
+    },
+    "implied_by_published_values": {
+      "AO": 0.355648,
+      "ARM": 0.030538,
+      "DIFF": 0.216671,
+      "Displacement": 0.0,
+      "metal": 0.148309,
+      "normal": 0.0,
+      "rough": 0.248834,
+      "specular": 0.0
+    },
+    "ours": {
+      "AO": 0.065789,
+      "ARM": 0.171053,
+      "DIFF": 0.236842,
+      "Displacement": 0.157895,
+      "metal": 0.026316,
+      "normal": 0.236842,
+      "rough": 0.065789,
+      "specular": 0.039474
+    }
+  }
+}
