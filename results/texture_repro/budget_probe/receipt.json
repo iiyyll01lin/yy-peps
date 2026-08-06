@@ -1,9 +1,21 @@
 {
-  "answer": "No. Extra compute shrinks the PEPS advantage instead of growing it. The paper does specify L1 for Table 2 and this run uses L1, so the loss family is not the discrepancy either. What the paper does not pin down is how that L1 is reduced across the several maps a set carries, and switching from a global reduction to a per-map normalised one multiplies the advantage on the probed set by about eight.",
+  "answer": "No. Extra compute shrinks the PEPS advantage instead of growing it. The paper does specify L1 for Table 2 and this run uses L1, so the loss family is not the discrepancy either. What the paper does not pin down is how that L1 is reduced across the several maps a set carries. Reducing per map instead of globally multiplies the advantage on every set and seed probed, and the effect grows monotonically with the strength of the per-map normalisation.",
   "coverage": {
     "curves_total": 4,
-    "curves_with_all_three_budgets": 2,
-    "observations": 122
+    "curves_with_all_three_budgets": 3,
+    "gap_ratio_max": 7.8580071975040395,
+    "gap_ratio_min": 0.95285090065966,
+    "loss_contrast_points": 4,
+    "loss_contrast_seeds": [
+      0,
+      1
+    ],
+    "loss_contrast_sets": [
+      "metal-plates-013",
+      "paving-stones-070"
+    ],
+    "observations": 132,
+    "reduction_ladder_steps": 4
   },
   "curves": [
     {
@@ -137,6 +149,19 @@
           }
         },
         {
+          "ntc_n_psnr": 33.77690735153028,
+          "ntc_peps_psnr": 34.444581531149666,
+          "optimizer_steps": 240000,
+          "peps_advantage_db": 0.6676741796193895,
+          "per_map_advantage_db": {
+            "AO": 1.0716274954374754,
+            "DIFF": 1.906451235931982,
+            "Displacement": 0.47962278684081383,
+            "normal": 0.10243399750578419,
+            "rough": -0.22176461761907973
+          }
+        },
+        {
           "ntc_n_psnr": 34.09431479448877,
           "ntc_peps_psnr": 34.740060188730915,
           "optimizer_steps": 480000,
@@ -198,10 +223,13 @@
       240000,
       480000
     ],
-    "isolation_note": "Probes ran in disposable clones. Budget probes changed only the config, leaving the texture code digest untouched; the loss probe additionally patched peps/train.py, which changes the code digest and therefore lands in a separate output namespace. Committed Table 2 evidence was never affected.",
+    "isolation_note": "Probes ran in disposable clones. Budget probes changed only the config, leaving the texture code digest untouched; the loss probes additionally patched peps/train.py, which changes the code digest and therefore lands in a separate output namespace. Committed Table 2 evidence was never affected.",
+    "ladder_note": "The graded reductions differ only in the exponent applied to each map's own detached error before dividing: 0 is the frozen global reduction, 1 is full per-map normalisation. range_map_l1 is off this axis because its weights come from the target's dynamic range, not the current error.",
     "losses": [
       "global_l1",
-      "per_map_normalised_l1"
+      "per_map_normalised_l1",
+      "sqrt_map_l1",
+      "range_map_l1"
     ],
     "methods": [
       "NTC_N",
@@ -211,11 +239,12 @@
     "reference_source": "committed Table 2 evidence (not re-run)",
     "schedule_note": "Each probe budget uses its own full cosine schedule, so every point is a clean run at that budget rather than a re-horizoned continuation."
   },
-  "generated_at_utc": "2026-08-06T01:19:19.171046+00:00",
+  "generated_at_utc": "2026-08-06T09:47:34.520129+00:00",
   "limitations": [
     "Two texture sets and at most two seeds; not a method-level or Table 2-wide claim.",
-    "The loss contrast covers one set and one seed at two budgets.",
-    "The per-map normalised L1 is our own construction, not a published recipe; the paper specifies L1 and Table 2 uses L1.",
+    "The reduction ladder is measured on one set and one seed at one budget.",
+    "The alternative reductions are our own constructions, not published recipes; the paper specifies L1 and Table 2 uses L1.",
+    "Only NTC_N and NTC_PEPS were probed, so the ladder cannot show whether a reduction reproduces the published ordering of all eleven methods.",
     "The published per-set values are unavailable, so only our own trends are measured."
   ],
   "loss_contrast": [
@@ -226,6 +255,7 @@
         "ntc_n": 33.91014778668326,
         "ntc_peps": 34.47024138711225
       },
+      "instance": "paving-stones-070",
       "optimizer_steps": 240000,
       "per_map_advantage_global_l1": {
         "AO": 0.9826334443329259,
@@ -245,7 +275,8 @@
         "gap_db": 3.1918853460588323,
         "ntc_n": 35.21917553439323,
         "ntc_peps": 38.41106088045206
-      }
+      },
+      "seed": 0
     },
     {
       "gap_ratio": 7.8580071975040395,
@@ -254,6 +285,7 @@
         "ntc_n": 34.16055812239454,
         "ntc_peps": 34.610213758277744
       },
+      "instance": "paving-stones-070",
       "optimizer_steps": 480000,
       "per_map_advantage_global_l1": {
         "AO": 0.8926837098093117,
@@ -273,16 +305,153 @@
         "gap_db": 3.533397223168471,
         "ntc_n": 35.68997851465848,
         "ntc_peps": 39.22337573782695
-      }
+      },
+      "seed": 0
+    },
+    {
+      "gap_ratio": 4.760415766421714,
+      "global_l1": {
+        "gap_db": 0.6676741796193895,
+        "ntc_n": 33.77690735153028,
+        "ntc_peps": 34.444581531149666
+      },
+      "instance": "paving-stones-070",
+      "optimizer_steps": 240000,
+      "per_map_advantage_global_l1": {
+        "AO": 1.0716274954374754,
+        "DIFF": 1.906451235931982,
+        "Displacement": 0.47962278684081383,
+        "normal": 0.10243399750578419,
+        "rough": -0.22176461761907973
+      },
+      "per_map_advantage_per_map_l1": {
+        "AO": 13.1030576461226,
+        "DIFF": -0.30966959486353574,
+        "Displacement": 3.0028718238660588,
+        "normal": 0.11075125868018532,
+        "rough": -0.01497767634121061
+      },
+      "per_map_normalised_l1": {
+        "gap_db": 3.1784066914928246,
+        "ntc_n": 35.46574760298778,
+        "ntc_peps": 38.64415429448061
+      },
+      "seed": 1
+    },
+    {
+      "gap_ratio": 0.95285090065966,
+      "global_l1": {
+        "gap_db": 2.3198551145569155,
+        "ntc_n": 43.18095810092479,
+        "ntc_peps": 45.500813215481706
+      },
+      "instance": "metal-plates-013",
+      "optimizer_steps": 240000,
+      "per_map_advantage_global_l1": {
+        "AO": 1.0757074587136515,
+        "DIFF": -0.13199483256320121,
+        "Displacement": 2.552480894118645,
+        "metal": 8.26228075629421,
+        "normal": 0.8759888975763843,
+        "rough": 1.2846675132017822
+      },
+      "per_map_advantage_per_map_l1": {
+        "AO": 0.6063286930030571,
+        "DIFF": -0.7877561032167293,
+        "Displacement": 3.943717969653669,
+        "metal": 9.025521703005147,
+        "normal": 0.22535966935326002,
+        "rough": 0.24968428003440835
+      },
+      "per_map_normalised_l1": {
+        "gap_db": 2.2104760353054758,
+        "ntc_n": 44.47603868030817,
+        "ntc_peps": 46.68651471561365
+      },
+      "seed": 0
     }
   ],
   "paper_exact": false,
   "question": "Is the shortfall between our reproduced PEPS gain on the NTC pipeline (+1.152 dB) and the published gain (+1.59 dB) explained by training budget?",
+  "reduction_ladder": {
+    "gap_monotone_in_normalisation_strength": true,
+    "instance": "paving-stones-070",
+    "optimizer_steps": 240000,
+    "paper_method_level_gap_db": 1.59,
+    "reproduced_method_level_gap_db": 1.152,
+    "seed": 0,
+    "steps": [
+      {
+        "description": "one L1 over all concatenated channels",
+        "gap_db": 0.560093600428992,
+        "loss": "global_l1",
+        "normalisation_exponent": 0.0,
+        "ntc_n_psnr": 33.91014778668326,
+        "ntc_peps_psnr": 34.47024138711225,
+        "per_map_advantage_db": {
+          "AO": 0.9826334443329259,
+          "DIFF": 2.410448395910194,
+          "Displacement": -0.29662310436304296,
+          "normal": -0.14079949135430425,
+          "rough": -0.15519124238080195
+        }
+      },
+      {
+        "description": "each map divided by its target's dynamic range",
+        "gap_db": 0.6359241595070415,
+        "loss": "range_map_l1",
+        "normalisation_exponent": null,
+        "ntc_n_psnr": 33.7949665106524,
+        "ntc_peps_psnr": 34.43089067015944,
+        "per_map_advantage_db": {
+          "AO": 0.6825571053198942,
+          "DIFF": 1.092918974426702,
+          "Displacement": 0.28616022763653604,
+          "normal": -0.21694403627247283,
+          "rough": 1.3349285264245694
+        }
+      },
+      {
+        "description": "each map divided by the square root of its own error",
+        "gap_db": 1.2398552248331782,
+        "loss": "sqrt_map_l1",
+        "normalisation_exponent": 0.5,
+        "ntc_n_psnr": 34.882400218439315,
+        "ntc_peps_psnr": 36.12225544327249,
+        "per_map_advantage_db": {
+          "AO": 3.77428425661806,
+          "DIFF": 1.8473944891940697,
+          "Displacement": 1.083647737608871,
+          "normal": -0.03997303944936448,
+          "rough": -0.4660773198057555
+        }
+      },
+      {
+        "description": "each map divided by its own error",
+        "gap_db": 3.1918853460588323,
+        "loss": "per_map_normalised_l1",
+        "normalisation_exponent": 1.0,
+        "ntc_n_psnr": 35.21917553439323,
+        "ntc_peps_psnr": 38.41106088045206,
+        "per_map_advantage_db": {
+          "AO": 12.79646457381505,
+          "DIFF": -0.5252822698550972,
+          "Displacement": 3.5163097270460497,
+          "normal": 0.5192979222381844,
+          "rough": -0.34736322295002964
+        }
+      }
+    ]
+  },
   "schema": "peps.texture_budget_probe",
-  "schema_version": 2,
+  "schema_version": 3,
   "training": {
     "channels_per_map": 3,
-    "probe_loss": "per_map_normalised_l1",
+    "probe_losses": [
+      "range_map_l1",
+      "sqrt_map_l1",
+      "per_map_normalised_l1"
+    ],
     "table2_loss": "l1",
     "table2_loss_reduction": "global_over_concatenated_channels",
     "table2_loss_reduction_reported_by_paper": false,

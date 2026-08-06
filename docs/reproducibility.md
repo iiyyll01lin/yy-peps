@@ -271,10 +271,12 @@ the probed set, `NTC_N` from 34.16 to 35.69 and `NTC_PEPS` from 34.61 to
 39.22. The published gain of +1.59 dB is a mean over eighteen materials,
 so no single-set number here can be compared against it directly.
 
-Extending the contrast to a second material overturns the general reading. On
-`metal-plates-013` at the same budget the per-map reduction changes almost
-nothing: +2.3199 dB becomes +2.2105 dB, a ratio of 0.95. The sixfold swing is a
-property of `paving-stones-070`, not of the reduction. The reading that fits
+A second seed on the same material reproduces the swing closely, +0.6677 to
++3.1784 dB against seed 0's +0.5601 to +3.1919, so this is not seed noise. A
+second *material* is another matter. On `metal-plates-013` at the same budget
+the per-map reduction changes almost nothing: +2.3199 dB becomes +2.2105 dB, a
+ratio of 0.95. The swing is a property of `paving-stones-070`, not of the
+reduction. The reading that fits
 both is that per-map normalisation only unlocks advantage a global reduction
 was hiding in smooth maps, and on `metal-plates-013` PEPS already leads by a
 wide margin, so there is nothing left to unlock.
