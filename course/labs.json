@@ -231,8 +231,8 @@
         },
         {
           "id": "metric-composition",
-          "description": "State what the reported PSNR averages before comparing against the paper. It is a map-weighted mean over individual maps, and the eight map categories span about 19 dB, so a difference of a few maps in an unpublished selection moves the headline number by more than the reproduction gap. A comparison that skips this step is not a result.",
-          "evidence": "notebooks/W08_texture_ntc.ipynb section 6 and results/texture_repro/shortfall_analysis/composition.csv"
+          "description": "Recompute Table 2 under a different map-category mix before comparing against the paper. The reported PSNR is a map-weighted mean, the eight categories span about 19 dB, and the methods are not equally strong on each, so reweighting changes both the level and the order. Report which method pairs swap. A comparison that skips this step is not a result.",
+          "evidence": "notebooks/W08_texture_ntc.ipynb section 6 and results/texture_repro/shortfall_analysis/method_by_category.csv"
         }
       ],
       "budget": "paper-exact"
