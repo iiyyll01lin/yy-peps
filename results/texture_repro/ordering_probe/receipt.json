@@ -5,14 +5,12 @@
       "metal-plates-013",
       "paving-stones-070"
     ],
-    "observations": 17,
+    "observations": 19,
     "pending": [
       "global_l1/metal-plates-013/NTC_PinkPEPS",
       "per_map_normalised_l1/metal-plates-013/NTC_PinkPEPS",
-      "sqrt_map_l1/metal-plates-013/BI-Grid",
       "sqrt_map_l1/metal-plates-013/NTC_PEPS",
-      "sqrt_map_l1/metal-plates-013/NTC_PinkPEPS",
-      "sqrt_map_l1/paving-stones-070/NTC_PinkPEPS"
+      "sqrt_map_l1/metal-plates-013/NTC_PinkPEPS"
     ]
   },
   "design": {
@@ -30,7 +28,7 @@
     },
     "reference_method": "BI-Grid"
   },
-  "generated_at_utc": "2026-08-06T11:04:56.773370+00:00",
+  "generated_at_utc": "2026-08-06T13:03:33.812517+00:00",
   "ladders": [
     {
       "differential_gain_vs_reference_db": {
@@ -71,7 +69,9 @@
           "contrast_vs_reference": {},
           "loss": "sqrt_map_l1",
           "normalisation_exponent": 0.5,
-          "psnr": {}
+          "psnr": {
+            "BI-Grid": 44.76064479450185
+          }
         },
         {
           "contrast_vs_reference": {
@@ -129,14 +129,16 @@
         },
         {
           "contrast_vs_reference": {
-            "NTC_PEPS": 0.368023
+            "NTC_PEPS": 0.368023,
+            "NTC_PinkPEPS": 0.470017
           },
           "loss": "sqrt_map_l1",
           "normalisation_exponent": 0.5,
           "psnr": {
             "BI-Grid": 35.754232765469915,
             "NTC_N": 34.882400218439315,
-            "NTC_PEPS": 36.12225544327249
+            "NTC_PEPS": 36.12225544327249,
+            "NTC_PinkPEPS": 36.224249495638645
           }
         },
         {

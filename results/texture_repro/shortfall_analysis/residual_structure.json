@@ -1,0 +1,132 @@
+{
+  "by_family": {
+    "Grid": {
+      "mean_db": 0.250398,
+      "n": 5,
+      "spread_db": 0.052066
+    },
+    "LPE": {
+      "mean_db": -0.514382,
+      "n": 1,
+      "spread_db": 0.0
+    },
+    "NTC": {
+      "mean_db": -0.158535,
+      "n": 5,
+      "spread_db": 0.671277
+    }
+  },
+  "correlation_with_attributes": {
+    "compress": -0.1239,
+    "dec": -0.1437,
+    "enc": 0.1336
+  },
+  "exceeds_held_out_rms": [
+    "LPE",
+    "NTC_PinkPEPS-25",
+    "NTC_PinkPEPS"
+  ],
+  "findings": [
+    "The five Grid methods share an offset of +0.250 dB with a spread of only 0.052 dB, which is a family-level systematic rather than noise.",
+    "Only LPE, NTC_PinkPEPS and NTC_PinkPEPS-25 exceed the held-out rms, and only by 1.0 to 1.3 times, so the localisation is suggestive rather than established.",
+    "Being a pink variant is not itself the marker: the two Grid pink variants sit at +0.24 with the rest of their family, so whatever is left is specific to the NTC pink combination.",
+    "Residual does not track encoder size, decoder size or compression factor, so it is not a capacity effect."
+  ],
+  "held_out_rms_db": 0.405188,
+  "limitations": [
+    "Residuals come from a fit with eight free weights against eleven targets; the fit itself can redistribute error between methods.",
+    "Grid methods resemble each other, so part of their tightness may reflect that similarity rather than a shared cause.",
+    "Three methods at roughly one held-out rms is weak evidence and should direct where to look next, not support a conclusion."
+  ],
+  "note": "Structure of what the best-fit composition leaves behind. Read against the fit's own held-out rms; residuals inside that band are not evidence.",
+  "per_method": {
+    "BI-Grid": {
+      "decoder_params_max": 10642,
+      "encoder_params": 17825792,
+      "family": "Grid",
+      "pink_variant": false,
+      "residual_db": 0.235203,
+      "residual_over_held_out_rms": 0.5805
+    },
+    "Grid-PEPS4F": {
+      "decoder_params_max": 19346,
+      "encoder_params": 17825792,
+      "family": "Grid",
+      "pink_variant": false,
+      "residual_db": 0.242686,
+      "residual_over_held_out_rms": 0.5989
+    },
+    "Grid-PEPS4F-25": {
+      "decoder_params_max": 17042,
+      "encoder_params": 13631488,
+      "family": "Grid",
+      "pink_variant": false,
+      "residual_db": 0.287269,
+      "residual_over_held_out_rms": 0.709
+    },
+    "Grid-PinkPEPS4F": {
+      "decoder_params_max": 12562,
+      "encoder_params": 17825792,
+      "family": "Grid",
+      "pink_variant": true,
+      "residual_db": 0.247964,
+      "residual_over_held_out_rms": 0.612
+    },
+    "Grid-PinkPEPS4F-25": {
+      "decoder_params_max": 11794,
+      "encoder_params": 13631488,
+      "family": "Grid",
+      "pink_variant": true,
+      "residual_db": 0.238867,
+      "residual_over_held_out_rms": 0.5895
+    },
+    "LPE": {
+      "decoder_params_max": 10578,
+      "encoder_params": 16777216,
+      "family": "LPE",
+      "pink_variant": false,
+      "residual_db": -0.514382,
+      "residual_over_held_out_rms": -1.2695
+    },
+    "NTC_N": {
+      "decoder_params_max": 14674,
+      "encoder_params": 17825792,
+      "family": "NTC",
+      "pink_variant": false,
+      "residual_db": 0.192508,
+      "residual_over_held_out_rms": 0.4751
+    },
+    "NTC_PEPS": {
+      "decoder_params_max": 49490,
+      "encoder_params": 17825792,
+      "family": "NTC",
+      "pink_variant": false,
+      "residual_db": 0.019429,
+      "residual_over_held_out_rms": 0.048
+    },
+    "NTC_PEPS-25": {
+      "decoder_params_max": 39698,
+      "encoder_params": 13369344,
+      "family": "NTC",
+      "pink_variant": false,
+      "residual_db": -0.120557,
+      "residual_over_held_out_rms": -0.2975
+    },
+    "NTC_PinkPEPS": {
+      "decoder_params_max": 22738,
+      "encoder_params": 17825792,
+      "family": "NTC",
+      "pink_variant": true,
+      "residual_db": -0.405288,
+      "residual_over_held_out_rms": -1.0002
+    },
+    "NTC_PinkPEPS-25": {
+      "decoder_params_max": 19474,
+      "encoder_params": 13369344,
+      "family": "NTC",
+      "pink_variant": true,
+      "residual_db": -0.478769,
+      "residual_over_held_out_rms": -1.1816
+    }
+  }
+}
