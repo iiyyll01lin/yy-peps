@@ -1,0 +1,106 @@
+{
+  "conclusion": "The PSNR-fitted composition does not break the SSIM agreement: the error moves from 0.0087 to 0.0102, both a couple of quantisation steps of the two-decimal published values. Our weights leave every method slightly below the published SSIM and the implied weights leave every method slightly above, so the truth sits between them, which matches the PSNR picture. The test is consistent but not discriminating: the published SSIM precision is too coarse to choose between compositions that differ by this much.",
+  "limitations": [
+    "Published SSIM is quoted to two decimals; differences of 0.01 are at the edge of what those figures can resolve.",
+    "SSIM is bounded and far less category-sensitive than PSNR, so it was always the weaker discriminator.",
+    "A single true composition should fit both metrics; that the PSNR optimum slightly overshoots SSIM is a mild tension, not a refutation."
+  ],
+  "note": "The composition weights were fitted to PSNR only. Applying them to SSIM tests whether they break an agreement that already held.",
+  "per_method": {
+    "BI-Grid": {
+      "delta_implied_weights": 0.013963,
+      "delta_our_weights": -0.000921,
+      "published": 0.95,
+      "recomputed_implied_weights": 0.963963,
+      "recomputed_our_weights": 0.949079
+    },
+    "Grid-PEPS4F": {
+      "delta_implied_weights": 0.00865,
+      "delta_our_weights": -0.007701,
+      "published": 0.95,
+      "recomputed_implied_weights": 0.95865,
+      "recomputed_our_weights": 0.942299
+    },
+    "Grid-PEPS4F-25": {
+      "delta_implied_weights": 0.016949,
+      "delta_our_weights": -0.001325,
+      "published": 0.93,
+      "recomputed_implied_weights": 0.946949,
+      "recomputed_our_weights": 0.928675
+    },
+    "Grid-PinkPEPS4F": {
+      "delta_implied_weights": 0.012345,
+      "delta_our_weights": -0.004335,
+      "published": 0.95,
+      "recomputed_implied_weights": 0.962345,
+      "recomputed_our_weights": 0.945665
+    },
+    "Grid-PinkPEPS4F-25": {
+      "delta_implied_weights": 0.01076,
+      "delta_our_weights": -0.007669,
+      "published": 0.94,
+      "recomputed_implied_weights": 0.95076,
+      "recomputed_our_weights": 0.932331
+    },
+    "LPE": {
+      "delta_implied_weights": 0.001296,
+      "delta_our_weights": -0.011858,
+      "published": 0.95,
+      "recomputed_implied_weights": 0.951296,
+      "recomputed_our_weights": 0.938142
+    },
+    "NTC_N": {
+      "delta_implied_weights": 0.007392,
+      "delta_our_weights": -0.009212,
+      "published": 0.95,
+      "recomputed_implied_weights": 0.957392,
+      "recomputed_our_weights": 0.940788
+    },
+    "NTC_PEPS": {
+      "delta_implied_weights": 0.00865,
+      "delta_our_weights": -0.008579,
+      "published": 0.95,
+      "recomputed_implied_weights": 0.95865,
+      "recomputed_our_weights": 0.941421
+    },
+    "NTC_PEPS-25": {
+      "delta_implied_weights": 0.00684,
+      "delta_our_weights": -0.012116,
+      "published": 0.94,
+      "recomputed_implied_weights": 0.94684,
+      "recomputed_our_weights": 0.927884
+    },
+    "NTC_PinkPEPS": {
+      "delta_implied_weights": 0.009125,
+      "delta_our_weights": -0.009313,
+      "published": 0.95,
+      "recomputed_implied_weights": 0.959125,
+      "recomputed_our_weights": 0.940687
+    },
+    "NTC_PinkPEPS-25": {
+      "delta_implied_weights": 0.007008,
+      "delta_our_weights": -0.012913,
+      "published": 0.94,
+      "recomputed_implied_weights": 0.947008,
+      "recomputed_our_weights": 0.927087
+    }
+  },
+  "published_ssim_quantisation": 0.005,
+  "result_files_read": 594,
+  "ssim_category_spread": {
+    "highest": [
+      "Displacement",
+      0.995809
+    ],
+    "lowest": [
+      "normal",
+      0.86879
+    ],
+    "spread": 0.127019
+  },
+  "ssim_rms_against_published": {
+    "change": 0.001428,
+    "implied_weights": 0.01016,
+    "our_composition": 0.008732
+  }
+}
