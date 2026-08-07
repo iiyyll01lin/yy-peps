@@ -29,9 +29,9 @@
     "workgroups_per_cu_by_wave_slots": 16
   },
   "next_experiments": [
-    "Halve the LDS footprint per workgroup and re-measure; the arithmetic predicts 25% occupancy if wave slots and registers stay clear.",
-    "Raise the workgroup from 64 threads so each LDS allocation serves more waves, which changes occupancy without changing the footprint.",
-    "Profile the Pink path specifically: it is slower than plain PEPS here while the paper reports the opposite ordering."
+    "DONE, see results/hip_lds_ab.json: the footprint was cut from 32768 to 12288 bytes rather than halved, giving 31.25% occupancy instead of the 25% predicted here, and latency improved 1.70x to 2.13x on both parts with identical checksums. Note the return was sublinear: 2.5x occupancy bought about 2x.",
+    "Raise the workgroup from 64 threads so each LDS allocation serves more waves, which changes occupancy without changing the footprint. Not yet tried, and it may compound or conflict with the footprint change above.",
+    "PARTLY ANSWERED, see results/hip_lds_ab.json: the Pink path is not intrinsically slower. Both Pink and concat were forced to reserve the same worst-case LDS, so Pink's smaller aggregate (44 against 112) bought nothing. With the narrowed cap the paper's ordering is restored on gfx1151 and the gfx1201 inversion shrinks from 2.28 ms to 0.16 ms."
   ],
   "occupancy": {
     "if_lds_halved": {

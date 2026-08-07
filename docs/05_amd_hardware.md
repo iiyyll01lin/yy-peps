@@ -174,12 +174,14 @@ anything.
 Three experiments follow directly, and all of them are minutes long:
 
 1. Halve the LDS footprint per workgroup. The arithmetic predicts 25% occupancy
-   if wave slots and registers stay clear.
+   if wave slots and registers stay clear. **Done — see the next section.**
 2. Raise the workgroup above 64 threads so one LDS allocation serves more waves,
    which moves occupancy without changing the footprint.
 3. Profile the Pink path on its own. It is slower than plain PEPS here while the
    paper reports the opposite ordering, and it is the one method whose
-   cross-generation scaling falls below the compute-unit ratio.
+   cross-generation scaling falls below the compute-unit ratio. **Partly
+   answered by the next section:** the ordering was an artefact of the shared
+   worst-case LDS cap, not of the Pink path itself.
 
 `results/hip_occupancy.json` records the numbers and states plainly that
 occupancy was computed from the launch geometry and the part's advertised
@@ -192,6 +194,99 @@ CU 比是 1.60 倍,正規化後落在 0.97–1.08 之間——**這個 kernel �
 LDS,而每 CU 只有 64 KB,故僅能常駐 2 個 workgroup、4 個 wave(上限 32),**佔用率
 12.5%**。LDS 比次要限制嚴格約四倍。佔用率是由啟動幾何與硬體上限推算,非以硬體計數器
 量測,故只能說「與觀察一致」,尚不足以定案。
+
+## Closing the loop: the cap that cost a factor of two / 讓迴圈閉合:代價兩倍的上限
+
+The occupancy receipt made a falsifiable prediction, so the next step is to act
+on it and see whether the prediction survives. It did, and the cause turned out
+to be four lines of declaration.
+
+`integrated_peps_wmma` sizes its four `__shared__` tiles from `MAX_INPUT_DIM`
+and `MAX_HIDDEN_DIM`, which are worst-case caps of 512 and 128:
+
+```
+feature_tile  16 * 512 * 2 = 16384
+hidden_a      16 * 128 * 2 =  4096
+hidden_b      16 * 128 * 2 =  4096
+accumulator   16 * 128 * 4 =  8192
+                             -----
+                             32768   exactly the 32 KB the profiler reported
+```
+
+But `aggregate_dim` gives **16** channels for `bi-grid`, **112** for
+`grid-peps-3f`, and **44** and **46** for the two Pink methods, and every
+benchmarked configuration uses a hidden width of 64. The largest tile is sized
+for a configuration none of the four methods ever asks for. Roughly 20 KB of the
+32 KB is reserved and never touched — and LDS is reserved per workgroup whether
+it is read or not, so the unused part is paid for in occupancy.
+
+Narrowing the caps to 128 and 64 drops `group_segment_fixed_size` to **12288**
+bytes, which lifts derived occupancy from 12.5% to **31.25%**. The caps became
+guarded macros, so both binaries come from one identical source file and differ
+only by `-D` flags:
+
+```bash
+bash hip/build_kernel.sh gfx1201                     # stock, unchanged default
+PEPS_EXTRA_FLAGS="-DPEPS_MAX_INPUT_DIM=128 -DPEPS_MAX_HIDDEN_DIM=64" \
+  bash hip/build_kernel.sh gfx1201 lds12k            # narrowed
+```
+
+Under the settled protocol, on both parts:
+
+| method | gfx1201 stock | gfx1201 narrowed | gfx1151 stock | gfx1151 narrowed |
+| --- | ---: | ---: | ---: | ---: |
+| `bi-grid` | 7.38 | **3.67** | 12.63 | **6.50** |
+| `grid-peps-3f` | 15.99 | **8.53** | 27.82 | **16.37** |
+| `grid-pink-peps-3f` | 18.27 | **8.69** | 28.45 | **14.52** |
+| `grid-pink-peps-4f` | 21.20 | **9.95** | 33.19 | **16.60** |
+
+**1.70x to 2.13x, with every output checksum byte-identical** on the WMMA path
+on both parts and on the scalar path as well. The gap to the paper's reference
+numbers narrows from 1.7x–4.2x to 0.85x–2.0x, and `bi-grid` at 3.67 ms now sits
+below the paper's 4.32 ms.
+
+Two things in that table deserve more attention than the headline.
+
+**The return is sublinear.** Occupancy rose 2.5x and latency improved about 2x.
+Reporting the 2.5x as the speedup would be overstating it. Occupancy was the
+binding constraint, not the only one.
+
+**The Pink ordering was an artefact.** The paper puts Grid-PinkPEPS ahead of
+Grid-PEPS at three frequencies, 4.86 against 5.47, and the stock build reversed
+that on both parts — which is what previously looked like a reproduction
+failure. The narrowed build restores the paper's ordering on gfx1151 (14.52
+against 16.37) and shrinks the gfx1201 inversion from 2.28 ms to 0.16 ms. The
+reason is in the arithmetic above: Pink aggregates 44 channels against concat's
+112, but a shared worst-case cap forces both to reserve the same LDS, so both
+pay the same occupancy penalty and Pink's smaller feature vector buys nothing.
+**A measurement artefact was masquerading as a disagreement with the paper.**
+
+What this cost is generality, and that has to be said plainly. The stock build
+accepts an aggregated input up to 512; the narrowed build refuses anything above
+128 and fails closed with a diagnostic, because `check_config` already validates
+against the cap. This is a specialisation to the deployed configuration, not a
+free win. The honest statement of the finding is that **a generous compile-time
+cap on an LDS tile cost about a factor of two in latency**, on both RDNA
+generations tested. The default build is unchanged; the narrow build has to be
+asked for.
+
+`results/hip_lds_ab.json` records the footprints, both measurement protocols,
+every checksum, and what remains unmeasured — chiefly that the occupancy figure
+explaining the speedup is still derived from launch geometry rather than read
+from a counter.
+
+佔用率 receipt 提出了一個可證偽的預測,於是下一步就是去驗它。結果站得住,而原因只是
+四行宣告:`__shared__` 分頁由 `MAX_INPUT_DIM=512`、`MAX_HIDDEN_DIM=128` 這兩個**最壞
+情況上限**決定,合計正好 32 KB;但四個方法實際只用到 16/112/44/46 與 hidden 64。約
+20 KB 被保留卻從未觸碰,而 LDS 是**每個 workgroup 整份保留**,用不到的部分照樣以佔用
+率支付。把上限收到 128/64,`group_segment_fixed_size` 降到 12288,推算佔用率由 12.5%
+升至 **31.25%**,兩張卡、四個方法一致獲得 **1.70–2.13 倍**加速,且**所有 checksum 完全
+相同**。兩個值得注意的細節:一是**回報次線性**(佔用率 2.5 倍只換到約 2 倍),說明
+佔用率是綁定約束但非唯一約束;二是**先前的 Pink 排序異常是量測假象**——論文說 Pink 快
+於 PEPS,stock 版在兩張卡上都相反,收窄上限後 gfx1151 恢復論文排序、gfx1201 的反轉從
+2.28 ms 縮到 0.16 ms,因為共用的最壞情況上限讓 Pink 較小的特徵向量完全得不到好處。
+代價是通用性:窄版拒絕超過 128 的輸入(`check_config` 既有檢查會擋下並報錯),因此這
+是針對部署組態的特化而非免費的勝利。預設建置未更動。
 
 ## Result contract and comparison blocker / 結果契約與比較限制
 

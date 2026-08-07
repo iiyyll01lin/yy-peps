@@ -56,8 +56,22 @@ static constexpr int ACT_GELU = 1;
 static constexpr int ACT_LEAKY_RELU = 2;
 static constexpr int MAX_CHANNELS = 32;
 static constexpr int MAX_FREQUENCIES = 8;
-static constexpr int MAX_INPUT_DIM = 512;
-static constexpr int MAX_HIDDEN_DIM = 128;
+// LDS tile caps.  These size the four __shared__ tiles in
+// integrated_peps_wmma, so they set the per-workgroup LDS footprint and
+// therefore the occupancy limit -- independently of the dimensions a run
+// actually uses.  They are guarded so a build can narrow them to the
+// configuration under test; the defaults below reproduce the original
+// 32 KB footprint exactly.  check_config() rejects any run whose
+// aggregated input exceeds the cap, so a too-narrow build fails closed
+// with a diagnostic instead of reading past the tile.
+#ifndef PEPS_MAX_INPUT_DIM
+#define PEPS_MAX_INPUT_DIM 512
+#endif
+#ifndef PEPS_MAX_HIDDEN_DIM
+#define PEPS_MAX_HIDDEN_DIM 128
+#endif
+static constexpr int MAX_INPUT_DIM = PEPS_MAX_INPUT_DIM;
+static constexpr int MAX_HIDDEN_DIM = PEPS_MAX_HIDDEN_DIM;
 static constexpr int MAX_OUTPUT_DIM = 16;
 static constexpr float PEPS_PI = 3.14159265358979323846f;
 static constexpr int WMMA_TILE = 16;

@@ -1,0 +1,114 @@
+{
+  "schema": "peps.hip_lds_ab",
+  "schema_version": 1,
+  "question": "The occupancy receipt named LDS as the binding constraint and predicted that cutting the footprint would raise occupancy. Does cutting it actually make the fused kernel faster, and by how much relative to what the arithmetic predicts?",
+  "answer": "Yes, and by about twice. The four __shared__ tiles in integrated_peps_wmma are sized from MAX_INPUT_DIM and MAX_HIDDEN_DIM, which are worst-case caps of 512 and 128. The four benchmarked methods need at most 112 and 64. Every workgroup therefore reserved 32 KB of LDS to use at most 12 KB of it. Rebuilding the same source with the caps narrowed to 128 and 64 drops the code object's group_segment_fixed_size from 32768 to 12288 bytes, which raises derived occupancy from 12.5% to 31.25%, and cuts measured latency by 1.70x to 2.13x across both parts and all four methods with byte-identical output checksums.",
+  "generated_at_utc": "2026-08-08T00:41:00+00:00",
+  "change": {
+    "kind": "compile_time_cap_narrowing",
+    "source_edit": "MAX_INPUT_DIM and MAX_HIDDEN_DIM became guarded macros PEPS_MAX_INPUT_DIM and PEPS_MAX_HIDDEN_DIM with unchanged defaults, so both binaries come from one identical source file and differ only by -D flags.",
+    "flags": "-DPEPS_MAX_INPUT_DIM=128 -DPEPS_MAX_HIDDEN_DIM=64",
+    "why_128_and_64": "aggregate_dim gives 16 for baseline, 112 for concat at three frequencies, 44 and 46 for pink at three and four. 112 is the maximum and is already a multiple of the 16-wide WMMA tile; 128 is the next round value and costs nothing in occupancy over 112. The hidden width is 64 in every benchmarked configuration.",
+    "fails_closed": "check_config already rejects any run whose aggregated input exceeds the cap and prints a diagnostic, so a build narrowed too far refuses to run rather than reading past the tile. This guard predates the change."
+  },
+  "lds_footprint": {
+    "kernel": "integrated_peps_wmma",
+    "measured_from": "amdclang++ -S, .amdhsa_group_segment_fixed_size and .group_segment_fixed_size in the code object metadata",
+    "stock_bytes": 32768,
+    "tuned_bytes": 12288,
+    "stock_breakdown": {
+      "feature_tile": "16 * 512 * 2 = 16384",
+      "hidden_a": "16 * 128 * 2 = 4096",
+      "hidden_b": "16 * 128 * 2 = 4096",
+      "accumulator": "16 * 128 * 4 = 8192"
+    },
+    "tuned_breakdown": {
+      "feature_tile": "16 * 128 * 2 = 4096",
+      "hidden_a": "16 * 64 * 2 = 2048",
+      "hidden_b": "16 * 64 * 2 = 2048",
+      "accumulator": "16 * 64 * 4 = 4096"
+    }
+  },
+  "occupancy_change": {
+    "derivation": "floor(65536 LDS bytes per CU / footprint) workgroups, times 2 waves per 64-thread workgroup, over 32 wave slots per CU.",
+    "stock": {
+      "workgroups_per_cu": 2,
+      "resident_waves_per_cu": 4,
+      "occupancy_fraction": 0.125
+    },
+    "tuned": {
+      "workgroups_per_cu": 5,
+      "resident_waves_per_cu": 10,
+      "occupancy_fraction": 0.3125
+    },
+    "predicted_ratio": 2.5,
+    "note": "Registers and wave slots stay clear in both builds: the compiler reports 48 VGPRs, 59 SGPRs and zero spill for this kernel, and the register budget alone would allow nine workgroups per CU."
+  },
+  "latency": {
+    "gfx1201": {
+      "part": "RDNA4, 64 compute units",
+      "protocol": "hip/stable_latency.py, 8 interleaved rounds with rotating start, side 1024, 30 warmup and 100 timed iterations per round, worst round-to-round spread 1.03x on both builds",
+      "unit": "ms",
+      "methods": {
+        "bi-grid": {"stock": 7.38, "tuned": 3.67, "speedup": 2.011, "paper": 4.32},
+        "grid-peps-3f": {"stock": 15.99, "tuned": 8.53, "speedup": 1.875, "paper": 5.47},
+        "grid-pink-peps-3f": {"stock": 18.27, "tuned": 8.69, "speedup": 2.102, "paper": 4.86},
+        "grid-pink-peps-4f": {"stock": 21.20, "tuned": 9.95, "speedup": 2.131, "paper": 4.99}
+      },
+      "baseline_reproduces_committed_run": "The stock re-measurement lands within 0.5% of results/hip_stable_latency.json on all four methods, so the two builds are being compared against a baseline that reproduces."
+    },
+    "gfx1151": {
+      "part": "RDNA3.5, 40 compute units",
+      "protocol": "Two interleaved rounds of the compiled benchmark, side 1024, 30 warmup and 60 timed iterations, on a card already warm from a prior profiled run. Round one and round two agree within 0.3%. This is a weaker protocol than the gfx1201 measurement.",
+      "unit": "ms",
+      "methods": {
+        "bi-grid": {"stock": 12.63, "tuned": 6.50, "speedup": 1.945, "paper": 4.32},
+        "grid-peps-3f": {"stock": 27.82, "tuned": 16.37, "speedup": 1.699, "paper": 5.47},
+        "grid-pink-peps-3f": {"stock": 28.45, "tuned": 14.52, "speedup": 1.960, "paper": 4.86},
+        "grid-pink-peps-4f": {"stock": 33.19, "tuned": 16.60, "speedup": 2.000, "paper": 4.99}
+      }
+    }
+  },
+  "numerical_equivalence": {
+    "verdict": "identical",
+    "wmma_path_gfx1201": {
+      "bi-grid": -0.0062618833,
+      "grid-peps-3f": 0.00317980815,
+      "grid-pink-peps-3f": 0.00133563625,
+      "grid-pink-peps-4f": 0.00172280008
+    },
+    "wmma_path_gfx1151": {
+      "bi-grid": -0.00626188517,
+      "grid-peps-3f": 0.00317980815,
+      "grid-pink-peps-3f": 0.00133563636,
+      "grid-pink-peps-4f": 0.00172280171
+    },
+    "scalar_path_gfx1201": {
+      "baseline": -0.00626069,
+      "peps": 0.00317644,
+      "pink": 0.00133695
+    },
+    "note": "Every checksum listed is identical between the stock and the narrowed build. The small differences between gfx1201 and gfx1151, and between the WMMA and scalar paths, are across parts and across code paths, not between the two builds under test."
+  },
+  "analysis": {
+    "return_is_sublinear": "Occupancy rose 2.5x and latency improved 1.70x to 2.13x. The change therefore recovers most but not all of what the occupancy arithmetic offers, which is what a binding-but-not-sole constraint looks like. Anyone reporting the 2.5x as a speedup would be overstating it.",
+    "pink_ordering": "The paper reports Grid-PinkPEPS faster than Grid-PEPS at three frequencies, 4.86 against 5.47. The stock build reversed that on both parts. The narrowed build restores the paper's ordering on gfx1151, 14.52 against 16.37, and reduces the gfx1201 inversion from 2.28 ms to 0.16 ms. The mechanism is visible in the arithmetic: pink aggregates 44 channels against concat's 112, but a worst-case cap forces both to reserve the same LDS, so the occupancy penalty is paid equally and pink's smaller feature vector buys nothing.",
+    "relation_to_cross_generation": "The earlier cross-generation receipt found speed tracking compute-unit count and nothing else, at 0.97 to 1.08 of the CU ratio. That is the expected signature of an occupancy-starved kernel and it is now supported by an intervention rather than only by correlation."
+  },
+  "what_this_cost": [
+    "Generality. The stock build accepts an aggregated input up to 512 and a hidden width up to 128. The narrowed build refuses anything above 128 and 64. This is a specialisation to the deployed configuration, not a free win, and the honest way to state the finding is that a generous compile-time cap costs about a factor of two in latency.",
+    "The default build is unchanged. Nothing in the repository silently becomes the narrow build; it has to be asked for with -D flags."
+  ],
+  "limitations": [
+    "Occupancy is still derived from launch geometry and advertised limits, not read from a hardware counter. The latency improvement is measured; the occupancy figure that explains it is not.",
+    "The gfx1151 half uses a two-round interleaved benchmark rather than the settled protocol used on gfx1201, because the measurement script could not be executed on that host in this session.",
+    "Neither build is comparable to the paper's numbers: the workload, output size, precision and timing method have not been shown to match. The paper column is a reference point, not a baseline.",
+    "Only one of the three resources was moved. Raising the workgroup above 64 threads, the second proposed experiment, has not been tried and could compound or conflict with this change.",
+    "128 and 64 are the smallest caps that serve all four benchmarked methods. A per-method build could go lower for baseline and pink; that has not been measured."
+  ],
+  "supersedes": {
+    "results/hip_occupancy.json": "next_experiments[0], which predicted 25% occupancy from halving the footprint. The footprint was cut to 37.5% rather than 50%, giving 31.25%, and the resulting speedup is now measured."
+  },
+  "paper_exact": false,
+  "verification_status": "bounded_local_intervention_not_paper_comparable"
+}

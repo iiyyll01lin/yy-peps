@@ -316,14 +316,24 @@
           "id": "hardware-gate",
           "description": "GPU evidence names ISA, ROCm version, command, workload, warmup, repetitions, and parity tolerance; unavailable hardware is a documented skip.",
           "evidence": "hardware receipt or explicit skip reason"
+        },
+        {
+          "id": "settled-measurement",
+          "description": "Latency comes from a card that was spun up until the shader clock stopped climbing, then measured in interleaved rounds with a rotating start order. The worst round-to-round spread is reported and is under 1.10x. A single back-to-back sweep is not accepted: on this repository that protocol inflated the first method measured by 5.7x and invented a method ordering.",
+          "evidence": "python hip/stable_latency.py --binary <build> --out <receipt>; receipt fields protocol.method_order and stable"
+        },
+        {
+          "id": "build-provenance",
+          "description": "State the toolchain the binary was actually built against and how the include order was established, not the version the machine advertises. A host can carry two ROCm installs at once.",
+          "evidence": "hip/build_kernel.sh header and the recorded compile line"
         }
       ],
       "budget": "amd-optional"
     },
     {
       "id": "W12",
-      "topic": "WMMA measurement",
-      "topic_zh": "WMMA 量測",
+      "topic": "WMMA measurement and occupancy tuning",
+      "topic_zh": "WMMA 量測與佔用率調校",
       "notebook": "notebooks/W12_hip_wmma.ipynb",
       "readings": [
         {
@@ -342,6 +352,21 @@
           "id": "matched-workload",
           "description": "No comparison to the paper is made unless the complete fused workload, output size, precision, and timing method match.",
           "evidence": "hardware receipt and limitations paragraph"
+        },
+        {
+          "id": "occupancy-limiter",
+          "description": "Derive workgroups per compute unit three ways -- from the LDS footprint, from wave slots, and from the register budget -- and name which one binds. A number copied from a tool without the derivation does not pass.",
+          "evidence": "python hip/occupancy.py; receipt field limits.limiter with all three workgroups_per_cu_by_* values"
+        },
+        {
+          "id": "optimisation-loop",
+          "description": "Close one measure-diagnose-change-remeasure cycle against the limiting resource. Required: the code object footprint before and after, output checksums shown unchanged, the speedup measured under the settled protocol, and a statement of what generality the change cost. Reporting a speedup without the checksum check does not pass.",
+          "evidence": "results/hip_lds_ab.json"
+        },
+        {
+          "id": "predicted-versus-observed",
+          "description": "State the occupancy improvement the arithmetic predicts before measuring, then report the observed speedup and account for the difference. The return on occupancy is expected to be sublinear.",
+          "evidence": "results/hip_lds_ab.json fields occupancy_change and analysis"
         }
       ],
       "budget": "amd-optional"

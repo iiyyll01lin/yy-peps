@@ -24,9 +24,15 @@ set -euo pipefail
 
 ROCM="${ROCM_PATH:-/opt/rocm}"
 ARCH="${1:-gfx1201}"
+# Optional variant name. It only changes the output filename, so two
+# builds of the same source with different -D flags cannot overwrite
+# each other and cannot be confused in a receipt.
+VARIANT="${2:-}"
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SHIM="${TMPDIR:-/tmp}/peps-rocm-include-$ARCH"
-OUT="$REPO/hip/build/fused_peps_$ARCH"
+OUT="$REPO/hip/build/fused_peps_$ARCH${VARIANT:+_$VARIANT}"
+# Word-split on purpose: this carries several -D flags.
+read -r -a EXTRA <<< "${PEPS_EXTRA_FLAGS:-}"
 
 rm -rf "$SHIM"
 mkdir -p "$SHIM" "$REPO/hip/build"
@@ -44,6 +50,7 @@ set -x
   --offload-arch="$ARCH" \
   -DPEPS_GIT_SHA="\"$SHA\"" \
   -DPEPS_TARGET_ISA="\"$ARCH\"" \
+  ${EXTRA[@]+"${EXTRA[@]}"} \
   "$REPO/hip/fused_peps_kernel.hip" \
   -L"$ROCM/lib" -lamdhip64 \
   -o "$OUT"
