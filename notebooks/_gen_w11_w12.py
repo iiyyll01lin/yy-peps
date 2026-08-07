@@ -252,14 +252,19 @@ W11 = nb([
 
 # ----------------------------------------------------------------- W12
 W12 = nb([
-    md("# W12 · WMMA diagnostics and the optimization gap / WMMA 診斷與最佳化缺口\n"
+    md("# W12 · WMMA diagnostics and occupancy tuning / WMMA 診斷與佔用率調校\n"
        "\n"
        "`hip/wmma_mlp.hip` verifies isolated fp16 and int8 rocWMMA GEMMs. They are useful\n"
        "component diagnostics, but they do not include projection, sampling, aggregation,\n"
        "biases/activations, or all decoder layers. W11 is the primary workload path.\n"
        "\n"
+       "Section 3 then does the part that makes the diagnostics worth collecting: it\n"
+       "derives which resource caps occupancy, changes that resource, and re-measures.\n"
+       "A profile you do not act on is a screenshot.\n"
+       "\n"
        "本章保留 fp16/int8 rocWMMA component diagnostics;它們不含完整 PEPS pipeline,\n"
-       "因此不能當作 paper-workload latency。"),
+       "因此不能當作 paper-workload latency。第 3 節則完成量測的目的:找出限制佔用率的\n"
+       "資源、改動它、重新量測——沒有後續動作的 profile 只是一張截圖。"),
     SETUP,
     BENCH,
     md("## 1. Build and run fixture parity / 編譯並對拍"),
@@ -300,12 +305,95 @@ W12 = nb([
          "else:",
          "    print('no diagnostic rows written')",
          "show_latency()"),
-    md("## 3. What remains before a paper comparison / 論文比較前仍缺什麼\n"
+    md("## 3. Find the limiter, then close the loop / 找出瓶頸,讓迴圈閉合\n"
+       "A latency number on its own does not tell you what to change. Occupancy does,\n"
+       "and for this kernel you can derive it on paper before touching the GPU: the\n"
+       "four `__shared__` tiles in `integrated_peps_wmma` are sized from compile-time\n"
+       "caps, so the launch reserves the same LDS whatever dimensions a run uses.\n"
+       "Work out workgroups-per-CU three ways — LDS, wave slots, registers — and the\n"
+       "smallest one is what you are actually fighting. 先在紙上算出瓶頸,再上機驗證。"),
+    code("# Occupancy is arithmetic. This cell needs no GPU.",
+         "WMMA_TILE, LDS_PER_CU, WAVES_PER_WG, MAX_WAVES = 16, 64 * 1024, 2, 32",
+         "",
+         "def footprint(input_cap, hidden_cap):",
+         "    # feature_tile + hidden_a + hidden_b are fp16; accumulator is fp32.",
+         "    return WMMA_TILE * (input_cap * 2 + hidden_cap * 2",
+         "                        + hidden_cap * 2 + hidden_cap * 4)",
+         "",
+         "def occupancy(bytes_per_wg):",
+         "    wgs = LDS_PER_CU // bytes_per_wg",
+         "    return wgs, wgs * WAVES_PER_WG / MAX_WAVES",
+         "",
+         "STOCK, TUNED = footprint(512, 128), footprint(128, 64)",
+         "for label, fp in (('stock  (512/128)', STOCK), ('narrowed (128/64)', TUNED)):",
+         "    wgs, occ = occupancy(fp)",
+         "    print(f'{label}: {fp:6d} B/workgroup -> {wgs} workgroups/CU"
+         " -> {occ:6.2%} occupancy')",
+         "print()",
+         "print('predicted occupancy gain:', f'{occupancy(TUNED)[1] / occupancy(STOCK)[1]:.2f}x')",
+         "print('but wave slots would allow 16 workgroups and registers 9,')",
+         "print('so LDS is the binding constraint by roughly 4x.')"),
+    md("The caps are 512 and 128. `aggregate_dim` needs **16 / 112 / 44 / 46** for the\n"
+       "four methods and the hidden width is always 64, so most of that reservation is\n"
+       "never touched — and LDS is reserved whether it is read or not. Narrowing the\n"
+       "caps is therefore a change you can predict the effect of *before* measuring,\n"
+       "which is what makes it an experiment rather than a guess.\n\n"
+       "```bash\n"
+       "bash hip/build_kernel.sh gfx1201                       # stock\n"
+       "PEPS_EXTRA_FLAGS=\"-DPEPS_MAX_INPUT_DIM=128 -DPEPS_MAX_HIDDEN_DIM=64\" \\\n"
+       "  bash hip/build_kernel.sh gfx1201 lds12k              # narrowed\n"
+       "amdclang++ ... -S -o - | grep group_segment_fixed_size # confirm the footprint\n"
+       "```\n\n"
+       "Then re-measure **with the settled protocol**, not a back-to-back sweep:\n"
+       "`python hip/stable_latency.py --binary <build> --out <receipt>`."),
+    code("# What the intervention actually bought, from the committed receipt.",
+         "import json, pathlib",
+         "receipt = pathlib.Path('..') / 'results' / 'hip_lds_ab.json'",
+         "if not receipt.exists():",
+         "    receipt = pathlib.Path('results') / 'hip_lds_ab.json'",
+         "if receipt.exists():",
+         "    ab = json.loads(receipt.read_text())",
+         "    print(f\"{'method':<20}{'stock':>8}{'tuned':>8}{'speedup':>9}{'paper':>7}\")",
+         "    for part, block in ab['latency'].items():",
+         "        print(f'-- {part} ({block[\"part\"]})')",
+         "        for name, row in block['methods'].items():",
+         "            print(f\"{name:<20}{row['stock']:>8.2f}{row['tuned']:>8.2f}\"",
+         "                  f\"{row['speedup']:>8.2f}x{row['paper']:>7.2f}\")",
+         "    print()",
+         "    print('checksums identical:', ab['numerical_equivalence']['verdict'])",
+         "    print('predicted occupancy gain:', ab['occupancy_change']['predicted_ratio'], 'x')",
+         "    print()",
+         "    print('READ THIS:', ab['analysis']['return_is_sublinear'])",
+         "else:",
+         "    print('receipt not found; run the A/B yourself and record one')"),
+    md("Three things in that output are the actual lesson, and none of them is the\n"
+       "speedup.\n\n"
+       "1. **The checksums are identical.** A performance change that alters the output\n"
+       "   is not a performance change. Report the checksum comparison or the number\n"
+       "   means nothing. 沒有對過 checksum 的加速不算加速。\n"
+       "2. **The return is sublinear.** Occupancy rose 2.5x; latency improved about 2x.\n"
+       "   Quoting the 2.5x would be overstating the result. Occupancy was the binding\n"
+       "   constraint, not the only one.\n"
+       "3. **It cost generality.** The narrowed build refuses an aggregated input above\n"
+       "   128 and fails closed through the existing `check_config` guard. This is a\n"
+       "   specialisation to the deployed configuration, not a free win, and saying so\n"
+       "   is part of reporting it honestly.\n\n"
+       "There is also a warning here about your own earlier conclusions. The stock\n"
+       "build made Grid-PinkPEPS look *slower* than Grid-PEPS, contradicting the paper.\n"
+       "That was not a reproduction failure — both methods were forced to reserve the\n"
+       "same worst-case LDS, so Pink's smaller 44-channel aggregate bought nothing. Fix\n"
+       "the footprint and the paper's ordering comes back. **A measurement artefact had\n"
+       "been sitting there looking like a disagreement with the paper.** 先懷疑量測,\n"
+       "再懷疑論文。"),
+    md("## 4. What remains before a paper comparison / 論文比較前仍缺什麼\n"
        "The W11 kernel now integrates rocWMMA across all four Linear layers and passes\n"
        "baseline/PEPS/Pink fp16 parity and repeated 1024² timing. The remaining gate is\n"
        "comparison fidelity: match disclosed precision/timing boundaries and target-GPU\n"
        "identity, retain compiler and warmup provenance, and never promote local timings\n"
-       "to paper reproduction while the receipt says `directly_comparable=false`."),
+       "to paper reproduction while the receipt says `directly_comparable=false`.\n\n"
+       "That gate is unchanged by the optimisation above. Getting `bi-grid` under the\n"
+       "paper's 4.32 ms is **not** a reproduction of the paper's number; it is a local\n"
+       "measurement of a workload that has not been shown to match."),
 ])
 
 
