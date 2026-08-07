@@ -88,27 +88,43 @@ Table 2 completed at 594 of 594 jobs with no errors, and all eleven methods
 landed below their published values, by a mean of 1.154 dB. The ordering also
 disagrees: `BI-Grid` finishes above `NTC_PEPS` where the paper has the reverse.
 
-The aggregation described above is what explains both. Because global means
-weight every map equally, the score is an average over individual maps, and the
-eight categories are not comparable with each other: they span 19.4 dB, from
-`normal` at 32.6 to `Displacement` at 52.1. This selection puts 47% of its maps
-in the two lowest categories. `NTC_PEPS` minus `BI-Grid` is itself
-category-dependent, running from -1.17 dB on `Displacement` to +2.06 dB on
-`metal`, so reweighting the same measured jobs to equal categories moves
-`NTC_PEPS` from third place to first and cuts the out-of-sample error against
-the published values by 3.1x.
+The aggregation described above is what explains both. `table2.json` records
+it as `map_weighted`: because global means weight every map equally, the score
+is an average over individual maps, and the eight categories are not comparable
+with each other. They span 19.4 dB, from `normal` at 32.6 to `Displacement` at
+52.1, and this selection puts 47% of its maps in the two lowest. `NTC_PEPS`
+minus `BI-Grid` is itself category-dependent, running from -1.17 dB on
+`Displacement` to +2.06 dB on `metal`, so reweighting the same measured jobs to
+equal categories swaps six method pairs, moves `NTC_PEPS` from third place to
+first, and cuts the out-of-sample error against the published values by 3.1x.
+
+Two alternatives were tested and neither survives. Training on to 240k and
+480k steps makes the PEPS advantage *shrink* rather than grow, so compute is
+not the cause, and `budget_probe/` holds those curves. The paper does report L1
+and this track uses it, so the loss family is not the cause either. How that L1
+is reduced across a set's maps is genuinely unreported, and changing that
+per-map reduction moves the advantage roughly sixfold on `paving-stones-070`;
+but it does nothing on `metal-plates-013`, and its effect on the ordering
+reverses sign between the two, so no single choice repairs the table.
+`ordering_probe/` records both ladders, including the one that is not even
+monotone.
 
 The paper names eighteen sets and eight categories but publishes no file list,
-so this bounds the discrepancy rather than measuring it.
+so all of this bounds the discrepancy rather than measuring it.
 `results/texture_repro/shortfall_analysis/` carries the numbers and the
-limitations; `ordering_probe/` and `budget_probe/` cover the two alternative
-explanations that were tested and did not survive.
+limitations.
 
 Table 2 完整跑完 594/594 且零錯誤,但十一個方法全部低於論文值,平均 1.154 dB,
-排序也相反。原因就在上述彙總方式:分數是對個別 map 平均,而八個類別相差 19.4 dB,
-本選集有 47% 的 map 落在最低的兩類;而 `NTC_PEPS` 減 `BI-Grid` 本身也隨類別改變
-(`Displacement` -1.17 dB,`metal` +2.06 dB)。重新加權成類別均衡後,`NTC_PEPS`
-由第三升至第一,樣本外誤差降低 3.1 倍。論文未公布檔案清單,故此處只能界定範圍。
+排序也相反。原因就在上述彙總方式(`table2.json` 記為 `map_weighted`):分數是對個別
+map 平均,而八個類別相差 19.4 dB,本選集有 47% 的 map 落在最低的兩類;而 `NTC_PEPS`
+減 `BI-Grid` 本身也隨類別改變(`Displacement` -1.17 dB,`metal` +2.06 dB)。重新
+加權成類別均衡後,六組方法對互換,`NTC_PEPS` 由第三升至第一,樣本外誤差降低 3.1 倍。
+
+兩個替代解釋都不成立:延長訓練到 240k/480k 反而讓 PEPS 優勢縮小,故非算力問題;論文
+載明 L1 且本軌道確實使用 L1,故非 loss family。真正未被指定的是「L1 如何在各 map 之間
+reduce」,它在 `paving-stones-070` 上可讓優勢變動約六倍,但在 `metal-plates-013` 上
+毫無作用,且對排序的影響在兩者間換符號,無法單獨修正整張表。論文未公布檔案清單,故以上
+只能界定範圍。
 
 ## W09 · Signed distance functions / 有號距離函數
 

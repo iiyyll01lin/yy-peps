@@ -28,17 +28,18 @@ published value, by a mean of **1.154 dB**, and the reproduced ordering puts the
 Grid family above the NTC family where the paper does the reverse.
 
 Both symptoms trace to the same unpublished choice, the map-file selection. The
-reported score is a mean over individual maps, the eight map categories span
-**19.4 dB**, and this selection puts 47% of its maps in the two lowest-scoring
-categories. Reweighting the same measured jobs to equal categories cuts the
-out-of-sample error against the published values by **3.1x**, moves `NTC_PEPS`
-from third place to first, and swaps six method pairs.
+reported score is `map_weighted`, an average over individual maps, the eight map
+categories span **19.4 dB**, and this selection puts 47% of its maps in the two
+lowest-scoring categories. Reweighting the same measured jobs to equal
+categories cuts the out-of-sample error against the published values by
+**3.1x**, moves `NTC_PEPS` from third place to first, and swaps six method
+pairs.
 
 Two candidate explanations are ruled out rather than left hanging. Training
 longer makes the PEPS advantage *shrink*, so compute is not the cause. The paper
 does report its L1 loss and this reproduction uses it, so the loss family is not
-the cause either. What the paper leaves open one level below that, how the L1 is
-reduced across a set's maps, does move a result several fold, but its effect
+the cause either. What the paper leaves open one level below that, the reduction
+applied to the per-map L1 terms, does move a result several fold, but its effect
 reverses sign between materials and so cannot repair the table on its own.
 
 Everything stops at sufficiency. Showing that a choice *can* produce an effect
