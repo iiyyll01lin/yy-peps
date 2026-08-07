@@ -1,0 +1,3 @@
+"Name","Calls","TotalDurationNs","AverageNs","Percentage","MinNs","MaxNs","StdDev"
+"integrated_peps_wmma(_Float16 const*, float const*, WorkloadConfig, _Float16 const*, float const*, _Float16 const*, float const*, _Float16 const*, float const*, _Float16 const*, float const*, int, int, int, float*)",25,314680985,12587239.400000,99.99,12535586,12662925,22283.856889
+"__amd_rocclr_copyBuffer",9,21123,2347.000000,6.712e-03,1764,4328,793.761457

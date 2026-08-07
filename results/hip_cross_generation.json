@@ -1,0 +1,118 @@
+{
+  "answer": "No. Across all four methods the RDNA4 speedup is 1.56x to 1.73x while the compute-unit ratio alone is 1.60x. Normalised for compute units the speedup is 0.97x to 1.08x, so the kernel scales with width and extracts no measurable benefit from the rest of the generation change. For a kernel that issues WMMA instructions that is a finding, not a null result.",
+  "compute_unit_ratio": 1.6,
+  "generated_at_utc": "2026-08-07T15:56:25.003153+00:00",
+  "limitations": [
+    "Two parts, one seed of measurement each; medians of round medians.",
+    "The two hosts differ in CPU, memory and cooling, and gfx1151 is an integrated part sharing system memory, so bandwidth is not matched.",
+    "Neither number is comparable to the paper, which does not publish its kernel, precision or timing boundary.",
+    "Compute-unit ratio is a crude normaliser; clocks and memory paths differ too, so 'tracks the CU ratio' is an observation and not a proof that only width matters."
+  ],
+  "paper_exact": false,
+  "parts": {
+    "gfx1151": {
+      "compute_units": 40,
+      "generation": "RDNA3.5",
+      "host": "aup-HP-Z2-Mini-G1a"
+    },
+    "gfx1201": {
+      "chip_id": "0x7551",
+      "compute_units": 64,
+      "generation": "RDNA4",
+      "host": "aup-WRX90-WS-EVO"
+    }
+  },
+  "protocol": {
+    "gfx1151": {
+      "clock_settling": {
+        "rounds_to_settle": 5,
+        "sclk_history_mhz": [
+          1263.0,
+          1451.0,
+          1497.0,
+          1515.0,
+          1517.0
+        ],
+        "settled": true
+      },
+      "iters_per_round": 100,
+      "method_order": "rotated each round",
+      "note": "Interleaved rounds with a rotating start, after spinning the card until the shader clock stopped climbing.",
+      "rounds": 6,
+      "side": 1024,
+      "warmup_per_round": 30
+    },
+    "gfx1151_stable": true,
+    "gfx1201": {
+      "clock_settling": {
+        "rounds_to_settle": 12,
+        "sclk_history_mhz": [
+          23.0,
+          7.0,
+          9.0,
+          16.0,
+          6.0,
+          8.0,
+          7.0,
+          6.0,
+          7.0,
+          12.0,
+          7.0,
+          7.0
+        ],
+        "settled": false
+      },
+      "iters_per_round": 100,
+      "method_order": "rotated each round",
+      "note": "Interleaved rounds with a rotating start, after spinning the card until the shader clock stopped climbing.",
+      "rounds": 8,
+      "side": 1024,
+      "warmup_per_round": 30
+    },
+    "gfx1201_stable": true,
+    "kernel_sha256": "8713446e13af5d842d391e1002ea11e43f998e459bbb079992116de1dba7db9c",
+    "note": "Identical kernel source, identical harness, both measured after clock settling with rotated interleaved rounds."
+  },
+  "question": "Does the fused PEPS kernel gain anything from RDNA4 beyond its extra compute units?",
+  "rows": [
+    {
+      "gfx1151_ms": 12.8051,
+      "gfx1201_ms": 7.3956,
+      "gfx1201_ratio_to_paper": 1.712,
+      "method": "bi-grid",
+      "paper_ms": 4.32,
+      "speedup": 1.7314,
+      "speedup_over_cu_ratio": 1.0822
+    },
+    {
+      "gfx1151_ms": 27.8207,
+      "gfx1201_ms": 16.0608,
+      "gfx1201_ratio_to_paper": 2.9362,
+      "method": "grid-peps-3f",
+      "paper_ms": 5.47,
+      "speedup": 1.7322,
+      "speedup_over_cu_ratio": 1.0826
+    },
+    {
+      "gfx1151_ms": 28.9918,
+      "gfx1201_ms": 18.3551,
+      "gfx1201_ratio_to_paper": 3.7768,
+      "method": "grid-pink-peps-3f",
+      "paper_ms": 4.86,
+      "speedup": 1.5795,
+      "speedup_over_cu_ratio": 0.9872
+    },
+    {
+      "gfx1151_ms": 33.167,
+      "gfx1201_ms": 21.272,
+      "gfx1201_ratio_to_paper": 4.2629,
+      "method": "grid-pink-peps-4f",
+      "paper_ms": 4.99,
+      "speedup": 1.5592,
+      "speedup_over_cu_ratio": 0.9745
+    }
+  ],
+  "schema": "peps.hip_cross_generation",
+  "schema_version": 1,
+  "verification_status": "bounded_local_latency_not_paper_comparable"
+}

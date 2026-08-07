@@ -140,6 +140,59 @@ and `librccl-dev` all depend on it.
 `-I` 會被 clang 去重而失效,故改以符號連結目錄繞開;該套件被 hipcc 等六個套件反向依賴,
 不宜移除。
 
+## Where the remaining gap goes / 剩下的差距去了哪裡
+
+With the measurement fixed, the same kernel source and the same harness run on
+two parts answer a question the paper cannot: does this kernel benefit from
+RDNA4 at all, beyond having more compute units?
+
+| method | gfx1201 (RDNA4, 64 CU) | gfx1151 (RDNA3.5, 40 CU) | speedup | per CU |
+| --- | ---: | ---: | ---: | ---: |
+| `bi-grid` | 7.40 | 12.81 | 1.73x | 1.08 |
+| `grid-peps-3f` | 16.06 | 27.82 | 1.73x | 1.08 |
+| `grid-pink-peps-3f` | 18.36 | 28.99 | 1.58x | 0.99 |
+| `grid-pink-peps-4f` | 21.27 | 33.17 | 1.56x | 0.97 |
+
+The compute-unit ratio alone is 64/40 = 1.60. Normalised by it, every method
+lands between 0.97 and 1.08. **The kernel scales with width and extracts nothing
+else from the generation change**, which for code that issues WMMA instructions
+is a result rather than a null.
+
+`rocprofv3` says why. The dispatch asks for **32 KB of LDS per 64-thread
+workgroup**, and a compute unit has 64 KB, so only two workgroups fit. That is
+four resident waves out of a possible thirty-two: **12.5% occupancy**. Wave slots
+would have allowed sixteen workgroups and the register budget nine, so LDS is
+about four times more restrictive than the next constraint. With four waves per
+CU there is almost nothing to switch to while a memory access is outstanding,
+which is exactly the profile of a kernel whose speed follows compute-unit count
+and nothing else.
+
+The kernel is also 99.99% of GPU time and its profiled average, 12.59 ms, matches
+the HIP-event median of 12.60 ms, so the host-side timing boundary is not hiding
+anything.
+
+Three experiments follow directly, and all of them are minutes long:
+
+1. Halve the LDS footprint per workgroup. The arithmetic predicts 25% occupancy
+   if wave slots and registers stay clear.
+2. Raise the workgroup above 64 threads so one LDS allocation serves more waves,
+   which moves occupancy without changing the footprint.
+3. Profile the Pink path on its own. It is slower than plain PEPS here while the
+   paper reports the opposite ordering, and it is the one method whose
+   cross-generation scaling falls below the compute-unit ratio.
+
+`results/hip_occupancy.json` records the numbers and states plainly that
+occupancy was computed from the launch geometry and the part's advertised
+limits, not measured with a hardware counter. Low occupancy is consistent with
+the observed scaling; it is not yet proof of the cause.
+
+同一份原始碼、同一套量測在兩張卡上跑:RDNA4 對 RDNA3.5 的加速是 1.56–1.73 倍,而
+CU 比是 1.60 倍,正規化後落在 0.97–1.08 之間——**這個 kernel 只從 CU 數量獲益,沒有
+從世代差異拿到其他好處**。rocprofv3 指出原因:每個 64 執行緒的 workgroup 要 32 KB
+LDS,而每 CU 只有 64 KB,故僅能常駐 2 個 workgroup、4 個 wave(上限 32),**佔用率
+12.5%**。LDS 比次要限制嚴格約四倍。佔用率是由啟動幾何與硬體上限推算,非以硬體計數器
+量測,故只能說「與觀察一致」,尚不足以定案。
+
 ## Result contract and comparison blocker / 結果契約與比較限制
 
 `results/hip_latency.schema.json` requires workload kind, mode, implementation,

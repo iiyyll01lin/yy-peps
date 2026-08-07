@@ -1,0 +1,68 @@
+{
+  "answer": "Occupancy is 12.5%. The launch asks for 32 KB of LDS per 64-thread workgroup, and each compute unit has 64 KB, so only two workgroups and four waves are resident per CU out of a possible thirty-two. Wave slots would allow sixteen workgroups and the register budget would allow nine, so LDS is roughly four times more restrictive than the next constraint. With four waves per CU there is very little to switch to while a memory access is outstanding, which is consistent with a kernel whose speed tracks compute-unit count and nothing else.",
+  "generated_at_utc": "2026-08-07T16:03:04.716696+00:00",
+  "gpu_time_share": {
+    "average_ns": 12587239,
+    "calls": 25,
+    "integrated_peps_wmma_percent": 99.99,
+    "note": "The kernel accounts for essentially all GPU time and its average matches the HIP-event median of 12.60 ms, so the host-side measurement boundary is not hiding overhead."
+  },
+  "launch": {
+    "kernel": "integrated_peps_wmma",
+    "lds_bytes_per_workgroup": 32768,
+    "scratch_size": 0,
+    "sgpr_count": 128,
+    "vgpr_count": 56,
+    "waves_per_workgroup": 2,
+    "workgroup_threads": 64,
+    "workgroups_launched": 65536
+  },
+  "limitations": [
+    "Occupancy is computed from the launch geometry and the part's advertised limits, not measured directly with a hardware counter.",
+    "One kernel, one method, one part; the RDNA4 host has no profiler installed so the same measurement has not been repeated there.",
+    "Low occupancy is consistent with the observed scaling but is not proof of the cause; a counter-based bandwidth or stall analysis would be needed to close that."
+  ],
+  "limits": {
+    "limiter": "LDS",
+    "workgroups_per_cu_by_lds": 2,
+    "workgroups_per_cu_by_vgprs": 9,
+    "workgroups_per_cu_by_wave_slots": 16
+  },
+  "next_experiments": [
+    "Halve the LDS footprint per workgroup and re-measure; the arithmetic predicts 25% occupancy if wave slots and registers stay clear.",
+    "Raise the workgroup from 64 threads so each LDS allocation serves more waves, which changes occupancy without changing the footprint.",
+    "Profile the Pink path specifically: it is slower than plain PEPS here while the paper reports the opposite ordering."
+  ],
+  "occupancy": {
+    "if_lds_halved": {
+      "lds_bytes": 16384,
+      "occupancy_fraction": 0.25,
+      "workgroups_per_cu": 4
+    },
+    "max_waves_per_cu": 32,
+    "occupancy_fraction": 0.125,
+    "resident_waves_per_cu": 4
+  },
+  "paper_exact": false,
+  "part": {
+    "compute_units": 40,
+    "generation": "RDNA3.5",
+    "isa": "gfx1151",
+    "lds_kb_per_cu": 64,
+    "max_waves_per_cu": 32,
+    "max_waves_per_simd": 16,
+    "simds_per_cu": 2,
+    "wavefront_size": 32
+  },
+  "profiler": {
+    "host": "aup-HP-Z2-Mini-G1a",
+    "mode": "--stats --kernel-trace --output-format csv",
+    "note": "Profiled on the RDNA3.5 part because it is the machine with the ROCm profiler suite installed; the RDNA4 host has roc-obj tooling only.",
+    "rocm": "7.2.3",
+    "tool": "rocprofv3"
+  },
+  "question": "Why is the fused kernel 1.7x to 4.3x slower than the paper's runtime numbers, and why does RDNA4 buy nothing beyond its compute units?",
+  "schema": "peps.hip_occupancy",
+  "schema_version": 1,
+  "verification_status": "bounded_local_profile_not_paper_comparable"
+}
