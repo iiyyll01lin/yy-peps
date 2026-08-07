@@ -82,6 +82,34 @@ bundle 當成一張影像計分。
 > 加 NVIDIA 預覽驅動。Box B 無 NVIDIA GPU、無 CUDA、無 nvcc。故僅以未驗證的
 > **PyTorch proxy**(`apps/texture/rtxntc.py`)作架構探索;元件相似不等於結果等價。
 
+### What W08 found / W08 的結果
+
+Table 2 completed at 594 of 594 jobs with no errors, and all eleven methods
+landed below their published values, by a mean of 1.154 dB. The ordering also
+disagrees: `BI-Grid` finishes above `NTC_PEPS` where the paper has the reverse.
+
+The aggregation described above is what explains both. Because global means
+weight every map equally, the score is an average over individual maps, and the
+eight categories are not comparable with each other: they span 19.4 dB, from
+`normal` at 32.6 to `Displacement` at 52.1. This selection puts 47% of its maps
+in the two lowest categories. `NTC_PEPS` minus `BI-Grid` is itself
+category-dependent, running from -1.17 dB on `Displacement` to +2.06 dB on
+`metal`, so reweighting the same measured jobs to equal categories moves
+`NTC_PEPS` from third place to first and cuts the out-of-sample error against
+the published values by 3.1x.
+
+The paper names eighteen sets and eight categories but publishes no file list,
+so this bounds the discrepancy rather than measuring it.
+`results/texture_repro/shortfall_analysis/` carries the numbers and the
+limitations; `ordering_probe/` and `budget_probe/` cover the two alternative
+explanations that were tested and did not survive.
+
+Table 2 完整跑完 594/594 且零錯誤,但十一個方法全部低於論文值,平均 1.154 dB,
+排序也相反。原因就在上述彙總方式:分數是對個別 map 平均,而八個類別相差 19.4 dB,
+本選集有 47% 的 map 落在最低的兩類;而 `NTC_PEPS` 減 `BI-Grid` 本身也隨類別改變
+(`Displacement` -1.17 dB,`metal` +2.06 dB)。重新加權成類別均衡後,`NTC_PEPS`
+由第三升至第一,樣本外誤差降低 3.1 倍。論文未公布檔案清單,故此處只能界定範圍。
+
 ## W09 · Signed distance functions / 有號距離函數
 
 `paper_exact` trains on fresh uniform coordinates sampled from each named 512³

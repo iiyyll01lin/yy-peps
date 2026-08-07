@@ -18,6 +18,26 @@ paper-comparable.
 本 repo 是教學型重實作,明確區分 `course_fast` 與 `paper_exact`;既有結果 CSV 在附完整
 manifest 重跑前皆為 `legacy-unverified`。已發布證據不含論文可比數值。
 
+## What this reproduction found / 本重現的結果
+
+The texture track reproduced Table 2 in full, 594 of 594 jobs, and every method
+landed about 1.154 dB below its published value with the method ordering
+reversed. Both trace to the unpublished map-file selection rather than to
+compute or to the loss: the reported score averages over individual maps whose
+eight categories span 19.4 dB, and reweighting the same measured jobs to equal
+categories reverses the ordering and cuts the out-of-sample error 3.1x. The
+claim stops at sufficiency, since the paper's file list is not published.
+
+Read `docs/reproducibility.md` for how that was established and
+`results/texture_repro/` for the evidence and its limitations. W08 and W13/W14
+grade students on exactly these habits.
+
+材質軌道完整重現了 Table 2(594/594),但所有方法約低於論文值 1.154 dB 且排序相反。
+兩者都指向未公布的 map 檔案選集,而非算力或 loss:表頭分數是對個別 map 平均,八個
+類別相差 19.4 dB,重新加權成均衡後排序即反轉、樣本外誤差降低 3.1 倍。因論文未公布
+檔案清單,此結論止於充分性。方法見 `docs/reproducibility.md`,證據見
+`results/texture_repro/`。
+
 ## Hardware / 硬體
 Two AMD boxes, merged into one git history:
 - **Box B** — 4× Navi 48, `gfx1201` / RDNA 4 (main dev; the paper's target class).

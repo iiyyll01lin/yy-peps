@@ -20,6 +20,45 @@ RTXNTC parity implementations.
 
 ---
 
+## What the reproduction found / 重現結果
+
+Table 2 is reproduced in full: 594 of 594 jobs across eleven methods, three
+seeds and eighteen materials, with zero errors. Every method lands below its
+published value, by a mean of **1.154 dB**, and the reproduced ordering puts the
+Grid family above the NTC family where the paper does the reverse.
+
+Both symptoms trace to the same unpublished choice, the map-file selection. The
+reported score is a mean over individual maps, the eight map categories span
+**19.4 dB**, and this selection puts 47% of its maps in the two lowest-scoring
+categories. Reweighting the same measured jobs to equal categories cuts the
+out-of-sample error against the published values by **3.1x**, moves `NTC_PEPS`
+from third place to first, and swaps six method pairs.
+
+Two candidate explanations are ruled out rather than left hanging. Training
+longer makes the PEPS advantage *shrink*, so compute is not the cause. The paper
+does report its L1 loss and this reproduction uses it, so the loss family is not
+the cause either. What the paper leaves open one level below that, how the L1 is
+reduced across a set's maps, does move a result several fold, but its effect
+reverses sign between materials and so cannot repair the table on its own.
+
+Everything stops at sufficiency. Showing that a choice *can* produce an effect
+is not showing the authors made it, and the paper's file list is unpublished, so
+the difference is bounded here rather than measured. Evidence, with its own
+limitations, lives in `results/texture_repro/shortfall_analysis/`,
+`ordering_probe/` and `budget_probe/`; the methodology is in
+`docs/reproducibility.md`.
+
+Table 2 已完整重現(594/594,十一個方法、三顆種子、十八個材質、零錯誤),但所有方法
+都低於論文值,平均 **1.154 dB**,且方法排序與論文相反。兩個症狀都指向同一個未公布的
+選擇:map 檔案選集。表頭數字是對個別 map 取平均,而八個 map 類別相差 **19.4 dB**,
+本選集有 47% 的 map 落在分數最低的兩類。把同一批測量重新加權成類別均衡後,對論文值的
+樣本外誤差降低 **3.1 倍**,`NTC_PEPS` 由第三升至第一,六組方法對互換位置。
+
+算力與 loss family 已被排除:延長訓練反而讓 PEPS 優勢縮小,而論文確實載明 L1、本重現
+也使用 L1。論文未指定的下一層細節(L1 如何在一組材質的各 map 之間 reduce)影響可達數
+倍,但其效果在不同材質間會換符號,無法單獨修正整張表。以上全部止於充分性,不宣稱必然
+性;論文未公布檔案清單,因此此處只能界定範圍而非量測差異。
+
 ## Hardware targets / 硬體目標
 
 The optional hardware material targets two self-hosted AMD systems. CPU CI does
