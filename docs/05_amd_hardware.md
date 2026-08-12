@@ -288,6 +288,87 @@ from a counter.
 代價是通用性:窄版拒絕超過 128 的輸入(`check_config` 既有檢查會擋下並報錯),因此這
 是針對部署組態的特化而非免費的勝利。預設建置未更動。
 
+## The kernel meets the reproduction, halfway / kernel 與重現的交會,只有一半
+
+The repository's headline result is the texture reproduction, and it had never
+used the repository's own fused kernel. Closing that gap turned out to be less
+about wiring and more about finding out what the kernel can and cannot say.
+
+Two things had to be established before any number was worth taking.
+
+**There was no PyTorch latency to compare against.** The 3F/4F sweep has never
+run: `completed_jobs: 0`, `latency_observation_count: 0`, every latency column
+empty. The limitation attached to it said the sweep "records real local latency
+but is not comparable" to the paper, which credited it with a measurement it
+does not have. That text has been corrected in place.
+
+**The kernel can express half the method set.** The four Grid methods match the
+fused kernel exactly in decoder shape — hidden width 64, four Linear layers,
+three output channels — and differ only in feature width, 17 against the
+paper's 16. Running the kernel at 17 channels reproduces their decoder input
+dimensions exactly:
+
+| texture method | `decoder_input_dim` | kernel at C=17 |
+| --- | ---: | ---: |
+| `Grid-PEPS3F` | 119 | 119 |
+| `Grid-PEPS4F` | 153 | 153 |
+| `Grid-PinkPEPS3F` | 45 | 45 |
+| `Grid-PinkPEPS4F` | 47 | 47 |
+
+The four NTC methods cannot be run at all. They aggregate a 68-channel grid
+(`4 * 12 + 20`) against the kernel's `MAX_CHANNELS` of 32, and they add a
+12-dimension tiled encoding that `aggregate_dim` does not model. Both refusals
+are fail-closed and were confirmed on hardware rather than inferred:
+`geometry concat 68 4` prints `invalid integrated workload dimensions`. Raising
+the cap is not a fix — `NTC_PEPS4F` aggregates 624, and sizing the tiles for it
+returns occupancy to 12.5%, handing back the whole gain from the previous
+section.
+
+A `geometry <mode> <channels> <frequencies>` subcommand was added rather than
+changing the four named methods, so the paper's configuration keeps reporting
+exactly what it reported before. Adding it exposed a latent defect: the receipt
+emitted `feature_dim` as the literal `16` and computed `selected_feature_dim`
+from a hardcoded `16`. Harmless while every path used 16 channels, wrong the
+moment one did not. Both now derive from the running configuration.
+
+At the Grid family's own geometry, under the settled protocol:
+
+| method | stock (32 KB) | 160-cap (13 KB) | speedup |
+| --- | ---: | ---: | ---: |
+| `Grid-PEPS3F` | 18.33 | **10.04** | 1.83x |
+| `Grid-PEPS4F` | 20.28 | **11.33** | 1.79x |
+| `Grid-PinkPEPS3F` | 18.67 | **9.59** | 1.95x |
+| `Grid-PinkPEPS4F` | 20.76 | **10.54** | 1.97x |
+
+The cap is 160 rather than 128 because `Grid-PEPS4F` aggregates 153, which the
+128-cap build refuses with `aggregated input 153 exceeds cap 128`. All four
+checksums are identical between the two builds.
+
+And here the Pink ordering resolves completely. On the stock build Pink is
+slower than concat at **both** frequencies (18.67 against 18.33, 20.76 against
+20.28), contradicting the paper. On the narrowed build Pink is faster at
+**both** (9.59 against 10.04, 10.54 against 11.33), agreeing with it. The
+earlier sections saw this reversal partially; at the reproduction's own
+geometry it is unambiguous.
+
+`results/hip_texture_geometry.json` records all of it, including the part that
+matters most: this runs random weights, not the trained checkpoints. It gives
+the cost of the decoder's shape, not the quality of the reproduction's output,
+and it is not a substitute for the sweep.
+
+這個 repo 的招牌成果是 texture 重現,而它從未用過自己的 fused kernel。把兩者接起來
+之後發現的重點不在接線:**3F/4F sweep 根本沒跑過**(`completed_jobs: 0`,所有延遲欄
+位為空),原本的限制文字卻寫它「records real local latency」,等於承認了一份不存在的
+量測,已就地訂正。而 **fused kernel 只能表達八個方法中的四個**:Grid 家族與 kernel 的
+decoder 形狀完全相同(hidden 64、4 層 Linear、輸出 3),僅特徵寬度 17 對 16,以 C=17
+執行即精確重現 119/153/45/47;NTC 家族的 68 通道超過 kernel 的 `MAX_CHANNELS = 32`,
+且多出 12 維 tiled encoding,兩者皆 fail closed 並已在硬體上確認。把上限提高不是解法
+——`NTC_PEPS4F` 需要 624,為它配置分頁會讓佔用率退回 12.5%,前一節的增益全數吐回。
+在 Grid 家族自己的幾何上,收窄上限帶來 **1.79–1.97 倍**加速且 checksum 全同;更關鍵的
+是 **Pink 排序在此完全釐清**:stock 版在兩個頻率上 Pink 都比 concat 慢(與論文相反),
+收窄後兩個頻率上 Pink 都快(與論文一致)。此處使用隨機權重而非訓練檢查點,量到的是
+decoder 形狀的成本,不是重現的品質,也不能取代 sweep。
+
 ## Result contract and comparison blocker / 結果契約與比較限制
 
 `results/hip_latency.schema.json` requires workload kind, mode, implementation,

@@ -1020,14 +1020,15 @@ static float percentile_sorted(const std::vector<float>& sorted, float quantile)
 }
 
 static int run_wmma_benchmark(
-    const BenchmarkMethod& method, int side, int warmup, int iters
+    const BenchmarkMethod& method, int side, int warmup, int iters,
+    int channels = 16
 ) {
     if (side < 2 || side > 32768 || warmup < 0 || iters < 1) {
         fprintf(stderr, "invalid benchmark side/warmup/iters\n");
         return 2;
     }
     WorkloadConfig cfg{
-        method.mode, 16, 1024, 1024, side * side,
+        method.mode, channels, 1024, 1024, side * side,
         method.frequencies, 64, 3, ACT_GELU
     };
     if (validate_config(cfg)) return 2;
@@ -1123,10 +1124,10 @@ static int run_wmma_benchmark(
         "\"output_height\":%d,"
         "\"grid_width\":1024,"
         "\"grid_height\":1024,"
-        "\"feature_dim\":16,"
+        "\"feature_dim\":%d,"
         "\"num_frequencies\":%d,"
         "\"selected_feature_dim\":%d,"
-        "\"hidden_dim\":64,"
+        "\"hidden_dim\":%d,"
         "\"hidden_layers\":3,"
         "\"out_dim\":3,"
         "\"activation\":\"gelu\","
@@ -1147,8 +1148,9 @@ static int run_wmma_benchmark(
         json_escape(properties.gcnArchName).c_str(), PEPS_TARGET_ISA,
         PEPS_GIT_SHA, json_escape(properties.name).c_str(),
         runtime_version, driver_version, properties.warpSize,
-        properties.multiProcessorCount, side, side, method.frequencies,
-        aggregate_dim(method.mode, 16, method.frequencies),
+        properties.multiProcessorCount, side, side, cfg.channels,
+        cfg.frequencies,
+        aggregate_dim(cfg.mode, cfg.channels, cfg.frequencies), cfg.hidden,
         warmup, iters, median, p95, mean, stddev,
         sorted.front(), sorted.back(), method.paper_ms, output_checksum
     );
@@ -1232,9 +1234,11 @@ static void usage(const char* program) {
         "  %s fixture [fp32|fp16] <in.bin> <out.bin>\n"
         "  %s benchmark <all|bi-grid|grid-peps-3f|"
         "grid-pink-peps-3f|grid-pink-peps-4f> [side] [warmup] [iters]\n"
+        "  %s geometry <baseline|peps|pink> <channels> <frequencies>"
+        " [side] [warmup] [iters]\n"
         "  %s workload <baseline|peps|pink|all> [side] [iters]\n"
         "  %s micro [points] [iters]\n",
-        program, program, program, program
+        program, program, program, program, program
     );
 }
 
@@ -1266,6 +1270,24 @@ int main(int argc, char** argv) {
         const BenchmarkMethod* method = find_benchmark_method(argv[2]);
         if (!method) { usage(argv[0]); return 2; }
         return run_wmma_benchmark(*method, side, warmup, iters);
+    }
+    if (command == "geometry") {
+        if (argc < 5) { usage(argv[0]); return 2; }
+        int mode = parse_mode(argv[2]);
+        if (mode < 0) { usage(argv[0]); return 2; }
+        int channels = atoi(argv[3]);
+        int frequencies = atoi(argv[4]);
+        int side = argc > 5 ? atoi(argv[5]) : 1024;
+        int warmup = argc > 6 ? atoi(argv[6]) : 20;
+        int iters = argc > 7 ? atoi(argv[7]) : 100;
+        char label[64];
+        std::snprintf(
+            label, sizeof(label), "geometry-%s-c%d-%df",
+            mode_name(mode), channels, frequencies
+        );
+        // An arbitrary geometry has no counterpart in the paper's table.
+        BenchmarkMethod method{label, mode, frequencies, 0.0f};
+        return run_wmma_benchmark(method, side, warmup, iters, channels);
     }
     if (command == "workload") {
         if (argc < 3) { usage(argv[0]); return 2; }

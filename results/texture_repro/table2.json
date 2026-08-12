@@ -37,7 +37,7 @@
     },
     {
       "code": "pytorch_latency_not_fused_paper_latency",
-      "detail": "The 3F/4F sweep times checkpoint inference in PyTorch. It records real local latency but is not comparable to the paper's fused HIP/WMMA three-channel decoder."
+      "detail": "The 3F/4F sweep has not been run, so no latency is recorded anywhere in this artifact; the empty latency columns are absent measurements, not fast ones. If run, it would time checkpoint inference in PyTorch, which is not the paper's fused HIP/WMMA three-channel decoder. results/hip_texture_geometry.json measures the repository's own fused kernel at the Grid family's decoder geometry (input widths 119, 153, 45 and 47, matching this receipt) but with random weights, so it gives cost without quality. That kernel cannot express the NTC family at all: its 68-channel aggregate exceeds the kernel's 32-channel limit, and its 12-dimension tiled encoding has no counterpart in the kernel's aggregation."
     },
     {
       "code": "figure8_crop_not_published",

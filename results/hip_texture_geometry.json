@@ -1,0 +1,139 @@
+{
+  "schema": "peps.hip_texture_geometry",
+  "schema_version": 1,
+  "question": "The texture reproduction is the repository's headline result and it has never used the repository's own fused kernel. What does its decoder actually cost when fused on RDNA4, and can the fused kernel express it at all?",
+  "answer": "It can express half of it. The four Grid methods match the fused kernel exactly in decoder shape and differ only in feature width, so running the kernel at 17 channels reproduces their decoder input dimensions 119, 153, 45 and 47 exactly. The four NTC methods cannot be expressed at all: they aggregate a 68-channel grid against the kernel's MAX_CHANNELS of 32, and they add a 12-dimension tiled encoding that aggregate_dim does not implement. Both refusals were confirmed on hardware, not inferred.",
+  "generated_at_utc": "2026-08-12T00:00:00+00:00",
+  "why_this_is_not_wired_into_table2": "This measures the cost of the reproduction's decoder geometry with random weights. It does not load the trained checkpoints, does not produce PSNR or SSIM, and is not a substitute for the frequency sweep. Table 2's evidence semantics are untouched by design.",
+  "geometry_match": {
+    "shared_with_texture_decoder": {
+      "hidden_dim": 64,
+      "linear_layers": 4,
+      "output_channels": 3,
+      "activation": "gelu"
+    },
+    "differs": "The benchmark's four named methods use 16 channels, which is the paper's Table 2 configuration. The texture reproduction uses feature_dim 17, so a geometry subcommand was added rather than changing the named methods.",
+    "queries_per_run": 1048576,
+    "note": "side 1024 gives 1048576 queries, the same query count the frequency sweep's latency_scope names, so the throughput column below is in the same units as latency_million_queries_per_second."
+  },
+  "methods": {
+    "Grid-PEPS3F": {
+      "invocation": "geometry peps 17 3",
+      "decoder_input_dim": 119,
+      "matches_sweep_receipt": true,
+      "stock_ms": 18.33,
+      "tuned_ms": 10.04,
+      "speedup": 1.826,
+      "stock_mqueries_per_s": 57.2,
+      "tuned_mqueries_per_s": 104.4
+    },
+    "Grid-PEPS4F": {
+      "invocation": "geometry peps 17 4",
+      "decoder_input_dim": 153,
+      "matches_sweep_receipt": true,
+      "stock_ms": 20.28,
+      "tuned_ms": 11.33,
+      "speedup": 1.790,
+      "stock_mqueries_per_s": 51.7,
+      "tuned_mqueries_per_s": 92.6
+    },
+    "Grid-PinkPEPS3F": {
+      "invocation": "geometry pink 17 3",
+      "decoder_input_dim": 45,
+      "matches_sweep_receipt": true,
+      "stock_ms": 18.67,
+      "tuned_ms": 9.59,
+      "speedup": 1.947,
+      "stock_mqueries_per_s": 56.2,
+      "tuned_mqueries_per_s": 109.3
+    },
+    "Grid-PinkPEPS4F": {
+      "invocation": "geometry pink 17 4",
+      "decoder_input_dim": 47,
+      "matches_sweep_receipt": true,
+      "stock_ms": 20.76,
+      "tuned_ms": 10.54,
+      "speedup": 1.973,
+      "stock_mqueries_per_s": 50.5,
+      "tuned_mqueries_per_s": 99.5
+    }
+  },
+  "builds": {
+    "stock": {
+      "caps": "PEPS_MAX_INPUT_DIM=512, PEPS_MAX_HIDDEN_DIM=128",
+      "lds_bytes": 32768,
+      "workgroups_per_cu": 2,
+      "occupancy_fraction": 0.125
+    },
+    "tuned": {
+      "caps": "PEPS_MAX_INPUT_DIM=160, PEPS_MAX_HIDDEN_DIM=64",
+      "lds_bytes": 13312,
+      "workgroups_per_cu": 4,
+      "occupancy_fraction": 0.25,
+      "why_160_not_128": "Grid-PEPS4F aggregates 153, so the 128 cap used for the paper's 16-channel methods refuses it. 160 is the next multiple of the 16-wide WMMA tile that covers it."
+    },
+    "predicted_occupancy_ratio": 2.0,
+    "observed_speedup_range": [1.79, 1.97]
+  },
+  "ordering": {
+    "finding": "Pink overtakes concat only after the LDS cap is narrowed, and it does so at both frequencies.",
+    "stock": "concat 18.33 and 20.28 against pink 18.67 and 20.76, so Pink is slower at both frequencies, contradicting the paper.",
+    "tuned": "concat 10.04 and 11.33 against pink 9.59 and 10.54, so Pink is faster at both frequencies, agreeing with the paper's direction.",
+    "mechanism": "Pink aggregates 45 and 47 channels against concat's 119 and 153, but a shared worst-case cap makes every workgroup reserve the same LDS regardless, so Pink's narrower feature vector buys nothing until the cap is tightened.",
+    "relation_to_hip_lds_ab": "The same reversal was seen at 16 channels on gfx1151 and partially on gfx1201. At the texture reproduction's own geometry it is unambiguous at both frequencies."
+  },
+  "what_the_kernel_cannot_express": {
+    "ntc_methods": ["NTC_PEPS3F", "NTC_PEPS4F", "NTC_PinkPEPS3F", "NTC_PinkPEPS4F"],
+    "channel_blocker": {
+      "required": 68,
+      "derivation": "4 * g0_feature_dim 12 + g1_feature_dim 20",
+      "kernel_limit": 32,
+      "constant": "MAX_CHANNELS",
+      "observed": "invalid integrated workload dimensions",
+      "verified_on_hardware": true
+    },
+    "encoding_blocker": {
+      "detail": "The NTC decoder input also carries a tiled encoding of 2 * num_octaves * 2 = 12 dimensions. aggregate_dim has no such term, so raising MAX_CHANNELS alone would still not reproduce the NTC input width.",
+      "verified_on_hardware": false,
+      "basis": "source comparison between experiments/texture_repro.py and hip/fused_peps_kernel.hip"
+    },
+    "why_not_simply_raise_the_cap": "NTC_PEPS4F aggregates 624, which exceeds even the stock 512. Sizing the tiles for it gives a footprint of 28160 bytes -- smaller than the stock 32768, because stock also carries a 128-wide hidden cap -- but still only two workgroups per compute unit, so occupancy falls back to 12.5% and the entire gain is handed back. A first draft of this receipt claimed the footprint would exceed stock; tests/test_hip_lds_caps.py disproved that, and the corrected statement is about occupancy, not footprint."
+  },
+  "guard_behaviour_verified": [
+    "geometry concat 68 4 on the stock build prints 'invalid integrated workload dimensions' and refuses to run.",
+    "geometry peps 17 4 on a 128-cap build prints 'aggregated input 153 exceeds cap 128' and refuses to run.",
+    "geometry peps 17 4 on the 160-cap build runs and reports selected_feature_dim 153."
+  ],
+  "numerical_equivalence": {
+    "verdict": "identical",
+    "checksums": {
+      "Grid-PEPS3F": -0.0137064457,
+      "Grid-PEPS4F": -0.0113403331,
+      "Grid-PinkPEPS3F": -0.00627932791,
+      "Grid-PinkPEPS4F": 0.0112520047
+    },
+    "note": "Each value is identical between the stock and the 160-cap build."
+  },
+  "protocol": {
+    "tool": "hip/stable_latency.py --geometry",
+    "side": 1024,
+    "rounds": 8,
+    "warmup_per_round": 30,
+    "iters_per_round": 100,
+    "method_order": "rotated each round after clock settling",
+    "worst_round_spread_ratio": 1.02,
+    "stable": true,
+    "isa": "gfx1201",
+    "host": "aup-WRX90-WS-EVO"
+  },
+  "receipt_defect_fixed": "The benchmark JSON emitted feature_dim as the literal 16 and computed selected_feature_dim from a hardcoded 16. That was harmless while every path used 16 channels and wrong the moment the geometry subcommand existed. Both now derive from the running configuration, and the four named methods still report 16 and 112.",
+  "limitations": [
+    "Random weights, not the trained checkpoints. This is the cost of the decoder's shape, not of the reproduction's output quality, and it produces no PSNR or SSIM.",
+    "Not comparable to the paper. The paper's latency table is for a 16-channel configuration; these geometries have no counterpart in it, which is why the paper column is empty rather than zero.",
+    "Occupancy remains derived from launch geometry and advertised limits, not read from a hardware counter.",
+    "Half the texture method set is out of reach, so this does not make the fused kernel a general backend for the reproduction. It covers the Grid family only.",
+    "The frequency sweep itself remains unrun and unauthorized; nothing here substitutes for it."
+  ],
+  "paper_exact": false,
+  "verification_status": "bounded_local_geometry_match_not_paper_comparable"
+}

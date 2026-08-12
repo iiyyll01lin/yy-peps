@@ -29,6 +29,17 @@ from pathlib import Path
 METHODS = ("bi-grid", "grid-peps-3f", "grid-pink-peps-3f", "grid-pink-peps-4f")
 PAPER_MS = {"bi-grid": 4.32, "grid-peps-3f": 5.47,
             "grid-pink-peps-3f": 4.86, "grid-pink-peps-4f": 4.99}
+NAMED = [(name, ["benchmark", name]) for name in METHODS]
+
+
+def parse_geometry(spec: str) -> list[tuple[str, list[str]]]:
+    """Turn `peps:17:3,pink:17:4` into labelled geometry invocations."""
+    entries = []
+    for item in spec.split(","):
+        mode, channels, frequencies = item.strip().split(":")
+        label = f"geometry-{mode}-c{channels}-{frequencies}f"
+        entries.append((label, ["geometry", mode, channels, frequencies]))
+    return entries
 
 
 def sclk_mhz(device: int) -> float | None:
@@ -44,27 +55,28 @@ def sclk_mhz(device: int) -> float | None:
     return current
 
 
-def run_once(binary: Path, method: str, side: int, warmup: int, iters: int,
-             device: int) -> dict:
+def run_once(binary: Path, invocation: list[str], side: int, warmup: int,
+             iters: int, device: int) -> dict:
     proc = subprocess.run(
-        [str(binary), "benchmark", method, str(side), str(warmup), str(iters)],
+        [str(binary), *invocation, str(side), str(warmup), str(iters)],
         capture_output=True, text=True, timeout=900,
         env={"ROCR_VISIBLE_DEVICES": str(device), "PATH": "/usr/bin:/bin:/opt/rocm/bin"},
     )
     if proc.returncode != 0:
-        raise SystemExit(f"{method} failed: {proc.stderr[-400:]}")
+        raise SystemExit(f"{' '.join(invocation)} failed: {proc.stderr[-400:]}")
     for line in proc.stdout.splitlines():
         line = line.strip()
         if line.startswith("{"):
             return json.loads(line)
-    raise SystemExit(f"{method} produced no JSON record")
+    raise SystemExit(f"{' '.join(invocation)} produced no JSON record")
 
 
-def settle(binary: Path, side: int, device: int, limit: int = 12) -> dict:
+def settle(binary: Path, methods: list[tuple[str, list[str]]], side: int,
+           device: int, limit: int = 12) -> dict:
     """Spin until the shader clock stops climbing."""
     history = []
     for attempt in range(limit):
-        run_once(binary, METHODS[0], side, 5, 20, device)
+        run_once(binary, methods[0][1], side, 5, 20, device)
         clock = sclk_mhz(device)
         history.append(clock)
         if len(history) >= 3 and all(c is not None for c in history[-3:]):
@@ -84,11 +96,19 @@ def main() -> None:
     parser.add_argument("--warmup", type=int, default=30)
     parser.add_argument("--iters", type=int, default=100)
     parser.add_argument("--device", type=int, default=0)
+    parser.add_argument(
+        "--geometry",
+        help="comma-separated mode:channels:frequencies, e.g. peps:17:3,pink:17:4; "
+             "defaults to the four named paper methods",
+    )
     parser.add_argument("--out", type=Path)
     args = parser.parse_args()
 
+    methods = parse_geometry(args.geometry) if args.geometry else NAMED
+    labels = [label for label, _ in methods]
+
     print(f"idle sclk: {sclk_mhz(args.device)} MHz")
-    warm = settle(args.binary, args.side, args.device)
+    warm = settle(args.binary, methods, args.side, args.device)
     print(f"settle: {warm['settled']} after {warm['rounds_to_settle']} spins, "
           f"sclk {warm['sclk_history_mhz']}")
 
@@ -96,39 +116,44 @@ def main() -> None:
     for index in range(args.rounds):
         # Rotating the start position keeps any residual drift from always
         # landing on the same method.
-        order = METHODS[index % len(METHODS):] + METHODS[:index % len(METHODS)]
-        for method in order:
-            record = run_once(args.binary, method, args.side,
+        order = methods[index % len(methods):] + methods[:index % len(methods)]
+        for label, invocation in order:
+            record = run_once(args.binary, invocation, args.side,
                               args.warmup, args.iters, args.device)
             rounds.append({
-                "round": index, "method": method,
+                "round": index, "method": label,
                 "median_ms": record["median_ms"], "min_ms": record["min_ms"],
                 "stddev_ms": record["stddev_ms"],
+                "selected_feature_dim": record.get("selected_feature_dim"),
                 "sclk_mhz": sclk_mhz(args.device),
             })
         print(f"  round {index}: " + "  ".join(
             f"{r['method'].split('-')[-1]}={r['median_ms']:.2f}"
-            for r in rounds[-len(METHODS):]))
+            for r in rounds[-len(methods):]))
 
     summary = {}
-    for method in METHODS:
-        medians = [r["median_ms"] for r in rounds if r["method"] == method]
-        mins = [r["min_ms"] for r in rounds if r["method"] == method]
-        summary[method] = {
+    for label in labels:
+        medians = [r["median_ms"] for r in rounds if r["method"] == label]
+        mins = [r["min_ms"] for r in rounds if r["method"] == label]
+        paper = PAPER_MS.get(label)
+        summary[label] = {
             "median_of_round_medians_ms": st.median(medians),
             "best_round_median_ms": min(medians),
             "worst_round_median_ms": max(medians),
             "round_spread_ratio": max(medians) / min(medians),
             "min_observed_ms": min(mins),
-            "paper_reference_ms": PAPER_MS[method],
-            "ratio_to_paper": st.median(medians) / PAPER_MS[method],
+            "paper_reference_ms": paper,
+            "ratio_to_paper": st.median(medians) / paper if paper else None,
         }
 
     print(f"\n{'method':<22}{'median':>9}{'spread':>9}{'paper':>8}{'ratio':>8}")
     for method, s in summary.items():
+        paper = s["paper_reference_ms"]
+        ratio = s["ratio_to_paper"]
         print(f"{method:<22}{s['median_of_round_medians_ms']:>9.2f}"
-              f"{s['round_spread_ratio']:>9.2f}x{s['paper_reference_ms']:>7.2f}"
-              f"{s['ratio_to_paper']:>7.1f}x")
+              f"{s['round_spread_ratio']:>9.2f}x"
+              f"{format(paper, '>7.2f') if paper else '     --'}"
+              f"{format(ratio, '>7.1f') + 'x' if ratio else '      --'}")
 
     worst = max(s["round_spread_ratio"] for s in summary.values())
     print(f"\nworst round-to-round spread: {worst:.2f}x "
@@ -141,6 +166,8 @@ def main() -> None:
             "side": args.side, "rounds": args.rounds,
             "warmup_per_round": args.warmup, "iters_per_round": args.iters,
             "method_order": "rotated each round",
+            "methods": labels,
+            "geometry": args.geometry,
             "clock_settling": warm,
             "note": ("Interleaved rounds with a rotating start, after spinning "
                      "the card until the shader clock stopped climbing."),
