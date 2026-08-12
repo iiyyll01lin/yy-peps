@@ -561,6 +561,51 @@ the returns were already sublinear two sections ago.
 `ceiling_of_this_technique`, and `tests/test_hip_lds_caps.py` proves it by
 exhausting every cap from 1 to 512 rather than by asserting the conclusion.
 
+### The half of the model nothing here can test / 這裡測不到的那一半
+
+The model is `workgroups per WGP x waves per workgroup, halved across the WGP`.
+Seven footprints pin the first factor. **Not one of them varies the second**:
+every measurement had exactly two waves per 64-thread workgroup, so that term
+was carried through all of them untested.
+
+A wave64 build would have been the clean control — same LDS, same 64 threads,
+half the waves per workgroup, so `MeanOccupancyPerCU` should halve from 10 to 5
+while nothing else moves. It does not build:
+
+```
+error: '__builtin_amdgcn_wmma_f32_16x16x16_f16_w32'
+       needs target feature gfx11-insts,wavefrontsize32
+```
+
+rocWMMA dispatches the RDNA path to the `_w32` builtin, and every WMMA builtin
+in `rocwmma/internal/wmma_impl.hpp` is a `_w32` or `_w32_gfx12` form — the file
+contains no `_w64` anywhere. Whether the RDNA ISA offers a wave64 WMMA is not
+established here; what is established is that rocWMMA does not expose one, and
+that is enough to block the test with this kernel.
+
+**So the wave-count term stays unverified, and a CDNA part is the only thing
+that would settle it.** CDNA is wave64 natively and rocWMMA routes it to MFMA
+rather than WMMA, so that factor changes without the kernel changing. Better
+still, CDNA has no WGP at all, so the 128 KB shared pool this whole model rests
+on has no counterpart there and the model *should* predict wrongly. That is
+precisely the value: it separates having understood the allocation mechanism
+from having fitted seven RDNA data points. The kernel uses rocWMMA rather than
+raw builtins, so it would port — the MI300X reachable from here is a
+single-GPU container slice with PyTorch but no HIP compiler on the filesystem,
+no profiler, and another workload resident on the card.
+
+模型是「每 WGP 的 workgroup 數 × 每 workgroup 的 wave 數 ÷ 2」。七個 footprint 把第一項
+釘得很牢,**但沒有一個改動過第二項**——每次量測都是每個 64 執行緒 workgroup 兩個 wave,
+這一項一路被帶過卻從未被檢驗。wave64 建置本來會是乾淨的控制(相同 LDS、相同執行緒數、
+wave 數減半,`MeanOccupancyPerCU` 應由 10 降到 5),但它編不過:rocWMMA 的 RDNA 路徑派給
+`_w32` builtin,而該 builtin 硬性要求 `wavefrontsize32`;`wmma_impl.hpp` 裡每一個 builtin
+都是 `_w32` 或 `_w32_gfx12`,全檔沒有 `_w64`。(RDNA ISA 本身是否有 wave64 WMMA,此處
+未能確認;能確認的是 rocWMMA 沒有提供。)**因此這一項仍未驗證,而 CDNA 是唯一能了結它的
+途徑**——CDNA 原生 wave64,rocWMMA 在其上走 MFMA 而非 WMMA,該因子會在 kernel 不變的情況
+下改變;更重要的是 **CDNA 根本沒有 WGP**,本模型賴以成立的 128 KB 共用池在那裡沒有對應
+物,模型**應該**給出錯誤預測。這正是它的價值:區分「真的理解了配置機制」與「只是擬合了
+七個 RDNA 資料點」。
+
 「大概沒東西了」比算術能支持的說法更弱。只有 feature 分頁隨上限縮放,其餘三個由 hidden
 寬度固定:`footprint(cap) = 32·cap + 8192`,而那個 8192 正是 `hidden_a + hidden_b +
 accumulator`(16 tiles × 64 寬 × (2+2+4) bytes)。每 WGP 十六個 workgroup 需要有效用量

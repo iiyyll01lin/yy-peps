@@ -158,6 +158,16 @@
   "schema": "peps.hip_specialised_caps",
   "schema_version": 1,
   "verification_status": "bounded_local_intervention_not_paper_comparable",
+  "wave_count_term_untestable_here": {
+    "answer": "Nothing available here. Every RDNA measurement taken had exactly two waves per 64-thread workgroup, so the factor was never varied, and it cannot be varied on this hardware with this kernel.",
+    "blocked_by": "The MI300X reachable from here is a single-GPU container slice with PyTorch 2.13.0+rocm7.1 but no HIP compiler anywhere on the filesystem, no profiler, and another workload resident on the card. The kernel uses rocWMMA rather than raw builtins, so it would be portable to gfx942 if a toolchain existed.",
+    "exact_error": "'__builtin_amdgcn_wmma_f32_16x16x16_f16_w32' needs target feature gfx11-insts,wavefrontsize32",
+    "not_established": "Whether the RDNA ISA itself offers a wave64 WMMA form. This says only that rocWMMA does not expose one, which is enough to block the test with this kernel but is not a statement about the hardware.",
+    "question": "The occupancy model multiplies workgroups per WGP by waves per workgroup. Seven footprints pin the first factor. What pins the second?",
+    "what_was_tried": "amdclang++ --offload-arch=gfx1151 -Xarch_device -mwavefrontsize64. A wave64 build keeps the same LDS footprint and the same 64-thread workgroup while halving waves per workgroup, which is the clean control the seven footprints do not provide.",
+    "what_would_test_it": "A CDNA part. CDNA is wave64 natively and rocWMMA routes it to MFMA rather than WMMA, so the wave-count factor changes without the kernel changing. CDNA also has no WGP, so the 128 KB shared pool this model is built on has no counterpart there, and the model should make a structurally wrong prediction. That is the point: it would separate having understood the allocation mechanism from having fitted seven RDNA data points.",
+    "why_it_fails": "rocWMMA dispatches the RDNA path to __builtin_amdgcn_wmma_f32_16x16x16_f16_w32, and that builtin requires target features gfx11-insts,wavefrontsize32. Every WMMA builtin in rocwmma/internal/wmma_impl.hpp is a _w32 or _w32_gfx12 form; the file contains no _w64 anywhere."
+  },
   "what_occupancy_bought": {
     "caution": "These are different methods, not one method at different occupancies, so the three points do not form a curve. bi-grid aggregates 16 channels against grid-peps-3f's 112, so it does far less arithmetic per point and is correspondingly more latency-bound. The reasonable reading is that occupancy helps in proportion to how latency-bound a method already is, which this data is consistent with but does not establish.",
     "observation": "The gain is not a function of occupancy alone. bi-grid went from 10 to 14 waves and gained 1.233x; Pink went from 10 to 12 and gained 1.14x; grid-peps-3f stayed at 10 and gained nothing."
