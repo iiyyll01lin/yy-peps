@@ -291,3 +291,33 @@ def test_specialised_caps_reach_the_occupancy_they_were_chosen_for():
     for cap, method in ((16, "bi-grid"), (48, "grid-pink-peps-3f"),
                         (48, "grid-pink-peps-4f")):
         assert aggregate_dim(method, CHANNELS) <= cap
+
+
+def test_cap_narrowing_has_a_provable_ceiling():
+    # Only the feature tile scales with the cap. The other three are fixed by
+    # the hidden width, and they alone cost what the next occupancy step needs.
+    fixed = WMMA_TILE * TUNED_HIDDEN_CAP * (2 + 2 + 4)
+    assert fixed == 8192
+    assert lds_footprint(0, TUNED_HIDDEN_CAP) == fixed
+    assert LDS_POOL_PER_WGP // fixed == 16
+
+    # So sixteen workgroups per WGP is out of reach before the feature tile is
+    # counted at all, and fifteen rounds to the same impossible target.
+    assert LDS_POOL_PER_WGP / 15 < fixed + LDS_GRANULE
+    assert all(waves(lds_footprint(cap, TUNED_HIDDEN_CAP)) <= 14
+               for cap in range(1, 513))
+    assert waves(lds_footprint(16, TUNED_HIDDEN_CAP)) == 14
+
+
+def test_the_receipt_records_the_same_ceiling():
+    # The proof lives in the test; the receipt states it. They must agree, or
+    # a reader takes the ceiling on trust from a file nothing checks.
+    receipt = json.loads(
+        (ROOT / "results" / "hip_specialised_caps.json").read_text(encoding="utf-8")
+    )["ceiling_of_this_technique"]
+    assert receipt["fixed_tiles_bytes"] == WMMA_TILE * TUNED_HIDDEN_CAP * 8
+    assert receipt["ceiling"]["waves_per_cu"] == 14
+    assert receipt["ceiling"]["occupancy_fraction"] == 0.4375
+    assert occupancy(lds_footprint(16, TUNED_HIDDEN_CAP)) == 0.4375
+    # bi-grid is already there, so this is a reached ceiling, not a bound.
+    assert abs(receipt["ceiling"]["measured_waves_per_cu"] - 14) < 0.1

@@ -526,6 +526,53 @@ data is consistent with that and does not establish it.
 在每次用簡單案例檢查時都像是被驗證了。由於顆粒度是用暴露它的資料擬合出來的,它需要一個
 可能失敗的測試:cap 80 就是為此而建(新模型說 11,兩個舊模型都說 12),實測 **10.97**。
 
+## Where this line provably ends / 這條線可證明的終點
+
+"Probably exhausted" is a weaker statement than the arithmetic supports. Only
+the feature tile scales with the cap; the other three are fixed by the hidden
+width:
+
+```
+footprint(cap) = 32 * cap + 8192
+                          ^^^^ hidden_a + hidden_b + accumulator
+                               16 tiles x 64 wide x (2 + 2 + 4) bytes
+```
+
+Sixteen workgroups per WGP needs an effective footprint at or below
+`131072 / 16 = 8192`. **The fixed tiles are already exactly 8192**, so any cap
+of one or more overshoots before the feature tile is counted at all. Fifteen
+needs `131072 / 15 = 8738`, and allocation rounds up to a 1024-byte granule, so
+the only candidate at or below that is the same unreachable 8192.
+
+**Fourteen waves per compute unit, 43.75%, is therefore the ceiling of cap
+narrowing — and `bi-grid` at cap 16 already measures 13.94.** This is not a
+line that might have a little more in it. It is a line whose end has been
+reached and can be shown.
+
+What remains is the hidden tiles, and they are sized by the hidden width and the
+accumulator's precision. Narrowing them means changing the arithmetic, which
+forfeits the byte-identical checksums that every comparison in this document
+rests on. The trade exists; it is not free, and it has not been taken.
+
+The bound is narrow on purpose. It says nothing about other routes to higher
+occupancy, and nothing about whether more occupancy would still buy latency —
+the returns were already sublinear two sections ago.
+`results/hip_specialised_caps.json` records it under
+`ceiling_of_this_technique`, and `tests/test_hip_lds_caps.py` proves it by
+exhausting every cap from 1 to 512 rather than by asserting the conclusion.
+
+「大概沒東西了」比算術能支持的說法更弱。只有 feature 分頁隨上限縮放,其餘三個由 hidden
+寬度固定:`footprint(cap) = 32·cap + 8192`,而那個 8192 正是 `hidden_a + hidden_b +
+accumulator`(16 tiles × 64 寬 × (2+2+4) bytes)。每 WGP 十六個 workgroup 需要有效用量
+≤ `131072/16 = 8192`,而**固定部分本身就已經是 8192**——任何 ≥1 的上限在 feature 分頁還
+沒算進去之前就已超出。十五個需要 ≤ 8738,而配置以 1024 為顆粒向上取整,唯一候選仍是那個
+不可能的 8192。**因此每 CU 十四個 wave(43.75%)就是收窄上限的天花板,而 `bi-grid` 在
+cap 16 已量到 13.94。** 這不是「可能還有一點空間」的線,而是**已經走到底、而且能被證明**
+的線。剩下的只有 hidden 分頁,動它就是動精度,會失去本文所有比較賴以成立的「逐位元相同」
+性質——這個交換存在,但不免費,而且沒有被採用。此界限刻意窄:它不涵蓋其他提高佔用率的
+途徑,也不宣稱更高的佔用率還能換到延遲(回報在兩節之前就已經是次線性的)。測試以窮舉
+1 到 512 的每一個上限來證明,而不是斷言結論。
+
 ## Result contract and comparison blocker / 結果契約與比較限制
 
 `results/hip_latency.schema.json` requires workload kind, mode, implementation,

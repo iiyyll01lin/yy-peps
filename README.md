@@ -60,6 +60,62 @@ Table 2 已完整重現(594/594,十一個方法、三顆種子、十八個材質
 倍,但其效果在不同材質間會換符號,無法單獨修正整張表。以上全部止於充分性,不宣稱必然
 性;論文未公布檔案清單,因此此處只能界定範圍而非量測差異。
 
+## What the AMD track found / AMD 軌道的結果
+
+Three findings, and the same shape each time: what looked like a result about
+the paper or the hardware was a defect in this repository's own measurement or
+model.
+
+**The first latency table was an artefact.** It timed each method to completion
+in turn from an idle card, so whichever went first absorbed the clock ramp and
+was inflated **5.7x**, and the ordering it reported was the measurement order.
+The overstatement decays monotonically down the table, 5.72x then 3.00x then
+2.78x then 2.53x, which is the fingerprint rather than a coincidence.
+
+**A compile-time cap cost about half the speed.** The kernel's `__shared__`
+tiles are sized for a worst case none of the four methods reaches, so every
+workgroup reserved 32 KB to use at most 12 KB, and LDS is reserved whether it is
+read or not. Narrowing the caps roughly halves latency on both parts with
+byte-identical output; per-method caps go further, and `bi-grid` runs at
+**2.95 ms** against the paper's 4.32 ms reference. The Pink ordering that had
+looked like a disagreement with the paper came back into line at the same time,
+having been an artefact of the shared cap rather than a property of the method.
+
+**The occupancy model was wrong twice**, caught both times by a hardware
+counter. It survived because the first version matched five of seven measured
+footprints and its replacement three of seven: *a model that is right most of
+the time looks confirmed every time it is checked on an easy case.*
+
+That optimisation is now finished rather than merely exhausted, and the
+arithmetic says so. The three fixed tiles cost `16 x 64 x (2+2+4) = 8192` bytes,
+while sixteen workgroups per WGP would need the entire allocation to fit inside
+8192, so no cap can reach it. **Fourteen waves per compute unit, 43.75%, is the
+ceiling, and `bi-grid` already measures 13.94.** Going further means shrinking
+the hidden tiles, which means changing precision, which would cost the
+byte-identical property that makes these comparisons worth making.
+
+None of these numbers are comparable to the paper's: the workload, output size,
+precision and timing boundary have not been shown to match. `docs/05_amd_hardware.md`
+carries the sequence and `results/hip_*.json` the measurements with their limitations.
+
+AMD 軌道有三個發現,而且形狀相同:**看起來像「關於論文」或「關於硬體」的結果,其實是
+本 repo 自己量測或模型的缺陷。**
+
+第一份延遲表是假象——它從閒置卡上逐方法連續量測,先跑的吸收了時脈爬升而被膨脹 **5.7
+倍**,它報告的排序就是量測順序;高估倍率沿表單調遞減(5.72→3.00→2.78→2.53),這是指紋
+而非巧合。第二,**一個編譯期上限值掉一半速度**:`__shared__` 分頁按四個方法都達不到的
+最壞情況配置,每個 workgroup 保留 32 KB 卻最多用 12 KB,而 LDS 不論讀不讀都整份保留;
+收窄後兩張卡的延遲各減半且輸出逐位元相同,每方法特化更進一步,`bi-grid` 達 **2.95 ms**
+(論文參考值 4.32 ms),同時先前看似「與論文不符」的 Pink 排序也回到論文方向——它是共用
+上限的假象。第三,**佔用率模型錯了兩次**,兩次都是硬體計數器抓到的;它們能存活是因為在
+七個 footprint 中分別對了五個與三個:*一個大多數時候正確的模型,在每次用簡單案例檢查時
+都像是被驗證了。*
+
+這條最佳化現在是**可證明的終點**而非「大概沒了」:三個固定分頁佔 `16×64×(2+2+4) = 8192`
+bytes,而每 WGP 十六個 workgroup 需要整份配置塞進 8192,任何上限都不可能達到。**每 CU
+十四個 wave(43.75%)是天花板,而 `bi-grid` 已量到 13.94。** 再往下必須縮小 hidden 分頁,
+即動精度,那會失去「逐位元相同」這個讓比較有意義的性質。以上數字皆不可與論文直接比較。
+
 ## Hardware targets / 硬體目標
 
 The optional hardware material targets two self-hosted AMD systems. CPU CI does
