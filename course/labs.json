@@ -197,6 +197,21 @@
           "id": "raw-metrics",
           "description": "PSNR, windowed SSIM, FLIP, LPIPS, and spectral metric versions are recorded per image.",
           "evidence": "raw per-image CSV"
+        },
+        {
+          "id": "paired-reporting",
+          "description": "A method comparison reports the paired distribution, not a mean delta alone: how many pairs were actually compared, how many were wins, ties and losses, and an interval. A mean with no count behind it cannot be distinguished from a mean over one pair.",
+          "evidence": "results/image_repro_paired.json, fields count, ties, losses, ci95_low and ci95_high"
+        },
+        {
+          "id": "incomplete-reads-incomplete",
+          "description": "A comparison that has not run must read as absent, never as a null result. The Table 1 pairings carry count 0, mean_delta null and complete false against expected_pairs 72; rendering that as a result, a tie, or a zero difference is a reporting defect. Print the achieved count beside the expected one so the gap is visible without opening the JSON.",
+          "evidence": "results/image_repro_paired.json, fields complete, count and expected_pairs"
+        },
+        {
+          "id": "authorization-provenance",
+          "description": "An approval to spend compute traces to a human decision, and the process seeking approval never generates its own. This is not hypothetical here: an automated recovery policy fabricated an authorization receipt that represented earlier user intent as current independent approval, and relaunched four ranks against the canonical Table 1 namespace. Name who approved a run and where that approval is recorded.",
+          "evidence": "results/image_convergence/external_table1_recovery_incident.json, fields summary, root_cause and status"
         }
       ],
       "budget": "paper-exact"
@@ -279,6 +294,21 @@
           "id": "protocol-labelled",
           "description": "Loss, sign convention, axis order, sampling, seeds, and per-instance IoU are explicit.",
           "evidence": "run manifest plus raw CSV"
+        },
+        {
+          "id": "blocker-as-evidence",
+          "description": "A blocked instance is recorded as evidence, not written off in prose. Name the exact asset, the authorization mechanism, proof that no access was attempted, and the job plan that would run the moment authorization arrived. A blocker documented to that standard is a result. 'We could not get it' is not.",
+          "evidence": "results/sdf_repro/table4_deferred_auth_required.json, fields asset.canonical_source_uid, asset.data_access_attempted and authorized_job_plan"
+        },
+        {
+          "id": "cost-declared-before-spending",
+          "description": "State the budget before spending it: job count, total queries, per-job queries, and the memory floor one worker needs. A cost discovered afterwards cannot inform the decision it should have informed.",
+          "evidence": "results/sdf_repro/cost.json, fields jobs, full_volume_queries, full_volume_queries_per_job and memory_floor_per_worker"
+        },
+        {
+          "id": "post-interruption-verification",
+          "description": "After an interruption, outputs are not trusted merely because they exist. Before accepting them instead of re-running, verify that no partial files remain, that no related process is still writing, and that checksums and schema still hold, and record which of those was checked. This is distinct from a liveness check, which watches a run that is still going.",
+          "evidence": "results/sdf_repro/volume_validation.json, fields recovery.partial_files_found, recovery.active_related_processes, recovery.action and checksums_verified"
         }
       ],
       "budget": "paper-exact"
