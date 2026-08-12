@@ -2,6 +2,10 @@
   "answer": "No. Across all four methods the RDNA4 speedup is 1.56x to 1.73x while the compute-unit ratio alone is 1.60x. Normalised for compute units the speedup is 0.97x to 1.08x, so the kernel scales with width and extracts no measurable benefit from the rest of the generation change. For a kernel that issues WMMA instructions that is a finding, not a null result.",
   "compute_unit_ratio": 1.6,
   "generated_at_utc": "2026-08-07T15:56:25.003153+00:00",
+  "later_work": {
+    "conclusion_still_stands": "The finding that speed tracks compute-unit count and nothing else is about the stock build, and it is what motivated looking at occupancy at all. The narrowed builds change the level, not that observation.",
+    "note": "These figures are for the stock build, whose LDS cap is sized for a worst case none of the four methods reaches. results/hip_lds_ab.json narrows it and roughly halves every figure here on both parts, and results/hip_specialised_caps.json goes further per method."
+  },
   "limitations": [
     "Two parts, one seed of measurement each; medians of round medians.",
     "The two hosts differ in CPU, memory and cooling, and gfx1151 is an integrated part sharing system memory, so bandwidth is not matched.",

@@ -88,6 +88,20 @@ deviation of 16.9 ms, while the last two methods are stable to 0.07 and 0.50 ms.
 **The ordering that receipt reports is an artefact of measurement order, not a
 property of the kernels.**
 
+That sentence used to live only here. A receipt exists to be read by something
+other than a person, and anything consuming `results/` saw `status: passed`
+next to a 42.30 ms median with nothing to indicate otherwise. The receipt now
+carries `superseded_by`, recording the per-method overstatement — 5.72x, 3.00x,
+2.78x, 2.53x — and the four matching rows of `hip_latency.csv` are marked.
+Nothing was deleted; the original numbers stay so the defect and its correction
+can both be read.
+
+The decay across those four factors is the part worth keeping. A single
+inflated number could be noise. A monotone decay in measurement order is the
+fingerprint of each method inheriting a warmer card than the one before it, and
+`tests/test_hip_supersession.py` asserts both the factors and their ordering,
+so the marker cannot drift into claiming a correction that did not happen.
+
 `hip/stable_latency.py` fixes it with two changes. It spins the card until the
 shader clock stops climbing, then interleaves the methods round by round with a
 rotating start, so any residual drift is shared instead of being charged to

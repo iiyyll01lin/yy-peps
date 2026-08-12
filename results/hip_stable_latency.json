@@ -324,5 +324,10 @@
       "worst_round_median_ms": 21.31316
     }
   },
+  "supersedes": {
+    "reason": "That receipt timed each method to completion in turn from an idle card. This one spins the card until the shader clock stops climbing, then interleaves the methods with a rotating start so residual drift is shared rather than charged to whoever went first.",
+    "receipt": "results/hip_benchmark_gfx1201.json",
+    "still_current_for": "The stock build. results/hip_lds_ab.json measures the same protocol against a narrowed LDS cap and roughly halves these figures, but that is a change to the kernel rather than a correction to this measurement, so these numbers remain the stock-build reference."
+  },
   "worst_round_spread_ratio": 1.0327950664280843
 }

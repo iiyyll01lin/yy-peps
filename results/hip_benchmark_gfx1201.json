@@ -595,5 +595,34 @@
     "target_isa": "gfx1151"
   },
   "schema_version": 3,
-  "status": "passed"
+  "status": "passed",
+  "superseded_by": {
+    "not_a_kernel_change": "results/hip_lds_ab.json and results/hip_specialised_caps.json later make the kernel itself faster. That is a separate matter from this protocol defect and does not supersede anything here.",
+    "overstatement_by_method": {
+      "bi-grid": {
+        "factor": 5.72,
+        "here_ms": 42.304207,
+        "settled_ms": 7.396
+      },
+      "grid-peps-3f": {
+        "factor": 3.0,
+        "here_ms": 48.200451,
+        "settled_ms": 16.061
+      },
+      "grid-pink-peps-3f": {
+        "factor": 2.78,
+        "here_ms": 51.069656,
+        "settled_ms": 18.355
+      },
+      "grid-pink-peps-4f": {
+        "factor": 2.53,
+        "here_ms": 53.787079,
+        "settled_ms": 21.272
+      }
+    },
+    "receipt": "results/hip_stable_latency.json",
+    "the_fingerprint": "The overstatement falls monotonically with measurement order, 5.72x then 3.00x then 2.78x then 2.53x. That decay is the signature of the defect: each method inherited a warmer card than the one before it. A single inflated number could be noise; this shape cannot be.",
+    "what_is_still_valid": "The parity records, the code object inspection, and the hardware identification do not depend on the timing protocol and still stand. The build block records what was compiled but carries git_dirty true, so it does not describe a reproducible source state either.",
+    "what_is_superseded": "Every figure in measurements[] and the four schema-3 rows of results/hip_latency.csv that carry this build's binary_sha256. The protocol ran all iterations of one method before starting the next, from an idle card, so whichever method went first absorbed the clock ramp. The ordering this receipt reports is an artefact of measurement order, not a property of the kernels."
+  }
 }
