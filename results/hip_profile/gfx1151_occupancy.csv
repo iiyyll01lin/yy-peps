@@ -1,0 +1,9 @@
+build,caps,invocation,lds_bytes,workgroup_size,counter,dispatches,min,mean,max,derived_wgp_pool,superseded_cu_pool
+cap128,128/64,benchmark grid-peps-3f,12288,64,OccupancyPercent,15,31.059,31.177,31.458,31.25,31.25
+cap160,160/64,geometry peps 17 3,13312,64,OccupancyPercent,15,27.822,27.952,28.258,28.125,25.0
+cap160,160/64,geometry peps 17 4,13312,64,MeanOccupancyPerCU,15,8.958,8.974,9.025,9.0,
+cap160,160/64,geometry peps 17 4,13312,64,OccupancyPercent,15,27.994,28.045,28.204,28.125,25.0
+cap160,160/64,geometry peps 17 4 [discarded],13312,64,OccupancyPercent,15,94959.09,95780.278,96814.998,28.125,25.0
+cap160,160/64,geometry pink 17 3,13312,64,OccupancyPercent,15,28.034,28.043,28.058,28.125,25.0
+stock,512/128,benchmark grid-peps-3f,32768,64,OccupancyPercent,15,12.46,12.487,12.624,12.5,12.5
+stock,512/128,geometry peps 17 3,32768,64,OccupancyPercent,15,12.464,12.51,12.609,12.5,12.5

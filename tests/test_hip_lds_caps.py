@@ -43,8 +43,12 @@ WMMA_TILE = 16
 CHANNELS = 16
 TEXTURE_CHANNELS = 17
 HIDDEN = 64
-LDS_BYTES_PER_CU = 64 * 1024
+# The allocation pool behaves as 128 KB shared by the two compute units of a
+# WGP, not 64 KB per CU. See test_the_two_pool_models_disagree_at_13312.
+LDS_POOL_PER_WGP = 128 * 1024
+LDS_ADVERTISED_PER_CU = 64 * 1024
 WAVES_PER_WORKGROUP = 2
+CUS_PER_WGP = 2
 MAX_WAVES_PER_CU = 32
 
 SWEEP = ROOT / "results" / "texture_repro" / "frequency_sweep.json"
@@ -60,7 +64,14 @@ def lds_footprint(input_cap: int, hidden_cap: int) -> int:
 
 
 def occupancy(footprint: int) -> float:
-    workgroups = LDS_BYTES_PER_CU // footprint
+    workgroups_per_wgp = LDS_POOL_PER_WGP // footprint
+    waves_per_cu = workgroups_per_wgp * WAVES_PER_WORKGROUP / CUS_PER_WGP
+    return waves_per_cu / MAX_WAVES_PER_CU
+
+
+def occupancy_per_cu_pool(footprint: int) -> float:
+    """The superseded model, kept only so a test can show where it breaks."""
+    workgroups = LDS_ADVERTISED_PER_CU // footprint
     return workgroups * WAVES_PER_WORKGROUP / MAX_WAVES_PER_CU
 
 
@@ -148,7 +159,7 @@ def test_texture_cap_still_beats_the_stock_footprint():
     texture = lds_footprint(TEXTURE_INPUT_CAP, TUNED_HIDDEN_CAP)
     assert texture == 13312
     assert occupancy(stock) == 0.125
-    assert occupancy(texture) == 0.25
+    assert occupancy(texture) == 0.28125
 
 
 def test_ntc_family_is_out_of_reach_of_the_fused_kernel():
@@ -175,3 +186,27 @@ def test_widening_for_ntc_would_give_back_the_occupancy_gain():
     assert occupancy(for_ntc) == 0.125
     texture = occupancy(lds_footprint(TEXTURE_INPUT_CAP, TUNED_HIDDEN_CAP))
     assert occupancy(for_ntc) < texture
+
+
+# --- the model the counters corrected ----------------------------------
+
+
+def test_the_two_pool_models_disagree_at_13312():
+    # This is the footprint that caught the error. Nine workgroups per WGP
+    # is an odd number, and a per-CU model can only ever produce an even
+    # number of workgroups per WGP, so it cannot express this case.
+    texture = lds_footprint(TEXTURE_INPUT_CAP, TUNED_HIDDEN_CAP)
+    assert LDS_POOL_PER_WGP // texture == 9
+    assert occupancy(texture) == 0.28125
+    assert occupancy_per_cu_pool(texture) == 0.25
+    # rocprofv3 OccupancyPercent measured 28.04% mean over 15 dispatches,
+    # and MeanOccupancyPerCU measured 8.97 of the derived 9 waves.
+    assert abs(occupancy(texture) * 100 - 28.04) < 0.5
+    assert abs(occupancy_per_cu_pool(texture) * 100 - 28.04) > 0.5
+
+
+def test_the_earlier_footprints_could_not_have_caught_it():
+    # Both models agree on 32768 and 12288, which is why the wrong one
+    # survived two rounds of measurement before a third footprint exposed it.
+    for footprint in (32768, 12288):
+        assert occupancy(footprint) == occupancy_per_cu_pool(footprint)

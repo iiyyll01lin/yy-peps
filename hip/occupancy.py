@@ -1,61 +1,114 @@
 #!/usr/bin/env python3
-"""Compute occupancy for the fused kernel from the profiler's own records.
+"""Occupancy for the fused kernel, derived from the profiler and then checked.
 
-The launch asks for 32 KB of LDS per 64-thread workgroup. Whether that is the
-limiter depends on the part's LDS capacity and wave slots, both of which
-rocprofv3 records in agent_info.csv, so nothing here is assumed.
+The first version of this script divided the LDS a compute unit advertises
+by the footprint of one workgroup. That is wrong, and it was wrong in a way
+that hid itself: a 64 KB per-CU pool and a 128 KB per-WGP pool give the same
+answer whenever the division lands on an even number of workgroups, which
+both of the first two footprints measured did. A third footprint of 13312
+bytes landed on nine workgroups per WGP -- an odd number a per-CU model
+cannot produce -- and the counter said 28.0% against the per-CU model's 25%.
+
+So the pool is treated as 128 KB shared by the two compute units of a WGP.
+That is consistent with RDNA's workgroup processor sharing one LDS, but it
+is recorded here as the model that matches OccupancyPercent on three
+footprints, not as a claim about hardware internals.
+
+Point it at a rocprofv3 output directory. If that directory also contains a
+counter collection with OccupancyPercent or MeanOccupancyPerCU, the derived
+figure is checked against it instead of merely asserted.
 """
 from __future__ import annotations
 
 import csv
+import sys
 from pathlib import Path
 
-PV3 = Path("/tmp/pv3")
+PV3 = Path(sys.argv[1] if len(sys.argv) > 1 else "/tmp/pv3")
+KERNEL = "integrated_peps_wmma"
 
-agents = list(csv.DictReader((PV3 / "run1_agent_info.csv").open(encoding="utf-8")))
+
+def load(pattern: str) -> list[dict]:
+    matches = sorted(PV3.glob(pattern))
+    if not matches:
+        return []
+    return list(csv.DictReader(matches[0].open(encoding="utf-8")))
+
+
+agents = load("*agent_info.csv")
 gpu = next(a for a in agents if a.get("Agent_Type") == "GPU"
            or a.get("Name", "").startswith("gfx"))
 
 lds_kb = int(gpu["Lds_Size_In_Kb"])
 cu = int(gpu["Cu_Count"])
 simd_per_cu = int(gpu["Simd_Per_Cu"])
-waves_per_simd = int(gpu["Max_Waves_Per_Simd"])
 waves_per_cu = int(gpu["Max_Waves_Per_Cu"])
 wave = int(gpu["Wave_Front_Size"])
 
 print(f"part           : {gpu.get('Name')}")
 print(f"compute units  : {cu}")
-print(f"LDS per CU     : {lds_kb} KB")
-print(f"SIMDs per CU   : {simd_per_cu}, max waves per SIMD {waves_per_simd}")
+print(f"LDS advertised : {lds_kb} KB per CU, so {2 * lds_kb} KB per WGP")
 print(f"max waves / CU : {waves_per_cu}   wavefront {wave}")
 
-trace = list(csv.DictReader((PV3 / "run1_kernel_trace.csv").open(encoding="utf-8")))
-k = next(r for r in trace if r["Kernel_Name"].startswith("integrated_peps_wmma"))
+trace = load("*kernel_trace.csv") or load("*counter_collection.csv")
+k = next(r for r in trace if r["Kernel_Name"].startswith(KERNEL))
 lds_bytes = int(k["LDS_Block_Size"])
-wg = int(k["Workgroup_Size_X"]) * int(k["Workgroup_Size_Y"]) * int(k["Workgroup_Size_Z"])
-grid = int(k["Grid_Size_X"]) * int(k["Grid_Size_Y"]) * int(k["Grid_Size_Z"])
+if "Workgroup_Size_X" in k:
+    wg = (int(k["Workgroup_Size_X"]) * int(k["Workgroup_Size_Y"])
+          * int(k["Workgroup_Size_Z"]))
+else:
+    wg = int(k["Workgroup_Size"])
 vgpr, sgpr = int(k["VGPR_Count"]), int(k["SGPR_Count"])
-
 waves_per_wg = -(-wg // wave)
-print(f"\nlaunch         : workgroup {wg} threads = {waves_per_wg} waves, "
-      f"grid {grid} threads = {grid // wg} workgroups")
-print(f"per workgroup  : LDS {lds_bytes} B ({lds_bytes/1024:.0f} KB), "
-      f"VGPR {vgpr}, SGPR {sgpr}, scratch {k['Scratch_Size']}")
 
-by_lds = (lds_kb * 1024) // lds_bytes
+print(f"\nlaunch         : workgroup {wg} threads = {waves_per_wg} waves")
+print(f"per workgroup  : LDS {lds_bytes} B, VGPR {vgpr}, SGPR {sgpr}, "
+      f"scratch {k['Scratch_Size']}")
+
+pool = 2 * lds_kb * 1024
+by_lds_wgp = pool // lds_bytes
+waves_by_lds = by_lds_wgp * waves_per_wg / 2
 by_waves = waves_per_cu // waves_per_wg
 by_vgpr = (512 // max(vgpr, 1)) * simd_per_cu // waves_per_wg
-limit = min(by_lds, by_waves, by_vgpr)
-achieved = limit * waves_per_wg
 
-print(f"\nworkgroups per CU allowed by LDS   : {by_lds}")
-print(f"workgroups per CU allowed by waves : {by_waves}")
-print(f"workgroups per CU allowed by VGPRs : {by_vgpr}")
-print(f"limiter                            : "
-      f"{'LDS' if by_lds == limit else 'waves' if by_waves == limit else 'VGPRs'}")
-print(f"\nwaves resident per CU : {achieved} of {waves_per_cu} "
-      f"= {100 * achieved / waves_per_cu:.1f}% occupancy")
-print(f"\nHalving LDS to {lds_bytes//2} B would allow {(lds_kb*1024)//(lds_bytes//2)} "
-      f"workgroups per CU, i.e. "
-      f"{100 * min((lds_kb*1024)//(lds_bytes//2), by_waves, by_vgpr) * waves_per_wg / waves_per_cu:.1f}% "
-      "occupancy, if the other limits allow.")
+limits = {"LDS": waves_by_lds,
+          "wave slots": by_waves * waves_per_wg,
+          "VGPRs": by_vgpr * waves_per_wg}
+limiter = min(limits, key=limits.get)
+achieved = limits[limiter]
+derived = 100 * achieved / waves_per_cu
+
+print(f"\nresident waves per CU allowed by LDS        : {waves_by_lds:g} "
+      f"({by_lds_wgp} workgroups per WGP)")
+print(f"resident waves per CU allowed by wave slots : {by_waves * waves_per_wg}")
+print(f"resident waves per CU allowed by VGPRs      : {by_vgpr * waves_per_wg}")
+print(f"limiter                                     : {limiter}")
+print(f"\nderived occupancy : {derived:.2f}%  "
+      f"({achieved:g} of {waves_per_cu} waves)")
+
+superseded = 100 * ((lds_kb * 1024) // lds_bytes) * waves_per_wg / waves_per_cu
+if abs(superseded - derived) > 0.01:
+    print(f"a 64 KB per-CU pool would have said {superseded:.2f}% -- "
+          "this footprint is one that tells the two models apart")
+
+counters = load("*counter_collection.csv")
+samples: dict[str, list[float]] = {}
+for row in counters:
+    if not row["Kernel_Name"].startswith(KERNEL):
+        continue
+    samples.setdefault(row["Counter_Name"], []).append(float(row["Counter_Value"]))
+
+if not samples:
+    print("\nno counter collection here; the figure above is derived, not measured")
+    raise SystemExit(0)
+
+print(f"\n{'counter':<22}{'n':>4}{'min':>10}{'mean':>10}{'max':>10}{'derived':>10}")
+for name, values in sorted(samples.items()):
+    expected = derived if name == "OccupancyPercent" else achieved
+    mean = sum(values) / len(values)
+    print(f"{name:<22}{len(values):>4}{min(values):>10.2f}{mean:>10.2f}"
+          f"{max(values):>10.2f}{expected:>10.2f}")
+    # A counter disagreeing with the arithmetic means one of them is wrong,
+    # and on this kernel it has so far been the arithmetic.
+    if abs(mean - expected) > 0.5:
+        print(f"  MISMATCH: {name} is {mean:.2f}, arithmetic says {expected:.2f}")

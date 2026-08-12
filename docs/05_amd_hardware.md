@@ -369,6 +369,71 @@ decoder 形狀完全相同(hidden 64、4 層 Linear、輸出 3),僅特徵寬度 
 收窄後兩個頻率上 Pink 都快(與論文一致)。此處使用隨機權重而非訓練檢查點,量到的是
 decoder 形狀的成本,不是重現的品質,也不能取代 sweep。
 
+## The counter says the model was wrong / 計數器說模型錯了
+
+Three receipts in this repository carried the same sentence: occupancy was
+computed from launch geometry and advertised limits, not read from a hardware
+counter. `rocprofv3` on the RDNA3.5 host exposes `OccupancyPercent` and
+`MeanOccupancyPerCU`, so that sentence was closable in about five minutes. It
+should have been closed earlier, because the arithmetic behind it was wrong.
+
+| build | LDS | measured | derived (WGP pool) | derived (per-CU pool) |
+| --- | ---: | ---: | ---: | ---: |
+| stock | 32768 | 12.49 | 12.50 | 12.50 |
+| narrowed | 12288 | 31.18 | 31.25 | 31.25 |
+| texture | 13312 | **27.95** | **28.13** | ~~25.00~~ |
+
+The original derivation divided the 64 KB a compute unit advertises by the
+per-workgroup footprint. That is not how allocation behaves: the pool is
+**128 KB shared by the two compute units of a WGP**. The two models agree
+whenever the division lands on an even number of workgroups per WGP — and the
+first two footprints measured, 32768 and 12288, both did. **The wrong model
+produced two correct answers and looked confirmed.**
+
+A third footprint separated them. 13312 bytes gives nine workgroups per WGP,
+an odd number a per-CU model cannot produce, and the counter measured 28.0%
+against that model's 25%. `MeanOccupancyPerCU` independently reported 8.97 of a
+possible 32 waves, which is the same 28%.
+
+Two things about the measurement are worth carrying forward.
+
+**One counter agreeing with itself is not evidence.** A collection for
+`peps 17 4` returned roughly 95000 percent across all fifteen dispatches —
+internally consistent and obvious nonsense. It did not reproduce; a re-run with
+two counters gave 28.05% and 8.97 waves. The bad run stays in
+`results/hip_profile/gfx1151_occupancy.csv` marked `[discarded]` rather than
+being quietly dropped.
+
+**A prediction that cannot fail proves nothing.** Occupancy follows the
+compile-time cap, so it should not vary with the method. Measuring
+`peps 17 3`, `peps 17 4` and `pink 17 3` on one build gave 27.95, 28.05 and
+28.04 — a prediction with room to fail that did not fail.
+
+The correction is recorded in `results/hip_occupancy.json` under
+`model_correction`, the superseded figures are marked rather than deleted, and
+`tests/test_hip_lds_caps.py` now carries the discriminating case so the old
+model cannot come back. `hip/occupancy.py` prints both models and says when
+they disagree.
+
+What this does not change: the latency numbers, which were always measured, and
+the conclusion that LDS is the binding constraint, which the counter confirms.
+What it does change is the texture build's occupancy, from 25% to 28.1%, and
+the amount of confidence an unverified arithmetic model deserves.
+
+三份 receipt 都帶著同一句「佔用率是推算而非硬體計數器量測」。RDNA3.5 主機的
+`rocprofv3` 提供 `OccupancyPercent` 與 `MeanOccupancyPerCU`,五分鐘就能關掉這句——
+而且早該關掉,因為**背後的算術是錯的**。原本的推導把 CU 宣稱的 64 KB 除以每個
+workgroup 的用量;實際的配置池是**每個 WGP 的 128 KB,由兩個 CU 共用**。兩個模型在
+「除法落在偶數個 workgroup」時給出相同答案,而當時量過的兩個 footprint(32768 與
+12288)剛好都是——**錯的模型連續給出兩個正確答案,看起來像被驗證了**。第三個
+footprint 13312 給出 9 個 workgroup(奇數,per-CU 模型無法產生),計數器量到 28.0%
+而該模型說 25%,`MeanOccupancyPerCU` 獨立回報 8.97/32 waves,同樣是 28%。另外兩點:
+**單一計數器自洽不算證據**(有一次收集在 15 次派發上一致地回報約 95000%,不可重現,
+已標記 `[discarded]` 保留而非刪除);**不可能出錯的預測沒有意義**(佔用率應只隨編譯期
+上限而非方法變化,三個幾何量到 27.95/28.05/28.04,這個預測有失敗的空間而未失敗)。
+延遲數字不受影響——那些一直是量測值;LDS 是綁定約束的結論也不變,計數器反而確認了它。
+改變的是 texture 建置的佔用率(25% → 28.1%),以及未經驗證的算術模型應該得到多少信任。
+
 ## Result contract and comparison blocker / 結果契約與比較限制
 
 `results/hip_latency.schema.json` requires workload kind, mode, implementation,

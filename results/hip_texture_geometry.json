@@ -62,18 +62,27 @@
     "stock": {
       "caps": "PEPS_MAX_INPUT_DIM=512, PEPS_MAX_HIDDEN_DIM=128",
       "lds_bytes": 32768,
-      "workgroups_per_cu": 2,
-      "occupancy_fraction": 0.125
+      "workgroups_per_wgp": 4,
+      "occupancy_fraction": 0.125,
+      "measured_percent": 12.51
     },
     "tuned": {
       "caps": "PEPS_MAX_INPUT_DIM=160, PEPS_MAX_HIDDEN_DIM=64",
       "lds_bytes": 13312,
-      "workgroups_per_cu": 4,
-      "occupancy_fraction": 0.25,
+      "workgroups_per_wgp": 9,
+      "occupancy_fraction": 0.28125,
+      "measured_percent": 27.95,
       "why_160_not_128": "Grid-PEPS4F aggregates 153, so the 128 cap used for the paper's 16-channel methods refuses it. 160 is the next multiple of the 16-wide WMMA tile that covers it."
     },
-    "predicted_occupancy_ratio": 2.0,
-    "observed_speedup_range": [1.79, 1.97]
+    "predicted_occupancy_ratio": 2.25,
+    "observed_speedup_range": [1.79, 1.97],
+    "occupancy_was_measured": {
+      "tool": "rocprofv3 --pmc OccupancyPercent MeanOccupancyPerCU",
+      "data": "results/hip_profile/gfx1151_occupancy.csv",
+      "this_footprint_corrected_the_model": "A first draft of this receipt derived 25% for the 160-cap build from a 64 KB per-CU pool. The counter measured 28.0%, and MeanOccupancyPerCU measured 8.97 of a possible 32 waves. 13312 bytes gives nine workgroups per WGP, an odd number a per-CU model cannot produce, which is what exposed the error. See results/hip_occupancy.json model_correction.",
+      "occupancy_is_method_independent": "peps 17 3, peps 17 4 and pink 17 3 measured 27.95, 28.05 and 28.04 on the same build, confirming that occupancy follows the compile-time cap and not the method, as the arithmetic requires.",
+      "one_run_discarded": "An earlier collection for peps 17 4 returned roughly 95000 percent across all 15 dispatches. It did not reproduce: a re-run with two counters gave 28.05 and 8.97. The bad run is kept in the CSV marked [discarded] rather than deleted."
+    }
   },
   "ordering": {
     "finding": "Pink overtakes concat only after the LDS cap is narrowed, and it does so at both frequencies.",
@@ -130,7 +139,7 @@
   "limitations": [
     "Random weights, not the trained checkpoints. This is the cost of the decoder's shape, not of the reproduction's output quality, and it produces no PSNR or SSIM.",
     "Not comparable to the paper. The paper's latency table is for a 16-channel configuration; these geometries have no counterpart in it, which is why the paper column is empty rather than zero.",
-    "Occupancy remains derived from launch geometry and advertised limits, not read from a hardware counter.",
+    "Occupancy was measured on gfx1151, the only host with profilers. The gfx1201 latencies above have no counter behind them, and the two parts are assumed to share the allocation model.",
     "Half the texture method set is out of reach, so this does not make the fused kernel a general backend for the reproduction. It covers the Grid family only.",
     "The frequency sweep itself remains unrun and unauthorized; nothing here substitutes for it."
   ],

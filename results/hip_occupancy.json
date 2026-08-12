@@ -18,10 +18,28 @@
     "workgroups_launched": 65536
   },
   "limitations": [
-    "Occupancy is computed from the launch geometry and the part's advertised limits, not measured directly with a hardware counter.",
+    "SUPERSEDED: the occupancy figures here were computed from launch geometry and a 64 KB per-CU pool. rocprofv3 OccupancyPercent has since measured them, and confirmed 12.5% for this footprint. See measured_confirmation below.",
     "One kernel, one method, one part; the RDNA4 host has no profiler installed so the same measurement has not been repeated there.",
-    "Low occupancy is consistent with the observed scaling but is not proof of the cause; a counter-based bandwidth or stall analysis would be needed to close that."
+    "Low occupancy is consistent with the observed scaling but is not proof of the cause; a counter-based bandwidth or stall analysis would be needed to close that. The intervention in results/hip_lds_ab.json is stronger evidence than this correlation."
   ],
+  "measured_confirmation": {
+    "tool": "rocprofv3 --pmc OccupancyPercent MeanOccupancyPerCU",
+    "counter_mean_percent": 12.487,
+    "counter_min_percent": 12.46,
+    "counter_max_percent": 12.624,
+    "dispatches": 15,
+    "derived_percent": 12.5,
+    "verdict": "The derived figure for this footprint was right, but the model behind it was not. See model_correction.",
+    "data": "results/hip_profile/gfx1151_occupancy.csv"
+  },
+  "model_correction": {
+    "was": "workgroups per CU = floor(65536 / footprint), from the 64 KB per CU the agent advertises.",
+    "now": "workgroups per WGP = floor(131072 / footprint), halved to give waves per CU, treating the pool as 128 KB shared by the two compute units of a workgroup processor.",
+    "why_it_went_unnoticed": "The two models agree whenever the division lands on an even number of workgroups per WGP. Both footprints measured at the time, 32768 and 12288, did exactly that, so the wrong model produced two correct answers.",
+    "what_exposed_it": "A third footprint of 13312 bytes gives nine workgroups per WGP, an odd number the per-CU model cannot express. It predicted 25% and the counter measured 28.04%.",
+    "status": "The corrected model matches OccupancyPercent on all three footprints. It is recorded as the model that fits the counter, not as a claim about hardware internals read from a specification.",
+    "guarded_by": "tests/test_hip_lds_caps.py::test_the_two_pool_models_disagree_at_13312"
+  },
   "limits": {
     "limiter": "LDS",
     "workgroups_per_cu_by_lds": 2,

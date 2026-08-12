@@ -30,18 +30,27 @@
     }
   },
   "occupancy_change": {
-    "derivation": "floor(65536 LDS bytes per CU / footprint) workgroups, times 2 waves per 64-thread workgroup, over 32 wave slots per CU.",
+    "derivation": "floor(131072 LDS bytes per WGP / footprint) workgroups, times 2 waves per 64-thread workgroup, halved across the two compute units of the WGP, over 32 wave slots per CU.",
     "stock": {
-      "workgroups_per_cu": 2,
+      "workgroups_per_wgp": 4,
       "resident_waves_per_cu": 4,
-      "occupancy_fraction": 0.125
+      "occupancy_fraction": 0.125,
+      "measured_percent": 12.487
     },
     "tuned": {
-      "workgroups_per_cu": 5,
+      "workgroups_per_wgp": 10,
       "resident_waves_per_cu": 10,
-      "occupancy_fraction": 0.3125
+      "occupancy_fraction": 0.3125,
+      "measured_percent": 31.177
     },
     "predicted_ratio": 2.5,
+    "measured_ratio": 2.497,
+    "measurement": {
+      "tool": "rocprofv3 --pmc OccupancyPercent",
+      "dispatches_per_build": 15,
+      "data": "results/hip_profile/gfx1151_occupancy.csv",
+      "note": "Both figures are now measured, not only derived. The derivation originally used a 64 KB per-CU pool, which happens to agree with the corrected 128 KB per-WGP pool on both of these footprints; see results/hip_occupancy.json model_correction."
+    },
     "note": "Registers and wave slots stay clear in both builds: the compiler reports 48 VGPRs, 59 SGPRs and zero spill for this kernel, and the register budget alone would allow nine workgroups per CU."
   },
   "latency": {
@@ -100,7 +109,7 @@
     "The default build is unchanged. Nothing in the repository silently becomes the narrow build; it has to be asked for with -D flags."
   ],
   "limitations": [
-    "Occupancy is still derived from launch geometry and advertised limits, not read from a hardware counter. The latency improvement is measured; the occupancy figure that explains it is not.",
+    "Occupancy is now measured with rocprofv3 on gfx1151, but the gfx1201 latencies have no counter behind them; that host has no profiler installed, so the two parts are assumed to share the allocation model.",
     "The gfx1151 half uses a two-round interleaved benchmark rather than the settled protocol used on gfx1201, because the measurement script could not be executed on that host in this session.",
     "Neither build is comparable to the paper's numbers: the workload, output size, precision and timing method have not been shown to match. The paper column is a reference point, not a baseline.",
     "Only one of the three resources was moved. Raising the workgroup above 64 threads, the second proposed experiment, has not been tried and could compound or conflict with this change.",
