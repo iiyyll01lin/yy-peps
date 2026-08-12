@@ -316,6 +316,7 @@ W12 = nb([
          "WMMA_TILE, WAVES_PER_WG, MAX_WAVES, CUS_PER_WGP = 16, 2, 32, 2",
          "LDS_ADVERTISED_PER_CU = 64 * 1024   # what the agent reports",
          "LDS_POOL_PER_WGP = 128 * 1024       # what allocation behaves like",
+         "GRANULE = 1024                      # and it rounds up to this",
          "",
          "def footprint(input_cap, hidden_cap):",
          "    # feature_tile + hidden_a + hidden_b are fp16; accumulator is fp32.",
@@ -323,24 +324,30 @@ W12 = nb([
          "                        + hidden_cap * 2 + hidden_cap * 4)",
          "",
          "def occupancy(bytes_per_wg):",
-         "    wgs = LDS_POOL_PER_WGP // bytes_per_wg",
+         "    effective = -(-bytes_per_wg // GRANULE) * GRANULE",
+         "    wgs = LDS_POOL_PER_WGP // effective",
          "    return wgs, wgs * WAVES_PER_WG / CUS_PER_WGP / MAX_WAVES",
          "",
          "def occupancy_per_cu(bytes_per_wg):",
          "    wgs = LDS_ADVERTISED_PER_CU // bytes_per_wg",
          "    return wgs, wgs * WAVES_PER_WG / MAX_WAVES",
          "",
-         "CASES = [('stock    (512/128)', footprint(512, 128)),",
-         "         ('narrowed (128/64) ', footprint(128, 64)),",
-         "         ('texture  (160/64) ', footprint(160, 64))]",
+         "CASES = [('stock     (512/128)', footprint(512, 128)),",
+         "         ('shared    (128/64) ', footprint(128, 64)),",
+         "         ('texture   (160/64) ', footprint(160, 64)),",
+         "         ('peps only (112/64) ', footprint(112, 64)),",
+         "         ('pink only  (48/64) ', footprint(48, 64)),",
+         "         ('bi-grid    (16/64) ', footprint(16, 64))]",
          "for label, fp in CASES:",
          "    wgs, occ = occupancy(fp)",
+         "    eff = -(-fp // GRANULE) * GRANULE",
          "    _, old = occupancy_per_cu(fp)",
-         "    flag = '' if abs(occ - old) < 1e-9 else f'   <-- per-CU model says {old:.2%}'",
-         "    print(f'{label}: {fp:6d} B -> {wgs:2d} wg/WGP -> {occ:7.2%}{flag}')",
+         "    note = '' if abs(occ - old) < 1e-9 else f'  per-CU model: {old:.1%}'",
+         "    print(f'{label}: {fp:6d} B -> {eff:6d} eff -> {wgs:2d} wg/WGP"
+         " -> {occ:7.2%}{note}')",
          "print()",
-         "print('wave slots would allow 32 waves and registers 18,')",
-         "print('so LDS is the binding constraint on all three.')"),
+         "print('note that 112 and 128 land on the same granule,')",
+         "print('so a cap of 112 buys grid-peps-3f exactly nothing.')"),
     md("The caps are 512 and 128. `aggregate_dim` needs **16 / 112 / 44 / 46** for the\n"
        "four methods and the hidden width is always 64, so most of that reservation is\n"
        "never touched — and LDS is reserved whether it is read or not. Narrowing the\n"
@@ -362,29 +369,42 @@ W12 = nb([
        "  -d out -o R -- ./fused_peps geometry peps 17 4 1024 5 10\n"
        "python hip/occupancy.py out\n"
        "```\n\n"
-       "Do this even when you are confident. **The first version of the model in this\n"
-       "repository was wrong**, and it hid: a 64 KB per-CU pool and a 128 KB per-WGP\n"
-       "pool give the same answer whenever the division lands on an even number of\n"
-       "workgroups. The first two footprints measured, 32768 and 12288, both did. The\n"
-       "wrong model produced two correct answers and looked confirmed. Only a third\n"
-       "footprint of 13312 bytes — nine workgroups per WGP, an odd number the per-CU\n"
-       "model cannot produce — separated them, and the counter said 28.0% against the\n"
-       "model's 25%.\n\n"
-       "兩次答對不等於模型正確。**能區分兩個模型的那個案例,才是真正的檢驗。**"),
+       "Do this even when you are confident. **The model in this repository has been\n"
+       "wrong twice**, and the counter caught it both times.\n\n"
+       "The first version divided the 64 KB a compute unit advertises by the\n"
+       "footprint. The second divided a 128 KB per-WGP pool by it. Over the seven\n"
+       "footprints eventually measured, the first matches five and the second matches\n"
+       "three — which is exactly why they survived. A model that is right most of the\n"
+       "time looks confirmed every time you check it on an easy case.\n\n"
+       "What separates them is the awkward case. 13312 bytes gives nine workgroups per\n"
+       "WGP, an odd number a per-CU model cannot produce. Three narrower footprints\n"
+       "then came in exactly one workgroup below the per-WGP model, which is the\n"
+       "1024-byte allocation granule. 512 and 2048 both fail on the same data.\n\n"
+       "**幾次答對不等於模型正確。能區分兩個模型的那個案例,才是真正的檢驗。**"),
     code("# What the hardware counter says, from the committed measurements.",
          "import csv, pathlib",
          "data = pathlib.Path('..') / 'results' / 'hip_profile' / 'gfx1151_occupancy.csv'",
          "if not data.exists():",
          "    data = pathlib.Path('results') / 'hip_profile' / 'gfx1151_occupancy.csv'",
          "if data.exists():",
-         "    rows = [r for r in csv.DictReader(data.open())",
-         "            if 'discarded' not in r['invocation']]",
-         "    print(f\"{'build':<8}{'lds':>7}{'counter':>21}{'mean':>9}\"",
-         "          f\"{'wgp model':>11}{'per-CU':>9}\")",
+         "    rows = list(csv.DictReader(data.open()))",
+         "    print(f\"{'build':<8}{'lds':>7}{'eff':>7}{'measured':>10}\"",
+         "          f\"{'granular':>10}{'plainWGP':>10}{'plainCU':>9}\")",
+         "    score = {'granular': 0, 'plainWGP': 0, 'plainCU': 0}",
          "    for r in rows:",
-         "        print(f\"{r['build']:<8}{int(r['lds_bytes']):>7}{r['counter']:>21}\"",
-         "              f\"{float(r['mean']):>9.2f}{float(r['derived_wgp_pool']):>11.2f}\"",
-         "              f\"{r['superseded_cu_pool'] or '-':>9}\")",
+         "        m = float(r['measured_waves_per_cu'])",
+         "        for key, col in (('granular', 'model_granular_wgp'),",
+         "                         ('plainWGP', 'model_plain_wgp'),",
+         "                         ('plainCU', 'model_plain_cu')):",
+         "            score[key] += abs(m - int(r[col])) < 0.5",
+         "        print(f\"{r['build']:<8}{int(r['lds_bytes']):>7}\"",
+         "              f\"{int(r['effective_bytes']):>7}{m:>10.2f}\"",
+         "              f\"{int(r['model_granular_wgp']):>10}\"",
+         "              f\"{int(r['model_plain_wgp']):>10}\"",
+         "              f\"{int(r['model_plain_cu']):>9}\")",
+         "    print()",
+         "    print(f'matches out of {len(rows)}:',",
+         "          ', '.join(f'{k}={v}' for k, v in score.items()))",
          "else:",
          "    print('measurements not found; collect your own with rocprofv3')"),
     md("Two habits are worth taking from that table.\n\n"
@@ -392,13 +412,15 @@ W12 = nb([
        "returned roughly 95000 percent across all fifteen dispatches — internally\n"
        "consistent, and nonsense. It did not reproduce, and `MeanOccupancyPerCU` gave\n"
        "8.97 of a possible 32 waves in the same re-run, agreeing with the 28%. A single\n"
-       "counter that agrees with itself is not evidence. The bad run stays in the CSV\n"
-       "marked `[discarded]` rather than being quietly dropped.\n\n"
+       "counter that agrees with itself is not evidence. That run is written up in\n"
+       "`results/hip_texture_geometry.json` rather than quietly forgotten.\n\n"
        "**Predict something that could come out wrong.** Occupancy follows the\n"
        "compile-time cap, so it should not vary with the method. Measuring\n"
        "`peps 17 3`, `peps 17 4` and `pink 17 3` on one build gave 27.95, 28.05 and\n"
-       "28.04 — a prediction with room to fail that did not fail. 一個不可能出錯的預測,\n"
-       "驗證了也沒有意義。"),
+       "28.04 — a prediction with room to fail that did not fail. And when the granule\n"
+       "was fitted to the data that exposed it, a cap of 80 was built specifically\n"
+       "because the new model said 11 waves and both old ones said 12. It measured\n"
+       "10.97. 一個不可能出錯的預測,驗證了也沒有意義。"),
     code("# What the intervention actually bought, from the committed receipt.",
          "import json, pathlib",
          "receipt = pathlib.Path('..') / 'results' / 'hip_lds_ab.json'",

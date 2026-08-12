@@ -434,6 +434,84 @@ footprint 13312 給出 9 個 workgroup(奇數,per-CU 模型無法產生),計數�
 延遲數字不受影響——那些一直是量測值;LDS 是綁定約束的結論也不變,計數器反而確認了它。
 改變的是 texture 建置的佔用率(25% → 28.1%),以及未經驗證的算術模型應該得到多少信任。
 
+## One cap per method, and the model wrong a second time / 每方法一個上限,以及模型第二次出錯
+
+One cap has to serve every method, so it is sized for the widest. Sizing each
+method's cap for itself is the obvious next move, and the occupancy arithmetic
+from the previous section made three predictions. All three were wrong.
+
+Building one binary per method and measuring against the shared 128 cap:
+
+| method | cap | shared 128 | specialised | gain |
+| --- | ---: | ---: | ---: | ---: |
+| `bi-grid` | 16 | 3.63 | **2.95** | 1.233x |
+| `grid-peps-3f` | 112 | 8.43 | 8.43 | **1.000x** |
+| `grid-pink-peps-3f` | 48 | 8.69 | **7.65** | 1.136x |
+| `grid-pink-peps-4f` | 48 | 9.98 | **8.72** | 1.144x |
+
+Checksums identical throughout. `bi-grid` at 2.95 ms is 1.46x faster than the
+paper's 4.32 ms reference — still a local measurement of a workload not shown
+to match the paper's, not a reproduction of its number.
+
+The 1.000x is the interesting entry. A flat result usually means noise or a
+mistake; this one meant the model was wrong again.
+
+Measuring occupancy on all three specialised builds gave 13.94, 11.96 and 9.97
+waves per CU, each **exactly one workgroup below** what the per-WGP model
+predicted. Fitting a granule to seven measured footprints gives 1024 bytes
+uniquely — 512 leaves 8704 alone and predicts 15 against a measured 13.94, and
+2048 rounds it to 10240 and predicts 12:
+
+| cap | footprint | effective | model | measured |
+| ---: | ---: | ---: | ---: | ---: |
+| 512 | 32768 | 32768 | 4 | 4.00 |
+| 160 | 13312 | 13312 | 9 | 8.97 |
+| 128 | 12288 | 12288 | 10 | 9.98 |
+| 112 | 11776 | **12288** | 10 | 9.97 |
+| 80 | 10752 | 11264 | 11 | 10.97 |
+| 48 | 9728 | 10240 | 12 | 11.96 |
+| 16 | 8704 | 9216 | 14 | 13.94 |
+
+**`grid-peps-3f` gained nothing because 11776 and 12288 round to the same
+granule.** Its narrowest usable cap is 112, since that is what it aggregates,
+and 112 buys the same occupancy as 128. Reaching the next step would need a
+footprint at or below 11264, so a cap at or below 96, which is narrower than
+the method itself. That method cannot be helped this way at all — and the
+1.000x was the arithmetic being visible in the measurement, not a null result.
+
+Over the seven footprints, the original per-CU model matches five and the
+intermediate per-WGP model matches three. **That is why both survived.** A
+model right most of the time looks confirmed every time it is checked on an
+easy case.
+
+Because the granule was fitted to the data that exposed it, it needed a test it
+could fail. A cap of 80 was built for exactly that: the granular model predicts
+11 waves, and both superseded models predict 12. It measured **10.97**.
+
+`hip/occupancy.py` now computes all three models and names any footprint that
+separates them. `results/hip_specialised_caps.json` records the measurements,
+and `tests/test_hip_lds_caps.py` asserts the scoreboard — 7, 5 and 3 — so a
+future footprint that rehabilitates a superseded model cannot pass unnoticed.
+
+One caution about reading the gains. These are different methods, not one
+method at different occupancies, so the three points do not form a curve.
+`bi-grid` aggregates 16 channels against `grid-peps-3f`'s 112, so it does far
+less arithmetic per point and is correspondingly more latency-bound. Occupancy
+plausibly helps in proportion to how latency-bound a method already is; this
+data is consistent with that and does not establish it.
+
+一個上限要服務所有方法,就得照最寬的做。為每個方法量身訂做上限是顯而易見的下一步,而
+前一節的算術對此提出三個預測——**三個全錯**。實測顯示 `bi-grid` 快 1.233 倍、兩個 Pink
+方法快約 1.14 倍,而 `grid-peps-3f` **完全沒有增益**。那個 1.000× 才是重點:平坦的結果
+通常代表雜訊或失誤,這次代表模型又錯了。三個特化建置量到的 waves/CU 都**恰好比模型少
+一個 workgroup**;用七個 footprint 反推,顆粒度唯一解是 **1024 bytes**(512 與 2048 都
+對不上)。於是 `grid-peps-3f` 的 11776 與共用上限的 12288 **取整到同一個顆粒**,佔用率
+完全相同——它的最窄可用上限就是 112(等於它自己的聚合寬度),要再進一階需要上限 ≤ 96,
+比方法本身還窄,**這個方法在此路徑上無法改善**。七個 footprint 中,原始 per-CU 模型對
+五個、中間的 per-WGP 模型對三個——**這正是它們能存活的原因**:一個大多數時候正確的模型,
+在每次用簡單案例檢查時都像是被驗證了。由於顆粒度是用暴露它的資料擬合出來的,它需要一個
+可能失敗的測試:cap 80 就是為此而建(新模型說 11,兩個舊模型都說 12),實測 **10.97**。
+
 ## Result contract and comparison blocker / 結果契約與比較限制
 
 `results/hip_latency.schema.json` requires workload kind, mode, implementation,

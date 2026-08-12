@@ -44,9 +44,12 @@ CHANNELS = 16
 TEXTURE_CHANNELS = 17
 HIDDEN = 64
 # The allocation pool behaves as 128 KB shared by the two compute units of a
-# WGP, not 64 KB per CU. See test_the_two_pool_models_disagree_at_13312.
+# WGP, and the footprint is rounded up to a 1024-byte granule before it is
+# divided. Both parts were established by counter, not assumed; see
+# test_only_the_granular_model_matches_every_measurement.
 LDS_POOL_PER_WGP = 128 * 1024
 LDS_ADVERTISED_PER_CU = 64 * 1024
+LDS_GRANULE = 1024
 WAVES_PER_WORKGROUP = 2
 CUS_PER_WGP = 2
 MAX_WAVES_PER_CU = 32
@@ -63,14 +66,24 @@ def lds_footprint(input_cap: int, hidden_cap: int) -> int:
     return WMMA_TILE * (input_cap * 2 + hidden_cap * 2 + hidden_cap * 2 + hidden_cap * 4)
 
 
+def effective_footprint(footprint: int) -> int:
+    return -(-footprint // LDS_GRANULE) * LDS_GRANULE
+
+
 def occupancy(footprint: int) -> float:
-    workgroups_per_wgp = LDS_POOL_PER_WGP // footprint
+    workgroups_per_wgp = LDS_POOL_PER_WGP // effective_footprint(footprint)
     waves_per_cu = workgroups_per_wgp * WAVES_PER_WORKGROUP / CUS_PER_WGP
     return waves_per_cu / MAX_WAVES_PER_CU
 
 
+def occupancy_plain_wgp(footprint: int) -> float:
+    """Superseded: a per-WGP pool with no allocation granule."""
+    workgroups_per_wgp = LDS_POOL_PER_WGP // footprint
+    return workgroups_per_wgp * WAVES_PER_WORKGROUP / CUS_PER_WGP / MAX_WAVES_PER_CU
+
+
 def occupancy_per_cu_pool(footprint: int) -> float:
-    """The superseded model, kept only so a test can show where it breaks."""
+    """Superseded: a 64 KB pool per compute unit."""
     workgroups = LDS_ADVERTISED_PER_CU // footprint
     return workgroups * WAVES_PER_WORKGROUP / MAX_WAVES_PER_CU
 
@@ -210,3 +223,71 @@ def test_the_earlier_footprints_could_not_have_caught_it():
     # survived two rounds of measurement before a third footprint exposed it.
     for footprint in (32768, 12288):
         assert occupancy(footprint) == occupancy_per_cu_pool(footprint)
+
+
+# --- what seven measured footprints say about the model ----------------
+
+# gfx1151, rocprofv3 MeanOccupancyPerCU, 15 dispatches each.
+# results/hip_profile/gfx1151_occupancy.csv
+MEASURED_WAVES = {
+    32768: 4.00,
+    13312: 8.97,
+    12288: 9.98,
+    11776: 9.97,
+    10752: 10.97,
+    9728: 11.96,
+    8704: 13.94,
+}
+
+
+def waves(footprint: int) -> float:
+    return occupancy(footprint) * MAX_WAVES_PER_CU
+
+
+def test_only_the_granular_model_matches_every_measurement():
+    def hits(model) -> int:
+        return sum(
+            abs(measured - model(f) * MAX_WAVES_PER_CU) < 0.5
+            for f, measured in MEASURED_WAVES.items()
+        )
+
+    assert hits(occupancy) == len(MEASURED_WAVES)
+    # Kept as an assertion rather than a comment so that a future footprint
+    # which rehabilitates a superseded model cannot pass unnoticed.
+    assert hits(occupancy_per_cu_pool) == 5
+    assert hits(occupancy_plain_wgp) == 3
+
+
+def test_granularity_is_1024_and_not_512_or_2048():
+    # 8704 is a multiple of 512, so a 512-byte granule would leave it alone
+    # and predict 15 waves against the measured 13.94.
+    assert 8704 % 512 == 0
+    assert LDS_POOL_PER_WGP // 8704 == 15
+    assert waves(8704) == 14
+    # A 2048-byte granule would round 8704 up to 10240 and predict 12.
+    assert -(-8704 // 2048) * 2048 == 10240
+    assert LDS_POOL_PER_WGP // 10240 == 12
+
+
+def test_narrowing_below_128_cannot_help_grid_peps_3f():
+    # The one method that gained nothing. 112 is the narrowest cap it can
+    # take, and its footprint rounds up to the same granule as 128, so the
+    # occupancy is identical and the measured speedup was 1.000x.
+    peps = lds_footprint(112, TUNED_HIDDEN_CAP)
+    shared = lds_footprint(TUNED_INPUT_CAP, TUNED_HIDDEN_CAP)
+    assert peps == 11776 and shared == 12288
+    assert effective_footprint(peps) == effective_footprint(shared) == 12288
+    assert occupancy(peps) == occupancy(shared)
+    # Reaching the next step would need a footprint at or below 11264,
+    # i.e. a cap of 96, which is narrower than the 112 the method needs.
+    assert lds_footprint(96, TUNED_HIDDEN_CAP) == 11264
+    assert aggregate_dim("grid-peps-3f", CHANNELS) == 112
+
+
+def test_specialised_caps_reach_the_occupancy_they_were_chosen_for():
+    assert waves(lds_footprint(16, TUNED_HIDDEN_CAP)) == 14   # bi-grid
+    assert waves(lds_footprint(48, TUNED_HIDDEN_CAP)) == 12   # pink 3f and 4f
+    assert waves(lds_footprint(TUNED_INPUT_CAP, TUNED_HIDDEN_CAP)) == 10
+    for cap, method in ((16, "bi-grid"), (48, "grid-pink-peps-3f"),
+                        (48, "grid-pink-peps-4f")):
+        assert aggregate_dim(method, CHANNELS) <= cap

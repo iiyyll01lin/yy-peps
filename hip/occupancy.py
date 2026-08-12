@@ -1,18 +1,19 @@
 #!/usr/bin/env python3
 """Occupancy for the fused kernel, derived from the profiler and then checked.
 
-The first version of this script divided the LDS a compute unit advertises
-by the footprint of one workgroup. That is wrong, and it was wrong in a way
-that hid itself: a 64 KB per-CU pool and a 128 KB per-WGP pool give the same
-answer whenever the division lands on an even number of workgroups, which
-both of the first two footprints measured did. A third footprint of 13312
-bytes landed on nine workgroups per WGP -- an odd number a per-CU model
-cannot produce -- and the counter said 28.0% against the per-CU model's 25%.
+This model has been wrong twice, and both times the counter caught it.
 
-So the pool is treated as 128 KB shared by the two compute units of a WGP.
-That is consistent with RDNA's workgroup processor sharing one LDS, but it
-is recorded here as the model that matches OccupancyPercent on three
-footprints, not as a claim about hardware internals.
+First it divided the 64 KB a compute unit advertises by the per-workgroup
+footprint. Then it divided a 128 KB per-WGP pool by the same footprint. The
+three models agree on many footprints, which is how the wrong ones survived:
+over seven measured footprints the per-CU model matches five and the plain
+per-WGP model matches three. Only one matches all seven.
+
+That one rounds the footprint up to a 1024-byte granule before dividing a
+128 KB per-WGP pool by it. It is recorded as the model that fits every
+measurement taken, not as a claim about hardware internals read from a
+specification, and the two it replaced are still computed below so any
+future footprint that separates them shows up immediately.
 
 Point it at a rocprofv3 output directory. If that directory also contains a
 counter collection with OccupancyPercent or MeanOccupancyPerCU, the derived
@@ -26,6 +27,7 @@ from pathlib import Path
 
 PV3 = Path(sys.argv[1] if len(sys.argv) > 1 else "/tmp/pv3")
 KERNEL = "integrated_peps_wmma"
+GRANULE = 1024
 
 
 def load(pattern: str) -> list[dict]:
@@ -66,7 +68,8 @@ print(f"per workgroup  : LDS {lds_bytes} B, VGPR {vgpr}, SGPR {sgpr}, "
       f"scratch {k['Scratch_Size']}")
 
 pool = 2 * lds_kb * 1024
-by_lds_wgp = pool // lds_bytes
+effective = -(-lds_bytes // GRANULE) * GRANULE
+by_lds_wgp = pool // effective
 waves_by_lds = by_lds_wgp * waves_per_wg / 2
 by_waves = waves_per_cu // waves_per_wg
 by_vgpr = (512 // max(vgpr, 1)) * simd_per_cu // waves_per_wg
@@ -78,6 +81,9 @@ limiter = min(limits, key=limits.get)
 achieved = limits[limiter]
 derived = 100 * achieved / waves_per_cu
 
+if effective != lds_bytes:
+    print(f"\nLDS {lds_bytes} B rounds up to {effective} B at a "
+          f"{GRANULE}-byte granule")
 print(f"\nresident waves per CU allowed by LDS        : {waves_by_lds:g} "
       f"({by_lds_wgp} workgroups per WGP)")
 print(f"resident waves per CU allowed by wave slots : {by_waves * waves_per_wg}")
@@ -86,10 +92,16 @@ print(f"limiter                                     : {limiter}")
 print(f"\nderived occupancy : {derived:.2f}%  "
       f"({achieved:g} of {waves_per_cu} waves)")
 
-superseded = 100 * ((lds_kb * 1024) // lds_bytes) * waves_per_wg / waves_per_cu
-if abs(superseded - derived) > 0.01:
-    print(f"a 64 KB per-CU pool would have said {superseded:.2f}% -- "
-          "this footprint is one that tells the two models apart")
+superseded = {
+    "64 KB per-CU pool": 100 * ((lds_kb * 1024) // lds_bytes)
+    * waves_per_wg / waves_per_cu,
+    "128 KB per-WGP pool, no granule": 100 * (pool // lds_bytes)
+    * waves_per_wg / 2 / waves_per_cu,
+}
+for label, value in superseded.items():
+    if abs(value - derived) > 0.01:
+        print(f"a {label} would have said {value:.2f}% -- "
+              "this footprint separates it from the model above")
 
 counters = load("*counter_collection.csv")
 samples: dict[str, list[float]] = {}

@@ -1,0 +1,79 @@
+{
+  "schema": "peps.hip_specialised_caps",
+  "schema_version": 1,
+  "question": "One LDS cap has to serve every method, so it is sized for the widest. What does each method gain from a cap sized for itself, and does the occupancy arithmetic predict it?",
+  "answer": "Two of the three gain, one provably cannot, and the arithmetic did not predict any of them correctly until a third model correction. bi-grid runs 1.233x faster with a cap of 16, the two Pink methods 1.14x with a cap of 48, and grid-peps-3f gains exactly nothing because its narrowest usable cap rounds up to the same 1024-byte granule as the shared cap it already had.",
+  "generated_at_utc": "2026-08-12T00:00:00+00:00",
+  "latency": {
+    "part": "RDNA4 gfx1201, 64 compute units",
+    "protocol": "Four interleaved rounds after spinning the card until the shader clock stopped climbing, side 1024, 30 warmup and 60 timed iterations. Each specialised build is invoked immediately after the shared-cap build on the same geometry, so drift lands on both. The shared-cap figures reproduce the committed hip_lds_ab.json values within 1%.",
+    "unit": "ms",
+    "methods": {
+      "bi-grid": {"cap": 16, "shared_128": 3.63, "specialised": 2.95, "gain": 1.233, "paper": 4.32},
+      "grid-peps-3f": {"cap": 112, "shared_128": 8.43, "specialised": 8.43, "gain": 1.000, "paper": 5.47},
+      "grid-pink-peps-3f": {"cap": 48, "shared_128": 8.69, "specialised": 7.65, "gain": 1.136, "paper": 4.86},
+      "grid-pink-peps-4f": {"cap": 48, "shared_128": 9.98, "specialised": 8.72, "gain": 1.144, "paper": 4.99}
+    },
+    "note": "bi-grid at 2.95 ms is 1.46x faster than the paper's 4.32 ms reference. That is a local measurement of a workload not shown to match the paper's, not a reproduction of its number."
+  },
+  "numerical_equivalence": {
+    "verdict": "identical",
+    "note": "Every method's checksum is identical between its specialised build and the stock 512/128 build: bi-grid -0.0062618833, grid-peps-3f 0.00317980815, grid-pink-peps-3f 0.00133563625, grid-pink-peps-4f 0.00172280008."
+  },
+  "model_correction_second": {
+    "was": "workgroups per WGP = floor(131072 / footprint), introduced when the counter caught the original per-CU model.",
+    "now": "effective = ceil(footprint / 1024) * 1024, then workgroups per WGP = floor(131072 / effective). Waves per CU equals the workgroup count, since each workgroup is two waves and a WGP has two compute units.",
+    "how_it_was_caught": "The specialised builds produced three new footprints. All three measured exactly one workgroup below the per-WGP model. Fitting the granule to seven footprints gives 1024 bytes uniquely: 512 leaves 8704 alone and predicts 15 waves against a measured 13.94, and 2048 rounds it to 10240 and predicts 12.",
+    "scoreboard_over_seven_footprints": {
+      "granular_wgp_pool": 7,
+      "plain_per_cu_pool": 5,
+      "plain_wgp_pool": 3
+    },
+    "falsification_test": {
+      "why": "A model fitted to the data that exposed it has not been tested. A cap of 80 was chosen because the granular model predicts 11 waves for it and both superseded models predict 12.",
+      "footprint": 10752,
+      "effective": 11264,
+      "predicted_waves": 11,
+      "superseded_predicted_waves": 12,
+      "measured_waves": 10.97,
+      "measured_percent": 34.29,
+      "verdict": "granular model confirmed on a case chosen to break it"
+    },
+    "status": "Recorded as the model that fits every measurement taken, not as a claim about hardware internals read from a specification. Both superseded models are still computed by hip/occupancy.py so any future footprint that separates them is visible."
+  },
+  "occupancy": {
+    "part": "RDNA3.5 gfx1151, 40 compute units",
+    "tool": "rocprofv3 --pmc OccupancyPercent MeanOccupancyPerCU",
+    "dispatches_per_footprint": 15,
+    "data": "results/hip_profile/gfx1151_occupancy.csv",
+    "footprints": [
+      {"cap": 512, "footprint": 32768, "effective": 32768, "waves": 4, "measured_waves": 4.00, "measured_percent": 12.49},
+      {"cap": 160, "footprint": 13312, "effective": 13312, "waves": 9, "measured_waves": 8.97, "measured_percent": 28.05},
+      {"cap": 128, "footprint": 12288, "effective": 12288, "waves": 10, "measured_waves": 9.98, "measured_percent": 31.18},
+      {"cap": 112, "footprint": 11776, "effective": 12288, "waves": 10, "measured_waves": 9.97, "measured_percent": 31.14},
+      {"cap": 80, "footprint": 10752, "effective": 11264, "waves": 11, "measured_waves": 10.97, "measured_percent": 34.29},
+      {"cap": 48, "footprint": 9728, "effective": 10240, "waves": 12, "measured_waves": 11.96, "measured_percent": 37.39},
+      {"cap": 16, "footprint": 8704, "effective": 9216, "waves": 14, "measured_waves": 13.94, "measured_percent": 43.55}
+    ],
+    "note": "Every measurement sits within 0.2 percentage points of the granular model, and slightly below it, which is what a time-averaged counter should do."
+  },
+  "why_grid_peps_3f_cannot_gain": {
+    "argument": "grid-peps-3f aggregates 112, so 112 is the narrowest cap it can take. footprint(112, 64) = 11776, which rounds up to 12288 -- the same granule as the shared cap of 128. Occupancy is therefore identical at 10 waves, and the measured speedup was 1.000x.",
+    "what_it_would_take": "Reaching 11 waves needs an effective footprint at or below 11264, so a footprint at or below 11264, so a cap at or below 96. That is narrower than the method's own aggregate.",
+    "conclusion": "Not a measurement that came out flat. A method that cannot be helped this way at all.",
+    "guarded_by": "tests/test_hip_lds_caps.py::test_narrowing_below_128_cannot_help_grid_peps_3f"
+  },
+  "what_occupancy_bought": {
+    "observation": "The gain is not a function of occupancy alone. bi-grid went from 10 to 14 waves and gained 1.233x; Pink went from 10 to 12 and gained 1.14x; grid-peps-3f stayed at 10 and gained nothing.",
+    "caution": "These are different methods, not one method at different occupancies, so the three points do not form a curve. bi-grid aggregates 16 channels against grid-peps-3f's 112, so it does far less arithmetic per point and is correspondingly more latency-bound. The reasonable reading is that occupancy helps in proportion to how latency-bound a method already is, which this data is consistent with but does not establish."
+  },
+  "limitations": [
+    "Latency measured on gfx1201, occupancy on gfx1151. No single part has both, because the RDNA4 host has no profiler installed and the RDNA3.5 host's checkout is stale.",
+    "The latency protocol here is four manual interleaved rounds rather than the eight-round settled harness, which could not be invoked in this session. Round-to-round agreement was not computed; the shared-cap figures reproducing the committed values within 1% is the only stability evidence.",
+    "The 1024-byte granule is fitted to seven footprints and confirmed on an eighth chosen to break it. It is not read from a specification and may not hold on other parts.",
+    "Specialised builds are one method each. They are not a shipping configuration; they measure what specialisation is worth.",
+    "No comparison to the paper is claimed. The paper column is a reference point."
+  ],
+  "paper_exact": false,
+  "verification_status": "bounded_local_intervention_not_paper_comparable"
+}

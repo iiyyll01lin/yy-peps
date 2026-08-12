@@ -34,11 +34,12 @@
   },
   "model_correction": {
     "was": "workgroups per CU = floor(65536 / footprint), from the 64 KB per CU the agent advertises.",
-    "now": "workgroups per WGP = floor(131072 / footprint), halved to give waves per CU, treating the pool as 128 KB shared by the two compute units of a workgroup processor.",
-    "why_it_went_unnoticed": "The two models agree whenever the division lands on an even number of workgroups per WGP. Both footprints measured at the time, 32768 and 12288, did exactly that, so the wrong model produced two correct answers.",
-    "what_exposed_it": "A third footprint of 13312 bytes gives nine workgroups per WGP, an odd number the per-CU model cannot express. It predicted 25% and the counter measured 28.04%.",
-    "status": "The corrected model matches OccupancyPercent on all three footprints. It is recorded as the model that fits the counter, not as a claim about hardware internals read from a specification.",
-    "guarded_by": "tests/test_hip_lds_caps.py::test_the_two_pool_models_disagree_at_13312"
+    "now": "effective = ceil(footprint / 1024) * 1024, then workgroups per WGP = floor(131072 / effective), which equals waves per CU because a workgroup is two waves and a WGP is two compute units.",
+    "why_it_went_unnoticed": "The models agree on many footprints. Over the seven now measured, the original per-CU model matches five and an intermediate per-WGP model without the granule matches three. Both footprints measured at the time this receipt was written, 32768 and 12288, are among the agreements, so the wrong model produced two correct answers.",
+    "what_exposed_it": "13312 bytes gives nine workgroups per WGP, an odd number the per-CU model cannot express: it predicted 25% and the counter measured 28.04%. Three further footprints from per-method specialised builds then measured exactly one workgroup below the per-WGP model, which is what the 1024-byte granule accounts for.",
+    "corrected_twice": "This model has been wrong twice and both times the counter caught it. The second correction is recorded in results/hip_specialised_caps.json, including a cap chosen specifically to separate the granular model from the two it replaced.",
+    "status": "The corrected model matches all seven measured footprints within 0.2 percentage points. It is recorded as the model that fits the counter, not as a claim about hardware internals read from a specification.",
+    "guarded_by": "tests/test_hip_lds_caps.py::test_only_the_granular_model_matches_every_measurement"
   },
   "limits": {
     "limiter": "LDS",
