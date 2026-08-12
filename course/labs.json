@@ -233,6 +233,21 @@
           "id": "metric-composition",
           "description": "Recompute Table 2 under a different map-category mix before comparing against the paper. The reported PSNR is a map-weighted mean, the eight categories span about 19 dB, and the methods are not equally strong on each, so reweighting changes both the level and the order. Report which method pairs swap. A comparison that skips this step is not a result.",
           "evidence": "notebooks/W08_texture_ntc.ipynb section 6 and results/texture_repro/shortfall_analysis/method_by_category.csv"
+        },
+        {
+          "id": "cheap-explanations-first",
+          "description": "Rule out compute and loss family before hunting for a mechanism. Both are cheap to test and both are the usual suspects, so an unexamined mechanism claim made while they are still open is not evidence. Here extra compute made the gap worse rather than better, which is what eliminated it.",
+          "evidence": "results/texture_repro/budget_probe/receipt.json, field answer"
+        },
+        {
+          "id": "out-of-sample-check",
+          "description": "A composition inferred from the observed gaps must be validated on data it was not fitted to. Refit it leaving one method out and report the held-out error against the starting error. Fitting alone proves only that enough free parameters were available; here the held-out RMS falls from 1.248 dB to 0.405 dB, and it is that ratio, not the fit, that carries the claim.",
+          "evidence": "notebooks/W08_texture_ntc.ipynb section 6b and results/texture_repro/shortfall_analysis/implied_composition.json, fields our_composition_rms_db, leave_one_method_out_rms_db and held_out_improvement_factor"
+        },
+        {
+          "id": "scope-of-explanation",
+          "description": "State in the same paragraph what the explanation does not cover. A mechanism that is sufficient on the instances that show the effect is not thereby general. The reduction ladder is monotone on paving-stones-070 and non-monotone on metal-plates-013, where the differential effect changes sign, so the honest claim is sufficiency where the reversal occurs and not a uniform mechanism. Reporting only the instance that worked does not pass.",
+          "evidence": "results/texture_repro/ordering_probe/receipt.json, field answer and the monotone_in_normalisation_strength flags"
         }
       ],
       "budget": "paper-exact"

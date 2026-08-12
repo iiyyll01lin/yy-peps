@@ -32,11 +32,41 @@ Read `docs/reproducibility.md` for how that was established and
 `results/texture_repro/` for the evidence and its limitations. W08 and W13/W14
 grade students on exactly these habits.
 
+The AMD track found something different, three times over, and it was the same
+thing each time: what looked like a result about the paper or the hardware was
+a defect in our own measurement or model. The kernel's first latency table came
+from running each method to completion in turn on an idle card, which inflated
+whichever method went first by 5.7x and invented an ordering. The kernel's
+`__shared__` tiles were sized from compile-time caps set for the worst case, so
+every workgroup reserved 32 KB to use at most 12 KB; narrowing them cut latency
+roughly in half on both parts with byte-identical output, and the Pink ordering
+that had looked like a disagreement with the paper came back into line, having
+been an artefact of the shared cap rather than a property of the method. Then
+the occupancy arithmetic explaining all of it turned out to be wrong twice,
+caught both times by a hardware counter. It survived because it was right on
+five of seven footprints, and its replacement on three of seven: **a model that
+is right most of the time looks confirmed every time it is checked on an easy
+case.**
+
+Read `docs/05_amd_hardware.md` for the sequence and `results/hip_*.json` for
+the measurements and what each still does not establish. W11 and W12 grade the
+protocol, not only the parity.
+
 材質軌道完整重現了 Table 2(594/594),但所有方法約低於論文值 1.154 dB 且排序相反。
 兩者都指向未公布的 map 檔案選集,而非算力或 loss:表頭分數是對個別 map 平均,八個
 類別相差 19.4 dB,重新加權成均衡後排序即反轉、樣本外誤差降低 3.1 倍。因論文未公布
 檔案清單,此結論止於充分性。方法見 `docs/reproducibility.md`,證據見
 `results/texture_repro/`。
+
+AMD 軌道的發現屬於另一類,而且同一件事發生了三次:**看起來像「關於論文」或「關於
+硬體」的結果,其實是我們自己量測或模型的缺陷**。第一份延遲表是從閒置卡上逐方法連續
+量測得到的,先跑的方法被膨脹 5.7 倍,並憑空造出一個排序。kernel 的 `__shared__`
+分頁由最壞情況的編譯期上限決定,每個 workgroup 保留 32 KB 卻最多只用 12 KB;收窄
+上限後兩張卡的延遲各減半,且輸出逐位元相同,而先前看似「與論文不符」的 Pink 排序
+也回到論文方向——它是共用上限的假象,不是方法的性質。接著,解釋這一切的佔用率算術
+被發現錯了兩次,兩次都是硬體計數器抓到的。它們之所以能存活,是因為分別在七個
+footprint 中對了五個與三個:**一個大多數時候正確的模型,在每次用簡單案例檢查時都
+像是被驗證了。** 過程見 `docs/05_amd_hardware.md`,量測見 `results/hip_*.json`。
 
 ## Hardware / 硬體
 Two AMD boxes, merged into one git history:
