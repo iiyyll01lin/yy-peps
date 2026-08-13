@@ -16,7 +16,8 @@
       "validated-inconclusive-pilot-not-paper-comparable": "Bounded pilot with complete auditable observations whose decision rule did not authorize a paper budget.",
       "validated-input-provenance-not-numeric-result": "Checksum- and schema-validated input provenance; does not contain a trained-model result.",
       "validated-complete-run-not-paper-matching": "The paper's declared job matrix run to completion with raw per-job rows retained. The values do not match the published table, and are not paper-comparable because an input selection the paper does not publish changes them.",
-      "validated-sufficient-cause-not-established-cause": "Shows, on this repository's own measurements, that an unpublished choice can produce the observed effect. Does not show that the authors made that choice, and cannot while the choice stays unpublished."
+      "validated-sufficient-cause-not-established-cause": "Shows, on this repository's own measurements, that an unpublished choice can produce the observed effect. Does not show that the authors made that choice, and cannot while the choice stays unpublished.",
+      "validated-public-subset-not-global": "A complete run over the assets of a paper table that can be obtained, with raw per-asset rows retained and the omitted asset named alongside the blocker that omits it. Compared only against the paper's own mean over the same subset, never against its global figure."
     },
     "artifact_status_notes": {
       "legacy-unverified": "Tracked output whose provenance does not meet verified_requires.",
@@ -128,6 +129,32 @@
     }
   },
   "release_evidence": {
+    "sdf-table3-mape-public-subset": {
+      "status": "validated-public-subset-not-global",
+      "paper_comparable": false,
+      "claim_scope": "Table 3 under MAPE on Lucy, Thai Statue and Armadillo, ten methods, thirty per-shape rows. Against the paper's own mean over the same three shapes, 8 of the 10 methods land at or above it; PE and TI-Grid do not. Not a global result: Pitted Stonefish is authorization-blocked and no substitute was used.",
+      "receipt": "results/sdf_repro/sdf-table3-mape-public-three/manifest.json",
+      "raw_rows": "results/sdf_repro/sdf-table3-mape-public-three/per_shape.csv",
+      "summary": "results/sdf_repro/sdf-table3-mape-public-three/three_shape_aggregate.csv",
+      "provenance": [
+        "results/sdf_repro/public_subset_receipt.json",
+        "results/sdf_repro/volume_validation.json",
+        "results/sdf_repro/table4_deferred_auth_required.json"
+      ]
+    },
+    "sdf-table6-l1-public-subset": {
+      "status": "validated-public-subset-not-global",
+      "paper_comparable": false,
+      "claim_scope": "Table 6 under L1 on the same three shapes, nine methods, twenty-seven per-shape rows. 7 of the 9 methods land at or above the paper's mean over the same subset. Hash moves from 0.084 above under MAPE to 0.157 below under L1, the largest swing in either table. Not a global result: Pitted Stonefish is authorization-blocked and no substitute was used.",
+      "receipt": "results/sdf_repro/sdf-table6-l1-public-three/manifest.json",
+      "raw_rows": "results/sdf_repro/sdf-table6-l1-public-three/per_shape.csv",
+      "summary": "results/sdf_repro/sdf-table6-l1-public-three/three_shape_aggregate.csv",
+      "provenance": [
+        "results/sdf_repro/public_subset_receipt.json",
+        "results/sdf_repro/volume_validation.json",
+        "results/sdf_repro/table4_deferred_auth_required.json"
+      ]
+    },
     "texture-table2-complete-run": {
       "status": "validated-complete-run-not-paper-matching",
       "paper_comparable": false,

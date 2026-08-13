@@ -16,6 +16,7 @@ it until the artefact agrees. Neither can drift quietly away from the other.
 
 from __future__ import annotations
 
+import csv
 import json
 import pathlib
 import re
@@ -31,6 +32,13 @@ class Claim:
         self.documents = documents
 
 
+def load(path: pathlib.Path):
+    if path.suffix == ".csv":
+        with path.open(newline="", encoding="utf-8") as handle:
+            return list(csv.DictReader(handle))
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
 def dig(doc, dotted: str):
     """Resolve a dotted path, raising KeyError with the path that failed."""
     node = doc
@@ -41,10 +49,23 @@ def dig(doc, dotted: str):
     return node
 
 
+def above_paper(rows) -> int:
+    return sum(1 for row in rows if float(row["delta_iou"]) > 0)
+
+
+def delta_for(rows, method: str) -> float:
+    for row in rows:
+        if row["method"] == method:
+            return float(row["delta_iou"])
+    raise KeyError(f"a row for method {method}")
+
+
 TABLE2 = "results/texture_repro/table2.json"
 SHORTFALL = "results/texture_repro/shortfall_analysis/receipt.json"
 COMPOSITION = "results/texture_repro/shortfall_analysis/implied_composition.json"
 CAPS = "results/hip_specialised_caps.json"
+SDF_MAPE = "results/sdf_repro/sdf-table3-mape-public-three/three_shape_aggregate.csv"
+SDF_L1 = "results/sdf_repro/sdf-table6-l1-public-three/three_shape_aggregate.csv"
 
 CLAIMS = [
     Claim(
@@ -129,12 +150,53 @@ CLAIMS = [
         lambda v: f"{v:d}",
         ["README.md"],
     ),
+    # The SDF tables are the corroboration for the texture shortfall, so the
+    # counts carrying that argument are checked as phrases rather than as bare
+    # integers, which would match almost anything.
+    Claim(
+        "sdf methods at or above the paper under MAPE",
+        SDF_MAPE,
+        lambda d: (above_paper(d), len(d)),
+        lambda v: f"{v[0]} of the {v[1]}",
+        ["README.md"],
+    ),
+    Claim(
+        "sdf methods at or above the paper under L1",
+        SDF_L1,
+        lambda d: (above_paper(d), len(d)),
+        lambda v: f"{v[0]} of the {v[1]}",
+        ["README.md"],
+    ),
+    Claim(
+        "hash above the paper under MAPE",
+        SDF_MAPE,
+        lambda d: delta_for(d, "Hash"),
+        lambda v: f"{v:.3f}",
+        ["README.md"],
+    ),
+    Claim(
+        "hash below the paper under L1",
+        SDF_L1,
+        lambda d: abs(delta_for(d, "Hash")),
+        lambda v: f"{v:.3f}",
+        ["README.md"],
+    ),
+    Claim(
+        "pe below the paper under MAPE",
+        SDF_MAPE,
+        lambda d: abs(delta_for(d, "PE")),
+        lambda v: f"{v:.3f}",
+        ["README.md"],
+    ),
 ]
 
 
 def anchored(value: str) -> re.Pattern:
     """A longer number must not satisfy a shorter claim: 1.15 is not 1.1538."""
-    return re.compile(r"(?<![\d.])" + re.escape(value) + r"(?![\d])")
+    pattern = re.escape(value)
+    if re.fullmatch(r"[\d.]+", value):
+        pattern = r"(?<![\d.])" + pattern + r"(?![\d])"
+    return re.compile(pattern)
 
 
 def check(root: pathlib.Path) -> tuple[list[str], int]:
@@ -148,7 +210,7 @@ def check(root: pathlib.Path) -> tuple[list[str], int]:
             problems.append(f"{claim.name}: {claim.source} does not exist")
             continue
         if claim.source not in cache:
-            cache[claim.source] = json.loads(path.read_text(encoding="utf-8"))
+            cache[claim.source] = load(path)
         try:
             value = claim.compute(cache[claim.source])
         except KeyError as exc:

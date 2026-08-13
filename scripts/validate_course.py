@@ -36,6 +36,12 @@ RELEASE_EVIDENCE_STATUSES = {
     "texture-table2-shortfall-diagnosis": (
         "validated-sufficient-cause-not-established-cause"
     ),
+    "sdf-table3-mape-public-subset": (
+        "validated-public-subset-not-global"
+    ),
+    "sdf-table6-l1-public-subset": (
+        "validated-public-subset-not-global"
+    ),
 }
 COURSE_SMOKE_RUNS = {
     "course-fast-image-smoke": (

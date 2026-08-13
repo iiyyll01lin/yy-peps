@@ -19,14 +19,21 @@ sys.path.insert(0, str(ROOT / "scripts"))
 check_headline_numbers = pytest.importorskip("check_headline_numbers")
 
 
-def mirror(tmp_path, edit_receipt=None, edit_readme=None):
+def mirror(tmp_path, edit_receipt=None, edit_readme=None, edit_csv=None):
     """A copy of the sources this check reads, optionally perturbed."""
     for claim in check_headline_numbers.CLAIMS:
         source = tmp_path / claim.source
         if source.exists():
             continue
         source.parent.mkdir(parents=True, exist_ok=True)
-        payload = json.loads((ROOT / claim.source).read_text(encoding="utf-8"))
+        original = ROOT / claim.source
+        if original.suffix == ".csv":
+            text = original.read_text(encoding="utf-8")
+            if edit_csv is not None:
+                text = edit_csv(claim.source, text)
+            source.write_text(text, encoding="utf-8")
+            continue
+        payload = json.loads(original.read_text(encoding="utf-8"))
         if edit_receipt is not None:
             payload = edit_receipt(claim.source, payload)
         source.write_text(json.dumps(payload), encoding="utf-8")
@@ -83,3 +90,26 @@ def test_an_empty_claim_list_is_reported_rather_than_passing(monkeypatch, capsys
     monkeypatch.setattr(check_headline_numbers, "CLAIMS", [])
     assert check_headline_numbers.main(str(ROOT)) == 1
     assert "without comparing anything" in capsys.readouterr().out
+
+
+def test_a_renamed_csv_column_is_reported_rather_than_skipped(tmp_path, capsys):
+    def rename(source, text):
+        return text.replace("delta_iou", "delta")
+
+    assert check_headline_numbers.main(mirror(tmp_path, edit_csv=rename)) == 1
+    assert "delta_iou" in capsys.readouterr().out
+
+
+def test_a_counted_phrase_that_stops_matching_the_prose_is_caught(
+    tmp_path, capsys
+):
+    """The counts are checked as phrases. A bare integer would match almost any
+    line in the README, so the phrase is what makes the claim falsifiable."""
+    rows = check_headline_numbers.load(ROOT / check_headline_numbers.SDF_MAPE)
+    phrase = f"{check_headline_numbers.above_paper(rows)} of the {len(rows)}"
+
+    def retype(readme):
+        return readme.replace(phrase, "every one of the")
+
+    assert check_headline_numbers.main(mirror(tmp_path, edit_readme=retype)) == 1
+    assert "under MAPE" in capsys.readouterr().out

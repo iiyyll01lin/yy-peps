@@ -9,6 +9,86 @@
   "checklist": "course/RELEASE_CHECKLIST.md",
   "promoted_evidence": [
     {
+      "id": "sdf-table3-mape-public-subset",
+      "status": "validated-public-subset-not-global",
+      "paper_comparable": false,
+      "claim_scope": "Table 3 under MAPE on the three obtainable paper shapes. Compared only against the paper's mean over the same three, never against its global figure. Pitted Stonefish is authorization-blocked and no substitute was used.",
+      "files": [
+        {
+          "role": "receipt",
+          "path": "results/sdf_repro/sdf-table3-mape-public-three/manifest.json"
+        },
+        {
+          "role": "raw_rows",
+          "path": "results/sdf_repro/sdf-table3-mape-public-three/per_shape.csv"
+        },
+        {
+          "role": "summary",
+          "path": "results/sdf_repro/sdf-table3-mape-public-three/three_shape_aggregate.csv"
+        },
+        {
+          "role": "blocker",
+          "path": "results/sdf_repro/table4_deferred_auth_required.json"
+        }
+      ],
+      "validation": {
+        "paper_table": "Table 3",
+        "training_loss": "mape",
+        "shapes": 3,
+        "methods": 10,
+        "per_shape_rows": 30,
+        "methods_at_or_above_paper_subset_mean": 8,
+        "methods_below": [
+          "PE",
+          "TI-Grid"
+        ],
+        "omitted_shape": "pitted-stonefish",
+        "omitted_status": "deferred_auth_required",
+        "paper_global_comparable": false,
+        "verification_status": "public_subset_not_global"
+      }
+    },
+    {
+      "id": "sdf-table6-l1-public-subset",
+      "status": "validated-public-subset-not-global",
+      "paper_comparable": false,
+      "claim_scope": "Table 6 under L1 on the same three shapes. Hash moves from above the paper under MAPE to below it under L1, which is recorded because it is the largest swing in either table.",
+      "files": [
+        {
+          "role": "receipt",
+          "path": "results/sdf_repro/sdf-table6-l1-public-three/manifest.json"
+        },
+        {
+          "role": "raw_rows",
+          "path": "results/sdf_repro/sdf-table6-l1-public-three/per_shape.csv"
+        },
+        {
+          "role": "summary",
+          "path": "results/sdf_repro/sdf-table6-l1-public-three/three_shape_aggregate.csv"
+        },
+        {
+          "role": "blocker",
+          "path": "results/sdf_repro/table4_deferred_auth_required.json"
+        }
+      ],
+      "validation": {
+        "paper_table": "Table 6",
+        "training_loss": "l1",
+        "shapes": 3,
+        "methods": 9,
+        "per_shape_rows": 27,
+        "methods_at_or_above_paper_subset_mean": 7,
+        "methods_below": [
+          "Hash",
+          "PE"
+        ],
+        "omitted_shape": "pitted-stonefish",
+        "omitted_status": "deferred_auth_required",
+        "paper_global_comparable": false,
+        "verification_status": "public_subset_not_global"
+      }
+    },
+    {
       "id": "texture-table2-complete-run",
       "status": "validated-complete-run-not-paper-matching",
       "paper_comparable": false,

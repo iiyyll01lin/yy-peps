@@ -11,16 +11,18 @@ RTXNTC parity implementations.
 > `legacy-unverified` in `results/manifest.json`; the HIP receipts carry
 > `measured-not-verifiable-by-this-policy`, which says what this policy can
 > certify rather than how good the measurement is. The course release separately
-> indexes the complete Table 2 run and its shortfall diagnosis, three
-> manifest-backed synthetic smokes, two complete but inconclusive pilots, and
-> three public 512³ SDF provenance receipts. It contains zero paper-comparable
-> results; see `results/course_release/receipt.json`.
+> indexes the complete Table 2 run and its shortfall diagnosis, the Table 3 and
+> Table 6 SDF runs over the obtainable public subset, three manifest-backed
+> synthetic smokes, two complete but inconclusive pilots, and three public 512³
+> SDF provenance receipts. It contains zero paper-comparable results; see
+> `results/course_release/receipt.json`.
 
 本專案是一學期的 PEPS 課程與獨立實作,明確區分縮小的 `course_fast` 與論文協定
 `paper_exact`,並包含量化研究與選配 HIP/WMMA 練習。現有 CSV 皆為
 `legacy-unverified`,HIP receipt 則為 `measured-not-verifiable-by-this-policy`;
-course release 索引完整的 Table 2 執行與其缺口診斷、synthetic smoke、無結論 pilot
-與三個公開 512³ SDF provenance,但不包含可與論文比較的數值。
+course release 索引完整的 Table 2 執行與其缺口診斷、公開子集上的 Table 3 與
+Table 6 SDF 執行、synthetic smoke、無結論 pilot 與三個公開 512³ SDF provenance，
+但不包含可與論文比較的數值。
 
 ---
 
@@ -63,6 +65,42 @@ Table 2 已完整重現(594/594,十一個方法、三顆種子、十八個材質
 也使用 L1。論文未指定的下一層細節(L1 如何在一組材質的各 map 之間 reduce)影響可達數
 倍,但其效果在不同材質間會換符號,無法單獨修正整張表。以上全部止於充分性,不宣稱必然
 性;論文未公布檔案清單,因此此處只能界定範圍而非量測差異。
+
+## What the SDF reproduction found / SDF 重現結果
+
+Tables 3 and 6 were reproduced on the three paper shapes that can be obtained.
+Lucy, Thai Statue and Armadillo run; Pitted Stonefish stays
+authorization-blocked and no substitute was used, so neither aggregate is a
+global result and both carry `paper_global_comparable: false`.
+
+Measured against the paper's own mean over those same three shapes, most
+methods land at or above it: 8 of the 10 under MAPE, and 7 of the 9 under L1.
+Two fall short. PE is low in both, by 0.139 under
+MAPE. Hash moves from 0.084 above the paper under
+MAPE to 0.157 below it under L1, the largest swing in either table, which is
+worth remembering before treating the loss family as a detail.
+
+That belongs next to the texture result rather than in a section of its own.
+The same library, wrapper and training loop land at or above the paper on
+signed-distance fields and 1.154 dB below it on textures. An implementation
+deficit would show in both. It does not, and that is what makes the texture
+shortfall a question about the texture protocol — which is where the
+unpublished map-file selection was found.
+
+Table 3 與 Table 6 已在三個可取得的論文形狀上重現(Lucy、Thai Statue、
+Armadillo);Pitted Stonefish 仍為授權阻擋且未使用替代品,因此兩份彙總都不是
+global 結果,均標記 `paper_global_comparable: false`。
+
+以論文自身在同樣三個形狀上的均值為基準,多數方法達到或超過它:MAPE 下 10 個
+方法中有 8 個,L1 下 9 個中有 7 個。兩個未達標:PE 在兩張表都偏低(MAPE 下低
+0.139);Hash 則從
+MAPE 的高出 0.084 變成 L1 的低了 0.157,是兩張表中最大的擺盪——在把 loss
+family 當成細節之前,值得記住這件事。
+
+這一段應該和 texture 結果並排讀。**同一套程式庫、同一個 wrapper、同一個訓練
+迴圈**,在 SDF 上達到或超過論文,在 texture 上卻低 1.154 dB。若是實作本身的缺
+陷,兩邊都會低。它沒有——這正是為什麼 texture 的落差是「texture 協定的問題」,
+而那也正是找到未公布 map 檔案選集的地方。
 
 ## What the AMD track found / AMD 軌道的結果
 
