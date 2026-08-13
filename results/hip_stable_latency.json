@@ -324,8 +324,15 @@
       "worst_round_median_ms": 21.31316
     }
   },
+  "protocol_correction": {
+    "affects": "wording only; no measurement in this receipt changes",
+    "corrected": "The spin-up was attempted and did not succeed: clock_settling.settled is false. The harness samples the shader clock after each spin run has exited, so protocol.clock_settling.sclk_history_mhz reads the card on its way back to idle rather than the clock the work ran at, which is why the history is 6-23 MHz when an idle read on this part is 'sclk clock level: S: (0Mhz)'. The settling step is a diagnostic, not an assurance.",
+    "field": "protocol.note",
+    "said": "after spinning the card until the shader clock stopped climbing",
+    "stability_evidence_is": "the eight interleaved rounds with a rotating start, whose worst spread ratio is 1.0327950664280843 and is recorded in this receipt as stable"
+  },
   "supersedes": {
-    "reason": "That receipt timed each method to completion in turn from an idle card. This one spins the card until the shader clock stops climbing, then interleaves the methods with a rotating start so residual drift is shared rather than charged to whoever went first.",
+    "reason": "That receipt timed each method to completion in turn from an idle card. This one interleaves the methods with a rotating start so residual drift is shared rather than charged to whoever went first. A spin-up is attempted first; see protocol_correction for why it is not what makes this measurement stable.",
     "receipt": "results/hip_benchmark_gfx1201.json",
     "still_current_for": "The stock build. results/hip_lds_ab.json measures the same protocol against a narrowed LDS cap and roughly halves these figures, but that is a change to the kernel rather than a correction to this measurement, so these numbers remain the stock-build reference."
   },

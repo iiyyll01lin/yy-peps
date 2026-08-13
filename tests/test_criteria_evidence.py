@@ -19,7 +19,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 check_criteria_evidence = pytest.importorskip("check_criteria_evidence")
 
 
-def build(tmp_path, evidence, artefact=None):
+def build(tmp_path, evidence, artefact=None, csv_text=None):
     """A one-criterion course, optionally with the artefact it names."""
     labs = {
         "labs": [
@@ -38,6 +38,11 @@ def build(tmp_path, evidence, artefact=None):
         (tmp_path / "results").mkdir(parents=True, exist_ok=True)
         (tmp_path / "results" / "thing.json").write_text(
             json.dumps(artefact), encoding="utf-8"
+        )
+    if csv_text is not None:
+        (tmp_path / "results").mkdir(parents=True, exist_ok=True)
+        (tmp_path / "results" / "thing.csv").write_text(
+            csv_text, encoding="utf-8"
         )
     return str(tmp_path)
 
@@ -106,6 +111,27 @@ def test_a_dotted_field_must_match_the_nesting(tmp_path, capsys):
     )
     assert check_criteria_evidence.main(root) == 1
     assert "recovery.action" in capsys.readouterr().out
+
+
+def test_a_promised_csv_column_is_checked_against_the_header(tmp_path):
+    root = build(
+        tmp_path,
+        "results/thing.csv, fields seed and claim_status",
+        csv_text="seed,claim_status\n7,pending\n",
+    )
+    assert check_criteria_evidence.main(root) == 0
+
+
+def test_a_csv_column_that_is_not_in_the_header_is_caught(tmp_path, capsys):
+    root = build(
+        tmp_path,
+        "results/thing.csv, fields seed and claim_status",
+        csv_text="seed,psnr_db\n7,40.1\n",
+    )
+    assert check_criteria_evidence.main(root) == 1
+    out = capsys.readouterr().out
+    assert "claim_status" in out
+    assert "column" in out
 
 
 def test_a_course_promising_nothing_is_reported_rather_than_passing(

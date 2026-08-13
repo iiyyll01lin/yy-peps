@@ -102,11 +102,19 @@ fingerprint of each method inheriting a warmer card than the one before it, and
 `tests/test_hip_supersession.py` asserts both the factors and their ordering,
 so the marker cannot drift into claiming a correction that did not happen.
 
-`hip/stable_latency.py` fixes it with two changes. It spins the card until the
-shader clock stops climbing, then interleaves the methods round by round with a
-rotating start, so any residual drift is shared instead of being charged to
+`hip/stable_latency.py` fixes it by interleaving the methods round by round with
+a rotating start, so any residual drift is shared instead of being charged to
 whoever went first. Eight rounds now agree to within 1.03x, and a six-round run
 reproduces the same medians to two decimal places.
+
+It also tries to spin the card up first, and that part does not work. The
+receipt records `clock_settling.settled` as false, and the reason is worth
+knowing: the harness samples the clock *after* the spin run has exited, so it
+reads the card on its way back to idle rather than the clock the work ran at. An
+idle read on this part is `sclk clock level: S: (0Mhz)`. The spin-up is retained
+because it does warm the card, but it is a diagnostic and not the defence. The
+defence is the interleaving, and the evidence for it is the round spread —
+which is measured, reported, and asserted by a test.
 
 | method | old median | **new median** | old stddev | new round spread | paper |
 | --- | ---: | ---: | ---: | ---: | ---: |

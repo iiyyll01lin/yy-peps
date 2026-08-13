@@ -9,9 +9,9 @@ results/hip_benchmark_gfx1201.json the first method has a min/median ratio of
 to 0.07 and 0.50 ms. The ordering that receipt reports is therefore an artefact
 of measurement order.
 
-Two changes fix it. Spin the GPU until the shader clock stops rising, then
-interleave the methods round by round so any residual drift is shared equally
-instead of being charged to whoever went first.
+Two changes fix it. Interleave the methods round by round so any residual drift
+is shared equally instead of being charged to whoever went first, and try to
+spin the GPU up first. Only the interleaving is load-bearing: see settle().
 
 Usage:
     python hip/stable_latency.py --binary hip/build/<binary> --rounds 8
@@ -73,7 +73,13 @@ def run_once(binary: Path, invocation: list[str], side: int, warmup: int,
 
 def settle(binary: Path, methods: list[tuple[str, list[str]]], side: int,
            device: int, limit: int = 12) -> dict:
-    """Spin until the shader clock stops climbing."""
+    """Try to spin until the shader clock stops climbing. Reports, does not assure.
+
+    The clock is sampled after run_once returns, so it reads the card on its way
+    back to idle rather than the clock the work ran at -- an idle read on gfx1201
+    is `sclk clock level: S: (0Mhz)`. Treat settled as a diagnostic; the defence
+    against a cold card is the interleaving and the round-spread ratio.
+    """
     history = []
     for attempt in range(limit):
         run_once(binary, methods[0][1], side, 5, 20, device)
@@ -169,8 +175,10 @@ def main() -> None:
             "methods": labels,
             "geometry": args.geometry,
             "clock_settling": warm,
-            "note": ("Interleaved rounds with a rotating start, after spinning "
-                     "the card until the shader clock stopped climbing."),
+            "note": ("Interleaved rounds with a rotating start. A spin-up was "
+                     "attempted first, but clock_settling reports whether it "
+                     "succeeded and is sampled after each spin returns; the "
+                     "stability evidence is the round spread, not the spin."),
         },
         "rounds": rounds,
         "summary": summary,

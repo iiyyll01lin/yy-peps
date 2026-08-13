@@ -391,7 +391,14 @@ def validate_results(validator: Validator) -> None:
         )
         status = metadata.get("status") if isinstance(metadata, dict) else None
         validator.check(
-            status in {"legacy-unverified", "verified", "blocked-performance"},
+            status
+            in {
+                "legacy-unverified",
+                "measured-not-verifiable-by-this-policy",
+                "superseded-retained",
+                "verified",
+                "blocked-performance",
+            },
             f"results/manifest.json: {name} has invalid status",
         )
         if name in csv_files:

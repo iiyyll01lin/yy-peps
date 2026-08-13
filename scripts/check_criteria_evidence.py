@@ -3,10 +3,10 @@ that actually exists.
 
 A criterion is a promise to the student: run this, look at that field, and you
 will be able to tell whether you have met the bar. The promise is only worth
-anything if the file is there and the field is in it. This repository has
-already had one case of a document confidently describing an artefact that said
-something else, so the criteria are checked against the artefacts rather than
-trusted.
+anything if the file is there and the field is in it -- a key in the JSON, or a
+column in the CSV header. This repository has already had one case of a document
+confidently describing an artefact that said something else, so the criteria are
+checked against the artefacts rather than trusted.
 
 The claims are read out of labs.json itself. Transcribing them into this file
 would mean the check kept passing after someone edited a criterion, which is
@@ -15,6 +15,7 @@ the failure mode where a check quietly stops checking anything.
 
 from __future__ import annotations
 
+import csv
 import json
 import pathlib
 import re
@@ -114,12 +115,27 @@ def check(root: pathlib.Path) -> tuple[list[str], dict[str, int]]:
             if not split:
                 continue
 
-            targets = [p for p in paths_in(head) if p.endswith(".json")]
+            targets = [
+                p for p in paths_in(head) if p.endswith((".json", ".csv"))
+            ]
             if not targets:
                 continue
             target = targets[-1]
             if not (root / target).exists():
                 continue
+
+            if target.endswith(".csv"):
+                with (root / target).open(newline="", encoding="utf-8") as handle:
+                    header = next(csv.reader(handle), [])
+                for field in fields_in(tail):
+                    counts["fields"] += 1
+                    if field not in header:
+                        problems.append(
+                            f"{name}: promises column {field!r} in {target}, "
+                            f"which is not there"
+                        )
+                continue
+
             try:
                 doc = json.loads((root / target).read_text(encoding="utf-8"))
             except json.JSONDecodeError as exc:

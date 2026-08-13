@@ -16,6 +16,11 @@
       "validated-inconclusive-pilot-not-paper-comparable": "Bounded pilot with complete auditable observations whose decision rule did not authorize a paper budget.",
       "validated-input-provenance-not-numeric-result": "Checksum- and schema-validated input provenance; does not contain a trained-model result."
     },
+    "artifact_status_notes": {
+      "legacy-unverified": "Tracked output whose provenance does not meet verified_requires.",
+      "measured-not-verifiable-by-this-policy": "A current measurement with its protocol and limitations recorded, which cannot meet verified_requires because the workload is synthetic: there is no input dataset to checksum and no training seed to pin. It is a statement about what this policy can certify, not about the quality of the measurement, and it claims nothing about the paper.",
+      "superseded-retained": "Kept for the record with its original numbers because a later artefact measured the same thing under a corrected protocol; the pointer is in superseded_by."
+    },
     "note": "A CSV is not reproduction evidence merely because it is tracked or rendered in course material."
   },
   "artifacts": {
@@ -25,12 +30,12 @@
       "reason": "Current corrected course-fast rerun, but no complete run manifest or pinned per-instance receipt."
     },
     "hip_benchmark_gfx1201.json": {
-      "status": "legacy-unverified",
+      "status": "superseded-retained",
       "producer": "hip/benchmark.py",
       "reason": "SUPERSEDED by results/hip_stable_latency.json. A clean gfx1201 build and fp32/fp16 all-mode parity completed and still stand, but the latency figures are an artefact of measuring each method to completion in turn from an idle card: bi-grid reports 42.30 ms against a settled 7.40 ms, and the overstatement decays down the table, so the ordering this receipt reports is the measurement order. The build also carries git_dirty true. Retained with its original numbers under superseded_by rather than deleted."
     },
     "hip_cross_generation.json": {
-      "status": "legacy-unverified",
+      "status": "measured-not-verifiable-by-this-policy",
       "producer": "hip/stable_latency.py on gfx1201 and gfx1151",
       "reason": "Same protocol on both parts. Normalised by compute-unit count every method lands between 0.97 and 1.08, which is the observation that motivated the occupancy work. Stock builds only; the narrowed builds roughly halve these figures."
     },
@@ -40,27 +45,27 @@
       "reason": "Current Box B integrated parity/latency rows coexist with legacy diagnostics, but no complete run manifest or paper-comparable optimized implementation exists."
     },
     "hip_lds_ab.json": {
-      "status": "legacy-unverified",
+      "status": "measured-not-verifiable-by-this-policy",
       "producer": "hip/build_kernel.sh variants with hip/stable_latency.py",
       "reason": "A/B of the compile-time LDS caps from one identical source. Latency roughly halves on both parts with byte-identical output checksums. Occupancy was measured on gfx1151 only; the gfx1201 latencies have no counter behind them."
     },
     "hip_occupancy.json": {
-      "status": "legacy-unverified",
+      "status": "measured-not-verifiable-by-this-policy",
       "producer": "hip/occupancy.py over rocprofv3 output",
       "reason": "First occupancy profile, and the receipt whose model was later corrected twice by hardware counters. The superseded figures are marked in place rather than deleted, under model_correction."
     },
     "hip_specialised_caps.json": {
-      "status": "legacy-unverified",
+      "status": "measured-not-verifiable-by-this-policy",
       "producer": "per-method builds with rocprofv3 and hip/stable_latency.py",
       "reason": "Per-method LDS caps, the second correction to the occupancy model, and a proof that cap narrowing stops at 43.75% occupancy. Latency measured on gfx1201 and occupancy on gfx1151 because no single host has both a profiler and a current checkout."
     },
     "hip_stable_latency.json": {
-      "status": "legacy-unverified",
+      "status": "measured-not-verifiable-by-this-policy",
       "producer": "hip/stable_latency.py",
-      "reason": "Supersedes the latency figures in hip_benchmark_gfx1201.json. Spins the card until the shader clock stops climbing, then interleaves methods with a rotating start; eight rounds agree to 1.03x. Not verified because the workload is synthetic, so seeds and input checksums do not apply, and not paper-comparable because precision, timing boundary and output size have not been shown to match."
+      "reason": "Supersedes the latency figures in hip_benchmark_gfx1201.json. Interleaves methods with a rotating start; eight rounds agree to 1.03x, and that round agreement is the stability evidence. A spin-up is attempted first and does not succeed: clock_settling.settled is false because the harness samples the clock after the spin run exits, reading the card on its way back to idle. See protocol_correction in the receipt. Not verified because the workload is synthetic, so seeds and input checksums do not apply, and not paper-comparable because precision, timing boundary and output size have not been shown to match."
     },
     "hip_texture_geometry.json": {
-      "status": "legacy-unverified",
+      "status": "measured-not-verifiable-by-this-policy",
       "producer": "hip geometry subcommand with hip/stable_latency.py",
       "reason": "Cost of the texture reproduction's own decoder geometry, run with random weights rather than trained checkpoints, so it gives cost without quality and produces no PSNR or SSIM. Covers the Grid family only; the NTC family exceeds the kernel's channel limit."
     },

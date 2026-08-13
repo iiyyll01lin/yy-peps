@@ -334,7 +334,7 @@
         {
           "id": "causal-restraint",
           "description": "Multi-seed observations are separated from untested causal explanations.",
-          "evidence": "run manifest, raw rows, and limitations paragraph"
+          "evidence": "the limitations paragraph, plus results/w10_rate_distortion.csv, fields seed and claim_status"
         }
       ],
       "budget": "course-fast"
@@ -364,8 +364,8 @@
         },
         {
           "id": "settled-measurement",
-          "description": "Latency comes from a card that was spun up until the shader clock stopped climbing, then measured in interleaved rounds with a rotating start order. The worst round-to-round spread is reported and is under 1.10x. A single back-to-back sweep is not accepted: on this repository that protocol inflated the first method measured by 5.7x and invented a method ordering.",
-          "evidence": "python hip/stable_latency.py --binary <build> --out <receipt>; receipt fields protocol.method_order and stable"
+          "description": "Latency is measured in interleaved rounds with a rotating start order, so residual clock drift is shared instead of being charged to whoever went first. The worst round-to-round spread is reported and is under 1.10x. A single back-to-back sweep is not accepted: on this repository that protocol inflated the first method measured by 5.7x and invented a method ordering. Spinning the card up first is attempted but must not be claimed as achieved unless the receipt says so: the reference harness samples the clock after the spin run exits, reads the card on its way back to idle, and records clock_settling.settled false.",
+          "evidence": "python hip/stable_latency.py --binary <build> --out <receipt>; the reference receipt results/hip_stable_latency.json, fields protocol.method_order, protocol.clock_settling.settled and stable"
         },
         {
           "id": "build-provenance",
