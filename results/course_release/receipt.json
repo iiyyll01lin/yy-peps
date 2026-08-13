@@ -9,6 +9,76 @@
   "checklist": "course/RELEASE_CHECKLIST.md",
   "promoted_evidence": [
     {
+      "id": "texture-table2-complete-run",
+      "status": "validated-complete-run-not-paper-matching",
+      "paper_comparable": false,
+      "claim_scope": "594 of 594 jobs across eleven methods, three seeds and eighteen materials, with zero errors. Every method lands below its published value, by a mean of 1.154 dB. No claim that these numbers match the paper's.",
+      "files": [
+        {
+          "role": "receipt",
+          "path": "results/texture_repro/table2.json"
+        },
+        {
+          "role": "raw_rows",
+          "path": "results/texture_repro/table2_instances.csv"
+        },
+        {
+          "role": "summary",
+          "path": "results/texture_repro/table2.csv"
+        },
+        {
+          "role": "protocol",
+          "path": "results/texture_repro/protocol.json"
+        }
+      ],
+      "validation": {
+        "complete": true,
+        "completed_jobs": 594,
+        "expected_jobs": 594,
+        "raw_row_count": 594,
+        "methods": 11,
+        "materials": 18,
+        "seeds": 3,
+        "mean_gap_db": 1.1538429704453704,
+        "verification_status": "complete_run_not_paper_matching"
+      }
+    },
+    {
+      "id": "texture-table2-shortfall-diagnosis",
+      "status": "validated-sufficient-cause-not-established-cause",
+      "paper_comparable": false,
+      "claim_scope": "The unpublished map-file selection is sufficient to produce both the level and the ordering. Compute and loss family are ruled out. Not established as the authors' choice, because the paper's file list is unpublished.",
+      "files": [
+        {
+          "role": "receipt",
+          "path": "results/texture_repro/shortfall_analysis/receipt.json"
+        },
+        {
+          "role": "raw_rows",
+          "path": "results/texture_repro/shortfall_analysis/per_set_gap.csv"
+        },
+        {
+          "role": "summary",
+          "path": "results/texture_repro/shortfall_analysis/implied_composition.json"
+        },
+        {
+          "role": "reordering",
+          "path": "results/texture_repro/shortfall_analysis/reordering.json"
+        }
+      ],
+      "validation": {
+        "category_spread_db": 19.44450193356286,
+        "share_in_two_lowest_categories": 0.47368421052631576,
+        "held_out_improvement_factor": 3.0803,
+        "ruled_out": [
+          "training budget",
+          "loss family"
+        ],
+        "establishes": "sufficiency",
+        "verification_status": "sufficient_cause_not_established_cause"
+      }
+    },
+    {
       "id": "course-fast-image-smoke",
       "status": "validated-course-smoke-not-paper-comparable",
       "paper_comparable": false,

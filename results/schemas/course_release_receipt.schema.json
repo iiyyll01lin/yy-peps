@@ -50,8 +50,8 @@
     },
     "promoted_evidence": {
       "type": "array",
-      "minItems": 6,
-      "maxItems": 6,
+      "minItems": 8,
+      "maxItems": 8,
       "items": {
         "type": "object",
         "additionalProperties": false,
@@ -72,7 +72,9 @@
             "enum": [
               "validated-course-smoke-not-paper-comparable",
               "validated-inconclusive-pilot-not-paper-comparable",
-              "validated-input-provenance-not-numeric-result"
+              "validated-input-provenance-not-numeric-result",
+              "validated-complete-run-not-paper-matching",
+              "validated-sufficient-cause-not-established-cause"
             ]
           },
           "paper_comparable": {

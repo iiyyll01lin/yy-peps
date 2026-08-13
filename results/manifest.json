@@ -14,7 +14,9 @@
     "release_statuses": {
       "validated-course-smoke-not-paper-comparable": "Manifest-backed synthetic smoke with resolved configuration, provenance, raw rows, and summary; validates the execution path only.",
       "validated-inconclusive-pilot-not-paper-comparable": "Bounded pilot with complete auditable observations whose decision rule did not authorize a paper budget.",
-      "validated-input-provenance-not-numeric-result": "Checksum- and schema-validated input provenance; does not contain a trained-model result."
+      "validated-input-provenance-not-numeric-result": "Checksum- and schema-validated input provenance; does not contain a trained-model result.",
+      "validated-complete-run-not-paper-matching": "The paper's declared job matrix run to completion with raw per-job rows retained. The values do not match the published table, and are not paper-comparable because an input selection the paper does not publish changes them.",
+      "validated-sufficient-cause-not-established-cause": "Shows, on this repository's own measurements, that an unpublished choice can produce the observed effect. Does not show that the authors made that choice, and cannot while the choice stays unpublished."
     },
     "artifact_status_notes": {
       "legacy-unverified": "Tracked output whose provenance does not meet verified_requires.",
@@ -126,6 +128,31 @@
     }
   },
   "release_evidence": {
+    "texture-table2-complete-run": {
+      "status": "validated-complete-run-not-paper-matching",
+      "paper_comparable": false,
+      "claim_scope": "594 of 594 jobs across eleven methods, three seeds and eighteen materials, with zero errors. Every method lands below its published value, by a mean of 1.154 dB, and the reproduced ordering puts the Grid family above the NTC family where the paper does the reverse. No claim that these numbers match the paper's.",
+      "receipt": "results/texture_repro/table2.json",
+      "raw_rows": "results/texture_repro/table2_instances.csv",
+      "summary": "results/texture_repro/table2.csv",
+      "provenance": [
+        "results/texture_repro/protocol.json",
+        "results/texture_repro/dataset_verification.json"
+      ]
+    },
+    "texture-table2-shortfall-diagnosis": {
+      "status": "validated-sufficient-cause-not-established-cause",
+      "paper_comparable": false,
+      "claim_scope": "The unpublished map-file selection accounts for both the level and the ordering: the eight map categories span 19.4 dB and the frozen selection puts 47 percent of its maps in the two lowest-scoring categories, so rebalancing them moves the mean by more than the shortfall and reorders the methods. Compute and loss family are ruled out. Sufficiency only, because the paper's file list is unpublished.",
+      "receipt": "results/texture_repro/shortfall_analysis/receipt.json",
+      "raw_rows": "results/texture_repro/shortfall_analysis/per_set_gap.csv",
+      "summary": "results/texture_repro/shortfall_analysis/implied_composition.json",
+      "provenance": [
+        "results/texture_repro/shortfall_analysis/reordering.json",
+        "results/texture_repro/ordering_probe/receipt.json",
+        "results/texture_repro/budget_probe/receipt.json"
+      ]
+    },
     "course-fast-image-smoke": {
       "status": "validated-course-smoke-not-paper-comparable",
       "paper_comparable": false,

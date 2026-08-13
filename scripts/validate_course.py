@@ -30,6 +30,12 @@ RELEASE_EVIDENCE_STATUSES = {
     "sdf-public-512-provenance": (
         "validated-input-provenance-not-numeric-result"
     ),
+    "texture-table2-complete-run": (
+        "validated-complete-run-not-paper-matching"
+    ),
+    "texture-table2-shortfall-diagnosis": (
+        "validated-sufficient-cause-not-established-cause"
+    ),
 }
 COURSE_SMOKE_RUNS = {
     "course-fast-image-smoke": (

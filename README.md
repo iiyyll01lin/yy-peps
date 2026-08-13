@@ -8,15 +8,19 @@ HIP/WMMA exercises. Local texture baselines are proxies; they are not official
 RTXNTC parity implementations.
 
 > **Current evidence status:** every tracked `results/*.csv` is
-> `legacy-unverified` in `results/manifest.json`. The course release separately
-> indexes three manifest-backed synthetic smokes, two complete but inconclusive
-> pilots, and three public 512³ SDF provenance receipts. It contains zero
-> paper-comparable results; see `results/course_release/receipt.json`.
+> `legacy-unverified` in `results/manifest.json`; the HIP receipts carry
+> `measured-not-verifiable-by-this-policy`, which says what this policy can
+> certify rather than how good the measurement is. The course release separately
+> indexes the complete Table 2 run and its shortfall diagnosis, three
+> manifest-backed synthetic smokes, two complete but inconclusive pilots, and
+> three public 512³ SDF provenance receipts. It contains zero paper-comparable
+> results; see `results/course_release/receipt.json`.
 
 本專案是一學期的 PEPS 課程與獨立實作,明確區分縮小的 `course_fast` 與論文協定
 `paper_exact`,並包含量化研究與選配 HIP/WMMA 練習。現有 CSV 皆為
-`legacy-unverified`;course release 只發布 synthetic smoke、無結論 pilot 與三個
-公開 512³ SDF provenance,不包含可與論文比較的數值。
+`legacy-unverified`,HIP receipt 則為 `measured-not-verifiable-by-this-policy`;
+course release 索引完整的 Table 2 執行與其缺口診斷、synthetic smoke、無結論 pilot
+與三個公開 512³ SDF provenance,但不包含可與論文比較的數值。
 
 ---
 
