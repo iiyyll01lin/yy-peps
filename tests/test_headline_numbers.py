@@ -113,3 +113,11 @@ def test_a_counted_phrase_that_stops_matching_the_prose_is_caught(
 
     assert check_headline_numbers.main(mirror(tmp_path, edit_readme=retype)) == 1
     assert "under MAPE" in capsys.readouterr().out
+
+
+def test_the_oracle_rejection_count_cannot_be_softened_in_prose(tmp_path, capsys):
+    def retype(readme):
+        return readme.replace("5 of the 7", "6 of the 7")
+
+    assert check_headline_numbers.main(mirror(tmp_path, edit_readme=retype)) == 1
+    assert "oracle pass count" in capsys.readouterr().out

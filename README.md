@@ -128,6 +128,15 @@ counter. It survived because the first version matched five of seven measured
 footprints and its replacement three of seven: *a model that is right most of
 the time looks confirmed every time it is checked on an easy case.*
 
+A preregistered attempt to carry that model to gfx942 rejected its own oracle
+before making a CDNA claim. The HIP occupancy API reproduced **5 of the 7**
+gfx1151 counter points.
+At 10752 bytes it returned 12 where the counter measured 10.97.
+At 13312 bytes it returned 8 where the counter measured 8.97.
+All three architectures then returned the same block counts; gfx942's 6 at 10752 bytes is the API's 64 KiB dynamic-LDS division, not
+evidence for a CDNA allocation granule. The RDNA counter model still stands;
+the proposed counter substitute does not.
+
 That optimisation is now finished rather than merely exhausted, and the
 arithmetic says so. The three fixed tiles cost `16 x 64 x (2+2+4) = 8192` bytes,
 while sixteen workgroups per WGP would need the entire allocation to fit inside
@@ -152,6 +161,12 @@ AMD 軌道有三個發現,而且形狀相同:**看起來像「關於論文」或
 上限的假象。第三,**佔用率模型錯了兩次**,兩次都是硬體計數器抓到的;它們能存活是因為在
 七個 footprint 中分別對了五個與三個:*一個大多數時候正確的模型,在每次用簡單案例檢查時
 都像是被驗證了。*
+
+把模型帶到 gfx942 的預註冊實驗，在提出 CDNA 結論前先否證了自己的 oracle:HIP
+occupancy API 只重現 gfx1151 計數器 7 點中的 **5 點**，在兩個奇數 WGP 案例分別
+回 12 對 10.97、8 對 8.97。三個架構的 block 數完全相同;gfx942 在 10752 bytes
+回 6 是 API 對 64 KiB dynamic LDS 的除法，不是 CDNA allocation granule 的證據。
+RDNA 計數器模型仍成立；被拒絕的是計數器替代方案。
 
 這條最佳化現在是**可證明的終點**而非「大概沒了」:三個固定分頁佔 `16×64×(2+2+4) = 8192`
 bytes,而每 WGP 十六個 workgroup 需要整份配置塞進 8192,任何上限都不可能達到。**每 CU

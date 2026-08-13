@@ -1,0 +1,22 @@
+{
+  "gcn_arch": "gfx1201",
+  "multi_processor_count": 32,
+  "warp_size": 32,
+  "max_shared_memory_per_block": 65536,
+  "max_threads_per_multiprocessor": 2048,
+  "block_threads": 64,
+  "rows": [
+    {"footprint": 8704, "blocks_per_multiprocessor": 7, "waves_per_block": 2, "waves_per_multiprocessor": 14},
+    {"footprint": 9216, "blocks_per_multiprocessor": 7, "waves_per_block": 2, "waves_per_multiprocessor": 14},
+    {"footprint": 9728, "blocks_per_multiprocessor": 6, "waves_per_block": 2, "waves_per_multiprocessor": 12},
+    {"footprint": 10240, "blocks_per_multiprocessor": 6, "waves_per_block": 2, "waves_per_multiprocessor": 12},
+    {"footprint": 10752, "blocks_per_multiprocessor": 6, "waves_per_block": 2, "waves_per_multiprocessor": 12},
+    {"footprint": 11264, "blocks_per_multiprocessor": 5, "waves_per_block": 2, "waves_per_multiprocessor": 10},
+    {"footprint": 11776, "blocks_per_multiprocessor": 5, "waves_per_block": 2, "waves_per_multiprocessor": 10},
+    {"footprint": 12288, "blocks_per_multiprocessor": 5, "waves_per_block": 2, "waves_per_multiprocessor": 10},
+    {"footprint": 13312, "blocks_per_multiprocessor": 4, "waves_per_block": 2, "waves_per_multiprocessor": 8},
+    {"footprint": 16384, "blocks_per_multiprocessor": 4, "waves_per_block": 2, "waves_per_multiprocessor": 8},
+    {"footprint": 32768, "blocks_per_multiprocessor": 2, "waves_per_block": 2, "waves_per_multiprocessor": 4},
+    {"footprint": 65536, "blocks_per_multiprocessor": 1, "waves_per_block": 2, "waves_per_multiprocessor": 2}
+  ]
+}

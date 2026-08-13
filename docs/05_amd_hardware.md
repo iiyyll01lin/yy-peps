@@ -569,7 +569,69 @@ the returns were already sublinear two sections ago.
 `ceiling_of_this_technique`, and `tests/test_hip_lds_caps.py` proves it by
 exhausting every cap from 1 to 512 rather than by asserting the conclusion.
 
-### The half of the model nothing here can test / 這裡測不到的那一半
+### A runtime oracle was tried and rejected / runtime oracle 已測且遭拒
+
+The missing control became testable when a HIP compiler appeared in the gfx942
+container, but not by porting this kernel: every matrix builtin here is `_w32`
+and CDNA needs MFMA. Instead, `hip/lds_occupancy_probe.hip` allocates only LDS,
+uses 64 threads, and asks
+`hipOccupancyMaxActiveBlocksPerMultiprocessor` how many blocks fit. The same
+source built and ran on gfx1151, gfx1201, and gfx942. Its predictions were
+committed before the run in `results/hip_occupancy_prediction.json`.
+
+The registered gate had one dimensional error: it said
+`blocks_per_multiprocessor` should reproduce waves per CU and equal workgroups
+per WGP. A 64-thread RDNA block is two wave32 waves, and the probe already
+reported both quantities. The resolved gate therefore compares its
+`waves_per_multiprocessor` with the counter's waves per CU. That factor of two
+comes from the independently reported block size and wave size; no footprint,
+threshold, prediction, or observed value selects it. The original wording and
+the correction are both retained in the result receipt.
+
+The first gate was deliberately on gfx1151, where the hardware counters already
+exist. **The API reproduced only 5 of the 7 points, so it was rejected as an
+oracle.** The two failures separate the reasons rather than merely adding noise:
+
+| footprint | counter waves/CU | API waves/MP | what it separates |
+| ---: | ---: | ---: | --- |
+| 10752 | 10.97 (~11) | 12 | API divides 64 KiB by requested dynamic LDS; it does not apply the kernel's 1024-byte static-allocation rounding to 11264 |
+| 13312 | 8.97 (~9) | 8 | already on a 1024-byte boundary, so this isolates the odd workgroup shared by a 128 KiB WGP pool, which a per-CU API cannot express |
+
+The five even-WGP cases agree. That is why this looked promising and why the
+odd cases matter: a per-CU division and a shared-WGP division coincide whenever
+the WGP count is even. `multiProcessorCount` is 20 on gfx1151 and 32 on gfx1201,
+which are WGP counts, while the occupancy API's “multiprocessor” behaves as a
+64 KiB compute unit. The same word names two different scopes in two HIP APIs.
+
+All twelve `blocks_per_multiprocessor` values are identical on gfx1151,
+gfx1201, and gfx942. At the preregistered 10752-byte discriminator all three
+return 6; only waves per block changes from 2 on RDNA wave32 to 1 on CDNA
+wave64. **That 6 is `floor(65536 / 10752)`, not evidence that CDNA has a
+128-byte hardware allocation granule.** Stage one rejected the API before that
+interpretation was allowed, so the cross-architecture result is retained but
+does not answer the granule question.
+
+This is not a third correction to the RDNA counter model. The static PEPS kernel
+still matches `ceil(footprint/1024)*1024`, a 128 KiB WGP pool, and all seven
+counters. What failed is the proposed substitute for those counters. The next
+admissible test needs a gfx942 occupancy counter or a documented gfx942
+code-object LDS allocation field; without one, the conclusion stops here.
+
+runtime 探針在 gfx1151 的第一關只重現 7 點中的 5 點，因此不能帶到 CDNA 當硬體
+oracle。兩個失敗點各自拆出一個機制:`10752` 是 API 未套用靜態 kernel 的 1024-byte
+進位(回 12，而計數器約 11);`13312` 已在 1024-byte 邊界，仍回 8 而計數器約 9，
+因此單獨揭露每 CU 的 64 KiB API 無法表達兩個 CU 共用 128 KiB WGP pool 的奇數
+workgroup。gfx942 在 `10752` 回 6，只表示 `floor(65536/10752)=6`;第一關已拒絕
+oracle，所以它**不能**證明 CDNA 是 128-byte allocation granule。RDNA 計數器模型
+沒有因此改變；被否證的是用 runtime API 取代硬體計數器的提案。
+
+預註冊 gate 另有一個公開修正:原文把 blocks/MP 直接和 waves/CU 比較，單位不一致。
+64-thread RDNA block 固定包含兩個 wave32，且 probe 本來就同時輸出 blocks 與 waves；
+因此 resolved gate 比較 `waves_per_multiprocessor` 與 counter waves/CU。這個 2 倍來自
+獨立記錄的 block size 與 wave size，不由任何觀測值或 footprint 選出；原文與修正均保留
+在 result receipt。
+
+### The wave-count term still needs a counter / wave-count 項仍需計數器
 
 The model is `workgroups per WGP x waves per workgroup, halved across the WGP`.
 Seven footprints pin the first factor. **Not one of them varies the second**:
@@ -591,16 +653,14 @@ contains no `_w64` anywhere. Whether the RDNA ISA offers a wave64 WMMA is not
 established here; what is established is that rocWMMA does not expose one, and
 that is enough to block the test with this kernel.
 
-**So the wave-count term stays unverified, and a CDNA part is the only thing
-that would settle it.** CDNA is wave64 natively and rocWMMA routes it to MFMA
-rather than WMMA, so that factor changes without the kernel changing. Better
-still, CDNA has no WGP at all, so the 128 KB shared pool this whole model rests
-on has no counterpart there and the model *should* predict wrongly. That is
-precisely the value: it separates having understood the allocation mechanism
-from having fitted seven RDNA data points. The kernel uses rocWMMA rather than
-raw builtins, so it would port — the MI300X reachable from here is a
-single-GPU container slice with PyTorch but no HIP compiler on the filesystem,
-no profiler, and another workload resident on the card.
+**So the wave-count term stays unverified, and a CDNA hardware counter is the
+only thing that would settle it.** The MI300X container now has HIP 7.1.1 and
+the LDS-only probe builds for gfx942, but it still has no profiler. The PEPS
+kernel does not port unchanged: its matrix builtins are `_w32`, while a CDNA
+implementation would use MFMA. That can be useful engineering, but it is not
+the clean “same kernel, one factor changed” control this model needs. CDNA has
+no WGP, so a static-LDS counter on a representative MFMA kernel could still
+test the model's scope; the runtime API result here cannot.
 
 模型是「每 WGP 的 workgroup 數 × 每 workgroup 的 wave 數 ÷ 2」。七個 footprint 把第一項
 釘得很牢,**但沒有一個改動過第二項**——每次量測都是每個 64 執行緒 workgroup 兩個 wave,
@@ -608,11 +668,11 @@ no profiler, and another workload resident on the card.
 wave 數減半,`MeanOccupancyPerCU` 應由 10 降到 5),但它編不過:rocWMMA 的 RDNA 路徑派給
 `_w32` builtin,而該 builtin 硬性要求 `wavefrontsize32`;`wmma_impl.hpp` 裡每一個 builtin
 都是 `_w32` 或 `_w32_gfx12`,全檔沒有 `_w64`。(RDNA ISA 本身是否有 wave64 WMMA,此處
-未能確認;能確認的是 rocWMMA 沒有提供。)**因此這一項仍未驗證,而 CDNA 是唯一能了結它的
-途徑**——CDNA 原生 wave64,rocWMMA 在其上走 MFMA 而非 WMMA,該因子會在 kernel 不變的情況
-下改變;更重要的是 **CDNA 根本沒有 WGP**,本模型賴以成立的 128 KB 共用池在那裡沒有對應
-物,模型**應該**給出錯誤預測。這正是它的價值:區分「真的理解了配置機制」與「只是擬合了
-七個 RDNA 資料點」。
+未能確認;能確認的是 rocWMMA 沒有提供。)**因此這一項仍未驗證,而 CDNA 硬體計數器是唯一
+能了結它的途徑。** MI300X container 現在已有 HIP 7.1.1，LDS-only probe 也能編成 gfx942，
+但仍沒有 profiler；PEPS kernel 的 matrix builtin 是 `_w32`，CDNA 版本必須改走 MFMA，
+因此不再是「同一 kernel 只改 wave 數」的乾淨控制。CDNA 根本沒有 WGP，代表 representative
+static-LDS MFMA kernel 的 counter 仍能測模型範圍；本次 runtime API 結果不能。
 
 「大概沒東西了」比算術能支持的說法更弱。只有 feature 分頁隨上限縮放,其餘三個由 hidden
 寬度固定:`footprint(cap) = 32·cap + 8192`,而那個 8192 正是 `hidden_a + hidden_b +

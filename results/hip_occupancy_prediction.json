@@ -1,7 +1,10 @@
 {
   "schema": "peps.hip_occupancy_prediction",
   "schema_version": 1,
-  "status": "predicted_not_yet_measured",
+  "status": "resolved_oracle_rejected",
+  "resolved_by": "results/hip_occupancy_probe_result.json",
+  "resolution": "Stage one failed 5/7: hipOccupancyMaxActiveBlocksPerMultiprocessor did not reproduce the two odd-WGP counter cases. The gfx942 row is therefore an observation of the runtime API, not evidence for either hardware granule hypothesis.",
+  "gate_wording_correction": "The registered claim said blocks_per_multiprocessor should reproduce waves_per_CU and equal workgroups_per_WGP. Those are different units: one 64-thread RDNA block is two wave32 waves. The resolved gate uses the probe's already-emitted waves_per_multiprocessor. No prediction, threshold or row was changed; results/hip_occupancy_probe_result.json preserves the original wording and the dimensional correction.",
   "question": "Does the occupancy model describe a mechanism, or does it fit seven RDNA footprints?",
   "why_this_can_be_asked_now": "The model is about LDS bytes, a rounding granule and a pool division. It says nothing about matrix instructions, so a probe that allocates shared memory and does nothing else can carry it to another architecture. hip/fused_peps_kernel.hip cannot: every WMMA builtin in it is _w32 and needs gfx11-insts, which CDNA does not have.",
   "model": {
@@ -76,8 +79,8 @@
     {"footprint": 65536, "effective_1024": 65536, "effective_128": 65536, "blocks_per_cu_if_granule_1024": 1, "blocks_per_cu_if_granule_128": 1}
   ],
   "limitations": [
-    "Predictions only. Nothing here has been measured, and the status field says so; tests/test_occupancy_prediction.py fails if measured values appear while the status still claims otherwise.",
-    "The CDNA host is a single-GPU container slice with no profiler, so the counter cross-check that was available on gfx1151 is not available there. The runtime API is the only oracle, which is why test one exists.",
-    "Occupancy may be bounded by registers or wave slots rather than LDS at the smaller footprints. A prediction that is not matched should be checked against those limits before the model is blamed."
+    "This file preserves the preregistered predictions. Measurements live in results/hip_occupancy_probe_result.json and the three raw receipts it names; none of the prediction rows was rewritten after the run.",
+    "The CDNA host is a single-GPU container slice with no profiler, so the counter cross-check that was available on gfx1151 is not available there. Stage one rejected the runtime API as a substitute.",
+    "Occupancy may be bounded by registers or wave slots rather than LDS at the smaller footprints. The observed mismatch was checked against the preregistered gate and rejects this API as an oracle; it does not rewrite the counter model."
   ]
 }

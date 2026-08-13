@@ -1,0 +1,128 @@
+{
+  "schema": "peps.hip_occupancy_probe_result",
+  "schema_version": 1,
+  "status": "complete-oracle-rejected-after-unit-correction",
+  "question": "Can hipOccupancyMaxActiveBlocksPerMultiprocessor serve as an oracle for the counter-derived RDNA LDS model, then distinguish the model's scope on CDNA?",
+  "answer": "No. After correcting a blocks-versus-waves unit error in the registered gate, the runtime API reproduces five of seven counter points and misses exactly the two odd-WGP cases. The gfx942 result is retained but cannot be interpreted as a hardware allocation-granule measurement.",
+  "source": {
+    "path": "hip/lds_occupancy_probe.hip",
+    "sha256": "88b949d9d11e43c9e14e3cb62d83a15a422e927719a72bd2c792c5d987e55a44",
+    "commit": "ff3bb95b560366111f5d3984ccf69145b72d9a0e",
+    "block_threads": 64,
+    "allocation": "dynamic shared memory"
+  },
+  "raw_receipts": [
+    {
+      "arch": "gfx1151",
+      "path": "results/hip_occupancy_probe/gfx1151.json",
+      "sha256": "1367ebd952bd1dcfda5e65ab652c71b4795850619dd179b7509a463eb9609f56"
+    },
+    {
+      "arch": "gfx1201",
+      "path": "results/hip_occupancy_probe/gfx1201.json",
+      "sha256": "0f7fecee300a649a99c69e1de46e0f0420b20fe4c3dbe9e597917746c665a05f"
+    },
+    {
+      "arch": "gfx942",
+      "path": "results/hip_occupancy_probe/gfx942.json",
+      "sha256": "f446c1f264fb2908c9b0b864000031cf61d866417d3558a33df62489946e0235"
+    }
+  ],
+  "stage_one": {
+    "verdict": "oracle_rejected",
+    "pre_registration_correction": {
+      "original_wording": "blocks_per_multiprocessor reproduces the committed waves_per_cu; each row equals workgroups_per_wgp",
+      "problem": "Those quantities have different units. A 64-thread RDNA block contains two wave32 waves, and the probe already emitted both blocks_per_multiprocessor and waves_per_multiprocessor.",
+      "corrected_gate": "waves_per_multiprocessor reproduces the gfx1151 counter-derived waves per CU within 0.1",
+      "why_this_is_not_selected_after_seeing_the_values": "The conversion is fixed by block_threads=64 and the independently reported warp_size=32. No footprint, threshold, prediction or observed value chooses the factor of two; it is dimensional bookkeeping.",
+      "predictions_rewritten": false
+    },
+    "required": "all seven dimensionally matched API waves_per_multiprocessor values reproduce the gfx1151 counter-derived waves per CU within 0.1",
+    "passed": 5,
+    "total": 7,
+    "comparisons": [
+      {
+        "footprint": 8704,
+        "counter_waves_per_cu": 13.94,
+        "api_waves_per_multiprocessor": 14,
+        "absolute_difference": 0.06,
+        "matches_within_0_1": true
+      },
+      {
+        "footprint": 9728,
+        "counter_waves_per_cu": 11.96,
+        "api_waves_per_multiprocessor": 12,
+        "absolute_difference": 0.04,
+        "matches_within_0_1": true
+      },
+      {
+        "footprint": 10752,
+        "counter_waves_per_cu": 10.97,
+        "api_waves_per_multiprocessor": 12,
+        "absolute_difference": 1.03,
+        "matches_within_0_1": false
+      },
+      {
+        "footprint": 11776,
+        "counter_waves_per_cu": 9.97,
+        "api_waves_per_multiprocessor": 10,
+        "absolute_difference": 0.03,
+        "matches_within_0_1": true
+      },
+      {
+        "footprint": 12288,
+        "counter_waves_per_cu": 9.98,
+        "api_waves_per_multiprocessor": 10,
+        "absolute_difference": 0.02,
+        "matches_within_0_1": true
+      },
+      {
+        "footprint": 13312,
+        "counter_waves_per_cu": 8.97,
+        "api_waves_per_multiprocessor": 8,
+        "absolute_difference": 0.97,
+        "matches_within_0_1": false
+      },
+      {
+        "footprint": 32768,
+        "counter_waves_per_cu": 4.0,
+        "api_waves_per_multiprocessor": 4,
+        "absolute_difference": 0.0,
+        "matches_within_0_1": true
+      }
+    ],
+    "failure_pattern": {
+      "8704_bytes": "counter 13.94 (~14) versus API 14: pass",
+      "9728_bytes": "counter 11.96 (~12) versus API 12: pass",
+      "10752_bytes": "counter 10.97 (~11) versus API 12: fail; this is the preregistered falsification footprint",
+      "11776_bytes": "counter 9.97 (~10) versus API 10: pass",
+      "12288_bytes": "counter 9.98 (~10) versus API 10: pass",
+      "13312_bytes": "counter 8.97 (~9) versus API 8: fail",
+      "32768_bytes": "counter 4.00 versus API 4: pass"
+    },
+    "interpretation": "The API exposes blocks per compute-unit multiprocessor from a 65536-byte dynamic-LDS budget. The counters exposed a 131072-byte pool shared by a two-CU workgroup processor; converting that WGP count to waves per CU preserves odd workgroup counts. The API cannot represent those odd shared-pool cases: it overpredicts the 11-wave footprint as 12 and underpredicts the 9-wave footprint as 8."
+  },
+  "cross_architecture_observation": {
+    "verdict": "not_admissible_as_a_granule_test",
+    "identical_block_rows": true,
+    "gfx1151_and_gfx1201": "All twelve blocks_per_multiprocessor rows are identical despite multiProcessorCount being 20 and 32 WGP respectively.",
+    "gfx942": "All twelve blocks_per_multiprocessor rows are also identical to RDNA; only waves_per_block changes from 2 on wave32 to 1 on wave64.",
+    "decisive_10752_row": {
+      "gfx1151": 6,
+      "gfx1201": 6,
+      "gfx942": 6
+    },
+    "what_six_means": "It is floor(65536 / 10752) for the requested dynamic allocation. Because stage one rejected the API as an oracle for the counter model, six does not establish a 128-byte CDNA hardware allocation granule.",
+    "stronger_pattern": "For every architecture and every row, blocks_per_multiprocessor equals floor(65536 / requested_footprint). The API does not expose the counter-derived 1024-byte static-allocation rounding used by the PEPS kernel model."
+  },
+  "model_scope_after_this_test": {
+    "still_supported": "For the static PEPS kernel on measured RDNA parts: effective = ceil(footprint/1024)*1024; workgroups per WGP = floor(131072/effective); waves per CU = workgroups per WGP.",
+    "not_supported": "Using hipOccupancyMaxActiveBlocksPerMultiprocessor as a counter substitute, or extending the 1024-byte granule to CDNA from this probe.",
+    "next_falsification": "A CDNA hardware counter for waves/occupancy on a static-LDS kernel, or a documented compiler/code-object LDS allocation field for gfx942. Without one, stop here."
+  },
+  "limitations": [
+    "The probe uses dynamic shared memory while the committed PEPS counter measurements use static __shared__; their disagreement is the result, not something to average away.",
+    "No profiler is installed on the gfx942 container, so no CDNA counter cross-check exists.",
+    "This result does not change any PEPS latency, checksum, or the RDNA occupancy ceiling."
+  ]
+}

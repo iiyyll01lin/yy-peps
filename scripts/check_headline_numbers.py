@@ -66,6 +66,14 @@ COMPOSITION = "results/texture_repro/shortfall_analysis/implied_composition.json
 CAPS = "results/hip_specialised_caps.json"
 SDF_MAPE = "results/sdf_repro/sdf-table3-mape-public-three/three_shape_aggregate.csv"
 SDF_L1 = "results/sdf_repro/sdf-table6-l1-public-three/three_shape_aggregate.csv"
+OCCUPANCY_PROBE = "results/hip_occupancy_probe_result.json"
+
+
+def probe_comparison(doc, footprint: int):
+    for row in dig(doc, "stage_one.comparisons"):
+        if row["footprint"] == footprint:
+            return row
+    raise KeyError(f"stage_one.comparisons[{footprint}]")
 
 CLAIMS = [
     Claim(
@@ -186,6 +194,40 @@ CLAIMS = [
         SDF_MAPE,
         lambda d: abs(delta_for(d, "PE")),
         lambda v: f"{v:.3f}",
+        ["README.md"],
+    ),
+    Claim(
+        "occupancy runtime oracle pass count",
+        OCCUPANCY_PROBE,
+        lambda d: (dig(d, "stage_one.passed"), dig(d, "stage_one.total")),
+        lambda v: f"{v[0]} of the {v[1]}",
+        ["README.md"],
+    ),
+    Claim(
+        "10752 runtime versus counter mismatch",
+        OCCUPANCY_PROBE,
+        lambda d: probe_comparison(d, 10752),
+        lambda v: (
+            f"At 10752 bytes it returned {v['api_waves_per_multiprocessor']} "
+            f"where the counter measured {v['counter_waves_per_cu']:.2f}"
+        ),
+        ["README.md"],
+    ),
+    Claim(
+        "13312 runtime versus counter mismatch",
+        OCCUPANCY_PROBE,
+        lambda d: probe_comparison(d, 13312),
+        lambda v: (
+            f"At 13312 bytes it returned {v['api_waves_per_multiprocessor']} "
+            f"where the counter measured {v['counter_waves_per_cu']:.2f}"
+        ),
+        ["README.md"],
+    ),
+    Claim(
+        "gfx942 10752 runtime block count",
+        OCCUPANCY_PROBE,
+        lambda d: dig(d, "cross_architecture_observation.decisive_10752_row.gfx942"),
+        lambda v: f"gfx942's {v:d} at 10752 bytes",
         ["README.md"],
     ),
 ]
