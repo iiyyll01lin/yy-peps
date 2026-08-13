@@ -1,0 +1,83 @@
+{
+  "schema": "peps.hip_occupancy_prediction",
+  "schema_version": 1,
+  "status": "predicted_not_yet_measured",
+  "question": "Does the occupancy model describe a mechanism, or does it fit seven RDNA footprints?",
+  "why_this_can_be_asked_now": "The model is about LDS bytes, a rounding granule and a pool division. It says nothing about matrix instructions, so a probe that allocates shared memory and does nothing else can carry it to another architecture. hip/fused_peps_kernel.hip cannot: every WMMA builtin in it is _w32 and needs gfx11-insts, which CDNA does not have.",
+  "model": {
+    "effective": "ceil(footprint / granule) * granule",
+    "granule_bytes_rdna": 1024,
+    "occupancy": "floor(pool / effective)",
+    "pool_bytes_rdna": 131072,
+    "pool_scope_rdna": "per workgroup processor, which is two compute units",
+    "fitted_on": "seven gfx1151 footprints, confirmed on an eighth chosen to break it"
+  },
+  "probe": {
+    "binary": "hip/lds_occupancy_probe.hip",
+    "block_threads": 64,
+    "builds_for": [
+      "gfx1201",
+      "gfx942"
+    ],
+    "measurement": "hipOccupancyMaxActiveBlocksPerMultiprocessor",
+    "known_limit": "The probe sweeps dynamic shared memory; the committed counter measurements used static __shared__. Agreement on the seven RDNA footprints is what would show the two are accounted the same way. Without that agreement nothing here transfers.",
+    "not_a_counter": "This is the runtime's own occupancy calculation, not a hardware counter. It is admissible as an oracle only if it reproduces the counter measurements on the part where both exist, which is what test one asks."
+  },
+  "test_one_is_the_oracle_admissible": {
+    "run_on": "gfx1201, and gfx1151 if it is reachable",
+    "claim": "blocks_per_multiprocessor reproduces the committed waves_per_cu on all seven footprints",
+    "passes_if": "each row equals the workgroups_per_wgp column below",
+    "and_settles": "whether HIP counts a workgroup processor or a compute unit as a multiprocessor. This repository already read multiProcessorCount as a compute-unit count and was wrong by a factor of two, so the two readings are written out separately rather than assumed.",
+    "fails_if": "the values land on if_multiprocessor_means_cu instead, which would mean the API and the counters disagree about the unit and the oracle cannot be carried to CDNA without resolving that first"
+  },
+  "test_two_does_the_form_survive_a_change_of_architecture": {
+    "run_on": "gfx942",
+    "constants_that_change": {
+      "pool_bytes": 65536,
+      "pool_scope": "per compute unit; CDNA has no workgroup processor",
+      "wavefront": 64,
+      "waves_per_block": "one, because a 64-thread block is a single wave64"
+    },
+    "claim": "the form survives with CDNA's own constants: blocks per compute unit equals floor(65536 / effective)",
+    "the_decisive_footprint": {
+      "footprint": 10752,
+      "predicts_if_granule_is_1024": 5,
+      "predicts_if_granule_is_128": 6,
+      "why": "10752 is the only footprint in the sweep where the two granules disagree; 10752 is exactly 84 x 128, so a 128-byte granule leaves it alone while a 1024-byte granule rounds it to 11264. Every other footprint gives the same answer either way and therefore tests nothing."
+    },
+    "what_a_failure_would_mean": "That the 1024-byte granule is an RDNA fact rather than a general one. That is a result, not a setback: the model would still hold where it was measured, and its scope would be known rather than assumed."
+  },
+  "rdna_predictions": [
+    {"footprint": 8704, "effective": 9216, "workgroups_per_wgp": 14, "if_multiprocessor_means_cu": 7, "measured_waves_per_cu": 13.94},
+    {"footprint": 9216, "effective": 9216, "workgroups_per_wgp": 14, "if_multiprocessor_means_cu": 7, "measured_waves_per_cu": null},
+    {"footprint": 9728, "effective": 10240, "workgroups_per_wgp": 12, "if_multiprocessor_means_cu": 6, "measured_waves_per_cu": 11.96},
+    {"footprint": 10240, "effective": 10240, "workgroups_per_wgp": 12, "if_multiprocessor_means_cu": 6, "measured_waves_per_cu": null},
+    {"footprint": 10752, "effective": 11264, "workgroups_per_wgp": 11, "if_multiprocessor_means_cu": 5, "measured_waves_per_cu": 10.97},
+    {"footprint": 11264, "effective": 11264, "workgroups_per_wgp": 11, "if_multiprocessor_means_cu": 5, "measured_waves_per_cu": null},
+    {"footprint": 11776, "effective": 12288, "workgroups_per_wgp": 10, "if_multiprocessor_means_cu": 5, "measured_waves_per_cu": 9.97},
+    {"footprint": 12288, "effective": 12288, "workgroups_per_wgp": 10, "if_multiprocessor_means_cu": 5, "measured_waves_per_cu": 9.98},
+    {"footprint": 13312, "effective": 13312, "workgroups_per_wgp": 9, "if_multiprocessor_means_cu": 4, "measured_waves_per_cu": 8.97},
+    {"footprint": 16384, "effective": 16384, "workgroups_per_wgp": 8, "if_multiprocessor_means_cu": 4, "measured_waves_per_cu": null},
+    {"footprint": 32768, "effective": 32768, "workgroups_per_wgp": 4, "if_multiprocessor_means_cu": 2, "measured_waves_per_cu": 4.0},
+    {"footprint": 65536, "effective": 65536, "workgroups_per_wgp": 2, "if_multiprocessor_means_cu": 1, "measured_waves_per_cu": null}
+  ],
+  "cdna_predictions": [
+    {"footprint": 8704, "effective_1024": 9216, "effective_128": 8704, "blocks_per_cu_if_granule_1024": 7, "blocks_per_cu_if_granule_128": 7},
+    {"footprint": 9216, "effective_1024": 9216, "effective_128": 9216, "blocks_per_cu_if_granule_1024": 7, "blocks_per_cu_if_granule_128": 7},
+    {"footprint": 9728, "effective_1024": 10240, "effective_128": 9728, "blocks_per_cu_if_granule_1024": 6, "blocks_per_cu_if_granule_128": 6},
+    {"footprint": 10240, "effective_1024": 10240, "effective_128": 10240, "blocks_per_cu_if_granule_1024": 6, "blocks_per_cu_if_granule_128": 6},
+    {"footprint": 10752, "effective_1024": 11264, "effective_128": 10752, "blocks_per_cu_if_granule_1024": 5, "blocks_per_cu_if_granule_128": 6},
+    {"footprint": 11264, "effective_1024": 11264, "effective_128": 11264, "blocks_per_cu_if_granule_1024": 5, "blocks_per_cu_if_granule_128": 5},
+    {"footprint": 11776, "effective_1024": 12288, "effective_128": 11776, "blocks_per_cu_if_granule_1024": 5, "blocks_per_cu_if_granule_128": 5},
+    {"footprint": 12288, "effective_1024": 12288, "effective_128": 12288, "blocks_per_cu_if_granule_1024": 5, "blocks_per_cu_if_granule_128": 5},
+    {"footprint": 13312, "effective_1024": 13312, "effective_128": 13312, "blocks_per_cu_if_granule_1024": 4, "blocks_per_cu_if_granule_128": 4},
+    {"footprint": 16384, "effective_1024": 16384, "effective_128": 16384, "blocks_per_cu_if_granule_1024": 4, "blocks_per_cu_if_granule_128": 4},
+    {"footprint": 32768, "effective_1024": 32768, "effective_128": 32768, "blocks_per_cu_if_granule_1024": 2, "blocks_per_cu_if_granule_128": 2},
+    {"footprint": 65536, "effective_1024": 65536, "effective_128": 65536, "blocks_per_cu_if_granule_1024": 1, "blocks_per_cu_if_granule_128": 1}
+  ],
+  "limitations": [
+    "Predictions only. Nothing here has been measured, and the status field says so; tests/test_occupancy_prediction.py fails if measured values appear while the status still claims otherwise.",
+    "The CDNA host is a single-GPU container slice with no profiler, so the counter cross-check that was available on gfx1151 is not available there. The runtime API is the only oracle, which is why test one exists.",
+    "Occupancy may be bounded by registers or wave slots rather than LDS at the smaller footprints. A prediction that is not matched should be checked against those limits before the model is blamed."
+  ]
+}

@@ -22,7 +22,8 @@
     "artifact_status_notes": {
       "legacy-unverified": "Tracked output whose provenance does not meet verified_requires.",
       "measured-not-verifiable-by-this-policy": "A current measurement with its protocol and limitations recorded, which cannot meet verified_requires because the workload is synthetic: there is no input dataset to checksum and no training seed to pin. It is a statement about what this policy can certify, not about the quality of the measurement, and it claims nothing about the paper.",
-      "superseded-retained": "Kept for the record with its original numbers because a later artefact measured the same thing under a corrected protocol; the pointer is in superseded_by."
+      "superseded-retained": "Kept for the record with its original numbers because a later artefact measured the same thing under a corrected protocol; the pointer is in superseded_by.",
+      "prediction-not-a-measurement": "States what a model predicts, registered before the run that would test it. Contains no observation. A test fails if measured values are filed into it while the status still says otherwise."
     },
     "note": "A CSV is not reproduction evidence merely because it is tracked or rendered in course material."
   },
@@ -56,6 +57,11 @@
       "status": "measured-not-verifiable-by-this-policy",
       "producer": "hip/occupancy.py over rocprofv3 output",
       "reason": "First occupancy profile, and the receipt whose model was later corrected twice by hardware counters. The superseded figures are marked in place rather than deleted, under model_correction."
+    },
+    "hip_occupancy_prediction.json": {
+      "status": "prediction-not-a-measurement",
+      "producer": "derived from the model recorded in hip_specialised_caps.json, checked by tests/test_occupancy_prediction.py",
+      "reason": "Registered before the run that would test it. Carries what the model predicts for gfx1201 and for gfx942, the two readings of multiProcessorCount that the RDNA run would tell apart, and the one footprint that separates a 1024-byte LDS granule from a 128-byte one on CDNA. Contains no observation."
     },
     "hip_specialised_caps.json": {
       "status": "measured-not-verifiable-by-this-policy",
