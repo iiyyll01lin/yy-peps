@@ -9,6 +9,11 @@ The second half pins the field values the newer criteria quote. A criterion
 that states "count 0 against expected_pairs 72" is making a factual claim
 about committed evidence, and it should fail loudly when that stops being
 true rather than quietly misinform a student.
+
+Whether the named fields *exist* is checked by scripts/check_criteria_evidence.py,
+which derives the names from labs.json. A hand-written list lived here and was
+removed: it covered four files and could not notice a criterion it had never
+been told about. What is quoted here are values, which cannot be derived.
 """
 
 import json
@@ -83,30 +88,6 @@ def dig(payload, dotted: str):
 def test_quoted_field_still_holds(path, dotted, expected):
     payload = json.loads((ROOT / path).read_text(encoding="utf-8"))
     assert dig(payload, dotted) == expected
-
-
-def test_criteria_that_name_fields_name_real_ones():
-    # The newer criteria list field names in prose. Those names have to exist
-    # in the file the same criterion cites, or the pointer is decorative.
-    checks = {
-        "results/sdf_repro/cost.json": [
-            "jobs", "full_volume_queries", "full_volume_queries_per_job",
-            "memory_floor_per_worker",
-        ],
-        "results/sdf_repro/table4_deferred_auth_required.json": [
-            "asset", "authorized_job_plan",
-        ],
-        "results/image_convergence/external_table1_recovery_incident.json": [
-            "summary", "root_cause", "status",
-        ],
-        "results/texture_repro/shortfall_analysis/implied_composition.json": [
-            "fit_quality",
-        ],
-    }
-    for path, keys in checks.items():
-        payload = json.loads((ROOT / path).read_text(encoding="utf-8"))
-        for key in keys:
-            assert key in payload, f"{path} has no {key}"
 
 
 def test_no_week_is_graded_by_fewer_than_two_criteria():
