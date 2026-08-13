@@ -53,7 +53,7 @@
     },
     "note": "bi-grid at 2.95 ms is 1.46x faster than the paper's 4.32 ms reference. That is a local measurement of a workload not shown to match the paper's, not a reproduction of its number.",
     "part": "RDNA4 gfx1201, 64 compute units",
-    "protocol": "Four interleaved rounds after spinning the card until the shader clock stopped climbing, side 1024, 30 warmup and 60 timed iterations. Each specialised build is invoked immediately after the shared-cap build on the same geometry, so drift lands on both. The shared-cap figures reproduce the committed hip_lds_ab.json values within 1%.",
+    "protocol": "Four interleaved rounds after an attempted spin-up, side 1024, 30 warmup and 60 timed iterations. The spin-up is not known to have settled the clock: the harness samples it after the spin run exits, so it reads the card on its way back to idle, and the companion receipt records clock_settling.settled false. What protects these figures is that each specialised build is invoked immediately after the shared-cap build on the same geometry, so drift lands on both, and that the shared-cap figures reproduce the committed hip_lds_ab.json values within 1%.",
     "unit": "ms"
   },
   "limitations": [
