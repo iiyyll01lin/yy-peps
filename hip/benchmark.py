@@ -689,6 +689,17 @@ def main(argv: Sequence[str] | None = None) -> int:
             "timed_iterations": args.iters,
             "summary": ["median_ms", "p95_ms"],
             "preflight": preflight,
+            "method_order": "each method run to completion in turn",
+            "clock_settling": "none",
+            "latency_caveat": (
+                "This protocol does not spin the card to steady clocks and "
+                "does not interleave methods, so whichever method runs first "
+                "absorbs the clock ramp. On gfx1201 that inflated the first "
+                "method 5.7x and made the reported ordering an artefact of "
+                "measurement order. Use hip/stable_latency.py for any latency "
+                "claim. The build, parity and code-object provenance in this "
+                "receipt do not depend on the timing protocol and stand."
+            ),
         },
         "parity": parity,
         "measurements": measurements,

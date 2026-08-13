@@ -94,10 +94,42 @@ HIP-event benchmarks before atomically updating:
 
 The exclusive local gfx1201 run (ROCm 7.2.3, 30 warmups, 100 timed iterations)
 measured medians of 42.304/48.200/51.070/53.787 ms for BI Grid, Grid-PEPS 3F,
-PinkPEPS 3F, and PinkPEPS 4F. The device reports 32 compute units and a generic
-GPU name; the paper reports 4.32/5.47/4.86/4.99 ms on an RX 9070 XT without its
-precision or timing protocol. The local medians are 8.81–10.78× those external
-references, and the receipt therefore marks direct comparison false.
+PinkPEPS 3F, and PinkPEPS 4F. **Those four numbers are superseded and this
+paragraph used to draw two wrong conclusions from them.**
+
+`benchmark.py` runs every iteration of one method before starting the next,
+from whatever state the card happens to be in, so whichever method goes first
+absorbs the clock ramp. Measured from a settled card with the methods
+interleaved and a rotating start, the same four are **7.40/16.06/18.36/21.27
+ms**; with the LDS caps narrowed to what the methods actually use,
+**3.67/8.53/8.69/9.95 ms**. The first method was overstated 5.7x, and the
+ordering the old receipt reports is the measurement order rather than a
+property of the kernels.
+
+That receipt also says the device has 32 compute units. It has **64**.
+`multiProcessorCount` counts WGPs on RDNA and each WGP is two compute units,
+so reading it as a CU count halves the part and makes any per-CU reasoning
+wrong by a factor of two.
+
+The old "8.81–10.78x the paper's references" follows from both errors. Against
+4.32/5.47/4.86/4.99 ms the honest figures are **1.7x to 4.3x** settled, and
+**0.85x to 2.0x** with narrowed caps — `bi-grid` at 2.95 ms with a per-method
+cap is *below* the paper's reference. None of these are paper-comparable: the
+precision, timing boundary and output size have not been shown to match, and
+the receipt marks direct comparison false for that reason and not because of
+the gap.
+
+**Use `benchmark.py` for build, parity and code-object provenance. Do not use
+it for a latency claim.** For that:
+
+```bash
+bash hip/build_kernel.sh gfx1201
+python hip/stable_latency.py \
+  --binary hip/build/fused_peps_gfx1201 --out receipt.json
+```
+
+`docs/05_amd_hardware.md` has the full sequence; `results/hip_stable_latency.json`
+and `results/hip_specialised_caps.json` carry the current measurements.
 Performance matching remains open; correctness and workload coverage do not.
 
 `gfx1151` and `gfx1201` have different WMMA encodings. rocWMMA selects the target
