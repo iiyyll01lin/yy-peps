@@ -292,8 +292,8 @@
         },
         {
           "id": "protocol-labelled",
-          "description": "Loss, sign convention, axis order, sampling, seeds, and per-instance IoU are explicit.",
-          "evidence": "run manifest plus raw CSV"
+          "description": "Loss, sign convention, axis order, sampling, seeds, and per-instance IoU are explicit. An axis order or a sign flipped the wrong way does not raise an error; it produces a plausible number, which is why these are pinned rather than described.",
+          "evidence": "results/sdf_repro/sdf-table3-mape-public-three/per_shape.csv for loss, seed and per-shape IoU, plus results/sdf_repro/volume_validation.json, fields sign_convention, axis_order, query_component_order and distance_units"
         },
         {
           "id": "blocker-as-evidence",
@@ -309,6 +309,11 @@
           "id": "post-interruption-verification",
           "description": "After an interruption, outputs are not trusted merely because they exist. Before accepting them instead of re-running, verify that no partial files remain, that no related process is still writing, and that checksums and schema still hold, and record which of those was checked. This is distinct from a liveness check, which watches a run that is still going.",
           "evidence": "results/sdf_repro/volume_validation.json, fields recovery.partial_files_found, recovery.active_related_processes, recovery.action and checksums_verified"
+        },
+        {
+          "id": "subset-not-global",
+          "description": "When only part of a table's assets can be obtained, the comparison is against the paper's own mean over the same subset, never against its published global figure, and the omitted asset is named in the artefact rather than in prose. Scaling a three-shape mean onto a four-shape published number is the error this exists to prevent, and it is invisible once the number is written down.",
+          "evidence": "results/sdf_repro/sdf-table3-mape-public-three/three_shape_aggregate.csv, fields paper_three_shape_mean_iou, delta_iou, omitted_shape and paper_global_comparable"
         }
       ],
       "budget": "paper-exact"
