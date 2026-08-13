@@ -22,30 +22,31 @@
     "One kernel, one method, one part; the RDNA4 host has no profiler installed so the same measurement has not been repeated there.",
     "Low occupancy is consistent with the observed scaling but is not proof of the cause; a counter-based bandwidth or stall analysis would be needed to close that. The intervention in results/hip_lds_ab.json is stronger evidence than this correlation."
   ],
-  "measured_confirmation": {
-    "tool": "rocprofv3 --pmc OccupancyPercent MeanOccupancyPerCU",
-    "counter_mean_percent": 12.487,
-    "counter_min_percent": 12.46,
-    "counter_max_percent": 12.624,
-    "dispatches": 15,
-    "derived_percent": 12.5,
-    "verdict": "The derived figure for this footprint was right, but the model behind it was not. See model_correction.",
-    "data": "results/hip_profile/gfx1151_occupancy.csv"
-  },
-  "model_correction": {
-    "was": "workgroups per CU = floor(65536 / footprint), from the 64 KB per CU the agent advertises.",
-    "now": "effective = ceil(footprint / 1024) * 1024, then workgroups per WGP = floor(131072 / effective), which equals waves per CU because a workgroup is two waves and a WGP is two compute units.",
-    "why_it_went_unnoticed": "The models agree on many footprints. Over the seven now measured, the original per-CU model matches five and an intermediate per-WGP model without the granule matches three. Both footprints measured at the time this receipt was written, 32768 and 12288, are among the agreements, so the wrong model produced two correct answers.",
-    "what_exposed_it": "13312 bytes gives nine workgroups per WGP, an odd number the per-CU model cannot express: it predicted 25% and the counter measured 28.04%. Three further footprints from per-method specialised builds then measured exactly one workgroup below the per-WGP model, which is what the 1024-byte granule accounts for.",
-    "corrected_twice": "This model has been wrong twice and both times the counter caught it. The second correction is recorded in results/hip_specialised_caps.json, including a cap chosen specifically to separate the granular model from the two it replaced.",
-    "status": "The corrected model matches all seven measured footprints within 0.2 percentage points. It is recorded as the model that fits the counter, not as a claim about hardware internals read from a specification.",
-    "guarded_by": "tests/test_hip_lds_caps.py::test_only_the_granular_model_matches_every_measurement"
-  },
   "limits": {
     "limiter": "LDS",
+    "units_note": "These counts are per compute unit, which is the vocabulary of the superseded model. They remain arithmetically consistent with the corrected one on this footprint because 32768 bytes gives an even four workgroups per WGP, but a per-CU division cannot express an odd count and is not how allocation behaves. See model_correction.",
     "workgroups_per_cu_by_lds": 2,
     "workgroups_per_cu_by_vgprs": 9,
     "workgroups_per_cu_by_wave_slots": 16
+  },
+  "measured_confirmation": {
+    "counter_max_percent": 12.624,
+    "counter_mean_percent": 12.487,
+    "counter_min_percent": 12.46,
+    "data": "results/hip_profile/gfx1151_occupancy.csv",
+    "derived_percent": 12.5,
+    "dispatches": 15,
+    "tool": "rocprofv3 --pmc OccupancyPercent MeanOccupancyPerCU",
+    "verdict": "The derived figure for this footprint was right, but the model behind it was not. See model_correction."
+  },
+  "model_correction": {
+    "corrected_twice": "This model has been wrong twice and both times the counter caught it. The second correction is recorded in results/hip_specialised_caps.json, including a cap chosen specifically to separate the granular model from the two it replaced.",
+    "guarded_by": "tests/test_hip_lds_caps.py::test_only_the_granular_model_matches_every_measurement",
+    "now": "effective = ceil(footprint / 1024) * 1024, then workgroups per WGP = floor(131072 / effective), which equals waves per CU because a workgroup is two waves and a WGP is two compute units.",
+    "status": "The corrected model matches all seven measured footprints within 0.2 percentage points. It is recorded as the model that fits the counter, not as a claim about hardware internals read from a specification.",
+    "was": "workgroups per CU = floor(65536 / footprint), from the 64 KB per CU the agent advertises.",
+    "what_exposed_it": "13312 bytes gives nine workgroups per WGP, an odd number the per-CU model cannot express: it predicted 25% and the counter measured 28.04%. Three further footprints from per-method specialised builds then measured exactly one workgroup below the per-WGP model, which is what the 1024-byte granule accounts for.",
+    "why_it_went_unnoticed": "The models agree on many footprints. Over the seven now measured, the original per-CU model matches five and an intermediate per-WGP model without the granule matches three. Both footprints measured at the time this receipt was written, 32768 and 12288, are among the agreements, so the wrong model produced two correct answers."
   },
   "next_experiments": [
     "DONE, see results/hip_lds_ab.json: the footprint was cut from 32768 to 12288 bytes rather than halved, giving 31.25% occupancy instead of the 25% predicted here, and latency improved 1.70x to 2.13x on both parts with identical checksums. Note the return was sublinear: 2.5x occupancy bought about 2x.",
@@ -56,7 +57,8 @@
     "if_lds_halved": {
       "lds_bytes": 16384,
       "occupancy_fraction": 0.25,
-      "workgroups_per_cu": 4
+      "superseded_note": "A prediction made with the per-CU model, and superseded twice over. The footprint was cut to 12288 rather than halved, so this case was never run; and the field previously read workgroups_per_cu 4, which is the wrong unit. Under the corrected model 16384 bytes gives eight workgroups per WGP and eight waves per CU, so the 0.25 happens to survive the correction while the workgroup count does not.",
+      "workgroups_per_wgp": 8
     },
     "max_waves_per_cu": 32,
     "occupancy_fraction": 0.125,

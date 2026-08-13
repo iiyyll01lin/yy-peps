@@ -400,8 +400,8 @@
         },
         {
           "id": "occupancy-limiter",
-          "description": "Derive workgroups per compute unit three ways -- from the LDS footprint, from wave slots, and from the register budget -- and name which one binds. A number copied from a tool without the derivation does not pass.",
-          "evidence": "python hip/occupancy.py; receipt field limits.limiter with all three workgroups_per_cu_by_* values"
+          "description": "Derive the occupancy limit three ways -- from the LDS footprint, from wave slots, and from the register budget -- and name which one binds. Do the LDS one the way the counters say it works: round the footprint up to the 1024-byte allocation granule, then divide the 128 KB pool a WGP shares, which gives workgroups per WGP and therefore waves per compute unit. Dividing a per-CU pool instead agrees on many footprints and fails silently on others, which is exactly how this repository's first two occupancy models survived being checked. A number copied from a tool without the derivation does not pass, and neither does a derivation that has not been checked against a counter on at least one footprint that separates the candidates.",
+          "evidence": "python hip/occupancy.py, which prints all three limits, names the limiter, and reports any superseded model that this footprint would tell apart"
         },
         {
           "id": "optimisation-loop",
