@@ -67,6 +67,7 @@
     "driver_version": {"type": "integer", "minimum": 1},
     "wave_size": {"type": "integer", "minimum": 1},
     "compute_units": {"type": "integer", "minimum": 1},
+    "compute_units_semantics": {"type": "string", "minLength": 1},
     "output_width": {"type": "integer", "minimum": 2},
     "output_height": {"type": "integer", "minimum": 2},
     "grid_width": {"const": 1024},

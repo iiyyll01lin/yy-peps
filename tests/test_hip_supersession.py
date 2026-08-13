@@ -109,3 +109,24 @@ def test_measurement_records_match_their_own_schema():
     schema = load(RESULTS / "hip_benchmark_receipt.schema.json")
     for record in load(ARTEFACT)["measurements"]:
         jsonschema.validate(record, schema)
+
+
+def test_the_kernel_says_what_compute_units_actually_counts():
+    # hip/README.md read compute_units as a CU count and halved the part,
+    # which made every per-CU ratio in it wrong by two. The field is
+    # hipDeviceProp_t multiProcessorCount, which counts WGPs on RDNA. The
+    # name is kept for schema compatibility, so the receipt has to carry its
+    # own explanation or the same misreading is available to the next reader.
+    source = (ROOT / "hip" / "fused_peps_kernel.hip").read_text(encoding="utf-8")
+    assert "compute_units_semantics" in source
+    assert "multiProcessorCount" in source
+    assert "each WGP is two compute units" in source
+
+    schema = load(RESULTS / "hip_benchmark_receipt.schema.json")
+    # additionalProperties is false, so an unlisted field would make every
+    # fresh receipt fail its own schema.
+    assert schema.get("additionalProperties") is False
+    assert "compute_units_semantics" in schema["properties"]
+    # Optional, so the receipts written before this stays valid.
+    assert "compute_units_semantics" not in schema["required"]
+    assert "compute_units" in schema["required"]

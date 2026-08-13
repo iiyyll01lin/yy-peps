@@ -1120,6 +1120,10 @@ static int run_wmma_benchmark(
         "\"driver_version\":%d,"
         "\"wave_size\":%d,"
         "\"compute_units\":%d,"
+        // The name is kept for schema compatibility, but the value is a WGP
+        // count on RDNA and reading it as compute units halves the part.
+        "\"compute_units_semantics\":\"hipDeviceProp_t multiProcessorCount; "
+        "on RDNA this counts WGPs and each WGP is two compute units\","
         "\"output_width\":%d,"
         "\"output_height\":%d,"
         "\"grid_width\":1024,"
