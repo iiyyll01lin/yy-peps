@@ -24,25 +24,75 @@
       "producer": "W04",
       "reason": "Current corrected course-fast rerun, but no complete run manifest or pinned per-instance receipt."
     },
+    "hip_benchmark_gfx1201.json": {
+      "status": "legacy-unverified",
+      "producer": "hip/benchmark.py",
+      "reason": "SUPERSEDED by results/hip_stable_latency.json. A clean gfx1201 build and fp32/fp16 all-mode parity completed and still stand, but the latency figures are an artefact of measuring each method to completion in turn from an idle card: bi-grid reports 42.30 ms against a settled 7.40 ms, and the overstatement decays down the table, so the ordering this receipt reports is the measurement order. The build also carries git_dirty true. Retained with its original numbers under superseded_by rather than deleted."
+    },
+    "hip_cross_generation.json": {
+      "status": "legacy-unverified",
+      "producer": "hip/stable_latency.py on gfx1201 and gfx1151",
+      "reason": "Same protocol on both parts. Normalised by compute-unit count every method lands between 0.97 and 1.08, which is the observation that motivated the occupancy work. Stock builds only; the narrowed builds roughly halve these figures."
+    },
     "hip_latency.csv": {
       "status": "legacy-unverified",
       "producer": "W11/W12",
       "reason": "Current Box B integrated parity/latency rows coexist with legacy diagnostics, but no complete run manifest or paper-comparable optimized implementation exists."
     },
-    "hip_benchmark_gfx1201.json": {
+    "hip_lds_ab.json": {
       "status": "legacy-unverified",
-      "producer": "hip/benchmark.py",
-      "reason": "A clean gfx1201 build, fp32/fp16 all-mode parity, and a 30-warmup/100-iteration 1024-squared local run completed, but the receipt explicitly sets directly_comparable=false because the paper does not disclose matching precision, timing, or kernel details."
+      "producer": "hip/build_kernel.sh variants with hip/stable_latency.py",
+      "reason": "A/B of the compile-time LDS caps from one identical source. Latency roughly halves on both parts with byte-identical output checksums. Occupancy was measured on gfx1151 only; the gfx1201 latencies have no counter behind them."
+    },
+    "hip_occupancy.json": {
+      "status": "legacy-unverified",
+      "producer": "hip/occupancy.py over rocprofv3 output",
+      "reason": "First occupancy profile, and the receipt whose model was later corrected twice by hardware counters. The superseded figures are marked in place rather than deleted, under model_correction."
+    },
+    "hip_specialised_caps.json": {
+      "status": "legacy-unverified",
+      "producer": "per-method builds with rocprofv3 and hip/stable_latency.py",
+      "reason": "Per-method LDS caps, the second correction to the occupancy model, and a proof that cap narrowing stops at 43.75% occupancy. Latency measured on gfx1201 and occupancy on gfx1151 because no single host has both a profiler and a current checkout."
+    },
+    "hip_stable_latency.json": {
+      "status": "legacy-unverified",
+      "producer": "hip/stable_latency.py",
+      "reason": "Supersedes the latency figures in hip_benchmark_gfx1201.json. Spins the card until the shader clock stops climbing, then interleaves methods with a rotating start; eight rounds agree to 1.03x. Not verified because the workload is synthetic, so seeds and input checksums do not apply, and not paper-comparable because precision, timing boundary and output size have not been shown to match."
+    },
+    "hip_texture_geometry.json": {
+      "status": "legacy-unverified",
+      "producer": "hip geometry subcommand with hip/stable_latency.py",
+      "reason": "Cost of the texture reproduction's own decoder geometry, run with random weights rather than trained checkpoints, so it gives cost without quality and produces no PSNR or SSIM. Covers the Grid family only; the NTC family exceeds the kernel's channel limit."
     },
     "image_repro_instances.csv": {
       "status": "legacy-unverified",
       "producer": "experiments/image_repro.py",
       "reason": "Auditable per-instance projection currently combines smoke rows with one partial protocol-assumption Table 1 job; row-level verification labels must be respected."
     },
+    "image_repro_paired.json": {
+      "status": "legacy-unverified",
+      "producer": "experiments/image_repro.py",
+      "reason": "Paired-comparison scaffold. The Table 1 pairings carry count 0 and mean_delta null against expected_pairs 72, so they record an absent comparison rather than a null result and must not be rendered as one."
+    },
+    "image_repro_protocol.json": {
+      "status": "legacy-unverified",
+      "producer": "experiments/image_repro.py",
+      "reason": "Checksum-bearing record of the code and configuration behind the image runs. Provenance rather than a numeric result."
+    },
+    "image_repro_status.json": {
+      "status": "legacy-unverified",
+      "producer": "experiments/image_repro.py",
+      "reason": "Per-artifact progress and worker accounting. Only appendix-smoke is complete; the canonical Table 1 artifact is not."
+    },
     "image_repro_summary.csv": {
       "status": "legacy-unverified",
       "producer": "experiments/image_repro.py",
       "reason": "Derived summary includes smoke and incomplete protocol-assumption matrices and is not verified paper evidence."
+    },
+    "paper_exact_prerequisites.json": {
+      "status": "legacy-unverified",
+      "producer": "curated blocker index, consumed by tests/test_course_release.py",
+      "reason": "Machine-readable record of what the paper does not disclose, per artifact, with remediation. A blocker index rather than a measurement, and the reason the paper_exact profile stays unavailable."
     },
     "pink_param_savings.csv": {
       "status": "legacy-unverified",

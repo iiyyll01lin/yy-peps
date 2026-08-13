@@ -367,6 +367,23 @@ def validate_results(validator: Validator) -> None:
         manifested_csvs == csv_files,
         "results/manifest.json must list every top-level results CSV exactly once",
     )
+    # Schema files are contracts rather than results, and the manifest does not
+    # index itself. Without this the CSV half was enforced and the JSON half was
+    # not, which let ten receipts drift out of the index unnoticed.
+    json_files = {
+        item.name
+        for item in (ROOT / "results").glob("*.json")
+        if item.name != "manifest.json" and not item.name.endswith(".schema.json")
+    }
+    manifested_jsons = {
+        name
+        for name in artifacts
+        if Path(name).suffix.lower() == ".json" and not name.endswith(".schema.json")
+    }
+    validator.check(
+        manifested_jsons == json_files,
+        "results/manifest.json must list every top-level results JSON exactly once",
+    )
     for name, metadata in artifacts.items():
         validator.check(
             Path(name).name == name and (ROOT / "results" / name).is_file(),
