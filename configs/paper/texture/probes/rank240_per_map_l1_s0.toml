@@ -1,0 +1,48 @@
+schema_version = 1
+name = "texture-ranking-probe-240k"
+paper = "PEPS Extended arXiv:2604.24167v1"
+task = "texture"
+profile = "full"
+dataset = "paper-textures-18-4k"
+canonical = false
+seeds = [0]
+
+# Matches gap_probe_240k so the NTC_PEPS numbers already measured at this
+# budget can be compared directly against these two methods.
+[training]
+task = "texture"
+loss = "per_map_l1"
+epochs = 6000
+batches_per_epoch = 40
+batch_size = 60000
+model_lr = 0.001
+encoder_lr = 0.1
+cosine = true
+log_every = 200
+checkpoint_every = 2000
+
+[runner]
+metrics = ["psnr", "ssim"]
+render_chunk = 262144
+output_dir = "results/work/texture-ranking-probe"
+parallelism_mode = "job_shard"
+world_size = 2
+dataset_manifest = "data/manifests/textures.json"
+dataset_verification_receipt = "results/texture_repro/dataset_verification.json"
+target_sampling = "random_pixel_locations"
+target_filter = "native_texel_equals_bilinear_at_pixel_location"
+completed_checkpoint_retention = "all"
+
+# rank 0. Our 2nd place, the paper's 4th.
+[[methods]]
+name = "BI-Grid"
+factory = "apps.texture.build:build_paper_texture"
+kwargs = { method = "bi_grid" }
+expected_encoder_params = 17825792
+
+# rank 1. The paper's 1st place, our 5th: the largest ordering mismatch.
+[[methods]]
+name = "NTC_PinkPEPS"
+factory = "apps.texture.build:build_paper_texture"
+kwargs = { method = "ntc_pinkpeps" }
+expected_encoder_params = 17825792

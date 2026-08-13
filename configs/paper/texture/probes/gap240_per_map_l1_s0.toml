@@ -1,0 +1,46 @@
+schema_version = 1
+name = "texture-gap-probe-240k"
+paper = "PEPS Extended arXiv:2604.24167v1"
+task = "texture"
+profile = "full"
+dataset = "paper-textures-18-4k"
+canonical = false
+seeds = [0]
+
+# 6000 x 40 = 240,000 optimizer steps, the midpoint between the frozen 120k
+# Table 2 schedule and the 480k probe, so the three points form a curve.
+[training]
+task = "texture"
+loss = "per_map_l1"
+epochs = 6000
+batches_per_epoch = 40
+batch_size = 60000
+model_lr = 0.001
+encoder_lr = 0.1
+cosine = true
+log_every = 200
+checkpoint_every = 2000
+
+[runner]
+metrics = ["psnr", "ssim"]
+render_chunk = 262144
+output_dir = "results/work/texture-gap-probe"
+parallelism_mode = "job_shard"
+world_size = 2
+dataset_manifest = "data/manifests/textures.json"
+dataset_verification_receipt = "results/texture_repro/dataset_verification.json"
+target_sampling = "random_pixel_locations"
+target_filter = "native_texel_equals_bilinear_at_pixel_location"
+completed_checkpoint_retention = "all"
+
+[[methods]]
+name = "NTC_N"
+factory = "apps.texture.build:build_paper_texture"
+kwargs = { method = "ntc_n" }
+expected_encoder_params = 17825792
+
+[[methods]]
+name = "NTC_PEPS"
+factory = "apps.texture.build:build_paper_texture"
+kwargs = { method = "ntc_peps" }
+expected_encoder_params = 17825792
