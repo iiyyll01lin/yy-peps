@@ -64,9 +64,21 @@ int main(int argc, char **argv) {
     hipMalloc(&peak, sizeof(int));
     hipMalloc(&sink, 1);
 
+    // The first four are below anything LDS can constrain here: 512 bytes
+    // leaves room for 128 workgroups per CU, far past any plausible cap. Where
+    // they plateau is the limit that is not LDS, and knowing it is what says
+    // whether a reading further up is a measurement or a saturated instrument.
+    //
+    // The last six separate the granules that survived the first census, and
+    // were chosen for the lowest residency that still separates: none exceeds
+    // six workgroups per CU, below the seven already measured, so no cap can
+    // reach them. Read down their column and each candidate granule from 512 to
+    // 16 leaves a different signature.
     const std::vector<int> footprints = {
+        512,   1024,  2048,  4096,
         8704,  9216,  9728,  10240, 10752, 11264,
         11776, 12288, 13312, 16384, 32768,
+        10753, 12289, 13057, 21505, 21761, 21825,
     };
 
     std::printf("{\n");
@@ -80,8 +92,10 @@ int main(int argc, char **argv) {
 
     for (size_t i = 0; i < footprints.size(); ++i) {
         const int bytes = footprints[i];
-        // Enough blocks that residency saturates several times over.
-        const int grid = 64 * prop.multiProcessorCount;
+        // A grid smaller than what fits would cap the peak itself and read as
+        // a hardware limit. No multiprocessor holds more than its wave slots
+        // allow, so four times that bound leaves the grid clear of the answer.
+        const int grid = 4 * 32 * prop.multiProcessorCount;
 
         int zero = 0;
         hipMemcpy(live, &zero, sizeof(int), hipMemcpyHostToDevice);
