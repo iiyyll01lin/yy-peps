@@ -1,0 +1,11 @@
+/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory
+/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory
+/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory
+/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory
+{
+  "artifact": "table2",
+  "output_dir": "results/work/texture-repro/table2/f80343404745-63e6597b835b-ca6664fc7b36",
+  "rank": 1,
+  "records": 1,
+  "world_size": 2
+}
