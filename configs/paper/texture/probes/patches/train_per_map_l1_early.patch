@@ -1,0 +1,58 @@
+diff --git a/peps/train.py b/peps/train.py
+index f2ea930..78c2851 100644
+--- a/peps/train.py
++++ b/peps/train.py
+@@ -191,6 +191,33 @@ def l2_loss(prediction: torch.Tensor, target: torch.Tensor) -> torch.Tensor:
+     return nn.functional.mse_loss(prediction, target)
+ 
+ 
++def per_map_l1_loss(
++    prediction: torch.Tensor,
++    target: torch.Tensor,
++    *,
++    channels_per_map: int = 3,
++    epsilon: float = 1e-8,
++) -> torch.Tensor:
++    """L1 rescaled so every texture map contributes equally to the gradient.
++
++    Texture targets pack each map into a fixed 3-channel group. Plain L1 lets
++    the maps with the largest absolute error dominate; dividing each group by
++    its own detached magnitude removes that imbalance without changing the
++    per-map optimum.
++    """
++
++    if prediction.shape != target.shape:
++        raise ValueError("prediction and target must have the same shape")
++    channels = int(prediction.shape[-1])
++    if channels_per_map <= 0 or channels % channels_per_map != 0:
++        return nn.functional.l1_loss(prediction, target)
++    groups = channels // channels_per_map
++    error = (prediction - target).abs().reshape(-1, groups, channels_per_map)
++    per_map = error.mean(dim=(0, 2))
++    scale = per_map.detach().clamp_min(epsilon)
++    return (per_map / scale).mean()
++
++
+ def mape_loss(
+     prediction: torch.Tensor,
+     target: torch.Tensor,
+@@ -237,8 +264,8 @@ class PaperTrainConfig:
+     def __post_init__(self) -> None:
+         if self.task not in {"image", "texture", "sdf"}:
+             raise ValueError("task must be image, texture, or sdf")
+-        if self.loss not in {"l1", "l2", "mape"}:
+-            raise ValueError("loss must be l1, l2, or mape")
++        if self.loss not in {"l1", "l2", "mape", "per_map_l1"}:
++            raise ValueError("loss must be l1, l2, mape, or per_map_l1")
+         integer_fields = {
+             "batch_size": self.batch_size,
+             "epochs": self.epochs,
+@@ -480,6 +507,8 @@ def _paper_loss(config: PaperTrainConfig):
+         return l1_loss
+     if config.loss == "l2":
+         return l2_loss
++    if config.loss == "per_map_l1":
++        return per_map_l1_loss
+     return lambda prediction, target: mape_loss(
+         prediction,
+         target,
