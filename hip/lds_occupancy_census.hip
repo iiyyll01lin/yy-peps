@@ -84,6 +84,12 @@ int main(int argc, char **argv) {
     std::printf("{\n");
     std::printf("  \"gcn_arch\": \"%s\",\n", prop.gcnArchName);
     std::printf("  \"multi_processor_count\": %d,\n", prop.multiProcessorCount);
+    // HIP does report the workgroup cap, so the census can be checked against
+    // the number rather than only inferred from where the peak stops rising.
+    std::printf("  \"max_blocks_per_multiprocessor\": %d,\n",
+                prop.maxBlocksPerMultiProcessor);
+    std::printf("  \"max_shared_memory_per_multiprocessor\": %zu,\n",
+                static_cast<size_t>(prop.maxSharedMemoryPerMultiProcessor));
     std::printf("  \"warp_size\": %d,\n", prop.warpSize);
     std::printf("  \"block_threads\": %d,\n", block);
     std::printf("  \"spin_ms\": %d,\n", spin_ms);

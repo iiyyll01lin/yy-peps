@@ -159,8 +159,10 @@
     },
     "what_no_tool_reports": {
       "quantity": "maximum workgroups resident per compute unit",
-      "checked": "rocminfo lists Max Waves Per CU and Max Work-item Per CU, and neither it nor hipDeviceProp_t exposes a workgroup-count limit",
-      "consequence": "It cannot be looked up, so it has to be measured, which is what the four footprints below the sweep are for. The wave ceiling alone would allow 32 blocks of 64 threads per compute unit, far above the six the separators need, so only an undocumented workgroup-count limit could interfere."
+      "checked": "rocminfo lists Max Waves Per CU and Max Work-item Per CU and neither is a workgroup-count limit",
+      "correction": "HIP does report it. hip_runtime_api.h carries maxBlocksPerMultiProcessor in hipDeviceProp_t, commented 'Max number of blocks on CU', and hipDeviceAttributeMaxBlocksPerMultiProcessor beside it. I said the quantity could not be looked up, and I had checked one tool and stopped. The probe now prints it, so the census is compared against the reported cap instead of only inferring one from where the peak stops rising.",
+      "why_the_measurement_is_still_worth_making": "The same header carries '@bug HIP-Clang always returns 0 for maxThreadsPerMultiProcessor'. A field that is documented to be wrong on some paths is a claim to check, not a fact to adopt; the four low footprints measure the cap independently of what the property says, and disagreement between them would itself be the finding.",
+      "consequence": "The wave ceiling alone would allow 32 blocks of 64 threads per compute unit, far above the six the separators need, so only a workgroup-count limit could interfere with them."
     }
   },
   "limitations": [

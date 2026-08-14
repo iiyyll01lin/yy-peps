@@ -204,11 +204,15 @@ def test_the_multiprocessor_factor_of_two_is_shown_by_two_tools():
 
 
 def test_the_workgroup_cap_is_recorded_as_unavailable():
-    """The wave ceiling can be looked up and the workgroup-count cap cannot.
-    That asymmetry is the reason the probe exists, so it is pinned here."""
+    """The wave ceiling can be looked up. The workgroup-count cap turned out to
+    be reportable too, after I had said it was not, and the correction has to
+    stay visible: the same header documents a property that returns zero on
+    some paths, which is why the probe still measures it."""
     gap = load(RESULT)["limiter_check"]["what_no_tool_reports"]
     assert "workgroup" in gap["quantity"]
     assert "rocminfo" in gap["checked"]
+    assert "maxBlocksPerMultiProcessor" in gap["correction"]
+    assert "@bug" in gap["why_the_measurement_is_still_worth_making"]
 
 
 def test_the_cdna_card_was_not_shared():
