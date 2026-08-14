@@ -12,6 +12,20 @@
   "expected_jobs": 594,
   "expected_optimizer_steps": 71280000,
   "job_completion_fraction": 0.0,
+  "liveness_resolution": {
+    "authoritative_result": "results/texture_repro/table2.json",
+    "authoritative_result_complete": true,
+    "boot_id_at_verification": "0ca11c34-38ca-4d2c-aa05-091065da66c3",
+    "boot_id_unchanged_since_record": true,
+    "method": "re-evaluated the recorded process_identity criterion for both workers",
+    "note": "The counters in this snapshot describe the superseded attempt, not the finished artifact. The workers below were recorded alive; they are not. Because the boot id is unchanged, the criterion recorded at the time still applies and now returns dead rather than ambiguous.",
+    "observation": "neither pid 228460 nor pid 228461 is present",
+    "outcome": "terminated_then_superseded_by_systemd_service",
+    "superseded_by": "results/texture_repro/table2_service_state.json",
+    "superseded_by_evidence": "the service run continued the same output_dir and both of its workers exited with returncode 0",
+    "verified_at_utc": "2026-08-14T06:23:21+00:00",
+    "workers_alive_at_verification": false
+  },
   "optimizer_step_completion_fraction": 0.0009820426487093155,
   "output_dir": "results/work/texture-repro/table2/24a5936cf378-63e6597b835b-ca6664fc7b36",
   "per_rank": {
