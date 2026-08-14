@@ -788,6 +788,56 @@ cap 16 已量到 13.94。** 這不是「可能還有一點空間」的線,而是
 途徑,也不宣稱更高的佔用率還能換到延遲(回報在兩節之前就已經是次線性的)。測試以窮舉
 1 到 512 的每一個上限來證明,而不是斷言結論。
 
+## Four cards, one toggle, two verdicts / 四張卡,一個開關,兩種結論
+
+A separator decides between hypotheses because they predict different numbers
+there. It is worth nothing if the difference it predicts is smaller than the
+scatter of the measurement, and the four-card A/B in this repository is the
+cleanest demonstration of that, because both of its arms are as well designed
+as each other and only one of them can be read.
+
+One variable was changed, `NCCL_P2P_DISABLE`. Both arms ran on the same four
+gfx1201 cards, on the same day, through the same harness. The collective arm
+times an RCCL all-reduce; the training arm times the paper's own Table-1 model
+at 442,691 parameters.
+
+| Arm | Effect between arms | Worst spread within an arm | Readable |
+|---|---|---|---|
+| RCCL all-reduce | **2.54–2.64x** | 1.067x | yes |
+| End-to-end training | 1.02x | **2.73x** | no |
+
+The collective arm says the peer-to-peer path carries about two and a half
+times the bus bandwidth, and it says so with an effect roughly thirty times its
+own noise. The training arm says nothing at all. Its two arms differ by two per
+cent while rounds of the *same* arm differ by up to a factor of 2.7, so the
+question of whether the peer-to-peer path helps training is not answered here
+in either direction. Reporting 1.02 as a result would be reporting the scatter.
+
+What does survive the training arm is a comparison whose ranges do not overlap:
+the slowest four-card round is faster than the fastest single-card round. That
+supports a lower bound of 1.35 and not the median of 3.16, and the receipt
+records the bound. A single round would have claimed 3.685.
+
+The final loss agrees to nine significant figures between one card and four, so
+none of the speed came out of accuracy.
+
+分離點之所以能做決定,是因為兩個假設在那裡預測不同的數字。但如果那個差距**小於量測
+本身的散布**,分離點就一文不值。本 repo 的四卡 A/B 是這件事最乾淨的示範,因為它的兩臂
+設計得一樣好,卻只有一臂讀得出來。
+
+唯一變因是 `NCCL_P2P_DISABLE`,兩臂在**同四張 gfx1201、同一天、同一套 harness** 上跑。
+collective 臂量 RCCL all-reduce;training 臂量論文自己的 Table-1 模型(442,691 參數)。
+
+collective 臂說 peer-to-peer 路徑值約 2.5 倍匯流排頻寬,而且效應約是自身雜訊的三十倍。
+training 臂什麼都沒說:兩臂相差 2%,但**同一臂**不同輪次之間可以差到 2.7 倍,所以
+peer-to-peer 對訓練有沒有幫助,這裡**兩個方向都答不出來**。把 1.02 當成結果報出去,
+報的是散布而不是效應。
+
+training 臂唯一存活的,是一個**區間不重疊**的比較:最慢的四卡輪次仍快於最快的單卡輪次。
+它支持的是 **1.35 倍的下界**,不是 3.16 的中位數,receipt 記的是下界。只看單輪會宣稱 3.685。
+
+單卡與四卡的最終 loss 吻合到九位有效數字,所以速度沒有一分是從精度換來的。
+
 ## Result contract and comparison blocker / 結果契約與比較限制
 
 `results/hip_latency.schema.json` requires workload kind, mode, implementation,

@@ -68,6 +68,12 @@ SDF_MAPE = "results/sdf_repro/sdf-table3-mape-public-three/three_shape_aggregate
 SDF_L1 = "results/sdf_repro/sdf-table6-l1-public-three/three_shape_aggregate.csv"
 OCCUPANCY_PROBE = "results/hip_occupancy_probe_result.json"
 CENSUS_RESULT = "results/hip_occupancy_census_result.json"
+MULTIGPU = "results/multigpu_ab_receipt.json"
+HARDWARE_DOC = "docs/05_amd_hardware.md"
+
+
+def finding(doc, name: str):
+    return dig(doc, f"findings.{name}")
 
 
 def probe_comparison(doc, footprint: int):
@@ -77,6 +83,51 @@ def probe_comparison(doc, footprint: int):
     raise KeyError(f"stage_one.comparisons[{footprint}]")
 
 CLAIMS = [
+    # The four-card A/B is argued from in the hardware chapter, where the point
+    # being made is that one arm is readable and the other is not. That argument
+    # is only honest while both the effect and the spread come from the receipt.
+    Claim(
+        "collective peer-to-peer ratio, low end",
+        MULTIGPU,
+        lambda d: finding(d, "collective_p2p_effect")["median_ratio_range"][0],
+        lambda v: f"{v:.2f}",
+        [HARDWARE_DOC],
+    ),
+    Claim(
+        "collective peer-to-peer ratio, high end",
+        MULTIGPU,
+        lambda d: finding(d, "collective_p2p_effect")["median_ratio_range"][1],
+        lambda v: f"{v:.2f}",
+        [HARDWARE_DOC],
+    ),
+    Claim(
+        "worst round-to-round spread in the collective arm",
+        MULTIGPU,
+        lambda d: finding(d, "collective_p2p_effect")["worst_within_arm_spread"],
+        lambda v: f"{v:.3f}",
+        [HARDWARE_DOC],
+    ),
+    Claim(
+        "worst round-to-round spread in the training arm",
+        MULTIGPU,
+        lambda d: finding(d, "training_p2p_effect")["within_arm_spread_p2p_enabled"],
+        lambda v: f"{v:.2f}",
+        [HARDWARE_DOC],
+    ),
+    Claim(
+        "four-card speedup lower bound",
+        MULTIGPU,
+        lambda d: finding(d, "four_gpu_beats_one_gpu")["guaranteed_lower_bound"],
+        lambda v: f"{v:.2f}",
+        [HARDWARE_DOC],
+    ),
+    Claim(
+        "four-card speedup median, which the chapter declines to claim",
+        MULTIGPU,
+        lambda d: finding(d, "four_gpu_beats_one_gpu")["median_ratio"],
+        lambda v: f"{v:.2f}",
+        [HARDWARE_DOC],
+    ),
     Claim(
         "table 2 job count",
         TABLE2,

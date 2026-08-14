@@ -38,10 +38,26 @@ def mirror(tmp_path, edit_receipt=None, edit_readme=None, edit_csv=None):
             payload = edit_receipt(claim.source, payload)
         source.write_text(json.dumps(payload), encoding="utf-8")
 
-    readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    if edit_readme is not None:
-        readme = edit_readme(readme)
-    (tmp_path / "README.md").write_text(readme, encoding="utf-8")
+    # Every document a claim argues in, not only the README. A claim pointing at
+    # another chapter must be mirrored too, or the check reports a missing file
+    # where the test is asking it to report a disagreement.
+    for claim in check_headline_numbers.CLAIMS:
+        for rel in claim.documents:
+            document = tmp_path / rel
+            if document.exists():
+                continue
+            document.parent.mkdir(parents=True, exist_ok=True)
+            text = (ROOT / rel).read_text(encoding="utf-8")
+            if rel == "README.md" and edit_readme is not None:
+                text = edit_readme(text)
+            document.write_text(text, encoding="utf-8")
+
+    readme = tmp_path / "README.md"
+    if not readme.exists():
+        text = (ROOT / "README.md").read_text(encoding="utf-8")
+        if edit_readme is not None:
+            text = edit_readme(text)
+        readme.write_text(text, encoding="utf-8")
     return str(tmp_path)
 
 
