@@ -137,6 +137,27 @@ All three architectures then returned the same block counts; gfx942's 6 at 10752
 evidence for a CDNA allocation granule. The RDNA counter model still stands;
 the proposed counter substitute does not.
 
+**A residency census then answered the question the API could not.** Instead of
+asking the runtime how many blocks would fit, every block registers on entry,
+holds its shared memory, and deregisters on exit; the peak registration is how
+many were resident together. That number is counted device-wide, so eleven
+workgroups on a two-CU workgroup processor is 220 blocks across twenty of them
+rather than five and a half per CU, which is the quantity the API had nowhere
+to put. It reproduced all seven gfx1151 counter points and every registered
+prediction on both RDNA parts.
+
+The result splits the model in two. Its **form** — round the footprint up to a
+granule, divide the pool — holds on both architectures. Its **constants** do
+not. RDNA rounds to 1024 bytes and divides a 128 KiB pool belonging to a
+workgroup processor, confirmed at four footprints where a finer granule
+predicts something else, by an instrument independent of the profiler that
+first fitted it. On gfx942 the same four are unanimous the other way: 10752
+bytes fitted **6 blocks per compute unit, not the 5** a 1024-byte granule
+requires. **So the 1024-byte granule is an RDNA fact, not a general one**, and
+the ceiling that depends on it must not be quoted for CDNA. What the CDNA
+granule actually is stays bounded rather than measured: every footprint swept
+is a multiple of 512, so anything at or below that fits equally well.
+
 That optimisation is now finished rather than merely exhausted, and the
 arithmetic says so. The three fixed tiles cost `16 x 64 x (2+2+4) = 8192` bytes,
 while sixteen workgroups per WGP would need the entire allocation to fit inside
@@ -167,6 +188,20 @@ occupancy API 只重現 gfx1151 計數器 7 點中的 **5 點**，在兩個奇�
 回 12 對 10.97、8 對 8.97。三個架構的 block 數完全相同;gfx942 在 10752 bytes
 回 6 是 API 對 64 KiB dynamic LDS 的除法，不是 CDNA allocation granule 的證據。
 RDNA 計數器模型仍成立；被拒絕的是計數器替代方案。
+
+**隨後一個 residency census 回答了 API 答不了的問題。** 不再問 runtime「裝得下幾個」，
+而是讓每個 block 進場登記、持有 LDS、離場销註，**峰值就是同時常駐數**。它數的是
+**全裝置**，所以「跨兩個 CU 的 WGP 上 11 個 workgroup」是 20 個 WGP 共 220 塊，而不是
+每 CU 5.5 個——後者正是 API 無處安放的量。它重現了 gfx1151 全部 7 個計數器點，並在
+兩台 RDNA 上逐列命中登記的預測。
+
+結果把模型劈成兩半。它的**形式**（向上進位到粒度、再除 pool）兩個架構都成立；
+它的**常數**則不是。RDNA 進位到 1024 bytes、除以 WGP 的 128 KiB pool，這在四個
+能分辨假設的 footprint 上獲得確認，而且使用的是與當初擬合它的 profiler **獨立的儀器**。
+在 gfx942 上同樣四個點一致地往另一邊倒：10752 bytes 裝下的是每 CU **6 塊，而非
+1024 粒度所需的 5 塊**。**因此 1024 粒度是 RDNA 的事實，不是通則**，依賴它的天花板
+不得被引用到 CDNA。至於 CDNA 的粒度實際是多少，這次只能**界定而非量測**：本次掃的
+每一個 footprint 都是 512 的倍數，因此 512 以下皆同樣相容。
 
 這條最佳化現在是**可證明的終點**而非「大概沒了」:三個固定分頁佔 `16×64×(2+2+4) = 8192`
 bytes,而每 WGP 十六個 workgroup 需要整份配置塞進 8192,任何上限都不可能達到。**每 CU

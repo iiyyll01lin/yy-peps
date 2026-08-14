@@ -65,9 +65,14 @@
       "reason": "First occupancy profile, and the receipt whose model was later corrected twice by hardware counters. The superseded figures are marked in place rather than deleted, under model_correction."
     },
     "hip_occupancy_census_prediction.json": {
-      "status": "prediction-not-a-measurement",
+      "status": "falsification-result-not-paper-comparable",
       "producer": "derived from the model in hip_specialised_caps.json, checked by tests/test_occupancy_census_prediction.py",
-      "reason": "Registered before running hip/lds_occupancy_census.hip. Predicts peak resident workgroups on gfx1151, gfx1201 and gfx942, names the four RDNA footprints where the 1024-byte and 128-byte granules disagree, and requires the census to reproduce all seven gfx1151 counter points before any CDNA reading is interpreted. Contains no observation."
+      "reason": "Registered before running hip/lds_occupancy_census.hip, then resolved in place by results/hip_occupancy_census_result.json. The gate passed 7 of 7 on gfx1151, so the CDNA reading was admissible; the decisive gfx942 footprint then refuted the 1024-byte granule there. No prediction row was rewritten."
+    },
+    "hip_occupancy_census_result.json": {
+      "status": "falsification-result-not-paper-comparable",
+      "producer": "hip/lds_occupancy_census.hip on gfx1151, gfx1201 and gfx942",
+      "reason": "A residency census, counting device-wide rather than asking the runtime. It reproduced all seven gfx1151 counter points, confirmed the 1024-byte granule at four decisive footprints on two RDNA parts with an instrument independent of the profiler that first fitted it, and showed the granule does not transfer to gfx942, where 10752 bytes fitted six blocks per compute unit instead of five. The form of the model is general; the granule is architecture-specific and on CDNA is bounded at 512 or finer rather than measured."
     },
     "hip_occupancy_prediction.json": {
       "status": "falsification-result-not-paper-comparable",

@@ -1,0 +1,21 @@
+{
+  "gcn_arch": "gfx1151",
+  "multi_processor_count": 20,
+  "warp_size": 32,
+  "block_threads": 64,
+  "spin_ms": 20,
+  "wall_clock_khz": 100000,
+  "rows": [
+    {"footprint": 8704, "grid": 1280, "peak_resident_blocks": 280, "per_multiprocessor": 14.0000},
+    {"footprint": 9216, "grid": 1280, "peak_resident_blocks": 280, "per_multiprocessor": 14.0000},
+    {"footprint": 9728, "grid": 1280, "peak_resident_blocks": 240, "per_multiprocessor": 12.0000},
+    {"footprint": 10240, "grid": 1280, "peak_resident_blocks": 240, "per_multiprocessor": 12.0000},
+    {"footprint": 10752, "grid": 1280, "peak_resident_blocks": 220, "per_multiprocessor": 11.0000},
+    {"footprint": 11264, "grid": 1280, "peak_resident_blocks": 220, "per_multiprocessor": 11.0000},
+    {"footprint": 11776, "grid": 1280, "peak_resident_blocks": 200, "per_multiprocessor": 10.0000},
+    {"footprint": 12288, "grid": 1280, "peak_resident_blocks": 200, "per_multiprocessor": 10.0000},
+    {"footprint": 13312, "grid": 1280, "peak_resident_blocks": 180, "per_multiprocessor": 9.0000},
+    {"footprint": 16384, "grid": 1280, "peak_resident_blocks": 160, "per_multiprocessor": 8.0000},
+    {"footprint": 32768, "grid": 1280, "peak_resident_blocks": 80, "per_multiprocessor": 4.0000}
+  ]
+}

@@ -67,6 +67,7 @@ CAPS = "results/hip_specialised_caps.json"
 SDF_MAPE = "results/sdf_repro/sdf-table3-mape-public-three/three_shape_aggregate.csv"
 SDF_L1 = "results/sdf_repro/sdf-table6-l1-public-three/three_shape_aggregate.csv"
 OCCUPANCY_PROBE = "results/hip_occupancy_probe_result.json"
+CENSUS_RESULT = "results/hip_occupancy_census_result.json"
 
 
 def probe_comparison(doc, footprint: int):
@@ -228,6 +229,29 @@ CLAIMS = [
         OCCUPANCY_PROBE,
         lambda d: dig(d, "cross_architecture_observation.decisive_10752_row.gfx942"),
         lambda v: f"gfx942's {v:d} at 10752 bytes",
+        ["README.md"],
+    ),
+    # The census split the model into a general form and RDNA-specific
+    # constants. Both halves of that sentence are numbers from the receipt.
+    Claim(
+        "census cdna blocks at the decisive footprint",
+        CENSUS_RESULT,
+        lambda d: dig(d, "cdna_result.observed_per_cu"),
+        lambda v: f"{v:d} blocks per compute unit",
+        ["README.md"],
+    ),
+    Claim(
+        "census cdna blocks a 1024 granule would require",
+        CENSUS_RESULT,
+        lambda d: dig(d, "cdna_result.predicted_per_cu_if_granule_1024"),
+        lambda v: f"not the {v:d}",
+        ["README.md"],
+    ),
+    Claim(
+        "census cdna granule bound",
+        CENSUS_RESULT,
+        lambda d: dig(d, "cdna_result.largest_granule_still_consistent"),
+        lambda v: f"multiple of {v:d}",
         ["README.md"],
     ),
 ]

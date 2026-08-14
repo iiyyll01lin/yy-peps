@@ -11,11 +11,13 @@ unaligned sizes that make it conclusive are asserted here too.
 """
 
 import json
+import hashlib
 import math
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CENSUS = ROOT / "results" / "hip_occupancy_census_prediction.json"
+RESULT = ROOT / "results" / "hip_occupancy_census_result.json"
 SCAN = ROOT / "results" / "hip_lds_codeobject_scan.json"
 CAPS = ROOT / "results" / "hip_specialised_caps.json"
 
@@ -99,11 +101,91 @@ def test_rdna_has_four_separating_footprints_unlike_the_rejected_api_test():
     assert len(separating) == 4
 
 
-def test_the_census_is_still_a_prediction():
+def test_the_census_resolves_to_its_result():
     doc = load(CENSUS)
-    assert doc["status"] == "predicted_not_yet_measured"
-    blob = json.dumps(doc["predictions"])
-    assert "observed" not in blob and "measured_peak" not in blob
+    assert doc["status"] == "resolved_gate_passed"
+    assert ROOT / doc["resolved_by"] == RESULT
+    assert doc["predictions_rewritten"] is False
+
+
+def test_the_gate_passed_on_every_counter_footprint():
+    gate = load(RESULT)["gate_on_the_part_with_counters"]
+    assert gate["verdict"] == "passed"
+    assert (gate["passed"], gate["total"]) == (7, 7)
+    assert all(row["within_0_1"] for row in gate["comparisons"])
+
+
+def test_the_raw_captures_keep_the_hashes_recorded_at_capture():
+    result = load(RESULT)
+    for raw in result["raw_receipts"]:
+        payload = ROOT / raw["path"]
+        assert hashlib.sha256(payload.read_bytes()).hexdigest() == raw["sha256"]
+
+
+def test_rdna_captures_match_the_registered_predictions_exactly():
+    """Both RDNA parts came out on every row. If a capture is ever replaced by
+    one that does not, the confirmation of the granule goes with it."""
+    doc = load(CENSUS)
+    result = load(RESULT)
+    paths = {raw["arch"]: raw["path"] for raw in result["raw_receipts"]}
+    for arch in ("gfx1151", "gfx1201"):
+        capture = load(ROOT / paths[arch])
+        predicted = {r["footprint"]: r for r in doc["predictions"][arch]}
+        for row in capture["rows"]:
+            assert (row["peak_resident_blocks"]
+                    == predicted[row["footprint"]]["peak_resident_blocks"])
+
+
+def test_the_cdna_refutation_is_not_softened():
+    """The one row that missed is the whole CDNA finding. A capture or a reading
+    that quietly agreed with 1024 again would erase it."""
+    result = load(RESULT)
+    cdna = result["cdna_result"]
+    assert cdna["observed"] != cdna["predicted_if_granule_1024"]
+    assert cdna["observed"] == cdna["predicted_if_no_rounding"]
+    assert 1024 in cdna["granules_ruled_out"]
+
+    paths = {raw["arch"]: raw["path"] for raw in result["raw_receipts"]}
+    capture = load(ROOT / paths["gfx942"])
+    decisive = next(r for r in capture["rows"]
+                    if r["footprint"] == cdna["decisive_footprint"])
+    assert decisive["peak_resident_blocks"] == cdna["observed"]
+
+
+def test_the_cdna_granule_is_reported_as_a_bound_not_a_measurement():
+    """Every footprint swept is a multiple of 512, so nothing at or below that
+    is distinguishable. Claiming a specific CDNA granule would overstate."""
+    result = load(RESULT)
+    cdna = result["cdna_result"]
+    assert cdna["largest_granule_still_consistent"] == 512
+    survivors = cdna["granules_still_consistent_with_every_row"]
+    assert survivors == [1, 2, 4, 8, 16, 32, 64, 128, 256, 512]
+
+    capture_paths = {raw["arch"]: raw["path"] for raw in result["raw_receipts"]}
+    capture = load(ROOT / capture_paths["gfx942"])
+    for row in capture["rows"]:
+        assert row["footprint"] % 512 == 0, (
+            "a footprint that is not a multiple of 512 would narrow the bound "
+            "and this claim would need redoing"
+        )
+
+
+def test_lds_was_the_binding_limiter():
+    check = load(RESULT)["limiter_check"]
+    assert check["rdna_peak_waves_per_cu"] < check["rdna_wave_ceiling_per_cu"]
+    assert check["cdna_peak_waves_per_cu"] < check["rdna_wave_ceiling_per_cu"]
+
+
+def test_the_cdna_card_was_not_shared():
+    """A tenant holding part of the card is the reading that would look like a
+    refuted model. Every peak being an exact multiple of the processor count
+    rules it out."""
+    result = load(RESULT)
+    paths = {raw["arch"]: raw["path"] for raw in result["raw_receipts"]}
+    capture = load(ROOT / paths["gfx942"])
+    count = capture["multi_processor_count"]
+    for row in capture["rows"]:
+        assert row["peak_resident_blocks"] % count == 0
 
 
 def test_the_code_object_scan_records_the_request_verbatim():

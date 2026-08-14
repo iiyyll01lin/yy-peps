@@ -1,0 +1,152 @@
+{
+  "schema": "peps.hip_occupancy_census_result",
+  "schema_version": 1,
+  "status": "complete-model-is-mechanism-with-architecture-specific-constants",
+  "question": "Is the LDS occupancy model a mechanism, or a curve through seven RDNA footprints?",
+  "answer": "A mechanism whose constants are architecture-specific. The form round-up-then-divide-the-pool holds on both architectures. The pool scope and the rounding granule do not transfer: RDNA rounds to 1024 bytes and divides a 128 KiB pool belonging to a two-CU workgroup processor, while gfx942 shows no rounding at this resolution and divides a 64 KiB pool per compute unit.",
+  "source": {
+    "probe": "hip/lds_occupancy_census.hip",
+    "method": "each block registers on entry, holds its shared memory for a 20 ms wall-clock spin, deregisters on exit; the peak registration is the resident count",
+    "block_threads": 64,
+    "spin_ms": 20,
+    "allocation": "dynamic shared memory",
+    "preregistration": "results/hip_occupancy_census_prediction.json"
+  },
+  "raw_receipts": [
+    {
+      "arch": "gfx1151",
+      "path": "results/hip_occupancy_census/gfx1151.json",
+      "sha256": "801f2b2453e426ca71ff412d222853c1c64e25316197f3a6610f24f5f83edd06"
+    },
+    {
+      "arch": "gfx1201",
+      "path": "results/hip_occupancy_census/gfx1201.json",
+      "sha256": "41dd235b79d1a63a03bcd98979955b531ef33f41059ce6f00c0137cd31eda73e"
+    },
+    {
+      "arch": "gfx942",
+      "path": "results/hip_occupancy_census/gfx942.json",
+      "sha256": "0748fb771d59bd7a0412c6483a4de4324046539f8618ffc189225dc35da3d8dc"
+    }
+  ],
+  "gate_on_the_part_with_counters": {
+    "verdict": "passed",
+    "run_on": "gfx1151",
+    "required": "all seven counter footprints reproduced within 0.1",
+    "passed": 7,
+    "total": 7,
+    "comparisons": [
+      {
+        "footprint": 8704,
+        "census_per_multiprocessor": 14.0,
+        "counter_waves_per_cu": 13.94,
+        "difference": 0.06,
+        "within_0_1": true
+      },
+      {
+        "footprint": 9728,
+        "census_per_multiprocessor": 12.0,
+        "counter_waves_per_cu": 11.96,
+        "difference": 0.04,
+        "within_0_1": true
+      },
+      {
+        "footprint": 10752,
+        "census_per_multiprocessor": 11.0,
+        "counter_waves_per_cu": 10.97,
+        "difference": 0.03,
+        "within_0_1": true
+      },
+      {
+        "footprint": 11776,
+        "census_per_multiprocessor": 10.0,
+        "counter_waves_per_cu": 9.97,
+        "difference": 0.03,
+        "within_0_1": true
+      },
+      {
+        "footprint": 12288,
+        "census_per_multiprocessor": 10.0,
+        "counter_waves_per_cu": 9.98,
+        "difference": 0.02,
+        "within_0_1": true
+      },
+      {
+        "footprint": 13312,
+        "census_per_multiprocessor": 9.0,
+        "counter_waves_per_cu": 8.97,
+        "difference": 0.03,
+        "within_0_1": true
+      },
+      {
+        "footprint": 32768,
+        "census_per_multiprocessor": 4.0,
+        "counter_waves_per_cu": 4.0,
+        "difference": 0.0,
+        "within_0_1": true
+      }
+    ],
+    "why_the_census_succeeds_where_the_runtime_api_failed": "The API returns an integer per compute unit, and eleven workgroups on a two-CU workgroup processor is five and a half per CU. The census counts device-wide, where the same state is 220 blocks across twenty workgroup processors. The quantity was always there; the API had nowhere to put it.",
+    "residual_explained": "The census reports exact integers and the counters sit just below them, because MeanOccupancyPerCU is a time average over a dispatch that ramps up and drains. hip_specialised_caps.json predicted that sign before this run."
+  },
+  "rdna_result": {
+    "verdict": "1024-byte granule confirmed by a second, independent instrument",
+    "parts": [
+      "gfx1151",
+      "gfx1201"
+    ],
+    "rows_matching_prediction": "11 of 11 on each part",
+    "decisive_footprints": [
+      8704,
+      9728,
+      10752,
+      11776
+    ],
+    "why_they_are_decisive": "At these four the 1024-byte granule and a finer one predict different residency. All four came out on the 1024 side on both parts.",
+    "independence": "The granule was originally fitted to rocprofv3 counters. This is a residency census with no profiler involved, and it agrees at the points that separate the hypotheses.",
+    "gfx1151_and_gfx1201_identical_per_multiprocessor": true
+  },
+  "cdna_result": {
+    "verdict": "the 1024-byte granule does not transfer",
+    "decisive_footprint": 10752,
+    "predicted_if_granule_1024": 760,
+    "predicted_if_no_rounding": 912,
+    "observed": 912,
+    "observed_per_cu": 6,
+    "predicted_per_cu_if_granule_1024": 5,
+    "reading": "10752 is 84 x 128 and 21 x 512 but not a multiple of 1024. A 1024-byte granule would round it to 11264 and fit five blocks per CU; it fitted six.",
+    "largest_granule_still_consistent": 512,
+    "granules_still_consistent_with_every_row": [1, 2, 4, 8, 16, 32, 64, 128, 256, 512],
+    "granules_ruled_out": [
+      1024,
+      2048
+    ],
+    "why_it_cannot_be_narrowed_here": "Every footprint in this sweep is a multiple of 512, so a granule of 512 or anything finer leaves all eleven rows identical. The sweep bounds the CDNA granule at 512 or less; it does not measure it.",
+    "how_it_could_be_narrowed": "Footprints that are not multiples of the granule under test, chosen so the rounding crosses a pool-division boundary. Solved examples: 4097 separates 512 from 256 (14 against 15 blocks), 4865 separates 256 from 128, 4609 separates 128 from 64, 4993 separates 64 from 32. They sit near 4 to 5 KiB rather than near this sweep, because that is where the boundaries of floor(65536 / x) fall close enough together.",
+    "a_footprint_that_does_not_work": "10496 was the obvious-looking candidate and is useless for this: it yields six blocks under 512, 256 and 128 alike, separating only 1024 from the rest. It is recorded because it was nearly recommended.",
+    "every_row_equals_a_plain_pool_division": true,
+    "device_was_not_shared": "Every peak is an exact multiple of 152, so all compute units were available. A tenant holding part of the card would have shown up as a peak that is not a multiple of the compute unit count."
+  },
+  "what_this_says_about_the_rejected_runtime_api": {
+    "observation": "hipOccupancyMaxActiveBlocksPerMultiprocessor returned floor(65536 / requested) per multiprocessor on all three parts. On gfx942 the census reproduces that exactly, on all eleven footprints.",
+    "reading": "The API models a per-compute-unit pool with no coarse granule. That is the CDNA arrangement, so it was right there and wrong on RDNA for two separable reasons: the pool belongs to a workgroup processor, and RDNA rounds to 1024.",
+    "the_rejection_was_still_correct": "Being right is not the same as being known to be right. The API could not be trusted on a part with no counters until something independent agreed with it there, and that is what the census now provides. Had the gate been waived, the same CDNA number would have been reported with no way to tell it from a coincidence."
+  },
+  "consequences_for_the_ceiling_claim": {
+    "claim": "fourteen waves per compute unit, 43.75 percent, is the ceiling of cap narrowing, and bi-grid already measures 13.94",
+    "status": "strengthened and scoped",
+    "strengthened": "The arithmetic behind it uses the 1024-byte granule and the 128 KiB workgroup processor pool. Both are now confirmed by two independent instruments on two RDNA parts.",
+    "scoped": "The claim was always about this kernel on RDNA. It is now known that the granule it depends on is an RDNA fact, so the ceiling must not be quoted for CDNA."
+  },
+  "limiter_check": {
+    "rdna_peak_waves_per_cu": 14,
+    "rdna_wave_ceiling_per_cu": 32,
+    "cdna_peak_waves_per_cu": 7,
+    "note": "LDS is the binding limiter everywhere in this sweep; neither part is near its wave-slot ceiling, and the grid is several times the largest residency so saturation is not grid-limited."
+  },
+  "limitations": [
+    "The census allocates dynamically while the counters measured static __shared__. Agreement on all seven counter footprints shows the two are handed out alike for these sizes; it does not prove they are for every size.",
+    "gfx942 has no profiler, so its result rests on the census alone. What makes that admissible is the gate on gfx1151, not the plausibility of the number.",
+    "The CDNA granule is bounded, not measured: 1024 and 2048 are excluded and anything from 512 down is consistent with every row, because every footprint swept is a multiple of 512."
+  ]
+}

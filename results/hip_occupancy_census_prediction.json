@@ -1,7 +1,10 @@
 {
   "schema": "peps.hip_occupancy_census_prediction",
   "schema_version": 1,
-  "status": "predicted_not_yet_measured",
+  "status": "resolved_gate_passed",
+  "resolved_by": "results/hip_occupancy_census_result.json",
+  "resolution": "The gate passed 7 of 7 on gfx1151 and every registered row came out exactly on both RDNA parts, so the CDNA reading became admissible. On gfx942 ten of eleven rows matched and the one that did not is the decisive footprint: 10752 fitted six blocks per compute unit, not the five a 1024-byte granule requires. The form of the model holds on both architectures; the granule constant is an RDNA fact.",
+  "predictions_rewritten": false,
   "question": "How many workgroups are actually resident at once, as LDS per workgroup grows, and does the answer follow the counter-derived model on a part that has no workgroup processor?",
   "why_a_census_and_not_the_runtime_api": "The runtime API was rejected in results/hip_occupancy_probe_result.json because it reports an integer per compute unit. On RDNA the LDS pool belongs to a workgroup processor spanning two compute units, so eleven workgroups per WGP is five and a half per CU and cannot survive that division. A census counts blocks device-wide, where eleven per WGP across twenty WGPs is 220, an integer. The quantity that was unrepresentable becomes representable.",
   "method": {
@@ -79,7 +82,7 @@
     "Another tenant on the CDNA card. It is a single-GPU container slice, so a peak below prediction there may mean the device was shared rather than that the model is wrong. This must be checked before any conclusion, not after."
   ],
   "limitations": [
-    "Predictions only. Nothing here has been measured; tests/test_occupancy_census_prediction.py fails if measured values appear while the status still says otherwise.",
+    "This file preserves the predictions as registered. The measurements are in results/hip_occupancy_census_result.json and the three raw captures it names; no prediction row was rewritten after the run.",
     "The census holds each block for a fixed spin. It measures how many the hardware was willing to keep resident, which is the quantity the occupancy model is about, but it is not the same instrument as the rocprofv3 counters and may differ at the edges."
   ]
 }

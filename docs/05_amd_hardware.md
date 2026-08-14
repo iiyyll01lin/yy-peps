@@ -631,6 +631,61 @@ oracle，所以它**不能**證明 CDNA 是 128-byte allocation granule。RDNA �
 獨立記錄的 block size 與 wave size，不由任何觀測值或 footprint 選出；原文與修正均保留
 在 result receipt。
 
+### A residency census answered it / residency census 給出答案
+
+The API's failure was a reporting artefact, so the fix was to stop asking and
+start counting. `hip/lds_occupancy_census.hip` has every block register on
+entry, hold its shared memory for a fixed spin, and deregister on exit; the peak
+registration is how many were resident together. The count is device-wide, which
+is the whole point: eleven workgroups on a two-CU workgroup processor is 220
+blocks across twenty of them, an integer, where per-CU reporting had to choose
+between five and six.
+
+It reproduced all seven gfx1151 counter footprints and every registered
+prediction on both RDNA parts, eleven rows each. The census returns exact
+integers while the counters sit a little below them, which is what a
+time-averaged `MeanOccupancyPerCU` should do over a dispatch that ramps up and
+drains — `hip_specialised_caps.json` recorded that expectation before this run.
+Agreement also settles a smaller question: the census allocates dynamically and
+the counters measured static `__shared__`, so for these sizes the two are handed
+out alike.
+
+Then the part that matters.
+
+| part | 10752 bytes | what it means |
+| --- | ---: | --- |
+| gfx1151 | 11 per WGP | rounds to 11264, a 1024-byte granule |
+| gfx1201 | 11 per WGP | same |
+| gfx942 | **6 per CU** | no rounding at this resolution; 5 would be required by a 1024-byte granule |
+
+**The form of the model is general and its constants are not.** Round up to a
+granule, divide the pool: that holds on both architectures. The pool scope
+changes as expected, 128 KiB per workgroup processor against 64 KiB per compute
+unit. The granule does not survive the crossing. On RDNA it is 1024 bytes,
+confirmed at four footprints where a finer granule predicts something different,
+now by two independent instruments on two parts. On CDNA a 1024-byte granule is
+ruled out, and what replaces it is bounded rather than measured: every footprint
+in this sweep is a multiple of 512, so any granule at or below 512 fits every
+row. Narrowing it needs footprints chosen against the boundaries of
+`floor(65536 / x)`, which sit near 4 to 5 KiB — 10496 looks like a candidate and
+is not one, giving six blocks under 512, 256 and 128 alike.
+
+This is the outcome the exercise was built to be able to reach. The ceiling
+claim earlier in this document rests on the 1024-byte granule and the 128 KiB
+WGP pool, and both are now confirmed independently, so it is stronger than it
+was. It is also now known to be an RDNA claim, and must not be quoted for CDNA.
+
+API 的失敗是回報方式的問題，所以停止提問、改為數數。每個 block 進場登記、持有 LDS、
+離場销註，峰值即同時常駐數；因為數的是**全裝置**，跨兩 CU 的 WGP 上 11 個 workgroup
+就是 220 塊，不再需要在 5 與 6 之間取捨。它重現了全部 7 個計數器點，並在兩台 RDNA 各
+11 列全中；普查回整數而計數器略低，正是 `MeanOccupancyPerCU` 時間平均應有的行為。
+
+**模型的形式是通則，常數不是。** pool 範圍如預期改變（每 WGP 128 KiB 對每 CU 64 KiB），
+但粒度沒有跨過去：RDNA 為 1024 bytes（四個可分辨點、兩種獨立儀器、兩台部件確認），
+而 gfx942 在 10752 bytes 裝下 **6 塊而非 5 塊**，1024 粒度被否證。CDNA 的粒度只能界定
+為 **512 以下**，因為本次掃的每個 footprint 都是 512 的倍數；想再縮小得選對點，
+`10496` 看似可用其實不行（512/256/128 下都是 6）。
+
 ### The wave-count term still needs a counter / wave-count 項仍需計數器
 
 The model is `workgroups per WGP x waves per workgroup, halved across the WGP`.
