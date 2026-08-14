@@ -391,6 +391,53 @@ decoder 形狀完全相同(hidden 64、4 層 Linear、輸出 3),僅特徵寬度 
 收窄後兩個頻率上 Pink 都快(與論文一致)。此處使用隨機權重而非訓練檢查點,量到的是
 decoder 形狀的成本,不是重現的品質,也不能取代 sweep。
 
+## Two words this section leans on / 本節倚賴的兩個詞
+
+**Allocation granule.** Hardware hands out LDS in fixed-size chunks, not in
+whatever byte count was asked for, so a request costs
+`ceil(request / granule) * granule`. Ask for 10752 bytes where the granule is
+1024 and 11264 are consumed. The extra 512 are paid for and cannot be used, and
+because LDS is reserved for the whole life of a workgroup whether it is read or
+not, that waste is subtracted from what the next workgroup could have had. This
+is why the granule is not a detail: it converts directly into how many
+workgroups fit, and the reproduction's latency followed that number. Three
+things about it were established here rather than assumed. It is applied when a
+workgroup is dispatched, not by the compiler — `group_segment_fixed_size` in the
+code object is the request verbatim on both architectures. It is 1024 bytes on
+RDNA, confirmed by a counter and then by an independent census. And it does not
+transfer: gfx942 fits six workgroups at 10752 bytes where 1024-byte rounding
+would allow five.
+
+**Discriminating footprint, or separator.** A test point chosen so that two
+competing explanations predict *different* observable numbers. Most footprints
+are useless for deciding anything: at 12288 bytes a 1024-byte granule and a
+512-byte one both give the same residency, so no measurement there can prefer
+either. The whole informational content of an experiment sits in the points
+where the candidates disagree, and finding them is a search, not an intuition —
+a footprint must land just under a capacity boundary so the coarser granule
+rounds past it while the finer one does not. Reasoning about where those points
+"should" be produced a wrong answer here twice: 10496 looks like an obvious
+separator and separates nothing, and the claim that none exist at low residency
+was refuted by enumerating them. Used one at a time a separator eliminates a
+hypothesis; used together, several of them form a signature that identifies one.
+
+**配置粒度。** 硬體以固定大小的區塊發放 LDS,所以一次請求實際佔用
+`ceil(請求 / 粒度) × 粒度`。粒度 1024 時要 10752 會吃掉 11264,多出的 512
+付了錢卻用不到;而 LDS 在 workgroup 存活期間**不論是否讀取都整份保留**,那份浪費
+直接從下一個 workgroup 能拿到的額度裡扣掉。這就是粒度不是細節的原因——它直接換算成
+能塞下幾個 workgroup,而重現的延遲就跟著那個數字走。關於它,本文**建立**而非假設了三件事:
+它在 dispatch 時套用而非編譯期(code object 裡的 `group_segment_fixed_size` 在兩個架構
+都是原始請求值);在 RDNA 上是 1024 bytes(先由計數器、再由獨立普查確認);而且**不跨架構**
+(gfx942 在 10752 bytes 塞下六個,1024 進位只允許五個)。
+
+**分離點。** 刻意挑選的測試點,使兩個競爭解釋對**可觀測數字**給出**不同**預測。多數
+footprint 對判定毫無用處:在 12288,1024 與 512 粒度給出相同殘留量,在那裡量再多次也
+分不出誰對。**一個實驗的全部資訊量,都集中在候選假設彼此不一致的那些點上**,而找出它們
+靠的是搜尋而非直覺——footprint 必須落在容量邊界正下方,讓較粗的粒度進位越過、較細的
+留在原地。本文在這件事上憑推理錯過兩次:`10496` 看起來像分離點但什麼都分不出;而
+「低殘留區不存在分離點」的斷言,被逐一列舉推翻。單獨使用,分離點淘汰一個假設;數個
+並用,它們構成的指紋能**指認**出一個。
+
 ## The counter says the model was wrong / 計數器說模型錯了
 
 Three receipts in this repository carried the same sentence: occupancy was
