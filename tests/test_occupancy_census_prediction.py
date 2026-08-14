@@ -176,6 +176,41 @@ def test_lds_was_the_binding_limiter():
     assert check["cdna_peak_waves_per_cu"] < check["rdna_wave_ceiling_per_cu"]
 
 
+def test_the_wave_ceiling_is_observed_rather_than_quoted():
+    """It was a specification number until rocminfo was read on both parts.
+    Losing that provenance would put the headroom argument back on recall."""
+    source = load(RESULT)["limiter_check"]["ceiling_source"]
+    assert source["tool"] == "rocminfo"
+    ceiling = load(RESULT)["limiter_check"]["rdna_wave_ceiling_per_cu"]
+    assert source["gfx1201"] == source["gfx942"] == ceiling
+
+
+def test_the_multiprocessor_factor_of_two_is_shown_by_two_tools():
+    """A HIP multiprocessor is a workgroup processor on RDNA and a compute unit
+    on CDNA. That is the misreading that once cost this repository a factor of
+    two, and it is checkable arithmetic rather than a remembered caveat."""
+    trap = load(RESULT)["limiter_check"][
+        "the_multiprocessor_trap_confirmed_by_a_second_tool"
+    ]
+    cu = trap["rocminfo_compute_unit"]
+    mp = trap["hip_multi_processor_count"]
+    per_cu = trap["rocminfo_max_work_item_per_cu"]
+    per_mp = trap["hip_max_threads_per_multiprocessor"]
+    for part in ("gfx1201", "gfx942"):
+        # Total work-items must agree however the device is carved up.
+        assert cu[part] * per_cu[part] == mp[part] * per_mp[part], part
+    assert cu["gfx1201"] == 2 * mp["gfx1201"]
+    assert cu["gfx942"] == mp["gfx942"]
+
+
+def test_the_workgroup_cap_is_recorded_as_unavailable():
+    """The wave ceiling can be looked up and the workgroup-count cap cannot.
+    That asymmetry is the reason the probe exists, so it is pinned here."""
+    gap = load(RESULT)["limiter_check"]["what_no_tool_reports"]
+    assert "workgroup" in gap["quantity"]
+    assert "rocminfo" in gap["checked"]
+
+
 def test_the_cdna_card_was_not_shared():
     """A tenant holding part of the card is the reading that would look like a
     refuted model. Every peak being an exact multiple of the processor count

@@ -142,7 +142,26 @@
     "rdna_peak_waves_per_cu": 14,
     "rdna_wave_ceiling_per_cu": 32,
     "cdna_peak_waves_per_cu": 7,
-    "note": "LDS is the binding limiter everywhere in this sweep; neither part is near its wave-slot ceiling, and the grid is several times the largest residency so saturation is not grid-limited."
+    "note": "LDS is the binding limiter everywhere in this sweep; neither part is near its wave-slot ceiling, and the grid is several times the largest residency so saturation is not grid-limited.",
+    "ceiling_source": {
+      "tool": "rocminfo",
+      "field": "Max Waves Per CU",
+      "gfx1201": 32,
+      "gfx942": 32,
+      "why_it_is_recorded": "The ceiling was quoted from a specification before this. It is now read from the vendor tool on both parts, so the headroom argument rests on an observation rather than on recall."
+    },
+    "the_multiprocessor_trap_confirmed_by_a_second_tool": {
+      "rocminfo_compute_unit": {"gfx1201": 64, "gfx942": 152},
+      "hip_multi_processor_count": {"gfx1201": 32, "gfx942": 152},
+      "rocminfo_max_work_item_per_cu": {"gfx1201": 1024, "gfx942": 2048},
+      "hip_max_threads_per_multiprocessor": {"gfx1201": 2048, "gfx942": 2048},
+      "reading": "On gfx1201 rocminfo counts 64 compute units where HIP reports 32 multiprocessors, and rocminfo's 1024 work-items per compute unit is half HIP's 2048 per multiprocessor. Both discrepancies are the same factor of two, and both resolve if a HIP multiprocessor is a workgroup processor spanning two compute units. On gfx942 the two tools agree exactly, because CDNA has no workgroup processor. This is the misreading that cost this repository a factor of two, now visible without running anything."
+    },
+    "what_no_tool_reports": {
+      "quantity": "maximum workgroups resident per compute unit",
+      "checked": "rocminfo lists Max Waves Per CU and Max Work-item Per CU, and neither it nor hipDeviceProp_t exposes a workgroup-count limit",
+      "consequence": "It cannot be looked up, so it has to be measured, which is what the four footprints below the sweep are for. The wave ceiling alone would allow 32 blocks of 64 threads per compute unit, far above the six the separators need, so only an undocumented workgroup-count limit could interfere."
+    }
   },
   "limitations": [
     "The census allocates dynamically while the counters measured static __shared__. Agreement on all seven counter footprints shows the two are handed out alike for these sizes; it does not prove they are for every size.",
