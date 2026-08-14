@@ -1,0 +1,38 @@
+{
+  "schema": "peps.hip_lds_codeobject_scan",
+  "schema_version": 1,
+  "status": "complete-route-cannot-answer",
+  "question": "Does the compiled code object record the LDS allocation granule, so the 1024-byte rounding in the occupancy model can be confirmed without a profiler?",
+  "answer": "No. amdhsa.kernels[].group_segment_fixed_size records exactly the bytes the kernel asked for, on both gfx1201 and gfx942, including sizes that are not aligned to 128 or 1024. Whatever applies the granule does so after the code object is written, so this route cannot confirm or refute it.",
+  "why_it_was_worth_asking": "It needed no profiler and no GPU, and both hosts already had llvm-readelf and roc-obj-ls. A cheap route that might have short-circuited the measurement was worth eliminating first.",
+  "method": {
+    "source": "hip/lds_static_probe.hip",
+    "allocation": "static __shared__ sized by -DPROBE_LDS_BYTES",
+    "extraction": "roc-obj-ls to locate the device slice, dd to cut it out, llvm-readelf --notes to print AMDGPU metadata",
+    "field": "amdhsa.kernels[].group_segment_fixed_size",
+    "rdna_toolchain": "/opt/rocm/bin/amdclang++ (ROCm 7.2.3) with the include shim build_kernel.sh documents",
+    "cdna_toolchain": "/opt/rocm-7.1.1/bin/hipcc"
+  },
+  "observations": [
+    {"arch": "gfx1201", "requested": 8700, "recorded": 8700, "ceil_1024": 9216, "ceil_128": 8704},
+    {"arch": "gfx1201", "requested": 8704, "recorded": 8704, "ceil_1024": 9216, "ceil_128": 8704},
+    {"arch": "gfx1201", "requested": 9728, "recorded": 9728, "ceil_1024": 10240, "ceil_128": 9728},
+    {"arch": "gfx1201", "requested": 10000, "recorded": 10000, "ceil_1024": 10240, "ceil_128": 10112},
+    {"arch": "gfx1201", "requested": 10752, "recorded": 10752, "ceil_1024": 11264, "ceil_128": 10752},
+    {"arch": "gfx1201", "requested": 11776, "recorded": 11776, "ceil_1024": 12288, "ceil_128": 11776},
+    {"arch": "gfx1201", "requested": 12288, "recorded": 12288, "ceil_1024": 12288, "ceil_128": 12288},
+    {"arch": "gfx942", "requested": 8700, "recorded": 8700, "ceil_1024": 9216, "ceil_128": 8704},
+    {"arch": "gfx942", "requested": 8704, "recorded": 8704, "ceil_1024": 9216, "ceil_128": 8704},
+    {"arch": "gfx942", "requested": 9728, "recorded": 9728, "ceil_1024": 10240, "ceil_128": 9728},
+    {"arch": "gfx942", "requested": 10000, "recorded": 10000, "ceil_1024": 10240, "ceil_128": 10112},
+    {"arch": "gfx942", "requested": 10752, "recorded": 10752, "ceil_1024": 11264, "ceil_128": 10752},
+    {"arch": "gfx942", "requested": 11776, "recorded": 11776, "ceil_1024": 12288, "ceil_128": 11776},
+    {"arch": "gfx942", "requested": 12288, "recorded": 12288, "ceil_1024": 12288, "ceil_128": 12288}
+  ],
+  "the_unaligned_sizes_are_the_point": "8700 and 10000 are aligned to neither 128 nor 1024. Without them the scan could not tell 'records the request verbatim' from 'rounds to 128', because every other footprint in the sweep is already a multiple of 128. The first pass used only aligned sizes and would have supported a conclusion it had not earned.",
+  "what_this_narrows": "The granule is not a toolchain artefact. It is applied when a workgroup is dispatched, which means only something that observes dispatch can see it: a hardware counter, or a count of what is actually resident.",
+  "limitations": [
+    "This inspects one kernel shape with a single static array. A kernel whose LDS is split across several arrays could be padded by the compiler between them, which this does not test and which would not be the same thing as an allocation granule.",
+    "Metadata version v5 on both parts. Older code object versions are not covered."
+  ]
+}

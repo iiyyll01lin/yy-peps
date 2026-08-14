@@ -1,0 +1,85 @@
+{
+  "schema": "peps.hip_occupancy_census_prediction",
+  "schema_version": 1,
+  "status": "predicted_not_yet_measured",
+  "question": "How many workgroups are actually resident at once, as LDS per workgroup grows, and does the answer follow the counter-derived model on a part that has no workgroup processor?",
+  "why_a_census_and_not_the_runtime_api": "The runtime API was rejected in results/hip_occupancy_probe_result.json because it reports an integer per compute unit. On RDNA the LDS pool belongs to a workgroup processor spanning two compute units, so eleven workgroups per WGP is five and a half per CU and cannot survive that division. A census counts blocks device-wide, where eleven per WGP across twenty WGPs is 220, an integer. The quantity that was unrepresentable becomes representable.",
+  "method": {
+    "source": "hip/lds_occupancy_census.hip",
+    "how": "Every block increments a live counter on entry, holds its shared memory for a fixed wall-clock spin, and decrements on exit. The peak of the live counter is the number resident together.",
+    "allocation": "dynamic shared memory, so one binary sweeps every footprint",
+    "block_threads": 64,
+    "spin_ms": 20,
+    "grid": "64 blocks per multiprocessor, so residency saturates many times over",
+    "builds_for": ["gfx1151", "gfx1201", "gfx942"],
+    "not_a_calculation": "This observes what the hardware scheduled. It does not ask the runtime what it thinks would fit."
+  },
+  "gate_before_any_cdna_reading": {
+    "run_on": "gfx1151, the only part with committed hardware counters",
+    "claim": "peak_resident_blocks divided by multi_processor_count reproduces all seven counter values for waves per CU within 0.1",
+    "why_that_division_is_the_right_one": "HIP reports multi_processor_count as 20 on gfx1151 and 32 on gfx1201, which are workgroup processor counts, not compute unit counts. The model's workgroups per WGP therefore equals peak divided by that number, and equals waves per CU because a 64-thread block is two wave32 waves spread across the WGP's two compute units.",
+    "if_it_fails": "Stop. A census that cannot reproduce counters on the part that has them cannot be carried to the part that does not, exactly as the runtime API could not."
+  },
+  "what_a_pass_would_also_settle": "The census allocates dynamically while the counters measured a static kernel. Agreement would show the two are allocated alike, which would confirm that the runtime API's disagreement was a reporting artefact rather than a difference in how the memory is given out.",
+  "decisive_footprints_on_rdna": {
+    "footprints": [8704, 9728, 10752, 11776],
+    "why": "At these four the 1024-byte granule and a 128-byte granule predict different residency. The runtime API test had only one such point on CDNA and none on RDNA, so it could not separate the hypotheses where the counters exist."
+  },
+  "decisive_footprint_on_cdna": {
+    "footprint": 10752,
+    "predicts_if_granule_is_1024": 760,
+    "predicts_if_granule_is_128": 912,
+    "why": "10752 is exactly 84 x 128, so a 128-byte granule leaves it alone and a 1024-byte granule rounds it to 11264. Every other footprint in the sweep agrees under both and therefore tests nothing.",
+    "separation": "twenty percent, far above the noise a spin-based census produces"
+  },
+  "predictions": {
+    "gfx1151": [
+      {"footprint": 8704, "per_multiprocessor": 14, "peak_resident_blocks": 280, "if_granule_128_peak": 300, "counter_waves_per_cu": 13.94, "discriminating": true},
+      {"footprint": 9216, "per_multiprocessor": 14, "peak_resident_blocks": 280, "if_granule_128_peak": 280, "counter_waves_per_cu": null, "discriminating": false},
+      {"footprint": 9728, "per_multiprocessor": 12, "peak_resident_blocks": 240, "if_granule_128_peak": 260, "counter_waves_per_cu": 11.96, "discriminating": true},
+      {"footprint": 10240, "per_multiprocessor": 12, "peak_resident_blocks": 240, "if_granule_128_peak": 240, "counter_waves_per_cu": null, "discriminating": false},
+      {"footprint": 10752, "per_multiprocessor": 11, "peak_resident_blocks": 220, "if_granule_128_peak": 240, "counter_waves_per_cu": 10.97, "discriminating": true},
+      {"footprint": 11264, "per_multiprocessor": 11, "peak_resident_blocks": 220, "if_granule_128_peak": 220, "counter_waves_per_cu": null, "discriminating": false},
+      {"footprint": 11776, "per_multiprocessor": 10, "peak_resident_blocks": 200, "if_granule_128_peak": 220, "counter_waves_per_cu": 9.97, "discriminating": true},
+      {"footprint": 12288, "per_multiprocessor": 10, "peak_resident_blocks": 200, "if_granule_128_peak": 200, "counter_waves_per_cu": 9.98, "discriminating": false},
+      {"footprint": 13312, "per_multiprocessor": 9, "peak_resident_blocks": 180, "if_granule_128_peak": 180, "counter_waves_per_cu": 8.97, "discriminating": false},
+      {"footprint": 16384, "per_multiprocessor": 8, "peak_resident_blocks": 160, "if_granule_128_peak": 160, "counter_waves_per_cu": null, "discriminating": false},
+      {"footprint": 32768, "per_multiprocessor": 4, "peak_resident_blocks": 80, "if_granule_128_peak": 80, "counter_waves_per_cu": 4.0, "discriminating": false}
+    ],
+    "gfx1201": [
+      {"footprint": 8704, "per_multiprocessor": 14, "peak_resident_blocks": 448, "if_granule_128_peak": 480, "discriminating": true},
+      {"footprint": 9216, "per_multiprocessor": 14, "peak_resident_blocks": 448, "if_granule_128_peak": 448, "discriminating": false},
+      {"footprint": 9728, "per_multiprocessor": 12, "peak_resident_blocks": 384, "if_granule_128_peak": 416, "discriminating": true},
+      {"footprint": 10240, "per_multiprocessor": 12, "peak_resident_blocks": 384, "if_granule_128_peak": 384, "discriminating": false},
+      {"footprint": 10752, "per_multiprocessor": 11, "peak_resident_blocks": 352, "if_granule_128_peak": 384, "discriminating": true},
+      {"footprint": 11264, "per_multiprocessor": 11, "peak_resident_blocks": 352, "if_granule_128_peak": 352, "discriminating": false},
+      {"footprint": 11776, "per_multiprocessor": 10, "peak_resident_blocks": 320, "if_granule_128_peak": 352, "discriminating": true},
+      {"footprint": 12288, "per_multiprocessor": 10, "peak_resident_blocks": 320, "if_granule_128_peak": 320, "discriminating": false},
+      {"footprint": 13312, "per_multiprocessor": 9, "peak_resident_blocks": 288, "if_granule_128_peak": 288, "discriminating": false},
+      {"footprint": 16384, "per_multiprocessor": 8, "peak_resident_blocks": 256, "if_granule_128_peak": 256, "discriminating": false},
+      {"footprint": 32768, "per_multiprocessor": 4, "peak_resident_blocks": 128, "if_granule_128_peak": 128, "discriminating": false}
+    ],
+    "gfx942": [
+      {"footprint": 8704, "per_multiprocessor": 7, "peak_resident_blocks": 1064, "if_granule_128_peak": 1064, "discriminating": false},
+      {"footprint": 9216, "per_multiprocessor": 7, "peak_resident_blocks": 1064, "if_granule_128_peak": 1064, "discriminating": false},
+      {"footprint": 9728, "per_multiprocessor": 6, "peak_resident_blocks": 912, "if_granule_128_peak": 912, "discriminating": false},
+      {"footprint": 10240, "per_multiprocessor": 6, "peak_resident_blocks": 912, "if_granule_128_peak": 912, "discriminating": false},
+      {"footprint": 10752, "per_multiprocessor": 5, "peak_resident_blocks": 760, "if_granule_128_peak": 912, "discriminating": true},
+      {"footprint": 11264, "per_multiprocessor": 5, "peak_resident_blocks": 760, "if_granule_128_peak": 760, "discriminating": false},
+      {"footprint": 11776, "per_multiprocessor": 5, "peak_resident_blocks": 760, "if_granule_128_peak": 760, "discriminating": false},
+      {"footprint": 12288, "per_multiprocessor": 5, "peak_resident_blocks": 760, "if_granule_128_peak": 760, "discriminating": false},
+      {"footprint": 13312, "per_multiprocessor": 4, "peak_resident_blocks": 608, "if_granule_128_peak": 608, "discriminating": false},
+      {"footprint": 16384, "per_multiprocessor": 4, "peak_resident_blocks": 608, "if_granule_128_peak": 608, "discriminating": false},
+      {"footprint": 32768, "per_multiprocessor": 2, "peak_resident_blocks": 304, "if_granule_128_peak": 304, "discriminating": false}
+    ]
+  },
+  "what_would_make_a_reading_inadmissible": [
+    "A limiter other than LDS binding first. With 64 threads and a kernel that only spins, registers and wave slots should be far from binding, but a peak that stops changing as the footprint grows is the symptom and must be reported rather than fitted.",
+    "A hardware cap on workgroups per compute unit or per workgroup processor binding before the pool does, which would flatten the top of the sweep.",
+    "Another tenant on the CDNA card. It is a single-GPU container slice, so a peak below prediction there may mean the device was shared rather than that the model is wrong. This must be checked before any conclusion, not after."
+  ],
+  "limitations": [
+    "Predictions only. Nothing here has been measured; tests/test_occupancy_census_prediction.py fails if measured values appear while the status still says otherwise.",
+    "The census holds each block for a fixed spin. It measures how many the hardware was willing to keep resident, which is the quantity the occupancy model is about, but it is not the same instrument as the rocprofv3 counters and may differ at the edges."
+  ]
+}

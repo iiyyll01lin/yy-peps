@@ -408,6 +408,7 @@ def validate_results(validator: Validator) -> None:
                 "legacy-unverified",
                 "measured-not-verifiable-by-this-policy",
                 "falsification-result-not-paper-comparable",
+                "prediction-not-a-measurement",
                 "superseded-retained",
                 "verified",
                 "blocked-performance",
