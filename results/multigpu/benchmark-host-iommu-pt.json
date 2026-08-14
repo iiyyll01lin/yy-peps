@@ -1,0 +1,359 @@
+{
+  "collective": {
+    "backend_api": "nccl",
+    "backend_runtime": "RCCL",
+    "dtype": "float32",
+    "measurements": [
+      {
+        "algorithmic_gb_per_second": 12.769462676418916,
+        "bus_bandwidth_factor": 1.5,
+        "bus_gb_per_second": 19.154194014628374,
+        "message_bytes": 16777216,
+        "message_mib": 16,
+        "seconds_per_all_reduce": 0.0013138545000003887
+      },
+      {
+        "algorithmic_gb_per_second": 12.938879331794048,
+        "bus_bandwidth_factor": 1.5,
+        "bus_gb_per_second": 19.408318997691072,
+        "message_bytes": 67108864,
+        "message_mib": 64,
+        "seconds_per_all_reduce": 0.0051866055999994385
+      },
+      {
+        "algorithmic_gb_per_second": 12.91748727271057,
+        "bus_bandwidth_factor": 1.5,
+        "bus_gb_per_second": 19.376230909065853,
+        "message_bytes": 268435456,
+        "message_mib": 256,
+        "seconds_per_all_reduce": 0.020780779599999733
+      }
+    ],
+    "operation": "all_reduce_sum",
+    "schema": "peps.multigpu_collective",
+    "schema_version": 1,
+    "timed_iterations": 20,
+    "timing": "slowest_rank_host_time_with_device_synchronize",
+    "transport": {
+      "nccl_p2p_disable": "1",
+      "rccl_p2p_disabled": true
+    },
+    "warmup_iterations": 5,
+    "world_size": 4
+  },
+  "commands": {
+    "4_gpu_training": "NCCL_P2P_DISABLE=1 /home/aup/yy/workspace/peps/.venv/bin/python -m torch.distributed.run --standalone --nproc-per-node=4 -m experiments.multigpu worker --kind training --output results/multigpu/.multigpu-workers/training-4gpu.json --global-batch-size 60000 --dataset-size 393216 --training-warmup 20 --training-steps 200 --seed 2026",
+    "collective": "NCCL_P2P_DISABLE=1 /home/aup/yy/workspace/peps/.venv/bin/python -m torch.distributed.run --standalone --nproc-per-node=4 -m experiments.multigpu worker --kind collective --output results/multigpu/.multigpu-workers/collective.json --collective-sizes-mib 16,64,256 --collective-warmup 5 --collective-iterations 20",
+    "one_gpu_training": "NCCL_P2P_DISABLE=1 /home/aup/yy/workspace/peps/.venv/bin/python -m torch.distributed.run --standalone --nproc-per-node=1 -m experiments.multigpu worker --kind training --output results/multigpu/.multigpu-workers/training-1gpu.json --global-batch-size 60000 --dataset-size 393216 --training-warmup 20 --training-steps 200 --seed 2026",
+    "suite": "/home/aup/yy/workspace/peps/.venv/bin/python -m experiments.multigpu suite --output results/multigpu/benchmark-host-iommu-pt.json --gpus 4 --rccl-p2p off --copy-size-mib 128 --copy-warmup 3 --copy-iterations 10 --collective-sizes-mib 16,64,256 --collective-warmup 5 --collective-iterations 20 --global-batch-size 60000 --dataset-size 393216 --training-warmup 20 --training-steps 200 --seed 2026 --timeout-seconds 600"
+  },
+  "created_at_utc": "2026-07-22T01:05:33.765000+00:00",
+  "limitations": [
+    "P2P capability and copy bandwidth do not identify the physical peer route; PyTorch does not expose XGMI link type.",
+    "When RCCL peer IPC fails, auto mode explicitly retries with NCCL_P2P_DISABLE=1; this uses a host-staged transport and is reported rather than presented as direct peer collective speed.",
+    "The training input is deterministic synthetic data, while the model and global batch follow the representative paper workload.",
+    "Fixed global batch measures strong scaling; it is not four independent jobs and not weak-scaling aggregate throughput."
+  ],
+  "pairwise_copy": {
+    "available": true,
+    "direction": "source_to_destination",
+    "dtype": "float32",
+    "gb_per_second_matrix": [
+      [
+        null,
+        56.158085133416705,
+        56.137509194875314,
+        56.140467819179605
+      ],
+      [
+        56.15246988225355,
+        null,
+        56.12220446821977,
+        56.13450392753062
+      ],
+      [
+        56.56302222751079,
+        56.00237732504863,
+        null,
+        56.1392678949188
+      ],
+      [
+        56.56607593853982,
+        56.51398397413144,
+        56.564976945786455,
+        null
+      ]
+    ],
+    "measurements": [
+      {
+        "destination": 1,
+        "gb_per_second": 56.158085133416705,
+        "seconds_per_copy": 0.002389998299997842,
+        "source": 0,
+        "status": "ok"
+      },
+      {
+        "destination": 2,
+        "gb_per_second": 56.137509194875314,
+        "seconds_per_copy": 0.0023908742999992683,
+        "source": 0,
+        "status": "ok"
+      },
+      {
+        "destination": 3,
+        "gb_per_second": 56.140467819179605,
+        "seconds_per_copy": 0.0023907483000016327,
+        "source": 0,
+        "status": "ok"
+      },
+      {
+        "destination": 0,
+        "gb_per_second": 56.15246988225355,
+        "seconds_per_copy": 0.0023902373000055377,
+        "source": 1,
+        "status": "ok"
+      },
+      {
+        "destination": 2,
+        "gb_per_second": 56.12220446821977,
+        "seconds_per_copy": 0.0023915263000048982,
+        "source": 1,
+        "status": "ok"
+      },
+      {
+        "destination": 3,
+        "gb_per_second": 56.13450392753062,
+        "seconds_per_copy": 0.00239100229999849,
+        "source": 1,
+        "status": "ok"
+      },
+      {
+        "destination": 0,
+        "gb_per_second": 56.56302222751079,
+        "seconds_per_copy": 0.002372888200000034,
+        "source": 2,
+        "status": "ok"
+      },
+      {
+        "destination": 1,
+        "gb_per_second": 56.00237732504863,
+        "seconds_per_copy": 0.0023966433999930816,
+        "source": 2,
+        "status": "ok"
+      },
+      {
+        "destination": 3,
+        "gb_per_second": 56.1392678949188,
+        "seconds_per_copy": 0.0023907994000069268,
+        "source": 2,
+        "status": "ok"
+      },
+      {
+        "destination": 0,
+        "gb_per_second": 56.56607593853982,
+        "seconds_per_copy": 0.002372760099990501,
+        "source": 3,
+        "status": "ok"
+      },
+      {
+        "destination": 1,
+        "gb_per_second": 56.51398397413144,
+        "seconds_per_copy": 0.0023749471999963134,
+        "source": 3,
+        "status": "ok"
+      },
+      {
+        "destination": 2,
+        "gb_per_second": 56.564976945786455,
+        "seconds_per_copy": 0.002372806200003197,
+        "source": 3,
+        "status": "ok"
+      }
+    ],
+    "message_bytes": 134217728,
+    "timed_iterations": 10,
+    "timing": "host_perf_counter_with_source_and_destination_synchronize",
+    "warmup_iterations": 3
+  },
+  "rccl_transport": {
+    "effective": "p2p_disabled_host_transport",
+    "fallback_reason": null,
+    "requested": "off"
+  },
+  "representative_training": {
+    "4_gpu": {
+      "elapsed_seconds": 0.9209961550000116,
+      "final_global_loss": 4.7508578973065596e-05,
+      "parallelism": {
+        "backend_api": "nccl",
+        "backend_runtime": "RCCL",
+        "mode": "ddp_single_job",
+        "rccl_p2p_disabled": true,
+        "world_size": 4
+      },
+      "samples_per_second": 13029370.356057402,
+      "schema": "peps.multigpu_training",
+      "schema_version": 1,
+      "steps_per_second": 217.1561726009567,
+      "timed_steps": 200,
+      "timing": "slowest_rank_steady_state_with_device_synchronize; deterministic minibatch indices prepared before timing",
+      "warmup_steps": 20,
+      "workload": {
+        "data": "deterministic synthetic coordinate regression",
+        "dataset_size": 393216,
+        "global_batch_size": 60000,
+        "loss": "l2",
+        "model": "paper Table-1 G-PEPS architecture",
+        "optimizer": "Adam dual learning rate",
+        "parameter_count": 442691,
+        "per_rank_batch_sizes": [
+          15000,
+          15000,
+          15000,
+          15000
+        ]
+      }
+    },
+    "comparison": "fixed-global-batch strong scaling of one DDP job",
+    "one_gpu": {
+      "elapsed_seconds": 3.3302772069999946,
+      "final_global_loss": 4.750859079649672e-05,
+      "parallelism": {
+        "backend_api": null,
+        "backend_runtime": null,
+        "mode": "single_gpu",
+        "rccl_p2p_disabled": true,
+        "world_size": 1
+      },
+      "samples_per_second": 3603303.6453472683,
+      "schema": "peps.multigpu_training",
+      "schema_version": 1,
+      "steps_per_second": 60.05506075578781,
+      "timed_steps": 200,
+      "timing": "slowest_rank_steady_state_with_device_synchronize; deterministic minibatch indices prepared before timing",
+      "warmup_steps": 20,
+      "workload": {
+        "data": "deterministic synthetic coordinate regression",
+        "dataset_size": 393216,
+        "global_batch_size": 60000,
+        "loss": "l2",
+        "model": "paper Table-1 G-PEPS architecture",
+        "optimizer": "Adam dual learning rate",
+        "parameter_count": 442691,
+        "per_rank_batch_sizes": [
+          60000
+        ]
+      }
+    },
+    "parallel_efficiency": 0.9039878149654035,
+    "speedup": 3.615951259861614
+  },
+  "schema": "peps.multigpu_validation",
+  "schema_version": 1,
+  "topology": {
+    "cuda_api_available": true,
+    "device_count": 4,
+    "devices": [
+      {
+        "architecture": "gfx1201",
+        "index": 0,
+        "linux_pci": {
+          "current_link_speed": "32.0 GT/s PCIe",
+          "current_link_width": 16,
+          "max_link_speed": "32.0 GT/s PCIe",
+          "max_link_width": 16,
+          "numa_node": -1
+        },
+        "multiprocessor_count": 32,
+        "name": "AMD Radeon Graphics",
+        "pci": "0000:f3:00.0",
+        "total_memory_bytes": 34208743424,
+        "uuid": "33656332-3938-3365-6539-643334353337"
+      },
+      {
+        "architecture": "gfx1201",
+        "index": 1,
+        "linux_pci": {
+          "current_link_speed": "32.0 GT/s PCIe",
+          "current_link_width": 16,
+          "max_link_speed": "32.0 GT/s PCIe",
+          "max_link_width": 16,
+          "numa_node": -1
+        },
+        "multiprocessor_count": 32,
+        "name": "AMD Radeon Graphics",
+        "pci": "0000:d3:00.0",
+        "total_memory_bytes": 34208743424,
+        "uuid": "35366631-6139-3539-6436-386233633135"
+      },
+      {
+        "architecture": "gfx1201",
+        "index": 2,
+        "linux_pci": {
+          "current_link_speed": "32.0 GT/s PCIe",
+          "current_link_width": 16,
+          "max_link_speed": "32.0 GT/s PCIe",
+          "max_link_width": 16,
+          "numa_node": -1
+        },
+        "multiprocessor_count": 32,
+        "name": "AMD Radeon Graphics",
+        "pci": "0000:03:00.0",
+        "total_memory_bytes": 34208743424,
+        "uuid": "31313431-3234-3666-6537-393364343636"
+      },
+      {
+        "architecture": "gfx1201",
+        "index": 3,
+        "linux_pci": {
+          "current_link_speed": "32.0 GT/s PCIe",
+          "current_link_width": 16,
+          "max_link_speed": "32.0 GT/s PCIe",
+          "max_link_width": 16,
+          "numa_node": -1
+        },
+        "multiprocessor_count": 32,
+        "name": "AMD Radeon Graphics",
+        "pci": "0000:23:00.0",
+        "total_memory_bytes": 34208743424,
+        "uuid": "64353033-6263-6165-3937-663461666339"
+      }
+    ],
+    "iommu_passthrough_enabled": true,
+    "kernel_command_line": "BOOT_IMAGE=/boot/vmlinuz-7.0.0-28-generic root=UUID=d1ac7774-bed7-434a-9871-53783c4dc749 ro quiet splash iommu=pt vt.handoff=7",
+    "p2p_access_matrix": [
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ]
+    ],
+    "rocm_version": "7.0.51831",
+    "topology_scope": "PyTorch P2P capability plus Linux PCIe link/NUMA attributes. PyTorch does not expose whether a peer route is XGMI.",
+    "torch_version": "2.10.0+rocm7.0"
+  },
+  "worker_warnings": {
+    "4_gpu_training": "*****************************************\nSetting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. \n*****************************************\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory",
+    "collective": "*****************************************\nSetting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. \n*****************************************\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory",
+    "one_gpu_training": "/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory\n/opt/amdgpu/share/libdrm/amdgpu.ids: No such file or directory"
+  }
+}

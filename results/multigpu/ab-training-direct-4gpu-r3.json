@@ -1,0 +1,33 @@
+{
+  "elapsed_seconds": 6.152796754999827,
+  "final_global_loss": 1.0045503131550504e-05,
+  "parallelism": {
+    "backend_api": "nccl",
+    "backend_runtime": "RCCL",
+    "mode": "ddp_single_job",
+    "rccl_p2p_disabled": false,
+    "world_size": 4
+  },
+  "samples_per_second": 4875831.462435629,
+  "schema": "peps.multigpu_training",
+  "schema_version": 1,
+  "steps_per_second": 81.26385770726048,
+  "timed_steps": 500,
+  "timing": "slowest_rank_steady_state_with_device_synchronize; deterministic minibatch indices prepared before timing",
+  "warmup_steps": 50,
+  "workload": {
+    "data": "deterministic synthetic coordinate regression",
+    "dataset_size": 393216,
+    "global_batch_size": 60000,
+    "loss": "l2",
+    "model": "paper Table-1 G-PEPS architecture",
+    "optimizer": "Adam dual learning rate",
+    "parameter_count": 442691,
+    "per_rank_batch_sizes": [
+      15000,
+      15000,
+      15000,
+      15000
+    ]
+  }
+}

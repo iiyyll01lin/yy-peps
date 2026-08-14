@@ -1,0 +1,579 @@
+{
+  "ab_results": {
+    "all_reduce_direct": {
+      "files": [
+        "results/multigpu/ab-collective-direct-r1.json",
+        "results/multigpu/ab-collective-direct-r2.json",
+        "results/multigpu/ab-collective-direct-r3.json"
+      ],
+      "measurements": {
+        "16": {
+          "algorithmic_gb_per_second": {
+            "max": 32.29322836256208,
+            "median": 32.15517511678709,
+            "min": 31.878332401470555,
+            "values": [
+              31.878332401470555,
+              32.29322836256208,
+              32.15517511678709
+            ]
+          },
+          "bus_gb_per_second": {
+            "max": 48.43984254384313,
+            "median": 48.23276267518064,
+            "min": 47.81749860220583,
+            "values": [
+              47.81749860220583,
+              48.43984254384313,
+              48.23276267518064
+            ]
+          },
+          "seconds_per_all_reduce": {
+            "max": 0.0005262890099993456,
+            "median": 0.0005217578800011325,
+            "min": 0.0005195273699996506,
+            "values": [
+              0.0005262890099993456,
+              0.0005195273699996506,
+              0.0005217578800011325
+            ]
+          }
+        },
+        "256": {
+          "algorithmic_gb_per_second": {
+            "max": 34.3156640977055,
+            "median": 34.04278014935632,
+            "min": 32.162560604909366,
+            "values": [
+              34.04278014935632,
+              34.3156640977055,
+              32.162560604909366
+            ]
+          },
+          "bus_gb_per_second": {
+            "max": 51.47349614655825,
+            "median": 51.06417022403448,
+            "min": 48.243840907364046,
+            "values": [
+              51.06417022403448,
+              51.47349614655825,
+              48.243840907364046
+            ]
+          },
+          "seconds_per_all_reduce": {
+            "max": 0.008346209100000123,
+            "median": 0.007885238950000257,
+            "min": 0.00782253419999961,
+            "values": [
+              0.007885238950000257,
+              0.00782253419999961,
+              0.008346209100000123
+            ]
+          }
+        },
+        "64": {
+          "algorithmic_gb_per_second": {
+            "max": 33.507939398994004,
+            "median": 33.29365594400068,
+            "min": 33.26068971984782,
+            "values": [
+              33.26068971984782,
+              33.507939398994004,
+              33.29365594400068
+            ]
+          },
+          "bus_gb_per_second": {
+            "max": 50.261909098491,
+            "median": 49.94048391600103,
+            "min": 49.89103457977173,
+            "values": [
+              49.89103457977173,
+              50.261909098491,
+              49.94048391600103
+            ]
+          },
+          "seconds_per_all_reduce": {
+            "max": 0.0020176630299988574,
+            "median": 0.0020156652099990423,
+            "min": 0.0020027750200006266,
+            "values": [
+              0.0020176630299988574,
+              0.0020027750200006266,
+              0.0020156652099990423
+            ]
+          }
+        }
+      }
+    },
+    "all_reduce_host": {
+      "files": [
+        "results/multigpu/ab-collective-host-r1.json",
+        "results/multigpu/ab-collective-host-r2.json",
+        "results/multigpu/ab-collective-host-r3.json"
+      ],
+      "measurements": {
+        "16": {
+          "algorithmic_gb_per_second": {
+            "max": 12.710116401947678,
+            "median": 12.645268156674266,
+            "min": 12.053577140875834,
+            "values": [
+              12.053577140875834,
+              12.645268156674266,
+              12.710116401947678
+            ]
+          },
+          "bus_gb_per_second": {
+            "max": 19.065174602921516,
+            "median": 18.9679022350114,
+            "min": 18.080365711313753,
+            "values": [
+              18.080365711313753,
+              18.9679022350114,
+              19.065174602921516
+            ]
+          },
+          "seconds_per_all_reduce": {
+            "max": 0.001391886890000933,
+            "median": 0.0013267584199979864,
+            "min": 0.0013199891699991896,
+            "values": [
+              0.001391886890000933,
+              0.0013267584199979864,
+              0.0013199891699991896
+            ]
+          }
+        },
+        "256": {
+          "algorithmic_gb_per_second": {
+            "max": 12.966300599240046,
+            "median": 12.9119110151978,
+            "min": 12.20242950420053,
+            "values": [
+              12.20242950420053,
+              12.966300599240046,
+              12.9119110151978
+            ]
+          },
+          "bus_gb_per_second": {
+            "max": 19.44945089886007,
+            "median": 19.3678665227967,
+            "min": 18.303644256300796,
+            "values": [
+              18.303644256300796,
+              19.44945089886007,
+              19.3678665227967
+            ]
+          },
+          "seconds_per_all_reduce": {
+            "max": 0.021998525450001125,
+            "median": 0.020789754180000272,
+            "min": 0.020702547650000725,
+            "values": [
+              0.021998525450001125,
+              0.020702547650000725,
+              0.020789754180000272
+            ]
+          }
+        },
+        "64": {
+          "algorithmic_gb_per_second": {
+            "max": 12.983961009644661,
+            "median": 12.842534010760913,
+            "min": 12.166374982965898,
+            "values": [
+              12.166374982965898,
+              12.842534010760913,
+              12.983961009644661
+            ]
+          },
+          "bus_gb_per_second": {
+            "max": 19.475941514466992,
+            "median": 19.263801016141368,
+            "min": 18.249562474448847,
+            "values": [
+              18.249562474448847,
+              19.263801016141368,
+              19.475941514466992
+            ]
+          },
+          "seconds_per_all_reduce": {
+            "max": 0.00551592927999991,
+            "median": 0.005225515770000584,
+            "min": 0.00516859715999999,
+            "values": [
+              0.00551592927999991,
+              0.005225515770000584,
+              0.00516859715999999
+            ]
+          }
+        }
+      }
+    },
+    "final_loss": {
+      "four_gpu_direct": {
+        "max": 1.004550381367153e-05,
+        "median": 1.0045503131550504e-05,
+        "min": 1.0045502449429478e-05,
+        "values": [
+          1.0045502449429478e-05,
+          1.0045503586297855e-05,
+          1.0045503131550504e-05,
+          1.0045502449429478e-05,
+          1.004550381367153e-05
+        ]
+      },
+      "four_gpu_host": {
+        "max": 1.0045504950539907e-05,
+        "median": 1.0045504041045206e-05,
+        "min": 1.0045501767308451e-05,
+        "values": [
+          1.0045503586297855e-05,
+          1.0045501767308451e-05,
+          1.0045504950539907e-05,
+          1.0045504723166232e-05,
+          1.0045504041045206e-05
+        ]
+      },
+      "one_gpu": {
+        "max": 1.0045503586297855e-05,
+        "median": 1.0045501767308451e-05,
+        "min": 1.004550085781375e-05,
+        "values": [
+          1.004550085781375e-05,
+          1.0045501767308451e-05,
+          1.0045501767308451e-05,
+          1.0045503586297855e-05,
+          1.0045503586297855e-05
+        ]
+      }
+    },
+    "strong_scaling": {
+      "direct_over_host_four_gpu_ratio": 1.0212537805663577,
+      "direct_parallel_efficiency": 0.7889299541304696,
+      "direct_speedup_median": 3.1557198165218785,
+      "host_parallel_efficiency": 0.77251117121246,
+      "host_speedup_median": 3.09004468484984
+    },
+    "training_steps_per_second": {
+      "four_gpu_direct": {
+        "files": [
+          "results/multigpu/ab-training-direct-4gpu-r1.json",
+          "results/multigpu/ab-training-direct-4gpu-r2.json",
+          "results/multigpu/ab-training-direct-4gpu-r3.json",
+          "results/multigpu/ab-training-direct-4gpu-r4.json",
+          "results/multigpu/ab-training-direct-4gpu-r5.json"
+        ],
+        "max": 221.9514909231315,
+        "median": 189.91777787465682,
+        "min": 81.26385770726048,
+        "values": [
+          221.8845600737898,
+          189.91777787465682,
+          81.26385770726048,
+          189.48134584685516,
+          221.9514909231315
+        ]
+      },
+      "four_gpu_host": {
+        "files": [
+          "results/multigpu/ab-training-host-4gpu-r1.json",
+          "results/multigpu/ab-training-host-4gpu-r2.json",
+          "results/multigpu/ab-training-host-4gpu-r3.json",
+          "results/multigpu/ab-training-host-4gpu-r4.json",
+          "results/multigpu/ab-training-host-4gpu-r5.json"
+        ],
+        "max": 186.8143517012723,
+        "median": 185.9653119416938,
+        "min": 131.36386645067017,
+        "values": [
+          131.36386645067017,
+          185.51668329753312,
+          186.75789737164132,
+          185.9653119416938,
+          186.8143517012723
+        ]
+      },
+      "one_gpu_common": {
+        "files": [
+          "results/multigpu/ab-training-1gpu-r1.json",
+          "results/multigpu/ab-training-1gpu-r2.json",
+          "results/multigpu/ab-training-1gpu-r3.json",
+          "results/multigpu/ab-training-1gpu-r4.json",
+          "results/multigpu/ab-training-1gpu-r5.json"
+        ],
+        "max": 60.234896503156044,
+        "median": 60.182078548398316,
+        "min": 30.032895267446445,
+        "values": [
+          60.21665699554392,
+          52.37588494375168,
+          30.032895267446445,
+          60.234896503156044,
+          60.182078548398316
+        ]
+      }
+    }
+  },
+  "commands": {
+    "host_control_suite": "HSA_ENABLE_IPC_MODE_LEGACY=0 HSA_FORCE_FINE_GRAIN_PCIE=1 NCCL_DEBUG=INFO NCCL_DEBUG_SUBSYS=INIT,P2P .venv/bin/python -m experiments.multigpu suite --output results/multigpu/benchmark-host-iommu-pt.json --gpus 4 --rccl-p2p off --copy-size-mib 128 --copy-warmup 3 --copy-iterations 10 --collective-sizes-mib 16,64,256 --collective-warmup 5 --collective-iterations 20 --global-batch-size 60000 --dataset-size 393216 --training-warmup 20 --training-steps 200 --seed 2026 --timeout-seconds 600",
+    "stable_direct_collective_template": "HSA_ENABLE_IPC_MODE_LEGACY=0 HSA_FORCE_FINE_GRAIN_PCIE=1 NCCL_P2P_DISABLE=0 NCCL_DEBUG=INFO NCCL_DEBUG_SUBSYS=INIT,P2P .venv/bin/python -m torch.distributed.run --standalone --nproc-per-node=4 -m experiments.multigpu worker --kind collective --collective-sizes-mib 16,64,256 --collective-warmup 20 --collective-iterations 100 --output <result.json>",
+    "stable_training_template": "HSA_ENABLE_IPC_MODE_LEGACY=0 HSA_FORCE_FINE_GRAIN_PCIE=1 NCCL_P2P_DISABLE=<0-direct|1-host> .venv/bin/python -m torch.distributed.run --standalone --nproc-per-node=<1|4> -m experiments.multigpu worker --kind training --global-batch-size 60000 --dataset-size 393216 --training-warmup 50 --training-steps 500 --seed 2026 --output <result.json>",
+    "strict_direct_suite": "HSA_ENABLE_IPC_MODE_LEGACY=0 HSA_FORCE_FINE_GRAIN_PCIE=1 NCCL_DEBUG=INFO NCCL_DEBUG_SUBSYS=INIT,P2P .venv/bin/python -m experiments.multigpu suite --output results/multigpu/benchmark-direct-iommu-pt.json --gpus 4 --rccl-p2p on --copy-size-mib 128 --copy-warmup 3 --copy-iterations 10 --collective-sizes-mib 16,64,256 --collective-warmup 5 --collective-iterations 20 --global-batch-size 60000 --dataset-size 393216 --training-warmup 20 --training-steps 200 --seed 2026 --timeout-seconds 600",
+    "topology": ".venv/bin/python -m experiments.multigpu topology --copy --output results/multigpu/topology-iommu-pt.json"
+  },
+  "created_at_utc": "2026-07-22T01:14:55.926352+00:00",
+  "diagnosis": {
+    "all_six_gpu_pairs_failed_in_legacy_ipc_mode": true,
+    "evidence_files": [
+      "results/multigpu/direct-probe-fine-grain.log",
+      "results/multigpu/direct-probe-dmabuf.log",
+      "results/multigpu/direct-probe-hsa-dmabuf.json",
+      "results/multigpu/direct-probe-hsa-dmabuf.log",
+      "results/multigpu/direct-pair-0-1.log",
+      "results/multigpu/direct-pair-0-2.log",
+      "results/multigpu/direct-pair-0-3.log",
+      "results/multigpu/direct-pair-1-2.log",
+      "results/multigpu/direct-pair-1-3.log",
+      "results/multigpu/direct-pair-2-3.log"
+    ],
+    "fine_grain_only_result": "failed with the same hipIpcGetMemHandle error",
+    "hsa_dmabuf_ipc_result": "passed with P2P/IPC channels and no fallback",
+    "kernel_faults_after_success": false,
+    "nccl_dmabuf_result": "failed with the same hipIpcGetMemHandle error",
+    "p2p_log_evidence": [
+      "Channel ... via P2P/IPC",
+      "Connected all rings, use ring PXN 0 GDR 1",
+      "4 p2p channels, 2 p2p channels per peer"
+    ],
+    "strict_default_error": "hipIpcGetMemHandle failed: invalid argument",
+    "strict_default_result": "failed"
+  },
+  "full_suite_results": {
+    "host_control": {
+      "effective": "p2p_disabled_host_transport",
+      "file": "results/multigpu/benchmark-host-iommu-pt.json",
+      "requested": "off"
+    },
+    "strict_direct": {
+      "effective": "peer_ipc",
+      "fallback_reason": null,
+      "file": "results/multigpu/benchmark-direct-iommu-pt.json",
+      "requested": "on"
+    },
+    "topology": "results/multigpu/topology-iommu-pt.json"
+  },
+  "historical_pre_reboot_host_baseline": {
+    "all_reduce": [
+      {
+        "algorithmic_gb_per_second": 10.184899668717577,
+        "bus_bandwidth_factor": 1.5,
+        "bus_gb_per_second": 15.277349503076366,
+        "message_bytes": 16777216,
+        "message_mib": 16,
+        "seconds_per_all_reduce": 0.0016472637478727847
+      },
+      {
+        "algorithmic_gb_per_second": 10.294817598038591,
+        "bus_bandwidth_factor": 1.5,
+        "bus_gb_per_second": 15.442226397057887,
+        "message_bytes": 67108864,
+        "message_mib": 64,
+        "seconds_per_all_reduce": 0.00651870354777202
+      },
+      {
+        "algorithmic_gb_per_second": 10.300866450184538,
+        "bus_bandwidth_factor": 1.5,
+        "bus_gb_per_second": 15.451299675276807,
+        "message_bytes": 268435456,
+        "message_mib": 256,
+        "seconds_per_all_reduce": 0.0260595025960356
+      }
+    ],
+    "file": "results/multigpu/benchmark.json",
+    "four_gpu_steps_per_second": 180.0958700092647,
+    "kernel_command_line": "BOOT_IMAGE=/boot/vmlinuz-6.14.0-27-generic root=UUID=d1ac7774-bed7-434a-9871-53783c4dc749 ro quiet splash vt.handoff=7",
+    "one_gpu_steps_per_second": 59.426648739891455,
+    "parallel_efficiency": 0.7576393496356263,
+    "speedup": 3.030557398542505
+  },
+  "real_workload_handoff": {
+    "fixed_fields": [
+      "instance",
+      "method",
+      "seed",
+      "global_batch_size"
+    ],
+    "gpu_counts": [
+      1,
+      2,
+      4
+    ],
+    "minimum_repetitions": 5,
+    "report": [
+      "median",
+      "variation",
+      "loss/convergence",
+      "temperature",
+      "power",
+      "clock"
+    ],
+    "required_environment": {
+      "HSA_ENABLE_IPC_MODE_LEGACY": "0",
+      "HSA_FORCE_FINE_GRAIN_PCIE": "1",
+      "NCCL_P2P_DISABLE": "0"
+    },
+    "strict_transport": "--rccl-p2p on (or an equivalent command that exits on direct IPC failure)",
+    "telemetry_blocker": "rocm-smi 5.7 aborts; establish amd-smi 7.2 or sysfs collection first."
+  },
+  "required_direct_environment": {
+    "HSA_ENABLE_IPC_MODE_LEGACY": "0",
+    "HSA_FORCE_FINE_GRAIN_PCIE": "1",
+    "NCCL_P2P_DISABLE": "0",
+    "note": "ROCr dma-buf IPC is required on this mainline kernel/gfx1201 host. NCCL_DMABUF_ENABLE is a different RCCL network setting and did not fix intra-node IPC."
+  },
+  "schema": "peps.multigpu_p2p_ab",
+  "schema_version": 1,
+  "stable_ab_protocol": {
+    "collective": {
+      "dtype": "float32",
+      "message_mib": [
+        16,
+        64,
+        256
+      ],
+      "operation": "all_reduce_sum",
+      "repetitions": 3,
+      "timed_iterations": 100,
+      "warmup_iterations": 20
+    },
+    "training": {
+      "data": "deterministic synthetic coordinate regression",
+      "dataset_size": 393216,
+      "global_batch_size": 60000,
+      "model": "paper Table-1 G-PEPS architecture",
+      "per_rank_batch_sizes_4gpu": [
+        15000,
+        15000,
+        15000,
+        15000
+      ],
+      "repetitions": 5,
+      "seed": 2026,
+      "timed_steps": 500,
+      "warmup_steps": 50
+    }
+  },
+  "system": {
+    "device_count": 4,
+    "devices": [
+      {
+        "architecture": "gfx1201",
+        "index": 0,
+        "linux_pci": {
+          "current_link_speed": "32.0 GT/s PCIe",
+          "current_link_width": 16,
+          "max_link_speed": "32.0 GT/s PCIe",
+          "max_link_width": 16,
+          "numa_node": -1
+        },
+        "multiprocessor_count": 32,
+        "name": "AMD Radeon Graphics",
+        "pci": "0000:f3:00.0",
+        "total_memory_bytes": 34208743424,
+        "uuid": "33656332-3938-3365-6539-643334353337"
+      },
+      {
+        "architecture": "gfx1201",
+        "index": 1,
+        "linux_pci": {
+          "current_link_speed": "32.0 GT/s PCIe",
+          "current_link_width": 16,
+          "max_link_speed": "32.0 GT/s PCIe",
+          "max_link_width": 16,
+          "numa_node": -1
+        },
+        "multiprocessor_count": 32,
+        "name": "AMD Radeon Graphics",
+        "pci": "0000:d3:00.0",
+        "total_memory_bytes": 34208743424,
+        "uuid": "35366631-6139-3539-6436-386233633135"
+      },
+      {
+        "architecture": "gfx1201",
+        "index": 2,
+        "linux_pci": {
+          "current_link_speed": "32.0 GT/s PCIe",
+          "current_link_width": 16,
+          "max_link_speed": "32.0 GT/s PCIe",
+          "max_link_width": 16,
+          "numa_node": -1
+        },
+        "multiprocessor_count": 32,
+        "name": "AMD Radeon Graphics",
+        "pci": "0000:03:00.0",
+        "total_memory_bytes": 34208743424,
+        "uuid": "31313431-3234-3666-6537-393364343636"
+      },
+      {
+        "architecture": "gfx1201",
+        "index": 3,
+        "linux_pci": {
+          "current_link_speed": "32.0 GT/s PCIe",
+          "current_link_width": 16,
+          "max_link_speed": "32.0 GT/s PCIe",
+          "max_link_width": 16,
+          "numa_node": -1
+        },
+        "multiprocessor_count": 32,
+        "name": "AMD Radeon Graphics",
+        "pci": "0000:23:00.0",
+        "total_memory_bytes": 34208743424,
+        "uuid": "64353033-6263-6165-3937-663461666339"
+      }
+    ],
+    "iommu_default_domain": "Passthrough (set via kernel command line)",
+    "iommu_group_count": 76,
+    "kernel": "7.0.0-28-generic",
+    "kernel_command_line": "BOOT_IMAGE=/boot/vmlinuz-7.0.0-28-generic root=UUID=d1ac7774-bed7-434a-9871-53783c4dc749 ro quiet splash iommu=pt vt.handoff=7",
+    "p2p_access_matrix": [
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ]
+    ],
+    "torch_hip_version": "7.0.51831",
+    "torch_version": "2.10.0+rocm7.0"
+  },
+  "todo": {
+    "complete": true,
+    "id": "enable-direct-p2p",
+    "reason": "iommu=pt is active and strict RCCL runs complete with NCCL_P2P_DISABLE=0; RCCL logs show every ring edge via P2P/IPC."
+  },
+  "warnings": [
+    "The default legacy ROCr IPC path still fails on gfx1201; direct mode requires HSA_ENABLE_IPC_MODE_LEGACY=0.",
+    "Training throughput had large low outliers despite longer warmup; report medians and retain all five receipts.",
+    "The bundled runtime repeatedly warns that /opt/amdgpu/share/libdrm/amdgpu.ids is missing; GPU identity is generic but computation is correct.",
+    "The installed Ubuntu rocm-smi 5.7 utility aborts on this ROCm/gfx1201 stack; use aligned amd-smi or sysfs telemetry before real-workload runs."
+  ]
+}

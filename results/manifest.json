@@ -124,6 +124,11 @@
       "producer": "experiments/image_repro.py",
       "reason": "Derived summary includes smoke and incomplete protocol-assumption matrices and is not verified paper evidence."
     },
+    "multigpu_ab_receipt.json": {
+      "status": "measured-not-verifiable-by-this-policy",
+      "producer": "experiments/multigpu.py on four gfx1201 cards, aggregating results/multigpu/*.json",
+      "reason": "Two A/B arms with one toggled variable, NCCL_P2P_DISABLE. The RCCL all-reduce arm settles its question: the peer-to-peer path is worth about 2.5 to 2.6 times the bus bandwidth, and the worst round-to-round spread in either arm is under 1.07, so the effect is roughly thirty times the noise. The training arm cannot settle anything, because rounds of the same arm differ by up to 2.7 times while the arms differ by 1.02, and it is filed here refusing that claim rather than reporting it. Four cards beat one card by a non-overlapping margin, so that comparison holds, but only its lower bound of 1.35 is supported and not the median of 3.16. The workload is deterministic synthetic coordinate regression, so there is no input dataset to checksum and no training seed to pin, and it claims nothing about the paper."
+    },
     "paper_exact_prerequisites.json": {
       "status": "legacy-unverified",
       "producer": "curated blocker index, consumed by tests/test_course_release.py",

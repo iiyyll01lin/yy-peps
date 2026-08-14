@@ -1,0 +1,42 @@
+{
+  "backend_api": "nccl",
+  "backend_runtime": "RCCL",
+  "dtype": "float32",
+  "measurements": [
+    {
+      "algorithmic_gb_per_second": 12.645268156674266,
+      "bus_bandwidth_factor": 1.5,
+      "bus_gb_per_second": 18.9679022350114,
+      "message_bytes": 16777216,
+      "message_mib": 16,
+      "seconds_per_all_reduce": 0.0013267584199979864
+    },
+    {
+      "algorithmic_gb_per_second": 12.842534010760913,
+      "bus_bandwidth_factor": 1.5,
+      "bus_gb_per_second": 19.263801016141368,
+      "message_bytes": 67108864,
+      "message_mib": 64,
+      "seconds_per_all_reduce": 0.005225515770000584
+    },
+    {
+      "algorithmic_gb_per_second": 12.966300599240046,
+      "bus_bandwidth_factor": 1.5,
+      "bus_gb_per_second": 19.44945089886007,
+      "message_bytes": 268435456,
+      "message_mib": 256,
+      "seconds_per_all_reduce": 0.020702547650000725
+    }
+  ],
+  "operation": "all_reduce_sum",
+  "schema": "peps.multigpu_collective",
+  "schema_version": 1,
+  "timed_iterations": 100,
+  "timing": "slowest_rank_host_time_with_device_synchronize",
+  "transport": {
+    "nccl_p2p_disable": "1",
+    "rccl_p2p_disabled": true
+  },
+  "warmup_iterations": 20,
+  "world_size": 4
+}

@@ -1,0 +1,1923 @@
+{
+  "authoritative_p2p_ab_receipt": {
+    "path": "/home/aup/yy/workspace/peps/results/multigpu/benchmark-p2p-ab.json",
+    "sha256": "d67f0fa7697031c111412db341e3b61dcf0edd0e5b9ac5ab05b0dfc771617e64"
+  },
+  "commands": [
+    "HSA_ENABLE_IPC_MODE_LEGACY=0 HSA_FORCE_FINE_GRAIN_PCIE=1 /home/aup/yy/workspace/peps/.venv/bin/python -m experiments.real_workload suite --rccl-p2p on --config configs/paper/image_full.toml --instance kodim01 --method G-PEPS --seed 0 --gpu-counts 1,2,4 --repetitions 5 --warmup-steps 100 --timed-steps 500 --convergence-steps 600 --convergence-log-every 100 --telemetry-interval-seconds 0.2 --idle-timeout-seconds 60 --timeout-seconds 600 --output results/multigpu/benchmark-real-workload.json --work-dir results/multigpu/real-workload-clean",
+    "HSA_ENABLE_IPC_MODE_LEGACY=0 HSA_FORCE_FINE_GRAIN_PCIE=1 NCCL_P2P_DISABLE=0 NCCL_DEBUG=INFO NCCL_DEBUG_SUBSYS=INIT,P2P /home/aup/yy/workspace/peps/.venv/bin/python -m torch.distributed.run --standalone --nproc-per-node=1 -m experiments.real_workload worker --kind performance --config configs/paper/image_full.toml --instance kodim01 --method G-PEPS --seed 0 --output results/multigpu/real-workload-clean/runs/performance-1gpu-r1.json --rccl-p2p on --telemetry-interval-seconds 0.2 --warmup-steps 100 --timed-steps 500",
+    "HSA_ENABLE_IPC_MODE_LEGACY=0 HSA_FORCE_FINE_GRAIN_PCIE=1 NCCL_P2P_DISABLE=0 NCCL_DEBUG=INFO NCCL_DEBUG_SUBSYS=INIT,P2P /home/aup/yy/workspace/peps/.venv/bin/python -m torch.distributed.run --standalone --nproc-per-node=2 -m experiments.real_workload worker --kind performance --config configs/paper/image_full.toml --instance kodim01 --method G-PEPS --seed 0 --output results/multigpu/real-workload-clean/runs/performance-2gpu-r1.json --rccl-p2p on --telemetry-interval-seconds 0.2 --warmup-steps 100 --timed-steps 500",
+    "HSA_ENABLE_IPC_MODE_LEGACY=0 HSA_FORCE_FINE_GRAIN_PCIE=1 NCCL_P2P_DISABLE=0 NCCL_DEBUG=INFO NCCL_DEBUG_SUBSYS=INIT,P2P /home/aup/yy/workspace/peps/.venv/bin/python -m torch.distributed.run --standalone --nproc-per-node=4 -m experiments.real_workload worker --kind performance --config configs/paper/image_full.toml --instance kodim01 --method G-PEPS --seed 0 --output results/multigpu/real-workload-clean/runs/performance-4gpu-r1.json --rccl-p2p on --telemetry-interval-seconds 0.2 --warmup-steps 100 --timed-steps 500",
+    "HSA_ENABLE_IPC_MODE_LEGACY=0 HSA_FORCE_FINE_GRAIN_PCIE=1 NCCL_P2P_DISABLE=0 NCCL_DEBUG=INFO NCCL_DEBUG_SUBSYS=INIT,P2P /home/aup/yy/workspace/peps/.venv/bin/python -m torch.distributed.run --standalone --nproc-per-node=1 -m experiments.real_workload worker --kind performance --config configs/paper/image_full.toml --instance kodim01 --method G-PEPS --seed 0 --output results/multigpu/real-workload-clean/runs/performance-1gpu-r2.json --rccl-p2p on --telemetry-interval-seconds 0.2 --warmup-steps 100 --timed-steps 500",
+    "HSA_ENABLE_IPC_MODE_LEGACY=0 HSA_FORCE_FINE_GRAIN_PCIE=1 NCCL_P2P_DISABLE=0 NCCL_DEBUG=INFO NCCL_DEBUG_SUBSYS=INIT,P2P /home/aup/yy/workspace/peps/.venv/bin/python -m torch.distributed.run --standalone --nproc-per-node=2 -m experiments.real_workload worker --kind performance --config configs/paper/image_full.toml --instance kodim01 --method G-PEPS --seed 0 --output results/multigpu/real-workload-clean/runs/performance-2gpu-r2.json --rccl-p2p on --telemetry-interval-seconds 0.2 --warmup-steps 100 --timed-steps 500",
+    "HSA_ENABLE_IPC_MODE_LEGACY=0 HSA_FORCE_FINE_GRAIN_PCIE=1 NCCL_P2P_DISABLE=0 NCCL_DEBUG=INFO NCCL_DEBUG_SUBSYS=INIT,P2P /home/aup/yy/workspace/peps/.venv/bin/python -m torch.distributed.run --standalone --nproc-per-node=4 -m experiments.real_workload worker --kind performance --config configs/paper/image_full.toml --instance kodim01 --method G-PEPS --seed 0 --output results/multigpu/real-workload-clean/runs/performance-4gpu-r2.json --rccl-p2p on --telemetry-interval-seconds 0.2 --warmup-steps 100 --timed-steps 500",
+    "HSA_ENABLE_IPC_MODE_LEGACY=0 HSA_FORCE_FINE_GRAIN_PCIE=1 NCCL_P2P_DISABLE=0 NCCL_DEBUG=INFO NCCL_DEBUG_SUBSYS=INIT,P2P /home/aup/yy/workspace/peps/.venv/bin/python -m torch.distributed.run --standalone --nproc-per-node=1 -m experiments.real_workload worker --kind performance --config configs/paper/image_full.toml --instance kodim01 --method G-PEPS --seed 0 --output results/multigpu/real-workload-clean/runs/performance-1gpu-r3.json --rccl-p2p on --telemetry-interval-seconds 0.2 --warmup-steps 100 --timed-steps 500",
+    "HSA_ENABLE_IPC_MODE_LEGACY=0 HSA_FORCE_FINE_GRAIN_PCIE=1 NCCL_P2P_DISABLE=0 NCCL_DEBUG=INFO NCCL_DEBUG_SUBSYS=INIT,P2P /home/aup/yy/workspace/peps/.venv/bin/python -m torch.distributed.run --standalone --nproc-per-node=2 -m experiments.real_workload worker --kind performance --config configs/paper/image_full.toml --instance kodim01 --method G-PEPS --seed 0 --output results/multigpu/real-workload-clean/runs/performance-2gpu-r3.json --rccl-p2p on --telemetry-interval-seconds 0.2 --warmup-steps 100 --timed-steps 500",
+    "HSA_ENABLE_IPC_MODE_LEGACY=0 HSA_FORCE_FINE_GRAIN_PCIE=1 NCCL_P2P_DISABLE=0 NCCL_DEBUG=INFO NCCL_DEBUG_SUBSYS=INIT,P2P /home/aup/yy/workspace/peps/.venv/bin/python -m torch.distributed.run --standalone --nproc-per-node=4 -m experiments.real_workload worker --kind performance --config configs/paper/image_full.toml --instance kodim01 --method G-PEPS --seed 0 --output results/multigpu/real-workload-clean/runs/performance-4gpu-r3.json --rccl-p2p on --telemetry-interval-seconds 0.2 --warmup-steps 100 --timed-steps 500",
+    "HSA_ENABLE_IPC_MODE_LEGACY=0 HSA_FORCE_FINE_GRAIN_PCIE=1 NCCL_P2P_DISABLE=0 NCCL_DEBUG=INFO NCCL_DEBUG_SUBSYS=INIT,P2P /home/aup/yy/workspace/peps/.venv/bin/python -m torch.distributed.run --standalone --nproc-per-node=1 -m experiments.real_workload worker --kind performance --config configs/paper/image_full.toml --instance kodim01 --method G-PEPS --seed 0 --output results/multigpu/real-workload-clean/runs/performance-1gpu-r4.json --rccl-p2p on --telemetry-interval-seconds 0.2 --warmup-steps 100 --timed-steps 500",
+    "HSA_ENABLE_IPC_MODE_LEGACY=0 HSA_FORCE_FINE_GRAIN_PCIE=1 NCCL_P2P_DISABLE=0 NCCL_DEBUG=INFO NCCL_DEBUG_SUBSYS=INIT,P2P /home/aup/yy/workspace/peps/.venv/bin/python -m torch.distributed.run --standalone --nproc-per-node=2 -m experiments.real_workload worker --kind performance --config configs/paper/image_full.toml --instance kodim01 --method G-PEPS --seed 0 --output results/multigpu/real-workload-clean/runs/performance-2gpu-r4.json --rccl-p2p on --telemetry-interval-seconds 0.2 --warmup-steps 100 --timed-steps 500",
+    "HSA_ENABLE_IPC_MODE_LEGACY=0 HSA_FORCE_FINE_GRAIN_PCIE=1 NCCL_P2P_DISABLE=0 NCCL_DEBUG=INFO NCCL_DEBUG_SUBSYS=INIT,P2P /home/aup/yy/workspace/peps/.venv/bin/python -m torch.distributed.run --standalone --nproc-per-node=4 -m experiments.real_workload worker --kind performance --config configs/paper/image_full.toml --instance kodim01 --method G-PEPS --seed 0 --output results/multigpu/real-workload-clean/runs/performance-4gpu-r4.json --rccl-p2p on --telemetry-interval-seconds 0.2 --warmup-steps 100 --timed-steps 500",
+    "HSA_ENABLE_IPC_MODE_LEGACY=0 HSA_FORCE_FINE_GRAIN_PCIE=1 NCCL_P2P_DISABLE=0 NCCL_DEBUG=INFO NCCL_DEBUG_SUBSYS=INIT,P2P /home/aup/yy/workspace/peps/.venv/bin/python -m torch.distributed.run --standalone --nproc-per-node=1 -m experiments.real_workload worker --kind performance --config configs/paper/image_full.toml --instance kodim01 --method G-PEPS --seed 0 --output results/multigpu/real-workload-clean/runs/performance-1gpu-r5.json --rccl-p2p on --telemetry-interval-seconds 0.2 --warmup-steps 100 --timed-steps 500",
+    "HSA_ENABLE_IPC_MODE_LEGACY=0 HSA_FORCE_FINE_GRAIN_PCIE=1 NCCL_P2P_DISABLE=0 NCCL_DEBUG=INFO NCCL_DEBUG_SUBSYS=INIT,P2P /home/aup/yy/workspace/peps/.venv/bin/python -m torch.distributed.run --standalone --nproc-per-node=2 -m experiments.real_workload worker --kind performance --config configs/paper/image_full.toml --instance kodim01 --method G-PEPS --seed 0 --output results/multigpu/real-workload-clean/runs/performance-2gpu-r5.json --rccl-p2p on --telemetry-interval-seconds 0.2 --warmup-steps 100 --timed-steps 500",
+    "HSA_ENABLE_IPC_MODE_LEGACY=0 HSA_FORCE_FINE_GRAIN_PCIE=1 NCCL_P2P_DISABLE=0 NCCL_DEBUG=INFO NCCL_DEBUG_SUBSYS=INIT,P2P /home/aup/yy/workspace/peps/.venv/bin/python -m torch.distributed.run --standalone --nproc-per-node=4 -m experiments.real_workload worker --kind performance --config configs/paper/image_full.toml --instance kodim01 --method G-PEPS --seed 0 --output results/multigpu/real-workload-clean/runs/performance-4gpu-r5.json --rccl-p2p on --telemetry-interval-seconds 0.2 --warmup-steps 100 --timed-steps 500",
+    "HSA_ENABLE_IPC_MODE_LEGACY=0 HSA_FORCE_FINE_GRAIN_PCIE=1 NCCL_P2P_DISABLE=0 NCCL_DEBUG=INFO NCCL_DEBUG_SUBSYS=INIT,P2P /home/aup/yy/workspace/peps/.venv/bin/python -m torch.distributed.run --standalone --nproc-per-node=1 -m experiments.real_workload worker --kind convergence --config configs/paper/image_full.toml --instance kodim01 --method G-PEPS --seed 0 --output results/multigpu/real-workload-clean/runs/convergence-1gpu.json --rccl-p2p on --telemetry-interval-seconds 0.2 --convergence-steps 600 --convergence-log-every 100",
+    "HSA_ENABLE_IPC_MODE_LEGACY=0 HSA_FORCE_FINE_GRAIN_PCIE=1 NCCL_P2P_DISABLE=0 NCCL_DEBUG=INFO NCCL_DEBUG_SUBSYS=INIT,P2P /home/aup/yy/workspace/peps/.venv/bin/python -m torch.distributed.run --standalone --nproc-per-node=2 -m experiments.real_workload worker --kind convergence --config configs/paper/image_full.toml --instance kodim01 --method G-PEPS --seed 0 --output results/multigpu/real-workload-clean/runs/convergence-2gpu.json --rccl-p2p on --telemetry-interval-seconds 0.2 --convergence-steps 600 --convergence-log-every 100",
+    "HSA_ENABLE_IPC_MODE_LEGACY=0 HSA_FORCE_FINE_GRAIN_PCIE=1 NCCL_P2P_DISABLE=0 NCCL_DEBUG=INFO NCCL_DEBUG_SUBSYS=INIT,P2P /home/aup/yy/workspace/peps/.venv/bin/python -m torch.distributed.run --standalone --nproc-per-node=4 -m experiments.real_workload worker --kind convergence --config configs/paper/image_full.toml --instance kodim01 --method G-PEPS --seed 0 --output results/multigpu/real-workload-clean/runs/convergence-4gpu.json --rccl-p2p on --telemetry-interval-seconds 0.2 --convergence-steps 600 --convergence-log-every 100"
+  ],
+  "created_at_utc": "2026-07-22T02:01:22.648814+00:00",
+  "data": {
+    "bytes": 736501,
+    "color_space": "sRGB",
+    "credit": {
+      "description": "Stone building",
+      "photographer": "Don Cochran",
+      "reference": "JN1206"
+    },
+    "dataset_id": "kodak-pcd0992",
+    "instance": "kodim01",
+    "license": {
+      "name": "Kodak PhotoCD sampler electronic-imaging grant",
+      "redistribution_note": "Not CC0. The sampler grant permits electronic-imaging use, storage, transmission, reproduction, and display by authorized holders; reproductions generally require photographer credit. Raw images remain git-ignored.",
+      "spdx": null,
+      "url": "https://www.r0k.us/graphics/kodak/PhotoCD_credits.txt"
+    },
+    "loader": "apps.image.data.load_paper_kodak -> apps.image.data.image_to_coords_targets",
+    "manifest_path": "/home/aup/yy/workspace/peps/data/manifests/kodak.json",
+    "manifest_sha256": "82bdbfb3c46c5d4bf71c6ff2ec04d4cfcf7e107429e876b3926eddc877ccc837",
+    "resolution_xy": [
+      768,
+      512
+    ],
+    "sha256": "a56e27cbf5f843c048b6af1d6e090760e9c92fadba88b7dee0205918a37523bd",
+    "source_path": "/home/aup/yy/workspace/peps/data/raw/kodak/kodim01.png",
+    "source_url": "https://r0k.us/graphics/kodak/kodak/kodim01.png"
+  },
+  "deterministic_convergence": {
+    "comparison": [
+      {
+        "absolute_delta_vs_1gpu": {
+          "1": 0.0,
+          "2": 1.4901161193847656e-08,
+          "4": 2.2351741790771484e-08
+        },
+        "global_minibatch_loss": {
+          "1": 0.20005546510219574,
+          "2": 0.20005545020103455,
+          "4": 0.20005544275045395
+        },
+        "max_absolute_delta_vs_1gpu": 2.2351741790771484e-08,
+        "max_relative_delta_vs_1gpu": 1.1172772400570705e-07,
+        "step": 1
+      },
+      {
+        "absolute_delta_vs_1gpu": {
+          "1": 0.0,
+          "2": 3.4924596548080444e-10,
+          "4": 3.4924596548080444e-10
+        },
+        "global_minibatch_loss": {
+          "1": 0.00391613831743598,
+          "2": 0.003916138666681945,
+          "4": 0.003916138666681945
+        },
+        "max_absolute_delta_vs_1gpu": 3.4924596548080444e-10,
+        "max_relative_delta_vs_1gpu": 8.918121301432144e-08,
+        "step": 100
+      },
+      {
+        "absolute_delta_vs_1gpu": {
+          "1": 0.0,
+          "2": 0.0,
+          "4": 5.820766091346741e-11
+        },
+        "global_minibatch_loss": {
+          "1": 0.0026873857714235783,
+          "2": 0.0026873857714235783,
+          "4": 0.0026873857132159173
+        },
+        "max_absolute_delta_vs_1gpu": 5.820766091346741e-11,
+        "max_relative_delta_vs_1gpu": 2.1659585137504576e-08,
+        "step": 200
+      },
+      {
+        "absolute_delta_vs_1gpu": {
+          "1": 0.0,
+          "2": 1.1641532182693481e-10,
+          "4": 1.4551915228366852e-10
+        },
+        "global_minibatch_loss": {
+          "1": 0.0017540788976475596,
+          "2": 0.0017540790140628815,
+          "4": 0.0017540787521284074
+        },
+        "max_absolute_delta_vs_1gpu": 1.4551915228366852e-10,
+        "max_relative_delta_vs_1gpu": 8.296043722937891e-08,
+        "step": 300
+      },
+      {
+        "absolute_delta_vs_1gpu": {
+          "1": 0.0,
+          "2": 1.7462298274040222e-10,
+          "4": 0.0
+        },
+        "global_minibatch_loss": {
+          "1": 0.0010198840172961354,
+          "2": 0.0010198841919191182,
+          "4": 0.0010198840172961354
+        },
+        "max_absolute_delta_vs_1gpu": 1.7462298274040222e-10,
+        "max_relative_delta_vs_1gpu": 1.7121847168794132e-07,
+        "step": 400
+      },
+      {
+        "absolute_delta_vs_1gpu": {
+          "1": 0.0,
+          "2": 8.731149137020111e-11,
+          "4": 0.0
+        },
+        "global_minibatch_loss": {
+          "1": 0.0006592025747522712,
+          "2": 0.0006592026620637625,
+          "4": 0.0006592025747522712
+        },
+        "max_absolute_delta_vs_1gpu": 8.731149137020111e-11,
+        "max_relative_delta_vs_1gpu": 1.3245016739052154e-07,
+        "step": 500
+      },
+      {
+        "absolute_delta_vs_1gpu": {
+          "1": 0.0,
+          "2": 2.9103830456733704e-11,
+          "4": 8.003553375601768e-11
+        },
+        "global_minibatch_loss": {
+          "1": 0.0004632534401025623,
+          "2": 0.00046325341099873185,
+          "4": 0.00046325336006702855
+        },
+        "max_absolute_delta_vs_1gpu": 8.003553375601768e-11,
+        "max_relative_delta_vs_1gpu": 1.727683527580457e-07,
+        "step": 600
+      }
+    ],
+    "traces": {
+      "1": [
+        {
+          "global_minibatch_loss": 0.20005546510219574,
+          "step": 1
+        },
+        {
+          "global_minibatch_loss": 0.00391613831743598,
+          "step": 100
+        },
+        {
+          "global_minibatch_loss": 0.0026873857714235783,
+          "step": 200
+        },
+        {
+          "global_minibatch_loss": 0.0017540788976475596,
+          "step": 300
+        },
+        {
+          "global_minibatch_loss": 0.0010198840172961354,
+          "step": 400
+        },
+        {
+          "global_minibatch_loss": 0.0006592025747522712,
+          "step": 500
+        },
+        {
+          "global_minibatch_loss": 0.0004632534401025623,
+          "step": 600
+        }
+      ],
+      "2": [
+        {
+          "global_minibatch_loss": 0.20005545020103455,
+          "step": 1
+        },
+        {
+          "global_minibatch_loss": 0.003916138666681945,
+          "step": 100
+        },
+        {
+          "global_minibatch_loss": 0.0026873857714235783,
+          "step": 200
+        },
+        {
+          "global_minibatch_loss": 0.0017540790140628815,
+          "step": 300
+        },
+        {
+          "global_minibatch_loss": 0.0010198841919191182,
+          "step": 400
+        },
+        {
+          "global_minibatch_loss": 0.0006592026620637625,
+          "step": 500
+        },
+        {
+          "global_minibatch_loss": 0.00046325341099873185,
+          "step": 600
+        }
+      ],
+      "4": [
+        {
+          "global_minibatch_loss": 0.20005544275045395,
+          "step": 1
+        },
+        {
+          "global_minibatch_loss": 0.003916138666681945,
+          "step": 100
+        },
+        {
+          "global_minibatch_loss": 0.0026873857132159173,
+          "step": 200
+        },
+        {
+          "global_minibatch_loss": 0.0017540787521284074,
+          "step": 300
+        },
+        {
+          "global_minibatch_loss": 0.0010198840172961354,
+          "step": 400
+        },
+        {
+          "global_minibatch_loss": 0.0006592025747522712,
+          "step": 500
+        },
+        {
+          "global_minibatch_loss": 0.00046325336006702855,
+          "step": 600
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "Temperature, power, clock, utilization, and VRAM telemetry come from read-only amdgpu sysfs. Missing driver attributes remain null and are counted; no value is synthesized.",
+    "The five throughput repetitions are deterministic prefixes from fresh initialization, not five complete 120,000-step jobs.",
+    "The separate convergence prefixes contain metric-reduction synchronizations and are not used as throughput measurements."
+  ],
+  "loss_consistency": {
+    "1": {
+      "absolute_delta_vs_1gpu": 0.0,
+      "median_full_image_mse": 0.0004623495484843646,
+      "relative_delta_vs_1gpu": 0.0
+    },
+    "2": {
+      "absolute_delta_vs_1gpu": 4.626731338547643e-11,
+      "median_full_image_mse": 0.000462349594751678,
+      "relative_delta_vs_1gpu": 1.0006998717127777e-07
+    },
+    "4": {
+      "absolute_delta_vs_1gpu": 2.074355335938971e-12,
+      "median_full_image_mse": 0.0004623495464100093,
+      "relative_delta_vs_1gpu": 4.486552096220161e-09
+    }
+  },
+  "performance": {
+    "1": {
+      "elapsed_seconds": {
+        "coefficient_of_variation_percent": 0.06744222368030794,
+        "count": 5,
+        "iqr": 0.003163382999900932,
+        "max": 8.329688812999848,
+        "mean": 8.3256550436,
+        "median": 8.32724925499997,
+        "median_absolute_deviation": 0.002021705000061047,
+        "min": 8.31595861300002,
+        "missing_count": 0,
+        "sample_standard_deviation": 0.0056150068973555515,
+        "values": [
+          8.31595861300002,
+          8.32610757700013,
+          8.32724925499997,
+          8.32927096000003,
+          8.329688812999848
+        ]
+      },
+      "final_global_minibatch_loss": {
+        "coefficient_of_variation_percent": 6.882118630012022e-06,
+        "count": 5,
+        "iqr": 0.0,
+        "max": 0.0004632534401025623,
+        "mean": 0.0004632534051779658,
+        "median": 0.00046325341099873185,
+        "median_absolute_deviation": 0.0,
+        "min": 0.00046325335279107094,
+        "missing_count": 0,
+        "sample_standard_deviation": 3.188164890191786e-11,
+        "values": [
+          0.00046325335279107094,
+          0.00046325341099873185,
+          0.00046325341099873185,
+          0.00046325341099873185,
+          0.0004632534401025623
+        ]
+      },
+      "full_image_mse": {
+        "coefficient_of_variation_percent": 3.794879688318416e-06,
+        "count": 5,
+        "iqr": 5.216615225726862e-12,
+        "max": 0.0004623495710076057,
+        "mean": 0.0004623495484543896,
+        "median": 0.0004623495484843646,
+        "median_absolute_deviation": 4.529864114019566e-12,
+        "min": 0.00046234952196813557,
+        "missing_count": 0,
+        "sample_standard_deviation": 1.7545609103327546e-11,
+        "values": [
+          0.00046234952196813557,
+          0.0004623495477976135,
+          0.0004623495484843646,
+          0.00046234955301422873,
+          0.0004623495710076057
+        ]
+      },
+      "full_image_psnr_db": {
+        "coefficient_of_variation_percent": 4.941771277337795e-07,
+        "count": 5,
+        "iqr": 4.900074657143705e-08,
+        "max": 33.35029587060196,
+        "mean": 33.3502956218111,
+        "median": 33.35029562152953,
+        "median_absolute_deviation": 4.2549949341719184e-08,
+        "min": 33.35029540996408,
+        "missing_count": 0,
+        "sample_standard_deviation": 1.648095329945905e-07,
+        "values": [
+          33.35029540996408,
+          33.35029557897958,
+          33.35029562152953,
+          33.35029562798033,
+          33.35029587060196
+        ]
+      },
+      "repetitions": 5,
+      "samples_per_second": {
+        "coefficient_of_variation_percent": 0.0674933145259551,
+        "count": 5,
+        "iqr": 1368.434525492601,
+        "max": 3607521.5613870593,
+        "mean": 3603321.392425773,
+        "median": 3602630.2421519277,
+        "median_absolute_deviation": 874.4409455410205,
+        "min": 3601575.121651612,
+        "missing_count": 0,
+        "sample_standard_deviation": 2432.001040770952,
+        "values": [
+          3601575.121651612,
+          3601755.8012063866,
+          3602630.2421519277,
+          3603124.2357318792,
+          3607521.5613870593
+        ]
+      },
+      "steps_per_second": {
+        "coefficient_of_variation_percent": 0.0674933145259566,
+        "count": 5,
+        "iqr": 0.02280724209153817,
+        "max": 60.12535935645099,
+        "mean": 60.05535654042956,
+        "median": 60.0438373691988,
+        "median_absolute_deviation": 0.014574015759016845,
+        "min": 60.02625202752687,
+        "missing_count": 0,
+        "sample_standard_deviation": 0.040533350679516765,
+        "values": [
+          60.02625202752687,
+          60.02926335343978,
+          60.0438373691988,
+          60.05207059553132,
+          60.12535935645099
+        ]
+      },
+      "telemetry": {
+        "collectors": [
+          "linux_amdgpu_sysfs_read_only"
+        ],
+        "devices": {
+          "0000:f3:00.0": {
+            "metrics": {
+              "clock_core_mhz": {
+                "coefficient_of_variation_percent": 8.624998906106986,
+                "count": 210,
+                "iqr": 5.0,
+                "max": 3398.0,
+                "mean": 3345.4142857142856,
+                "median": 3392.0,
+                "median_absolute_deviation": 2.0,
+                "min": 1456.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 288.541945547604
+              },
+              "clock_memory_mhz": {
+                "coefficient_of_variation_percent": 0.0,
+                "count": 210,
+                "iqr": 0.0,
+                "max": 1258.0,
+                "mean": 1258.0,
+                "median": 1258.0,
+                "median_absolute_deviation": 0.0,
+                "min": 1258.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 0.0
+              },
+              "gpu_busy_percent": {
+                "coefficient_of_variation_percent": 9.397724416372364,
+                "count": 210,
+                "iqr": 0.0,
+                "max": 100.0,
+                "mean": 98.54761904761905,
+                "median": 100.0,
+                "median_absolute_deviation": 0.0,
+                "min": 38.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 9.261233656991719
+              },
+              "power_w": {
+                "coefficient_of_variation_percent": 9.092945456172718,
+                "count": 210,
+                "iqr": 3.0,
+                "max": 213.0,
+                "mean": 205.85714285714286,
+                "median": 209.0,
+                "median_absolute_deviation": 1.0,
+                "min": 85.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 18.71847771763555
+              },
+              "temperature_edge_c": {
+                "coefficient_of_variation_percent": 2.1610042415866677,
+                "count": 210,
+                "iqr": 2.0,
+                "max": 64.0,
+                "mean": 61.833333333333336,
+                "median": 62.0,
+                "median_absolute_deviation": 1.0,
+                "min": 57.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 1.3362209560477565
+              },
+              "temperature_junction_c": {
+                "coefficient_of_variation_percent": 3.143597443129204,
+                "count": 210,
+                "iqr": 3.0,
+                "max": 79.0,
+                "mean": 75.38571428571429,
+                "median": 76.0,
+                "median_absolute_deviation": 1.0,
+                "min": 63.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 2.3698233867704017
+              },
+              "temperature_memory_c": {
+                "coefficient_of_variation_percent": 2.5990056151566985,
+                "count": 210,
+                "iqr": 3.0,
+                "max": 70.0,
+                "mean": 67.79047619047618,
+                "median": 68.0,
+                "median_absolute_deviation": 1.0,
+                "min": 60.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 1.7618782827319406
+              },
+              "vram_total_bytes": {
+                "coefficient_of_variation_percent": 0.0,
+                "count": 210,
+                "iqr": 0.0,
+                "max": 34208743424.0,
+                "mean": 34208743424.0,
+                "median": 34208743424.0,
+                "median_absolute_deviation": 0.0,
+                "min": 34208743424.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 0.0
+              },
+              "vram_used_bytes": {
+                "coefficient_of_variation_percent": 0.0005960443315476208,
+                "count": 210,
+                "iqr": 4096.0,
+                "max": 754589696.0,
+                "mean": 754585600.0,
+                "median": 754585600.0,
+                "median_absolute_deviation": 4096.0,
+                "min": 754577408.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 4497.664695474604
+              }
+            },
+            "pci": "0000:f3:00.0",
+            "sample_count": 210,
+            "torch_indices": [
+              0
+            ]
+          }
+        },
+        "sample_count": 210
+      },
+      "transport": [
+        {
+          "effective": "not_applicable_single_gpu",
+          "evidence": [],
+          "fallback_route_count": 0,
+          "p2p_ipc_route_count": 0,
+          "requested": "on",
+          "verified": true
+        },
+        {
+          "effective": "not_applicable_single_gpu",
+          "evidence": [],
+          "fallback_route_count": 0,
+          "p2p_ipc_route_count": 0,
+          "requested": "on",
+          "verified": true
+        },
+        {
+          "effective": "not_applicable_single_gpu",
+          "evidence": [],
+          "fallback_route_count": 0,
+          "p2p_ipc_route_count": 0,
+          "requested": "on",
+          "verified": true
+        },
+        {
+          "effective": "not_applicable_single_gpu",
+          "evidence": [],
+          "fallback_route_count": 0,
+          "p2p_ipc_route_count": 0,
+          "requested": "on",
+          "verified": true
+        },
+        {
+          "effective": "not_applicable_single_gpu",
+          "evidence": [],
+          "fallback_route_count": 0,
+          "p2p_ipc_route_count": 0,
+          "requested": "on",
+          "verified": true
+        }
+      ]
+    },
+    "2": {
+      "elapsed_seconds": {
+        "coefficient_of_variation_percent": 0.17250233502487144,
+        "count": 5,
+        "iqr": 0.010899488999712048,
+        "max": 4.639990219999618,
+        "mean": 4.630108650399961,
+        "median": 4.626165640000181,
+        "median_absolute_deviation": 0.004907895000087592,
+        "min": 4.621257745000094,
+        "missing_count": 0,
+        "sample_standard_deviation": 0.007987045536128496,
+        "values": [
+          4.621257745000094,
+          4.626115079000101,
+          4.626165640000181,
+          4.637014567999813,
+          4.639990219999618
+        ]
+      },
+      "final_global_minibatch_loss": {
+        "coefficient_of_variation_percent": 6.437632583048434e-06,
+        "count": 5,
+        "iqr": 5.820766091346741e-11,
+        "max": 0.0004632534255506471,
+        "mean": 0.00046325339935719966,
+        "median": 0.00046325341099873185,
+        "median_absolute_deviation": 1.4551915228366852e-11,
+        "min": 0.00046325336734298617,
+        "missing_count": 0,
+        "sample_standard_deviation": 2.9822551779098574e-11,
+        "values": [
+          0.00046325336734298617,
+          0.00046325336734298617,
+          0.00046325341099873185,
+          0.0004632534255506471,
+          0.0004632534255506471
+        ]
+      },
+      "full_image_mse": {
+        "coefficient_of_variation_percent": 7.128265023120677e-06,
+        "count": 5,
+        "iqr": 4.328355648073115e-11,
+        "max": 0.00046234963232328404,
+        "mean": 0.0004623495944241915,
+        "median": 0.000462349594751678,
+        "median_absolute_deviation": 2.4301669346565163e-11,
+        "min": 0.00046234955022285727,
+        "missing_count": 0,
+        "sample_standard_deviation": 3.295750442387995e-11,
+        "values": [
+          0.00046234955022285727,
+          0.00046234957576979087,
+          0.000462349594751678,
+          0.00046234961905334735,
+          0.00046234963232328404
+        ]
+      },
+      "full_image_psnr_db": {
+        "coefficient_of_variation_percent": 9.282575029626679e-07,
+        "count": 5,
+        "iqr": 4.0657134547927853e-07,
+        "max": 33.35029560519951,
+        "mean": 33.35029519000729,
+        "median": 33.35029518693113,
+        "median_absolute_deviation": 2.2827057222229996e-07,
+        "min": 33.35029483401332,
+        "missing_count": 0,
+        "sample_standard_deviation": 3.095766173614404e-07,
+        "values": [
+          33.35029483401332,
+          33.350294958660555,
+          33.35029518693113,
+          33.3502953652319,
+          33.35029560519951
+        ]
+      },
+      "repetitions": 5,
+      "samples_per_second": {
+        "coefficient_of_variation_percent": 0.17243309554186909,
+        "count": 5,
+        "iqr": 15243.07195628155,
+        "max": 6491739.187769409,
+        "mean": 6479345.011874972,
+        "median": 6484852.107456927,
+        "median_absolute_deviation": 6887.080312482081,
+        "min": 6465530.86915827,
+        "missing_count": 0,
+        "sample_standard_deviation": 11172.535174813698,
+        "values": [
+          6465530.86915827,
+          6469679.911516985,
+          6484852.107456927,
+          6484922.9834732665,
+          6491739.187769409
+        ]
+      },
+      "steps_per_second": {
+        "coefficient_of_variation_percent": 0.17243309554187056,
+        "count": 5,
+        "iqr": 0.254051199271359,
+        "max": 108.19565312949015,
+        "mean": 107.98908353124952,
+        "median": 108.08086845761545,
+        "median_absolute_deviation": 0.11478467187470187,
+        "min": 107.75884781930449,
+        "missing_count": 0,
+        "sample_standard_deviation": 0.18620891958022986,
+        "values": [
+          107.75884781930449,
+          107.82799852528308,
+          108.08086845761545,
+          108.08204972455444,
+          108.19565312949015
+        ]
+      },
+      "telemetry": {
+        "collectors": [
+          "linux_amdgpu_sysfs_read_only"
+        ],
+        "devices": {
+          "0000:d3:00.0": {
+            "metrics": {
+              "clock_core_mhz": {
+                "coefficient_of_variation_percent": 14.234522990967989,
+                "count": 120,
+                "iqr": 12.5,
+                "max": 3361.0,
+                "mean": 3248.4166666666665,
+                "median": 3356.0,
+                "median_absolute_deviation": 2.0,
+                "min": 1026.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 462.39661725910264
+              },
+              "clock_memory_mhz": {
+                "coefficient_of_variation_percent": 0.0,
+                "count": 120,
+                "iqr": 0.0,
+                "max": 1258.0,
+                "mean": 1258.0,
+                "median": 1258.0,
+                "median_absolute_deviation": 0.0,
+                "min": 1258.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 0.0
+              },
+              "gpu_busy_percent": {
+                "coefficient_of_variation_percent": 16.460457013868904,
+                "count": 120,
+                "iqr": 1.0,
+                "max": 100.0,
+                "mean": 96.14166666666667,
+                "median": 99.0,
+                "median_absolute_deviation": 0.0,
+                "min": 20.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 15.825357714083795
+              },
+              "power_w": {
+                "coefficient_of_variation_percent": 15.36768517638017,
+                "count": 120,
+                "iqr": 3.0,
+                "max": 199.0,
+                "mean": 188.58333333333334,
+                "median": 196.0,
+                "median_absolute_deviation": 1.0,
+                "min": 51.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 28.980892961790275
+              },
+              "temperature_edge_c": {
+                "coefficient_of_variation_percent": 1.9622121441045228,
+                "count": 120,
+                "iqr": 2.0,
+                "max": 62.0,
+                "mean": 60.00833333333333,
+                "median": 60.0,
+                "median_absolute_deviation": 1.0,
+                "min": 56.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 1.177490804141389
+              },
+              "temperature_junction_c": {
+                "coefficient_of_variation_percent": 4.1659907861222925,
+                "count": 120,
+                "iqr": 3.0,
+                "max": 78.0,
+                "mean": 75.13333333333334,
+                "median": 76.0,
+                "median_absolute_deviation": 1.0,
+                "min": 61.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 3.130047743973216
+              },
+              "temperature_memory_c": {
+                "coefficient_of_variation_percent": 1.6967310614635054,
+                "count": 120,
+                "iqr": 0.0,
+                "max": 68.0,
+                "mean": 65.85833333333333,
+                "median": 66.0,
+                "median_absolute_deviation": 0.0,
+                "min": 61.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 1.1174387982288403
+              },
+              "vram_total_bytes": {
+                "coefficient_of_variation_percent": 0.0,
+                "count": 120,
+                "iqr": 0.0,
+                "max": 34208743424.0,
+                "mean": 34208743424.0,
+                "median": 34208743424.0,
+                "median_absolute_deviation": 0.0,
+                "min": 34208743424.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 0.0
+              },
+              "vram_used_bytes": {
+                "coefficient_of_variation_percent": 0.0011093575491541421,
+                "count": 120,
+                "iqr": 16384.0,
+                "max": 1005887488.0,
+                "mean": 1005876019.2,
+                "median": 1005883392.0,
+                "median_absolute_deviation": 4096.0,
+                "min": 1005858816.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 11158.76155412637
+              }
+            },
+            "pci": "0000:d3:00.0",
+            "sample_count": 120,
+            "torch_indices": [
+              1
+            ]
+          },
+          "0000:f3:00.0": {
+            "metrics": {
+              "clock_core_mhz": {
+                "coefficient_of_variation_percent": 14.282459288873248,
+                "count": 120,
+                "iqr": 28.75,
+                "max": 3401.0,
+                "mean": 3282.891666666667,
+                "median": 3396.0,
+                "median_absolute_deviation": 2.0,
+                "min": 1028.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 468.8776657894791
+              },
+              "clock_memory_mhz": {
+                "coefficient_of_variation_percent": 0.0,
+                "count": 120,
+                "iqr": 0.0,
+                "max": 1258.0,
+                "mean": 1258.0,
+                "median": 1258.0,
+                "median_absolute_deviation": 0.0,
+                "min": 1258.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 0.0
+              },
+              "gpu_busy_percent": {
+                "coefficient_of_variation_percent": 16.504583172161855,
+                "count": 120,
+                "iqr": 1.0,
+                "max": 100.0,
+                "mean": 96.14166666666667,
+                "median": 99.0,
+                "median_absolute_deviation": 0.0,
+                "min": 20.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 15.867781338102612
+              },
+              "power_w": {
+                "coefficient_of_variation_percent": 15.3506493040834,
+                "count": 120,
+                "iqr": 5.25,
+                "max": 203.0,
+                "mean": 192.0,
+                "median": 200.0,
+                "median_absolute_deviation": 1.0,
+                "min": 53.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 29.473246663840126
+              },
+              "temperature_edge_c": {
+                "coefficient_of_variation_percent": 1.032465328151736,
+                "count": 120,
+                "iqr": 1.0,
+                "max": 63.0,
+                "mean": 61.50833333333333,
+                "median": 62.0,
+                "median_absolute_deviation": 1.0,
+                "min": 60.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 0.6350522155906636
+              },
+              "temperature_junction_c": {
+                "coefficient_of_variation_percent": 3.231318768688277,
+                "count": 120,
+                "iqr": 2.0,
+                "max": 77.0,
+                "mean": 74.8,
+                "median": 76.0,
+                "median_absolute_deviation": 1.0,
+                "min": 64.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 2.417026438978831
+              },
+              "temperature_memory_c": {
+                "coefficient_of_variation_percent": 1.7678567747981537,
+                "count": 120,
+                "iqr": 2.0,
+                "max": 68.0,
+                "mean": 67.28333333333333,
+                "median": 68.0,
+                "median_absolute_deviation": 0.0,
+                "min": 63.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 1.1894729666433577
+              },
+              "vram_total_bytes": {
+                "coefficient_of_variation_percent": 0.0,
+                "count": 120,
+                "iqr": 0.0,
+                "max": 34208743424.0,
+                "mean": 34208743424.0,
+                "median": 34208743424.0,
+                "median_absolute_deviation": 0.0,
+                "min": 34208743424.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 0.0
+              },
+              "vram_used_bytes": {
+                "coefficient_of_variation_percent": 0.000476898315429452,
+                "count": 120,
+                "iqr": 8192.0,
+                "max": 1005826048.0,
+                "mean": 1005821132.8,
+                "median": 1005821952.0,
+                "median_absolute_deviation": 4096.0,
+                "min": 1005813760.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 4796.744038556631
+              }
+            },
+            "pci": "0000:f3:00.0",
+            "sample_count": 120,
+            "torch_indices": [
+              0
+            ]
+          }
+        },
+        "sample_count": 120
+      },
+      "transport": [
+        {
+          "connected_all_rings": true,
+          "effective": "peer_ipc",
+          "evidence": [
+            "aup-WRX90-WS-EVO:97201:97241 [0] NCCL INFO Channel 00/0 : 0[f3000] -> 1[d3000] via P2P/IPC comm 0x269d79f0 nRanks 02",
+            "aup-WRX90-WS-EVO:97202:97242 [1] NCCL INFO Channel 00/0 : 1[d3000] -> 0[f3000] via P2P/IPC comm 0x2176f800 nRanks 02",
+            "aup-WRX90-WS-EVO:97201:97241 [0] NCCL INFO Channel 01/0 : 0[f3000] -> 1[d3000] via P2P/IPC comm 0x269d79f0 nRanks 02",
+            "aup-WRX90-WS-EVO:97202:97242 [1] NCCL INFO Channel 01/0 : 1[d3000] -> 0[f3000] via P2P/IPC comm 0x2176f800 nRanks 02",
+            "aup-WRX90-WS-EVO:97201:97241 [0] NCCL INFO Channel 02/0 : 0[f3000] -> 1[d3000] via P2P/IPC comm 0x269d79f0 nRanks 02",
+            "aup-WRX90-WS-EVO:97202:97242 [1] NCCL INFO Channel 02/0 : 1[d3000] -> 0[f3000] via P2P/IPC comm 0x2176f800 nRanks 02",
+            "aup-WRX90-WS-EVO:97201:97241 [0] NCCL INFO Channel 03/0 : 0[f3000] -> 1[d3000] via P2P/IPC comm 0x269d79f0 nRanks 02",
+            "aup-WRX90-WS-EVO:97202:97242 [1] NCCL INFO Channel 03/0 : 1[d3000] -> 0[f3000] via P2P/IPC comm 0x2176f800 nRanks 02"
+          ],
+          "fallback_route_count": 0,
+          "p2p_ipc_route_count": 8,
+          "requested": "on",
+          "verified": true
+        },
+        {
+          "connected_all_rings": true,
+          "effective": "peer_ipc",
+          "evidence": [
+            "aup-WRX90-WS-EVO:98347:98369 [0] NCCL INFO Channel 00/0 : 0[f3000] -> 1[d3000] via P2P/IPC comm 0x2c3dc530 nRanks 02",
+            "aup-WRX90-WS-EVO:98348:98370 [1] NCCL INFO Channel 00/0 : 1[d3000] -> 0[f3000] via P2P/IPC comm 0x2623fff0 nRanks 02",
+            "aup-WRX90-WS-EVO:98347:98369 [0] NCCL INFO Channel 01/0 : 0[f3000] -> 1[d3000] via P2P/IPC comm 0x2c3dc530 nRanks 02",
+            "aup-WRX90-WS-EVO:98348:98370 [1] NCCL INFO Channel 01/0 : 1[d3000] -> 0[f3000] via P2P/IPC comm 0x2623fff0 nRanks 02",
+            "aup-WRX90-WS-EVO:98347:98369 [0] NCCL INFO Channel 02/0 : 0[f3000] -> 1[d3000] via P2P/IPC comm 0x2c3dc530 nRanks 02",
+            "aup-WRX90-WS-EVO:98348:98370 [1] NCCL INFO Channel 02/0 : 1[d3000] -> 0[f3000] via P2P/IPC comm 0x2623fff0 nRanks 02",
+            "aup-WRX90-WS-EVO:98347:98369 [0] NCCL INFO Channel 03/0 : 0[f3000] -> 1[d3000] via P2P/IPC comm 0x2c3dc530 nRanks 02",
+            "aup-WRX90-WS-EVO:98348:98370 [1] NCCL INFO Channel 03/0 : 1[d3000] -> 0[f3000] via P2P/IPC comm 0x2623fff0 nRanks 02"
+          ],
+          "fallback_route_count": 0,
+          "p2p_ipc_route_count": 8,
+          "requested": "on",
+          "verified": true
+        },
+        {
+          "connected_all_rings": true,
+          "effective": "peer_ipc",
+          "evidence": [
+            "aup-WRX90-WS-EVO:99252:99268 [0] NCCL INFO Channel 00/0 : 0[f3000] -> 1[d3000] via P2P/IPC comm 0xfcae740 nRanks 02",
+            "aup-WRX90-WS-EVO:99253:99269 [1] NCCL INFO Channel 00/0 : 1[d3000] -> 0[f3000] via P2P/IPC comm 0x1e068190 nRanks 02",
+            "aup-WRX90-WS-EVO:99252:99268 [0] NCCL INFO Channel 01/0 : 0[f3000] -> 1[d3000] via P2P/IPC comm 0xfcae740 nRanks 02",
+            "aup-WRX90-WS-EVO:99253:99269 [1] NCCL INFO Channel 01/0 : 1[d3000] -> 0[f3000] via P2P/IPC comm 0x1e068190 nRanks 02",
+            "aup-WRX90-WS-EVO:99252:99268 [0] NCCL INFO Channel 02/0 : 0[f3000] -> 1[d3000] via P2P/IPC comm 0xfcae740 nRanks 02",
+            "aup-WRX90-WS-EVO:99253:99269 [1] NCCL INFO Channel 02/0 : 1[d3000] -> 0[f3000] via P2P/IPC comm 0x1e068190 nRanks 02",
+            "aup-WRX90-WS-EVO:99252:99268 [0] NCCL INFO Channel 03/0 : 0[f3000] -> 1[d3000] via P2P/IPC comm 0xfcae740 nRanks 02",
+            "aup-WRX90-WS-EVO:99253:99269 [1] NCCL INFO Channel 03/0 : 1[d3000] -> 0[f3000] via P2P/IPC comm 0x1e068190 nRanks 02"
+          ],
+          "fallback_route_count": 0,
+          "p2p_ipc_route_count": 8,
+          "requested": "on",
+          "verified": true
+        },
+        {
+          "connected_all_rings": true,
+          "effective": "peer_ipc",
+          "evidence": [
+            "aup-WRX90-WS-EVO:99923:99957 [1] NCCL INFO Channel 00/0 : 1[d3000] -> 0[f3000] via P2P/IPC comm 0x38de2a00 nRanks 02",
+            "aup-WRX90-WS-EVO:99922:99956 [0] NCCL INFO Channel 00/0 : 0[f3000] -> 1[d3000] via P2P/IPC comm 0x1107b080 nRanks 02",
+            "aup-WRX90-WS-EVO:99923:99957 [1] NCCL INFO Channel 01/0 : 1[d3000] -> 0[f3000] via P2P/IPC comm 0x38de2a00 nRanks 02",
+            "aup-WRX90-WS-EVO:99922:99956 [0] NCCL INFO Channel 01/0 : 0[f3000] -> 1[d3000] via P2P/IPC comm 0x1107b080 nRanks 02",
+            "aup-WRX90-WS-EVO:99923:99957 [1] NCCL INFO Channel 02/0 : 1[d3000] -> 0[f3000] via P2P/IPC comm 0x38de2a00 nRanks 02",
+            "aup-WRX90-WS-EVO:99922:99956 [0] NCCL INFO Channel 02/0 : 0[f3000] -> 1[d3000] via P2P/IPC comm 0x1107b080 nRanks 02",
+            "aup-WRX90-WS-EVO:99923:99957 [1] NCCL INFO Channel 03/0 : 1[d3000] -> 0[f3000] via P2P/IPC comm 0x38de2a00 nRanks 02",
+            "aup-WRX90-WS-EVO:99922:99956 [0] NCCL INFO Channel 03/0 : 0[f3000] -> 1[d3000] via P2P/IPC comm 0x1107b080 nRanks 02"
+          ],
+          "fallback_route_count": 0,
+          "p2p_ipc_route_count": 8,
+          "requested": "on",
+          "verified": true
+        },
+        {
+          "connected_all_rings": true,
+          "effective": "peer_ipc",
+          "evidence": [
+            "aup-WRX90-WS-EVO:100609:100625 [0] NCCL INFO Channel 00/0 : 0[f3000] -> 1[d3000] via P2P/IPC comm 0x364e2ee0 nRanks 02",
+            "aup-WRX90-WS-EVO:100610:100626 [1] NCCL INFO Channel 00/0 : 1[d3000] -> 0[f3000] via P2P/IPC comm 0x26376100 nRanks 02",
+            "aup-WRX90-WS-EVO:100609:100625 [0] NCCL INFO Channel 01/0 : 0[f3000] -> 1[d3000] via P2P/IPC comm 0x364e2ee0 nRanks 02",
+            "aup-WRX90-WS-EVO:100610:100626 [1] NCCL INFO Channel 01/0 : 1[d3000] -> 0[f3000] via P2P/IPC comm 0x26376100 nRanks 02",
+            "aup-WRX90-WS-EVO:100609:100625 [0] NCCL INFO Channel 02/0 : 0[f3000] -> 1[d3000] via P2P/IPC comm 0x364e2ee0 nRanks 02",
+            "aup-WRX90-WS-EVO:100610:100626 [1] NCCL INFO Channel 02/0 : 1[d3000] -> 0[f3000] via P2P/IPC comm 0x26376100 nRanks 02",
+            "aup-WRX90-WS-EVO:100609:100625 [0] NCCL INFO Channel 03/0 : 0[f3000] -> 1[d3000] via P2P/IPC comm 0x364e2ee0 nRanks 02",
+            "aup-WRX90-WS-EVO:100610:100626 [1] NCCL INFO Channel 03/0 : 1[d3000] -> 0[f3000] via P2P/IPC comm 0x26376100 nRanks 02"
+          ],
+          "fallback_route_count": 0,
+          "p2p_ipc_route_count": 8,
+          "requested": "on",
+          "verified": true
+        }
+      ]
+    },
+    "4": {
+      "elapsed_seconds": {
+        "coefficient_of_variation_percent": 0.5108018408319512,
+        "count": 5,
+        "iqr": 0.013322335999873758,
+        "max": 2.5529756140003883,
+        "mean": 2.533786656600205,
+        "median": 2.5342407879998063,
+        "median_absolute_deviation": 0.009915441999510222,
+        "min": 2.5197438530003637,
+        "missing_count": 0,
+        "sample_standard_deviation": 0.012942628884668197,
+        "values": [
+          2.5197438530003637,
+          2.524325346000296,
+          2.5342407879998063,
+          2.53764768200017,
+          2.5529756140003883
+        ]
+      },
+      "final_global_minibatch_loss": {
+        "coefficient_of_variation_percent": 5.372352386783642e-06,
+        "count": 5,
+        "iqr": 2.1827872842550278e-11,
+        "max": 0.00046325341827468947,
+        "mean": 0.00046325338335009294,
+        "median": 0.0004632533746189438,
+        "median_absolute_deviation": 2.1827872842550278e-11,
+        "min": 0.00046325335279107094,
+        "missing_count": 0,
+        "sample_standard_deviation": 2.4887604197264692e-11,
+        "values": [
+          0.00046325335279107094,
+          0.0004632533746189438,
+          0.0004632533746189438,
+          0.0004632533964468166,
+          0.00046325341827468947
+        ]
+      },
+      "full_image_mse": {
+        "coefficient_of_variation_percent": 4.167354395545987e-06,
+        "count": 5,
+        "iqr": 2.7937105428511855e-11,
+        "max": 0.00046234957611914856,
+        "mean": 0.0004623495514776962,
+        "median": 0.0004623495464100093,
+        "median_absolute_deviation": 1.638226186650993e-11,
+        "min": 0.0004623495300277474,
+        "missing_count": 0,
+        "sample_standard_deviation": 1.926774435629293e-11,
+        "values": [
+          0.0004623495300277474,
+          0.00046234953844723523,
+          0.0004623495464100093,
+          0.00046234956638434066,
+          0.00046234957611914856
+        ]
+      },
+      "full_image_psnr_db": {
+        "coefficient_of_variation_percent": 5.426815534027937e-07,
+        "count": 5,
+        "iqr": 2.624190003075455e-07,
+        "max": 33.35029579489636,
+        "mean": 33.350295593412554,
+        "median": 33.350295641014384,
+        "median_absolute_deviation": 1.5388197738275267e-07,
+        "min": 33.35029536195031,
+        "missing_count": 0,
+        "sample_standard_deviation": 1.809859021907547e-07,
+        "values": [
+          33.35029536195031,
+          33.35029545339137,
+          33.350295641014384,
+          33.35029571581037,
+          33.35029579489636
+        ]
+      },
+      "repetitions": 5,
+      "samples_per_second": {
+        "coefficient_of_variation_percent": 0.5097620434756944,
+        "count": 5,
+        "iqr": 62391.4362867903,
+        "max": 11905972.094853114,
+        "mean": 11840233.217425894,
+        "median": 11837864.871426847,
+        "median_absolute_deviation": 46498.6269367598,
+        "min": 11750993.560409088,
+        "missing_count": 0,
+        "sample_standard_deviation": 60357.0148014382,
+        "values": [
+          11750993.560409088,
+          11821972.062076816,
+          11837864.871426847,
+          11884363.498363607,
+          11905972.094853114
+        ]
+      },
+      "steps_per_second": {
+        "coefficient_of_variation_percent": 0.5097620434756965,
+        "count": 5,
+        "iqr": 1.0398572714465217,
+        "max": 198.4328682475519,
+        "mean": 197.33722029043156,
+        "median": 197.29774785711413,
+        "median_absolute_deviation": 0.7749771156126428,
+        "min": 195.8498926734848,
+        "missing_count": 0,
+        "sample_standard_deviation": 1.0059502466906407,
+        "values": [
+          195.8498926734848,
+          197.03286770128025,
+          197.29774785711413,
+          198.07272497272677,
+          198.4328682475519
+        ]
+      },
+      "telemetry": {
+        "collectors": [
+          "linux_amdgpu_sysfs_read_only"
+        ],
+        "devices": {
+          "0000:03:00.0": {
+            "metrics": {
+              "clock_core_mhz": {
+                "coefficient_of_variation_percent": 21.069583903442314,
+                "count": 65,
+                "iqr": 120.0,
+                "max": 3324.0,
+                "mean": 3072.2,
+                "median": 3255.0,
+                "median_absolute_deviation": 60.0,
+                "min": 847.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 647.2997566815548
+              },
+              "clock_memory_mhz": {
+                "coefficient_of_variation_percent": 0.0,
+                "count": 65,
+                "iqr": 0.0,
+                "max": 1258.0,
+                "mean": 1258.0,
+                "median": 1258.0,
+                "median_absolute_deviation": 0.0,
+                "min": 1258.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 0.0
+              },
+              "gpu_busy_percent": {
+                "coefficient_of_variation_percent": 25.119935721668988,
+                "count": 65,
+                "iqr": 0.0,
+                "max": 99.0,
+                "mean": 92.2,
+                "median": 99.0,
+                "median_absolute_deviation": 0.0,
+                "min": 12.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 23.160580735378808
+              },
+              "power_w": {
+                "coefficient_of_variation_percent": 23.123799147237563,
+                "count": 65,
+                "iqr": 18.0,
+                "max": 190.0,
+                "mean": 164.0,
+                "median": 173.0,
+                "median_absolute_deviation": 9.0,
+                "min": 36.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 37.923030601469605
+              },
+              "temperature_edge_c": {
+                "coefficient_of_variation_percent": 2.991846740912168,
+                "count": 65,
+                "iqr": 3.0,
+                "max": 62.0,
+                "mean": 58.707692307692305,
+                "median": 58.0,
+                "median_absolute_deviation": 1.0,
+                "min": 55.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 1.7564441789724357
+              },
+              "temperature_junction_c": {
+                "coefficient_of_variation_percent": 4.617065532416691,
+                "count": 65,
+                "iqr": 3.0,
+                "max": 70.0,
+                "mean": 66.3076923076923,
+                "median": 67.0,
+                "median_absolute_deviation": 2.0,
+                "min": 56.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 3.061469606879375
+              },
+              "temperature_memory_c": {
+                "coefficient_of_variation_percent": 3.9944059552276197,
+                "count": 65,
+                "iqr": 4.0,
+                "max": 68.0,
+                "mean": 64.04615384615384,
+                "median": 64.0,
+                "median_absolute_deviation": 2.0,
+                "min": 56.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 2.5582633833250124
+              },
+              "vram_total_bytes": {
+                "coefficient_of_variation_percent": 0.0,
+                "count": 65,
+                "iqr": 0.0,
+                "max": 34208743424.0,
+                "mean": 34208743424.0,
+                "median": 34208743424.0,
+                "median_absolute_deviation": 0.0,
+                "min": 34208743424.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 0.0
+              },
+              "vram_used_bytes": {
+                "coefficient_of_variation_percent": 0.09713927521605713,
+                "count": 65,
+                "iqr": 2043904.0,
+                "max": 1050976256.0,
+                "mean": 1050114457.6,
+                "median": 1050923008.0,
+                "median_absolute_deviation": 53248.0,
+                "min": 1048870912.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 1020073.5730516696
+              }
+            },
+            "pci": "0000:03:00.0",
+            "sample_count": 65,
+            "torch_indices": [
+              2
+            ]
+          },
+          "0000:23:00.0": {
+            "metrics": {
+              "clock_core_mhz": {
+                "coefficient_of_variation_percent": 21.139058640575577,
+                "count": 65,
+                "iqr": 106.0,
+                "max": 3393.0,
+                "mean": 3133.3076923076924,
+                "median": 3314.0,
+                "median_absolute_deviation": 51.0,
+                "min": 842.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 662.3517504665884
+              },
+              "clock_memory_mhz": {
+                "coefficient_of_variation_percent": 0.0,
+                "count": 65,
+                "iqr": 0.0,
+                "max": 1258.0,
+                "mean": 1258.0,
+                "median": 1258.0,
+                "median_absolute_deviation": 0.0,
+                "min": 1258.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 0.0
+              },
+              "gpu_busy_percent": {
+                "coefficient_of_variation_percent": 25.24509588735298,
+                "count": 65,
+                "iqr": 0.0,
+                "max": 99.0,
+                "mean": 92.18461538461538,
+                "median": 99.0,
+                "median_absolute_deviation": 0.0,
+                "min": 12.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 23.272094547233703
+              },
+              "power_w": {
+                "coefficient_of_variation_percent": 22.664595974550345,
+                "count": 65,
+                "iqr": 14.0,
+                "max": 194.0,
+                "mean": 168.44615384615383,
+                "median": 177.0,
+                "median_absolute_deviation": 7.0,
+                "min": 39.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 38.17764020390026
+              },
+              "temperature_edge_c": {
+                "coefficient_of_variation_percent": 5.615827539949171,
+                "count": 65,
+                "iqr": 5.0,
+                "max": 59.0,
+                "mean": 53.52307692307692,
+                "median": 53.0,
+                "median_absolute_deviation": 2.0,
+                "min": 48.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 3.0057636940743335
+              },
+              "temperature_junction_c": {
+                "coefficient_of_variation_percent": 6.696318214213982,
+                "count": 65,
+                "iqr": 6.0,
+                "max": 69.0,
+                "mean": 61.83076923076923,
+                "median": 62.0,
+                "median_absolute_deviation": 3.0,
+                "min": 50.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 4.1403850619886144
+              },
+              "temperature_memory_c": {
+                "coefficient_of_variation_percent": 5.380439204889884,
+                "count": 65,
+                "iqr": 5.0,
+                "max": 65.0,
+                "mean": 59.58461538461538,
+                "median": 60.0,
+                "median_absolute_deviation": 2.0,
+                "min": 52.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 3.205914006236695
+              },
+              "vram_total_bytes": {
+                "coefficient_of_variation_percent": 0.0,
+                "count": 65,
+                "iqr": 0.0,
+                "max": 34208743424.0,
+                "mean": 34208743424.0,
+                "median": 34208743424.0,
+                "median_absolute_deviation": 0.0,
+                "min": 34208743424.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 0.0
+              },
+              "vram_used_bytes": {
+                "coefficient_of_variation_percent": 0.0030559681564354163,
+                "count": 65,
+                "iqr": 53248.0,
+                "max": 941309952.0,
+                "mean": 941276364.8,
+                "median": 941289472.0,
+                "median_absolute_deviation": 20480.0,
+                "min": 941240320.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 28765.10597234086
+              }
+            },
+            "pci": "0000:23:00.0",
+            "sample_count": 65,
+            "torch_indices": [
+              3
+            ]
+          },
+          "0000:d3:00.0": {
+            "metrics": {
+              "clock_core_mhz": {
+                "coefficient_of_variation_percent": 21.211020694536156,
+                "count": 65,
+                "iqr": 97.0,
+                "max": 3358.0,
+                "mean": 3111.5538461538463,
+                "median": 3303.0,
+                "median_absolute_deviation": 45.0,
+                "min": 827.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 659.9923302293281
+              },
+              "clock_memory_mhz": {
+                "coefficient_of_variation_percent": 0.0,
+                "count": 65,
+                "iqr": 0.0,
+                "max": 1258.0,
+                "mean": 1258.0,
+                "median": 1258.0,
+                "median_absolute_deviation": 0.0,
+                "min": 1258.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 0.0
+              },
+              "gpu_busy_percent": {
+                "coefficient_of_variation_percent": 25.178647921295056,
+                "count": 65,
+                "iqr": 1.0,
+                "max": 99.0,
+                "mean": 91.78461538461538,
+                "median": 99.0,
+                "median_absolute_deviation": 0.0,
+                "min": 12.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 23.11012515360712
+              },
+              "power_w": {
+                "coefficient_of_variation_percent": 22.718310141887297,
+                "count": 65,
+                "iqr": 13.0,
+                "max": 192.0,
+                "mean": 170.52307692307693,
+                "median": 181.0,
+                "median_absolute_deviation": 6.0,
+                "min": 39.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 38.73996147887367
+              },
+              "temperature_edge_c": {
+                "coefficient_of_variation_percent": 1.3960707981110678,
+                "count": 65,
+                "iqr": 1.0,
+                "max": 62.0,
+                "mean": 60.58461538461538,
+                "median": 61.0,
+                "median_absolute_deviation": 1.0,
+                "min": 58.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 0.8458041235325207
+              },
+              "temperature_junction_c": {
+                "coefficient_of_variation_percent": 4.479866769278233,
+                "count": 65,
+                "iqr": 3.0,
+                "max": 77.0,
+                "mean": 74.03076923076924,
+                "median": 75.0,
+                "median_absolute_deviation": 1.0,
+                "min": 63.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 3.3164798298102856
+              },
+              "temperature_memory_c": {
+                "coefficient_of_variation_percent": 1.6852882922833516,
+                "count": 65,
+                "iqr": 0.0,
+                "max": 67.0,
+                "mean": 65.73846153846154,
+                "median": 66.0,
+                "median_absolute_deviation": 0.0,
+                "min": 62.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 1.1078825958348864
+              },
+              "vram_total_bytes": {
+                "coefficient_of_variation_percent": 0.0,
+                "count": 65,
+                "iqr": 0.0,
+                "max": 34208743424.0,
+                "mean": 34208743424.0,
+                "median": 34208743424.0,
+                "median_absolute_deviation": 0.0,
+                "min": 34208743424.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 0.0
+              },
+              "vram_used_bytes": {
+                "coefficient_of_variation_percent": 0.0034739227951382035,
+                "count": 65,
+                "iqr": 49152.0,
+                "max": 966541312.0,
+                "mean": 966505267.2,
+                "median": 966508544.0,
+                "median_absolute_deviation": 28672.0,
+                "min": 966451200.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 33575.6467934722
+              }
+            },
+            "pci": "0000:d3:00.0",
+            "sample_count": 65,
+            "torch_indices": [
+              1
+            ]
+          },
+          "0000:f3:00.0": {
+            "metrics": {
+              "clock_core_mhz": {
+                "coefficient_of_variation_percent": 18.970084861230887,
+                "count": 65,
+                "iqr": 120.0,
+                "max": 3393.0,
+                "mean": 3163.6769230769232,
+                "median": 3312.0,
+                "median_absolute_deviation": 61.0,
+                "min": 835.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 600.1521970428706
+              },
+              "clock_memory_mhz": {
+                "coefficient_of_variation_percent": 0.0,
+                "count": 65,
+                "iqr": 0.0,
+                "max": 1258.0,
+                "mean": 1258.0,
+                "median": 1258.0,
+                "median_absolute_deviation": 0.0,
+                "min": 1258.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 0.0
+              },
+              "gpu_busy_percent": {
+                "coefficient_of_variation_percent": 22.623408761515886,
+                "count": 65,
+                "iqr": 1.0,
+                "max": 99.0,
+                "mean": 92.6923076923077,
+                "median": 99.0,
+                "median_absolute_deviation": 0.0,
+                "min": 12.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 20.970159659712802
+              },
+              "power_w": {
+                "coefficient_of_variation_percent": 20.732686527737776,
+                "count": 65,
+                "iqr": 19.0,
+                "max": 193.0,
+                "mean": 170.0,
+                "median": 178.0,
+                "median_absolute_deviation": 10.0,
+                "min": 39.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 35.245567097154215
+              },
+              "temperature_edge_c": {
+                "coefficient_of_variation_percent": 0.9316816279998128,
+                "count": 65,
+                "iqr": 1.0,
+                "max": 61.0,
+                "mean": 60.323076923076925,
+                "median": 60.0,
+                "median_absolute_deviation": 0.0,
+                "min": 59.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 0.5620190251365025
+              },
+              "temperature_junction_c": {
+                "coefficient_of_variation_percent": 3.620184040773902,
+                "count": 65,
+                "iqr": 2.0,
+                "max": 74.0,
+                "mean": 71.4,
+                "median": 72.0,
+                "median_absolute_deviation": 1.0,
+                "min": 63.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 2.5848114051125664
+              },
+              "temperature_memory_c": {
+                "coefficient_of_variation_percent": 1.614818536048246,
+                "count": 65,
+                "iqr": 0.0,
+                "max": 66.0,
+                "mean": 65.58461538461539,
+                "median": 66.0,
+                "median_absolute_deviation": 0.0,
+                "min": 62.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 1.059072526026719
+              },
+              "vram_total_bytes": {
+                "coefficient_of_variation_percent": 0.0,
+                "count": 65,
+                "iqr": 0.0,
+                "max": 34208743424.0,
+                "mean": 34208743424.0,
+                "median": 34208743424.0,
+                "median_absolute_deviation": 0.0,
+                "min": 34208743424.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 0.0
+              },
+              "vram_used_bytes": {
+                "coefficient_of_variation_percent": 0.002850188876279979,
+                "count": 65,
+                "iqr": 53248.0,
+                "max": 958087168.0,
+                "mean": 958057676.8,
+                "median": 958066688.0,
+                "median_absolute_deviation": 20480.0,
+                "min": 958021632.0,
+                "missing_count": 0,
+                "sample_standard_deviation": 27306.453332499994
+              }
+            },
+            "pci": "0000:f3:00.0",
+            "sample_count": 65,
+            "torch_indices": [
+              0
+            ]
+          }
+        },
+        "sample_count": 65
+      },
+      "transport": [
+        {
+          "connected_all_rings": true,
+          "effective": "peer_ipc",
+          "evidence": [
+            "aup-WRX90-WS-EVO:97471:97511 [0] NCCL INFO Channel 00/0 : 0[f3000] -> 1[d3000] via P2P/IPC comm 0x3a846e90 nRanks 04",
+            "aup-WRX90-WS-EVO:97472:97512 [1] NCCL INFO Channel 00/0 : 1[d3000] -> 2[3000] via P2P/IPC comm 0x445e3b70 nRanks 04",
+            "aup-WRX90-WS-EVO:97473:97514 [2] NCCL INFO Channel 00/0 : 2[3000] -> 3[23000] via P2P/IPC comm 0x289c0ef0 nRanks 04",
+            "aup-WRX90-WS-EVO:97474:97513 [3] NCCL INFO Channel 00/0 : 3[23000] -> 0[f3000] via P2P/IPC comm 0x19222b80 nRanks 04",
+            "aup-WRX90-WS-EVO:97471:97511 [0] NCCL INFO Channel 01/0 : 0[f3000] -> 1[d3000] via P2P/IPC comm 0x3a846e90 nRanks 04",
+            "aup-WRX90-WS-EVO:97472:97512 [1] NCCL INFO Channel 01/0 : 1[d3000] -> 2[3000] via P2P/IPC comm 0x445e3b70 nRanks 04",
+            "aup-WRX90-WS-EVO:97473:97514 [2] NCCL INFO Channel 01/0 : 2[3000] -> 3[23000] via P2P/IPC comm 0x289c0ef0 nRanks 04",
+            "aup-WRX90-WS-EVO:97474:97513 [3] NCCL INFO Channel 01/0 : 3[23000] -> 0[f3000] via P2P/IPC comm 0x19222b80 nRanks 04"
+          ],
+          "fallback_route_count": 0,
+          "p2p_ipc_route_count": 28,
+          "requested": "on",
+          "verified": true
+        },
+        {
+          "connected_all_rings": true,
+          "effective": "peer_ipc",
+          "evidence": [
+            "aup-WRX90-WS-EVO:98587:98627 [3] NCCL INFO Channel 00/0 : 3[23000] -> 0[f3000] via P2P/IPC comm 0x409560a0 nRanks 04",
+            "aup-WRX90-WS-EVO:98584:98624 [0] NCCL INFO Channel 00/0 : 0[f3000] -> 1[d3000] via P2P/IPC comm 0x1b99dd60 nRanks 04",
+            "aup-WRX90-WS-EVO:98585:98626 [1] NCCL INFO Channel 00/0 : 1[d3000] -> 2[3000] via P2P/IPC comm 0x44e61a00 nRanks 04",
+            "aup-WRX90-WS-EVO:98586:98625 [2] NCCL INFO Channel 00/0 : 2[3000] -> 3[23000] via P2P/IPC comm 0x1ff77530 nRanks 04",
+            "aup-WRX90-WS-EVO:98587:98627 [3] NCCL INFO Channel 01/0 : 3[23000] -> 0[f3000] via P2P/IPC comm 0x409560a0 nRanks 04",
+            "aup-WRX90-WS-EVO:98584:98624 [0] NCCL INFO Channel 01/0 : 0[f3000] -> 1[d3000] via P2P/IPC comm 0x1b99dd60 nRanks 04",
+            "aup-WRX90-WS-EVO:98585:98626 [1] NCCL INFO Channel 01/0 : 1[d3000] -> 2[3000] via P2P/IPC comm 0x44e61a00 nRanks 04",
+            "aup-WRX90-WS-EVO:98587:98627 [3] NCCL INFO Channel 02/0 : 3[23000] -> 0[f3000] via P2P/IPC comm 0x409560a0 nRanks 04"
+          ],
+          "fallback_route_count": 0,
+          "p2p_ipc_route_count": 28,
+          "requested": "on",
+          "verified": true
+        },
+        {
+          "connected_all_rings": true,
+          "effective": "peer_ipc",
+          "evidence": [
+            "aup-WRX90-WS-EVO:99436:99479 [0] NCCL INFO Channel 00/0 : 0[f3000] -> 1[d3000] via P2P/IPC comm 0xe5023c0 nRanks 04",
+            "aup-WRX90-WS-EVO:99439:99482 [3] NCCL INFO Channel 00/0 : 3[23000] -> 0[f3000] via P2P/IPC comm 0x15fb9310 nRanks 04",
+            "aup-WRX90-WS-EVO:99438:99480 [2] NCCL INFO Channel 00/0 : 2[3000] -> 3[23000] via P2P/IPC comm 0x1296ad10 nRanks 04",
+            "aup-WRX90-WS-EVO:99436:99479 [0] NCCL INFO Channel 01/0 : 0[f3000] -> 1[d3000] via P2P/IPC comm 0xe5023c0 nRanks 04",
+            "aup-WRX90-WS-EVO:99437:99481 [1] NCCL INFO Channel 00/0 : 1[d3000] -> 2[3000] via P2P/IPC comm 0x12331c80 nRanks 04",
+            "aup-WRX90-WS-EVO:99439:99482 [3] NCCL INFO Channel 01/0 : 3[23000] -> 0[f3000] via P2P/IPC comm 0x15fb9310 nRanks 04",
+            "aup-WRX90-WS-EVO:99437:99481 [1] NCCL INFO Channel 01/0 : 1[d3000] -> 2[3000] via P2P/IPC comm 0x12331c80 nRanks 04",
+            "aup-WRX90-WS-EVO:99436:99479 [0] NCCL INFO Channel 02/0 : 0[f3000] -> 1[d3000] via P2P/IPC comm 0xe5023c0 nRanks 04"
+          ],
+          "fallback_route_count": 0,
+          "p2p_ipc_route_count": 28,
+          "requested": "on",
+          "verified": true
+        },
+        {
+          "connected_all_rings": true,
+          "effective": "peer_ipc",
+          "evidence": [
+            "aup-WRX90-WS-EVO:100107:100138 [0] NCCL INFO Channel 00/0 : 0[f3000] -> 1[d3000] via P2P/IPC comm 0xf1e5c20 nRanks 04",
+            "aup-WRX90-WS-EVO:100110:100140 [3] NCCL INFO Channel 00/0 : 3[23000] -> 0[f3000] via P2P/IPC comm 0x207fd890 nRanks 04",
+            "aup-WRX90-WS-EVO:100109:100141 [2] NCCL INFO Channel 00/0 : 2[3000] -> 3[23000] via P2P/IPC comm 0xb80fee0 nRanks 04",
+            "aup-WRX90-WS-EVO:100107:100138 [0] NCCL INFO Channel 01/0 : 0[f3000] -> 1[d3000] via P2P/IPC comm 0xf1e5c20 nRanks 04",
+            "aup-WRX90-WS-EVO:100110:100140 [3] NCCL INFO Channel 01/0 : 3[23000] -> 0[f3000] via P2P/IPC comm 0x207fd890 nRanks 04",
+            "aup-WRX90-WS-EVO:100108:100139 [1] NCCL INFO Channel 00/0 : 1[d3000] -> 2[3000] via P2P/IPC comm 0x1a94bdf0 nRanks 04",
+            "aup-WRX90-WS-EVO:100109:100141 [2] NCCL INFO Channel 01/0 : 2[3000] -> 3[23000] via P2P/IPC comm 0xb80fee0 nRanks 04",
+            "aup-WRX90-WS-EVO:100107:100138 [0] NCCL INFO Channel 02/0 : 0[f3000] -> 1[d3000] via P2P/IPC comm 0xf1e5c20 nRanks 04"
+          ],
+          "fallback_route_count": 0,
+          "p2p_ipc_route_count": 28,
+          "requested": "on",
+          "verified": true
+        },
+        {
+          "connected_all_rings": true,
+          "effective": "peer_ipc",
+          "evidence": [
+            "aup-WRX90-WS-EVO:100771:100800 [3] NCCL INFO Channel 00/0 : 3[23000] -> 0[f3000] via P2P/IPC comm 0x2f67fe10 nRanks 04",
+            "aup-WRX90-WS-EVO:100768:100797 [0] NCCL INFO Channel 00/0 : 0[f3000] -> 1[d3000] via P2P/IPC comm 0x45ca4af0 nRanks 04",
+            "aup-WRX90-WS-EVO:100770:100799 [2] NCCL INFO Channel 00/0 : 2[3000] -> 3[23000] via P2P/IPC comm 0xc0c19d0 nRanks 04",
+            "aup-WRX90-WS-EVO:100769:100798 [1] NCCL INFO Channel 00/0 : 1[d3000] -> 2[3000] via P2P/IPC comm 0xbf8ea80 nRanks 04",
+            "aup-WRX90-WS-EVO:100771:100800 [3] NCCL INFO Channel 01/0 : 3[23000] -> 0[f3000] via P2P/IPC comm 0x2f67fe10 nRanks 04",
+            "aup-WRX90-WS-EVO:100768:100797 [0] NCCL INFO Channel 01/0 : 0[f3000] -> 1[d3000] via P2P/IPC comm 0x45ca4af0 nRanks 04",
+            "aup-WRX90-WS-EVO:100770:100799 [2] NCCL INFO Channel 01/0 : 2[3000] -> 3[23000] via P2P/IPC comm 0xc0c19d0 nRanks 04",
+            "aup-WRX90-WS-EVO:100769:100798 [1] NCCL INFO Channel 01/0 : 1[d3000] -> 2[3000] via P2P/IPC comm 0xbf8ea80 nRanks 04"
+          ],
+          "fallback_route_count": 0,
+          "p2p_ipc_route_count": 28,
+          "requested": "on",
+          "verified": true
+        }
+      ]
+    }
+  },
+  "protocol": {
+    "comparison": "fixed-global-batch strong scaling of one PEPS job",
+    "convergence_log_every": 100,
+    "convergence_steps": 600,
+    "gpu_counts": [
+      1,
+      2,
+      4
+    ],
+    "idle_precondition": {
+      "maximum_busy_percent": 5.0,
+      "maximum_vram_used_bytes": 536870912,
+      "required_consecutive_observations": 3,
+      "timeout_seconds": 60.0
+    },
+    "rccl_p2p": "on",
+    "repetitions": 5,
+    "required_environment": {
+      "HSA_ENABLE_IPC_MODE_LEGACY": "0",
+      "HSA_FORCE_FINE_GRAIN_PCIE": "1",
+      "NCCL_P2P_DISABLE": "0"
+    },
+    "round_robin_order": [
+      1,
+      2,
+      4
+    ],
+    "telemetry_interval_seconds": 0.2,
+    "timed_steps": 500,
+    "warmup_steps": 100
+  },
+  "result_files": [
+    "results/multigpu/real-workload-clean/runs/performance-1gpu-r1.json",
+    "results/multigpu/real-workload-clean/logs/performance-1gpu-r1.log",
+    "results/multigpu/real-workload-clean/runs/performance-2gpu-r1.json",
+    "results/multigpu/real-workload-clean/logs/performance-2gpu-r1.log",
+    "results/multigpu/real-workload-clean/runs/performance-4gpu-r1.json",
+    "results/multigpu/real-workload-clean/logs/performance-4gpu-r1.log",
+    "results/multigpu/real-workload-clean/runs/performance-1gpu-r2.json",
+    "results/multigpu/real-workload-clean/logs/performance-1gpu-r2.log",
+    "results/multigpu/real-workload-clean/runs/performance-2gpu-r2.json",
+    "results/multigpu/real-workload-clean/logs/performance-2gpu-r2.log",
+    "results/multigpu/real-workload-clean/runs/performance-4gpu-r2.json",
+    "results/multigpu/real-workload-clean/logs/performance-4gpu-r2.log",
+    "results/multigpu/real-workload-clean/runs/performance-1gpu-r3.json",
+    "results/multigpu/real-workload-clean/logs/performance-1gpu-r3.log",
+    "results/multigpu/real-workload-clean/runs/performance-2gpu-r3.json",
+    "results/multigpu/real-workload-clean/logs/performance-2gpu-r3.log",
+    "results/multigpu/real-workload-clean/runs/performance-4gpu-r3.json",
+    "results/multigpu/real-workload-clean/logs/performance-4gpu-r3.log",
+    "results/multigpu/real-workload-clean/runs/performance-1gpu-r4.json",
+    "results/multigpu/real-workload-clean/logs/performance-1gpu-r4.log",
+    "results/multigpu/real-workload-clean/runs/performance-2gpu-r4.json",
+    "results/multigpu/real-workload-clean/logs/performance-2gpu-r4.log",
+    "results/multigpu/real-workload-clean/runs/performance-4gpu-r4.json",
+    "results/multigpu/real-workload-clean/logs/performance-4gpu-r4.log",
+    "results/multigpu/real-workload-clean/runs/performance-1gpu-r5.json",
+    "results/multigpu/real-workload-clean/logs/performance-1gpu-r5.log",
+    "results/multigpu/real-workload-clean/runs/performance-2gpu-r5.json",
+    "results/multigpu/real-workload-clean/logs/performance-2gpu-r5.log",
+    "results/multigpu/real-workload-clean/runs/performance-4gpu-r5.json",
+    "results/multigpu/real-workload-clean/logs/performance-4gpu-r5.log",
+    "results/multigpu/real-workload-clean/runs/convergence-1gpu.json",
+    "results/multigpu/real-workload-clean/logs/convergence-1gpu.log",
+    "results/multigpu/real-workload-clean/runs/convergence-2gpu.json",
+    "results/multigpu/real-workload-clean/logs/convergence-2gpu.log",
+    "results/multigpu/real-workload-clean/runs/convergence-4gpu.json",
+    "results/multigpu/real-workload-clean/logs/convergence-4gpu.log"
+  ],
+  "schema": "peps.real_workload_strong_scaling",
+  "schema_version": 1,
+  "status": "complete",
+  "strong_scaling": {
+    "1": {
+      "median_steps_per_second": 60.0438373691988,
+      "parallel_efficiency": 1.0,
+      "speedup_vs_1gpu": 1.0
+    },
+    "2": {
+      "median_steps_per_second": 108.08086845761545,
+      "parallel_efficiency": 0.900016331343428,
+      "speedup_vs_1gpu": 1.800032662686856
+    },
+    "4": {
+      "median_steps_per_second": 197.29774785711413,
+      "parallel_efficiency": 0.8214737619281627,
+      "speedup_vs_1gpu": 3.2858950477126507
+    }
+  },
+  "system": {
+    "cuda_api_available": true,
+    "device_count": 4,
+    "devices": [
+      {
+        "architecture": "gfx1201",
+        "index": 0,
+        "linux_pci": {
+          "current_link_speed": "32.0 GT/s PCIe",
+          "current_link_width": 16,
+          "max_link_speed": "32.0 GT/s PCIe",
+          "max_link_width": 16,
+          "numa_node": -1
+        },
+        "multiprocessor_count": 32,
+        "name": "AMD Radeon Graphics",
+        "pci": "0000:f3:00.0",
+        "total_memory_bytes": 34208743424,
+        "uuid": "33656332-3938-3365-6539-643334353337"
+      },
+      {
+        "architecture": "gfx1201",
+        "index": 1,
+        "linux_pci": {
+          "current_link_speed": "32.0 GT/s PCIe",
+          "current_link_width": 16,
+          "max_link_speed": "32.0 GT/s PCIe",
+          "max_link_width": 16,
+          "numa_node": -1
+        },
+        "multiprocessor_count": 32,
+        "name": "AMD Radeon Graphics",
+        "pci": "0000:d3:00.0",
+        "total_memory_bytes": 34208743424,
+        "uuid": "35366631-6139-3539-6436-386233633135"
+      },
+      {
+        "architecture": "gfx1201",
+        "index": 2,
+        "linux_pci": {
+          "current_link_speed": "32.0 GT/s PCIe",
+          "current_link_width": 16,
+          "max_link_speed": "32.0 GT/s PCIe",
+          "max_link_width": 16,
+          "numa_node": -1
+        },
+        "multiprocessor_count": 32,
+        "name": "AMD Radeon Graphics",
+        "pci": "0000:03:00.0",
+        "total_memory_bytes": 34208743424,
+        "uuid": "31313431-3234-3666-6537-393364343636"
+      },
+      {
+        "architecture": "gfx1201",
+        "index": 3,
+        "linux_pci": {
+          "current_link_speed": "32.0 GT/s PCIe",
+          "current_link_width": 16,
+          "max_link_speed": "32.0 GT/s PCIe",
+          "max_link_width": 16,
+          "numa_node": -1
+        },
+        "multiprocessor_count": 32,
+        "name": "AMD Radeon Graphics",
+        "pci": "0000:23:00.0",
+        "total_memory_bytes": 34208743424,
+        "uuid": "64353033-6263-6165-3937-663461666339"
+      }
+    ],
+    "iommu_passthrough_enabled": true,
+    "kernel_command_line": "BOOT_IMAGE=/boot/vmlinuz-7.0.0-28-generic root=UUID=d1ac7774-bed7-434a-9871-53783c4dc749 ro quiet splash iommu=pt vt.handoff=7",
+    "p2p_access_matrix": [
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ]
+    ],
+    "rocm_version": "7.0.51831",
+    "topology_scope": "PyTorch P2P capability plus Linux PCIe link/NUMA attributes. PyTorch does not expose whether a peer route is XGMI.",
+    "torch_version": "2.10.0+rocm7.0"
+  },
+  "workload": {
+    "config_sha256": "a30fe21f086d154ec16f8a62b487890c54ed4c3d42e8e7e7e3560b0320b0684f",
+    "config_source": "/home/aup/yy/workspace/peps/configs/paper/image_full.toml",
+    "configured_total_steps": 120000,
+    "cosine": true,
+    "dataset": "kodak-24-original",
+    "encoder_lr": 0.1,
+    "experiment": "image-table1-full",
+    "global_batch_size": 60000,
+    "instance": "kodim01",
+    "loss": "l2",
+    "method": "G-PEPS",
+    "method_factory": "apps.image.build:build_paper_image",
+    "method_kwargs": {
+      "activation": "gelu",
+      "method": "g_peps",
+      "output_activation": "none"
+    },
+    "model_lr": 0.001,
+    "optimizer": "Adam",
+    "parameter_counts": {
+      "decoder": 16195,
+      "encoder": 426496,
+      "total": 442691
+    },
+    "per_rank_batch_sizes": [
+      60000
+    ],
+    "profile": "full",
+    "scheduler_horizon_steps": 120000,
+    "seed": 0,
+    "training_path": "experiments.runner._build_model + peps.train.make_paper_optimizer + peps.distributed.wrap_distributed"
+  }
+}

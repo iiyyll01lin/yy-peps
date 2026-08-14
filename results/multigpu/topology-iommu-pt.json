@@ -1,0 +1,224 @@
+{
+  "pairwise_copy": {
+    "available": true,
+    "direction": "source_to_destination",
+    "dtype": "float32",
+    "gb_per_second_matrix": [
+      [
+        null,
+        56.14962744290031,
+        56.10275697767066,
+        56.15129528572374
+      ],
+      [
+        56.07940965463077,
+        null,
+        56.06312960606783,
+        56.1336587539221
+      ],
+      [
+        55.14522808618191,
+        55.69344996263717,
+        null,
+        56.131402735040595
+      ],
+      [
+        56.57618342614663,
+        56.60376550045178,
+        56.62640478861549,
+        null
+      ]
+    ],
+    "measurements": [
+      {
+        "destination": 1,
+        "gb_per_second": 56.14962744290031,
+        "seconds_per_copy": 0.002390358299999207,
+        "source": 0,
+        "status": "ok"
+      },
+      {
+        "destination": 2,
+        "gb_per_second": 56.10275697767066,
+        "seconds_per_copy": 0.002392355299997462,
+        "source": 0,
+        "status": "ok"
+      },
+      {
+        "destination": 3,
+        "gb_per_second": 56.15129528572374,
+        "seconds_per_copy": 0.002390287299999727,
+        "source": 0,
+        "status": "ok"
+      },
+      {
+        "destination": 0,
+        "gb_per_second": 56.07940965463077,
+        "seconds_per_copy": 0.002393351299997448,
+        "source": 1,
+        "status": "ok"
+      },
+      {
+        "destination": 2,
+        "gb_per_second": 56.06312960606783,
+        "seconds_per_copy": 0.002394046300003083,
+        "source": 1,
+        "status": "ok"
+      },
+      {
+        "destination": 3,
+        "gb_per_second": 56.1336587539221,
+        "seconds_per_copy": 0.002391038300004311,
+        "source": 1,
+        "status": "ok"
+      },
+      {
+        "destination": 0,
+        "gb_per_second": 55.14522808618191,
+        "seconds_per_copy": 0.002433895600000824,
+        "source": 2,
+        "status": "ok"
+      },
+      {
+        "destination": 1,
+        "gb_per_second": 55.69344996263717,
+        "seconds_per_copy": 0.002409937400000217,
+        "source": 2,
+        "status": "ok"
+      },
+      {
+        "destination": 3,
+        "gb_per_second": 56.131402735040595,
+        "seconds_per_copy": 0.002391134399999828,
+        "source": 2,
+        "status": "ok"
+      },
+      {
+        "destination": 0,
+        "gb_per_second": 56.57618342614663,
+        "seconds_per_copy": 0.0023723362000055205,
+        "source": 3,
+        "status": "ok"
+      },
+      {
+        "destination": 1,
+        "gb_per_second": 56.60376550045178,
+        "seconds_per_copy": 0.0023711801999979796,
+        "source": 3,
+        "status": "ok"
+      },
+      {
+        "destination": 2,
+        "gb_per_second": 56.62640478861549,
+        "seconds_per_copy": 0.0023702321999962807,
+        "source": 3,
+        "status": "ok"
+      }
+    ],
+    "message_bytes": 134217728,
+    "timed_iterations": 10,
+    "timing": "host_perf_counter_with_source_and_destination_synchronize",
+    "warmup_iterations": 3
+  },
+  "topology": {
+    "cuda_api_available": true,
+    "device_count": 4,
+    "devices": [
+      {
+        "architecture": "gfx1201",
+        "index": 0,
+        "linux_pci": {
+          "current_link_speed": "32.0 GT/s PCIe",
+          "current_link_width": 16,
+          "max_link_speed": "32.0 GT/s PCIe",
+          "max_link_width": 16,
+          "numa_node": -1
+        },
+        "multiprocessor_count": 32,
+        "name": "AMD Radeon Graphics",
+        "pci": "0000:f3:00.0",
+        "total_memory_bytes": 34208743424,
+        "uuid": "33656332-3938-3365-6539-643334353337"
+      },
+      {
+        "architecture": "gfx1201",
+        "index": 1,
+        "linux_pci": {
+          "current_link_speed": "32.0 GT/s PCIe",
+          "current_link_width": 16,
+          "max_link_speed": "32.0 GT/s PCIe",
+          "max_link_width": 16,
+          "numa_node": -1
+        },
+        "multiprocessor_count": 32,
+        "name": "AMD Radeon Graphics",
+        "pci": "0000:d3:00.0",
+        "total_memory_bytes": 34208743424,
+        "uuid": "35366631-6139-3539-6436-386233633135"
+      },
+      {
+        "architecture": "gfx1201",
+        "index": 2,
+        "linux_pci": {
+          "current_link_speed": "32.0 GT/s PCIe",
+          "current_link_width": 16,
+          "max_link_speed": "32.0 GT/s PCIe",
+          "max_link_width": 16,
+          "numa_node": -1
+        },
+        "multiprocessor_count": 32,
+        "name": "AMD Radeon Graphics",
+        "pci": "0000:03:00.0",
+        "total_memory_bytes": 34208743424,
+        "uuid": "31313431-3234-3666-6537-393364343636"
+      },
+      {
+        "architecture": "gfx1201",
+        "index": 3,
+        "linux_pci": {
+          "current_link_speed": "32.0 GT/s PCIe",
+          "current_link_width": 16,
+          "max_link_speed": "32.0 GT/s PCIe",
+          "max_link_width": 16,
+          "numa_node": -1
+        },
+        "multiprocessor_count": 32,
+        "name": "AMD Radeon Graphics",
+        "pci": "0000:23:00.0",
+        "total_memory_bytes": 34208743424,
+        "uuid": "64353033-6263-6165-3937-663461666339"
+      }
+    ],
+    "iommu_passthrough_enabled": true,
+    "kernel_command_line": "BOOT_IMAGE=/boot/vmlinuz-7.0.0-28-generic root=UUID=d1ac7774-bed7-434a-9871-53783c4dc749 ro quiet splash iommu=pt vt.handoff=7",
+    "p2p_access_matrix": [
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ]
+    ],
+    "rocm_version": "7.0.51831",
+    "topology_scope": "PyTorch P2P capability plus Linux PCIe link/NUMA attributes. PyTorch does not expose whether a peer route is XGMI.",
+    "torch_version": "2.10.0+rocm7.0"
+  }
+}
