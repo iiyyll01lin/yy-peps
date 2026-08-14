@@ -78,3 +78,45 @@ def test_the_logs_are_not_dragged_into_the_repository():
     ignore = (ROOT / ".gitignore").read_text(encoding="utf-8")
     assert "results/multigpu/*" in ignore
     assert "!results/multigpu/*.json" in ignore
+
+
+def test_the_peer_to_peer_path_is_recorded_as_not_working_by_default():
+    # The 2.5x result is only reachable after the environment is set. If this
+    # ever reads as though peer-to-peer worked out of the box, the headline
+    # becomes unreproducible for anyone following the chapter.
+    found = RECEIPT["analysed_supporting_captures"][
+        "peer_to_peer_does_not_work_by_default"
+    ]
+    assert found["default_ipc_result"] == "failed"
+    assert "hipIpcGetMemHandle" in found["default_ipc_error"]
+    assert found["all_six_pairs_failed"] is True
+    assert found["required_environment"]["HSA_ENABLE_IPC_MODE_LEGACY"] == "0"
+    assert found["required_environment"]["HSA_FORCE_FINE_GRAIN_PCIE"] == "1"
+
+
+def test_the_silent_fallback_keeps_its_transport_field():
+    # A capture that asked for peer-to-peer, got host staging, and recorded a
+    # number anyway. The transport field is the only thing separating it from a
+    # false headline, so it has to stay.
+    found = RECEIPT["analysed_supporting_captures"][
+        "a_benchmark_that_silently_measured_the_other_arm"
+    ]
+    assert found["effective"] == "p2p_disabled_host_transport"
+    assert found["fallback_reason"]
+    assert found["effective"] != found["requested"]
+
+
+def test_the_fabric_is_reported_as_uniform():
+    found = RECEIPT["analysed_supporting_captures"]["topology"]
+    assert found["ordered_pairs"] == 12
+    assert found["spread"] < 1.05
+    assert found["numa_node"] == -1
+
+
+def test_the_iommu_comparison_stays_refused_for_a_stated_reason():
+    found = RECEIPT["analysed_supporting_captures"]["the_iommu_comparison_is_refused"]
+    assert found["conclusive"] is False
+    # Two variables moved together; the refusal is only checkable while the
+    # protocols are recorded as actually differing.
+    assert found["early_timed_iterations"] != found["stable_timed_iterations"]
+    assert found["early_warmup_iterations"] != found["stable_warmup_iterations"]

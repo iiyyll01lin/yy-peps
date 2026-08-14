@@ -1,4 +1,46 @@
 {
+  "analysed_supporting_captures": {
+    "a_benchmark_that_silently_measured_the_other_arm": {
+      "effective": "p2p_disabled_host_transport",
+      "fallback_reason": "RCCL peer IPC preflight failed with hipIpcGetMemHandle/invalid argument. The kernel command line does not enable iommu=pt, matching RCCL's diagnostic.",
+      "file": "results/multigpu/benchmark.json",
+      "requested": "auto",
+      "why_it_matters": "this capture asked for peer-to-peer, fell back to host staging, and still recorded a number. Quoted without its transport field it reads as a peer-to-peer result and is not one. The field that saves it is the one that records what actually happened rather than what was asked for"
+    },
+    "peer_to_peer_does_not_work_by_default": {
+      "all_six_pairs_failed": true,
+      "default_ipc_error": "hipIpcGetMemHandle failed: invalid argument",
+      "default_ipc_result": "failed",
+      "nccl_dmabuf_did_not_fix_it": "failed with the same hipIpcGetMemHandle error",
+      "required_environment": {
+        "HSA_ENABLE_IPC_MODE_LEGACY": "0",
+        "HSA_FORCE_FINE_GRAIN_PCIE": "1",
+        "NCCL_P2P_DISABLE": "0",
+        "note": "ROCr dma-buf IPC is required on this mainline kernel/gfx1201 host. NCCL_DMABUF_ENABLE is a different RCCL network setting and did not fix intra-node IPC."
+      },
+      "what_worked": "passed with P2P/IPC channels and no fallback",
+      "why_it_matters": "the 2.5x collective result is not available out of the box on this host; it exists only once ROCr dma-buf IPC is selected, and a reader who skips the environment gets the host path instead"
+    },
+    "the_iommu_comparison_is_refused": {
+      "conclusive": false,
+      "early_timed_iterations": 20,
+      "early_warmup_iterations": 5,
+      "stable_timed_iterations": 100,
+      "stable_warmup_iterations": 20,
+      "what_can_still_be_said": "the host arm agrees to about one per cent across both protocols while the direct arm differs by up to a factor of five, which bounds how much either factor can matter for the host path and points at warmup sensitivity in the direct path without establishing it",
+      "why": "the passthrough captures differ from the stable A/B in both the IOMMU setting and the timing protocol, so no difference between them can be assigned to either. Two variables moved at once"
+    },
+    "topology": {
+      "gb_per_second_max": 56.62640478861549,
+      "gb_per_second_min": 55.14522808618191,
+      "link": "32.0 GT/s PCIe x16",
+      "numa_node": -1,
+      "ordered_pairs": 12,
+      "reading": "every ordered pair copies within about three per cent of every other, so the four cards form one uniform fabric with no privileged pair and no NUMA affinity to exploit",
+      "source": "results/multigpu/topology-iommu-pt.json",
+      "spread": 1.0268595625376464
+    }
+  },
   "backend_runtime": "RCCL",
   "collective_all_reduce": {
     "p2p_disabled": {
@@ -85,13 +127,7 @@
   },
   "hardware": "4 x gfx1201, single host",
   "not_yet_analysed": [
-    "results/multigpu/benchmark.json",
-    "results/multigpu/benchmark-p2p-ab.json",
-    "results/multigpu/benchmark-real-workload.json",
-    "results/multigpu/benchmark-direct-iommu-pt.json",
-    "results/multigpu/benchmark-host-iommu-pt.json",
-    "results/multigpu/topology-iommu-pt.json",
-    "results/multigpu/direct-probe-hsa-dmabuf.json"
+    "results/multigpu/benchmark-real-workload.json"
   ],
   "raw_capture_sha256": {
     "results/multigpu/ab-collective-direct-r1.json": "80d2b12622ad5bb11ede87606a7beacb5b39466a8e61c17d2c1ef8cd0b7919c9",
@@ -114,7 +150,13 @@
     "results/multigpu/ab-training-host-4gpu-r2.json": "75346435f3d4ab410fb4b596c635376fb22709e0655c46000885523b34c257f5",
     "results/multigpu/ab-training-host-4gpu-r3.json": "3d936491096c9fa8cf675353d94435e10ef42504428d2431e6f21738899405eb",
     "results/multigpu/ab-training-host-4gpu-r4.json": "cf59c2fc91a1718323cc6a42b77a71155ddc584ee2d4792665eaee97c07b62f7",
-    "results/multigpu/ab-training-host-4gpu-r5.json": "4bbbb872470bac1e96b1d1e31952d9c41fc4d747bef82d7cdbf8996363b6a0dd"
+    "results/multigpu/ab-training-host-4gpu-r5.json": "4bbbb872470bac1e96b1d1e31952d9c41fc4d747bef82d7cdbf8996363b6a0dd",
+    "results/multigpu/benchmark-direct-iommu-pt.json": "7b8d52b818355bf793fd8d11f3d6f4aea9805fb3440a5819b4e711302f3f2ee4",
+    "results/multigpu/benchmark-host-iommu-pt.json": "6d74f59ba78b5947b809675616d5e05657f7af3b58787593816c3950c4f643c1",
+    "results/multigpu/benchmark-p2p-ab.json": "d67f0fa7697031c111412db341e3b61dcf0edd0e5b9ac5ab05b0dfc771617e64",
+    "results/multigpu/benchmark.json": "32f62619a02f12fae36f5720308c535df71dbc248fead346a1a44dc4ed316e50",
+    "results/multigpu/direct-probe-hsa-dmabuf.json": "8f82fe8b859aa4cf304d6740eefe53aeb4f0beaa5fc6adc0f1830c71725da9cb",
+    "results/multigpu/topology-iommu-pt.json": "7abdbd97466f7c8533769036f6f3886a1551821980cda4c4c5417b564463b3eb"
   },
   "raw_logs": "the matching .log files stay untracked; they are 42 MB and carry no claim",
   "schema": "peps.multigpu_ab_receipt",

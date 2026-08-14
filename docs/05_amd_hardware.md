@@ -838,6 +838,67 @@ training 臂唯一存活的,是一個**區間不重疊**的比較:最慢的四�
 
 單卡與四卡的最終 loss 吻合到九位有效數字,所以速度沒有一分是從精度換來的。
 
+### The 2.5x is not in the box / 那個 2.5 倍不在盒子裡
+
+The peer-to-peer path this chapter measures does not work by default on this
+host. In the stock configuration `hipIpcGetMemHandle` fails with `invalid
+argument` on **all six** GPU pairs, and RCCL falls back to staging through the
+host. `NCCL_DMABUF_ENABLE` does not fix it; that setting concerns the RCCL
+network path and not intra-node IPC. What works is ROCr dma-buf IPC, selected
+with `HSA_ENABLE_IPC_MODE_LEGACY=0` and `HSA_FORCE_FINE_GRAIN_PCIE=1`, after
+which the logs show `P2P/IPC` channels and no fallback.
+
+This is the difference between a number and a reproducible number. Anyone who
+runs the collective benchmark from the chapter without that environment will
+measure the host arm and see about 19 GB/s, and nothing in the result will look
+wrong.
+
+One capture in this repository is exactly that mistake, kept because it is
+instructive. `results/multigpu/benchmark.json` requested peer-to-peer, fell
+back to host staging when the IPC preflight failed, and recorded 15.4 GB/s.
+Quoted on its own it reads as a peer-to-peer measurement. The only thing
+separating it from a false headline is that the capture also records what the
+transport actually resolved to, rather than what was asked for.
+
+The fabric itself is uniform. All twelve ordered pairs copy within 2.69 per cent
+of one another over PCIe Gen 5 x16, with `numa_node` reported as -1, so there is
+no privileged pair and no affinity to schedule around. That is why the
+all-reduce numbers can be read as a property of the transport rather than of
+which cards happened to be chosen.
+
+The IOMMU passthrough captures are **not** compared against the stable A/B here.
+They differ from it in the passthrough setting *and* in the timing protocol,
+20 timed iterations against 100 and 5 warmup against 20, so any difference
+between them belongs to neither variable in particular. What can be said is that
+the host arm agrees to about one per cent across both protocols while the direct
+arm differs by up to a factor of five, which bounds how much either factor moves
+the host path and points at warmup sensitivity in the direct path without
+establishing it.
+
+本章量到的 peer-to-peer 路徑,在這台主機上**預設是不能用的**。原廠設定下
+`hipIpcGetMemHandle` 會以 `invalid argument` 失敗,而且**六個 GPU 配對全數失敗**,
+RCCL 於是回退成經由主機中轉。`NCCL_DMABUF_ENABLE` 不能解決——那是 RCCL 的網路路徑設定,
+與節點內 IPC 無關。有效的是 ROCr dma-buf IPC,以 `HSA_ENABLE_IPC_MODE_LEGACY=0` 與
+`HSA_FORCE_FINE_GRAIN_PCIE=1` 選取,之後 log 會出現 `P2P/IPC` 通道且無 fallback。
+
+這是「一個數字」與「一個可重現的數字」之間的差別。任何人照本章跑 collective 基準卻沒設
+那組環境變數,量到的會是 host 臂的約 19 GB/s,而且**結果看起來不會有任何異狀**。
+
+本 repo 裡就有一份正是這個錯誤的捕獲,刻意保留下來當教材:
+`results/multigpu/benchmark.json` 要求 peer-to-peer,在 IPC preflight 失敗後回退成
+主機中轉,然後照樣記下 15.4 GB/s。單獨引用時它讀起來就是一筆 peer-to-peer 量測。
+唯一讓它不變成假標題的,是這份捕獲**同時記下了 transport 實際解析成什麼**,而不只是當初
+要求了什麼。
+
+連接本身是均勻的。十二個有向配對的複製頻寬彼此相差不到 2.69%,走 PCIe Gen 5 x16,
+`numa_node` 回報為 -1,所以沒有任何一對是特權配對,也沒有親和性可以排程。這正是
+all-reduce 的數字可以被當成**傳輸路徑的性質**、而不是「剛好挑到哪兩張卡」的原因。
+
+IOMMU passthrough 那組**沒有**拿來與穩定 A/B 比較。它與後者相差的不只是 passthrough 設定,
+還有計時協定(20 次對 100 次、暖機 5 次對 20 次),所以兩者之間的任何差異都不能歸給其中
+任一變因。能說的是:host 臂在兩種協定下吻合到約 1%,direct 臂卻相差達五倍,這替兩個
+因素對 host 路徑的影響設下上界,並指向 direct 路徑對暖機敏感——但**沒有證實**它。
+
 ## Result contract and comparison blocker / 結果契約與比較限制
 
 `results/hip_latency.schema.json` requires workload kind, mode, implementation,

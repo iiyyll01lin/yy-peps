@@ -128,6 +128,17 @@ CLAIMS = [
         lambda v: f"{v:.2f}",
         [HARDWARE_DOC],
     ),
+    # The chapter reads the fabric as uniform, which is only a fair reading
+    # while the measured spread stays small. Two decimals, because the training
+    # arm's 2.73 sits in the same chapter and a one-decimal 2.7 matches it as a
+    # substring, which would make this claim pass without checking anything.
+    Claim(
+        "spread across the twelve ordered pairs, as a percentage",
+        MULTIGPU,
+        lambda d: dig(d, "analysed_supporting_captures.topology.spread"),
+        lambda v: f"{(v - 1.0) * 100:.2f}",
+        [HARDWARE_DOC],
+    ),
     Claim(
         "table 2 job count",
         TABLE2,
