@@ -10,6 +10,11 @@ the same arm and shows a difference of two per cent between arms.
 The receipt is therefore only useful if it keeps refusing the training claim.
 These tests pin that refusal, pin the hashes of the captures it aggregates,
 and pin the lower bound as the supported number rather than the median.
+
+The refusal was not the end of it. A later harness put the same workload on the
+same cards behind an idle precondition and answered the scaling question with
+non-overlapping ranges, so the tests also pin why one run could be read and the
+other could not.
 """
 
 import hashlib
@@ -65,12 +70,57 @@ def test_the_single_round_trap_stays_recorded():
     assert "3.685" in trap["detail"] and "3.156" in trap["detail"]
 
 
-def test_the_unanalysed_captures_are_declared_rather_than_implied():
+def test_every_capture_is_either_analysed_or_declared():
+    hashed = set(RECEIPT["raw_capture_sha256"])
     listed = RECEIPT["not_yet_analysed"]
-    assert listed, "captures that carry no claim must still be declared"
     for rel in listed:
         assert (ROOT / rel).exists(), rel
-        assert rel not in RECEIPT["raw_capture_sha256"]
+        assert rel not in hashed
+    present = {
+        f"results/multigpu/{path.name}"
+        for path in (ROOT / "results" / "multigpu").glob("*.json")
+    }
+    # A capture that is neither hashed nor declared has gone quiet. Requiring the
+    # two sets to partition the directory is what stops one being added and
+    # carrying no claim and no admission that it carries none.
+    assert present == hashed | set(listed)
+
+
+def test_the_strong_scaling_speedup_survives_as_a_floor():
+    scaling = RECEIPT["analysed_supporting_captures"]["strong_scaling_under_an_idle_gate"]
+    assert scaling["ranges_disjoint"]["1_vs_2"] is True
+    assert scaling["ranges_disjoint"]["2_vs_4"] is True
+    for count in ("2", "4"):
+        floor = scaling["guaranteed_speedup_worst_case_over_best_single_gpu"][count]
+        assert 1.0 < floor < scaling["speedup_vs_1gpu_median"][count]
+    # The worst four-card round must still beat the best single-card round, or
+    # the disjointness above is being asserted rather than measured.
+    assert scaling["steps_per_second"]["4"]["min"] > scaling["steps_per_second"]["1"]["max"]
+
+
+def test_the_readable_and_refused_runs_are_separated_by_the_idle_gate():
+    scaling = RECEIPT["analysed_supporting_captures"]["strong_scaling_under_an_idle_gate"]
+    refused = RECEIPT["analysed_supporting_captures"]["why_the_refused_arm_could_not_be_read"]
+    worst_readable = max(
+        scaling["steps_per_second"][count]["within_arm_spread"] for count in ("1", "2", "4")
+    )
+    worst_refused = max(
+        RECEIPT["training"][arm]["within_arm_spread"] for arm in RECEIPT["training"]
+    )
+    assert worst_readable < 1.02 < worst_refused
+    assert "not identified" in refused["interference_source"]
+    # The texture job was the obvious suspect and was cleared. Losing that keeps
+    # the reader free to assume it was never checked.
+    assert "2026-07-22T03:41:28Z" in refused["refuted_hypothesis"]
+
+
+def test_the_parallel_split_does_not_move_the_result():
+    fidelity = RECEIPT["analysed_supporting_captures"]["numerical_fidelity_across_gpu_counts"]
+    ratio = fidelity["max_relative_loss_delta_vs_1gpu"] / fidelity["float32_epsilon"]
+    assert abs(ratio - fidelity["ratio_to_float32_epsilon"]) < 1e-9
+    assert ratio < 2.0
+    psnr = fidelity["reconstruction_psnr_db_median"]
+    assert max(psnr.values()) - min(psnr.values()) < 1e-5
 
 
 def test_the_logs_are_not_dragged_into_the_repository():

@@ -838,6 +838,63 @@ training 臂唯一存活的,是一個**區間不重疊**的比較:最慢的四�
 
 單卡與四卡的最終 loss 吻合到九位有效數字,所以速度沒有一分是從精度換來的。
 
+### The spread was the harness, not the cards / 那個散布是 harness,不是卡
+
+The 1.35 floor above is the weakest thing this hardware was ever asked to prove,
+and it is weak because of how it was asked. The same job was put on the same
+four cards again by a harness that waits for the machine to go quiet first: at
+most five per cent busy and 512 MB resident, three observations running, before
+every repetition, with the one-, two- and four-card runs interleaved rather than
+run in blocks. Five repetitions, the same as before.
+
+The arms stop touching. One card holds 60.03–60.13 steps per second, two cards
+107.76–108.20, four cards 195.85–198.43, so the spread inside each arm is 0.17,
+0.41 and 1.32 per cent against effects of 1.8x and 3.3x. Both gaps are clear,
+which turns the medians of 1.80x and 3.29x — 90.0 and 82.1 per cent efficiency —
+into floors of **1.79x and 3.26x**, worst round against best single-card round.
+
+That number is not larger because the cards improved. It is larger because the
+earlier attempt was measuring something else at the same time. One of its
+single-card rounds ran 16.65 s where its siblings ran 8.30, a ratio of 2.006,
+which is what sharing a card looks like and not what noise looks like. The
+obvious suspect, the texture reproduction, was checked and cleared: it started
+at 2026-07-22T03:41:28Z, over two hours after those rounds were written. What
+was competing is not identified.
+
+The lesson is in what would *not* have helped. Both harnesses timed 500 steps
+and both repeated five times, so more repetitions would only have measured the
+interference more precisely. What separated them was gating on an idle card.
+A spread of 2.7x is a statement about the harness, and reading it as a property
+of the device is how a hardware chapter starts lying.
+
+Splitting the job did not move the answer: across seven checkpoints the loss on
+two and four cards stays within 1.45 times the float32 rounding step of the
+single-card run, and the reconstructed image matches to seven digits of PSNR.
+
+### 那個散布是 harness,不是卡
+
+上面那個 1.35 倍下界,是這批硬體被要求證明過**最弱**的一件事,而它弱是因為**問法**。
+同一個工作被放回同四張卡上重跑,這次的 harness 會先等機器安靜下來:每一輪重複之前,
+必須連續三次觀測到**忙碌率 ≤5%、顯存佔用 ≤512 MB**,而且一卡、二卡、四卡是**交錯**執行
+而非分區塊跑。重複次數一樣是五次。
+
+兩臂不再相碰。單卡落在 60.03–60.13 steps/s,雙卡 107.76–108.20,四卡 195.85–198.43,
+組內離散只有 **0.17%、0.41%、1.32%**,而效應是 1.8 倍與 3.3 倍。兩個間隙都乾淨,
+於是 1.80 倍與 3.29 倍的中位數(效率 90.0% 與 82.1%)升格成**下界 1.79 倍與 3.26 倍**
+——最差輪次對上最好的單卡輪次。
+
+這個數字變大**不是因為卡變好了**,而是因為先前那次量測同時量到了別的東西。它有一輪
+單卡跑了 16.65 秒,而同組其他輪次是 8.30 秒,比值 **2.006**——那是**共用一張卡**的樣子,
+不是雜訊的樣子。最明顯的嫌疑犯 texture 重現作業,查過並排除:它啟動於
+`2026-07-22T03:41:28Z`,比那些輪次寫檔的時間晚了兩個多小時。真正在競爭的是什麼,無法辨識。
+
+教訓在於**什麼是沒有用的**。兩套 harness 都計時 500 步、都重複五次,所以**增加重複次數
+只會把干擾量得更精確**。分開它們的是「先確認卡是閒置的」這道閘。2.7 倍的散布是關於
+**harness** 的陳述;把它讀成**裝置**的性質,正是一份硬體文件開始說謊的方式。
+
+拆分工作沒有移動答案:七個檢查點上,雙卡與四卡的 loss 與單卡的差距都在 **1.45 倍
+float32 捨入尺度**以內,重建影像的 PSNR 吻合到七位數字。
+
 ### The 2.5x is not in the box / 那個 2.5 倍不在盒子裡
 
 The peer-to-peer path this chapter measures does not work by default on this

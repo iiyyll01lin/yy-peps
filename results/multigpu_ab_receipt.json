@@ -7,6 +7,19 @@
       "requested": "auto",
       "why_it_matters": "this capture asked for peer-to-peer, fell back to host staging, and still recorded a number. Quoted without its transport field it reads as a peer-to-peer result and is not one. The field that saves it is the one that records what actually happened rather than what was asked for"
     },
+    "numerical_fidelity_across_gpu_counts": {
+      "checkpoint_steps": [1, 100, 200, 300, 400, 500, 600],
+      "float32_epsilon": 1.1920928955078125e-07,
+      "max_relative_loss_delta_vs_1gpu": 1.72768352758046e-07,
+      "ratio_to_float32_epsilon": 1.44928598609297,
+      "reconstruction_psnr_db_median": {
+        "1": 33.35029562152953,
+        "2": 33.35029518693113,
+        "4": 33.350295641014384
+      },
+      "source": "results/multigpu/benchmark-real-workload.json",
+      "why_it_matters": "splitting this job across two and four cards moves the loss by about one and a half times the float32 rounding step, and leaves the reconstructed image identical to seven digits of PSNR. The speedup is therefore not bought with numerical drift, which is the thing a reproduction cannot afford to trade away"
+    },
     "peer_to_peer_does_not_work_by_default": {
       "all_six_pairs_failed": true,
       "default_ipc_error": "hipIpcGetMemHandle failed: invalid argument",
@@ -20,6 +33,38 @@
       },
       "what_worked": "passed with P2P/IPC channels and no fallback",
       "why_it_matters": "the 2.5x collective result is not available out of the box on this host; it exists only once ROCr dma-buf IPC is selected, and a reader who skips the environment gets the host path instead"
+    },
+    "strong_scaling_under_an_idle_gate": {
+      "guaranteed_speedup_worst_case_over_best_single_gpu": {
+        "2": 1.7922362372998074,
+        "4": 3.2573592036663912
+      },
+      "idle_precondition": "at most 5 per cent busy and 512 MB VRAM, three consecutive observations, before every repetition",
+      "parallel_efficiency": {
+        "1": 1.0,
+        "2": 0.900016331343428,
+        "4": 0.8214737619281627
+      },
+      "ranges_disjoint": {
+        "1_vs_2": true,
+        "2_vs_4": true
+      },
+      "repetitions": 5,
+      "round_robin_order": [1, 2, 4],
+      "source": "results/multigpu/benchmark-real-workload.json",
+      "speedup_vs_1gpu_median": {
+        "2": 1.800032662686856,
+        "4": 3.2858950477126507
+      },
+      "steps_per_second": {
+        "1": {"max": 60.12535935645099, "median": 60.0438373691988, "min": 60.02625202752687, "within_arm_spread": 1.0016510664180511},
+        "2": {"max": 108.19565312949015, "median": 108.08086845761545, "min": 107.75884781930449, "within_arm_spread": 1.0040535447346107},
+        "4": {"max": 198.4328682475519, "median": 197.29774785711413, "min": 195.8498926734848, "within_arm_spread": 1.0131885473043039}
+      },
+      "timed_steps": 500,
+      "warmup_steps": 100,
+      "why_it_matters": "this is the same paper G-PEPS image job, on the same four cards, and here the arms do not touch: the slowest four-card repetition still beats the fastest single-card one, so the speedup survives as a floor and not only as a median. The refused training A/B asked a different question on the same hardware and could not answer it",
+      "workload": "image-table1-full G-PEPS, kodim01, fixed global batch 60000, 442691 parameters"
     },
     "the_iommu_comparison_is_refused": {
       "conclusive": false,
@@ -39,6 +84,15 @@
       "reading": "every ordered pair copies within about three per cent of every other, so the four cards form one uniform fabric with no privileged pair and no NUMA affinity to exploit",
       "source": "results/multigpu/topology-iommu-pt.json",
       "spread": 1.0268595625376464
+    },
+    "why_the_refused_arm_could_not_be_read": {
+      "contention_signature": "the single-card repetition that reads 30.03 steps per second took 16.65 s where its siblings took 8.30 s, a ratio of 2.006, which is what sharing a card with one equal job looks like rather than what measurement noise looks like",
+      "interference_source": "not identified. Nothing else in results/ was written during the window",
+      "not_the_protocol": "both harnesses time 500 steps. Warmup differs only between 50 and 100, which is too small to produce a factor of two",
+      "refuted_hypothesis": "the texture reproduction was checked as the cause and cleared: it started 2026-07-22T03:41:28Z, over two hours after the last of these repetitions was written",
+      "the_difference_that_matters": "the refused harness had no idle precondition and no round-robin ordering. The readable one gates on an idle card before every repetition, and its within-arm spread is 1.3 per cent where the refused arm's is 173 per cent",
+      "why_it_matters": "the same cards produced both a decisive measurement and an unusable one on the same workload family. What separated them was not the hardware and not the sample count but whether the machine was made quiet first, so a spread this large should be read as a fault in the harness rather than a property of the device",
+      "window": "2026-07-22 09:09:34 to 09:13:58 +0800, fifteen sequential repetitions"
     }
   },
   "backend_runtime": "RCCL",
@@ -126,9 +180,7 @@
     }
   },
   "hardware": "4 x gfx1201, single host",
-  "not_yet_analysed": [
-    "results/multigpu/benchmark-real-workload.json"
-  ],
+  "not_yet_analysed": [],
   "raw_capture_sha256": {
     "results/multigpu/ab-collective-direct-r1.json": "80d2b12622ad5bb11ede87606a7beacb5b39466a8e61c17d2c1ef8cd0b7919c9",
     "results/multigpu/ab-collective-direct-r2.json": "f70f38301e8aba1c8f0146f48d017755177b79333b432223b6bf13682e13fab4",
@@ -154,6 +206,7 @@
     "results/multigpu/benchmark-direct-iommu-pt.json": "7b8d52b818355bf793fd8d11f3d6f4aea9805fb3440a5819b4e711302f3f2ee4",
     "results/multigpu/benchmark-host-iommu-pt.json": "6d74f59ba78b5947b809675616d5e05657f7af3b58787593816c3950c4f643c1",
     "results/multigpu/benchmark-p2p-ab.json": "d67f0fa7697031c111412db341e3b61dcf0edd0e5b9ac5ab05b0dfc771617e64",
+    "results/multigpu/benchmark-real-workload.json": "c625d5c6ab152bf75a2c12503f0db503970a3c737ef823970e79ebfb0c76f448",
     "results/multigpu/benchmark.json": "32f62619a02f12fae36f5720308c535df71dbc248fead346a1a44dc4ed316e50",
     "results/multigpu/direct-probe-hsa-dmabuf.json": "8f82fe8b859aa4cf304d6740eefe53aeb4f0beaa5fc6adc0f1830c71725da9cb",
     "results/multigpu/topology-iommu-pt.json": "7abdbd97466f7c8533769036f6f3886a1551821980cda4c4c5417b564463b3eb"

@@ -316,6 +316,45 @@ CLAIMS = [
         lambda v: f"multiple of {v:d}",
         ["README.md"],
     ),
+    Claim(
+        "slowest four-card round in the idle-gated run",
+        MULTIGPU,
+        lambda d: d["analysed_supporting_captures"][
+            "strong_scaling_under_an_idle_gate"
+        ]["steps_per_second"]["4"]["min"],
+        lambda v: f"{v:.2f}",
+        [HARDWARE_DOC],
+    ),
+    Claim(
+        "fastest single-card round in the idle-gated run",
+        MULTIGPU,
+        lambda d: d["analysed_supporting_captures"][
+            "strong_scaling_under_an_idle_gate"
+        ]["steps_per_second"]["1"]["max"],
+        lambda v: f"{v:.2f}",
+        [HARDWARE_DOC],
+    ),
+    # The floor is the ratio of the two rounds above. On its own it would still
+    # pass if it drifted to 3.29, the median, which the chapter already prints;
+    # the receipt test requiring floor < median is what closes that gap.
+    Claim(
+        "four-card floor over the best single-card round",
+        MULTIGPU,
+        lambda d: d["analysed_supporting_captures"][
+            "strong_scaling_under_an_idle_gate"
+        ]["guaranteed_speedup_worst_case_over_best_single_gpu"]["4"],
+        lambda v: f"{v:.2f}",
+        [HARDWARE_DOC],
+    ),
+    Claim(
+        "four-card parallel efficiency",
+        MULTIGPU,
+        lambda d: d["analysed_supporting_captures"][
+            "strong_scaling_under_an_idle_gate"
+        ]["parallel_efficiency"]["4"],
+        lambda v: f"{v * 100:.1f}",
+        [HARDWARE_DOC],
+    ),
 ]
 
 
